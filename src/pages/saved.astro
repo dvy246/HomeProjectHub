@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SavedRoomsDashboard from "../components/SavedRoomsDashboard";
+
+const title = "My Saved Rooms & Projects";
+const description = "Manage your saved room, deck, and patio dimensions. Load them directly into any of our calculators to compare materials instantly.";
+---
+
+<Layout title={title} description={description}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt; 
+        <span class="text-neutral-600 dark:text-neutral-400 font-medium">saved</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Saved Measurements Workspace
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Review your saved rooms, foundations, and excavation measurements. These are stored locally in your browser cache (localStorage) and never leave your machine.
+      </p>
+    </header>
+
+    <!-- Interactive Component -->
+    <section class="my-4">
+      <SavedRoomsDashboard client:load />
+    </section>
+  </article>
+</Layout>

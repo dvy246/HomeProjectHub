@@ -1,0 +1,212 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConcreteStepsCalc from "../../../components/calculators/ConcreteStepsCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+
+const title = "Concrete Steps Calculator";
+const description = "Calculate the volume of concrete needed for stairs and steps. Computes required cubic yards, cubic feet, and bag counts for steps with optional landing.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MathSolver",
+      "@id": "https://homeprojecthub.com/calculators/concrete/steps/#math-solver",
+      "name": "Concrete Steps Volume Equation",
+      "description": "Calculates the total cubic volume of a concrete staircase by summing individual step blocks.",
+      "potentialAction": {
+        "@type": "SolveAction",
+        "target": "https://homeprojecthub.com/calculators/concrete/steps/?equation={equation}"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://homeprojecthub.com/calculators/concrete/steps/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the standard rise and run for concrete steps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For residential buildings, the standard rise (height of each step) is 7 inches, and the standard run (tread depth of each step) is 11 inches. This ratio ensures a comfortable and safe climbing angle."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you calculate concrete for steps with a landing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Calculate the steps normally by treating each step as a rectangular block. For the top step (which forms the landing), add the landing depth to the standard step run. Multiply the height of the top step by this combined depth and the width of the staircase to find its volume."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should concrete steps have a footing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Concrete steps are extremely heavy. Without a proper subgrade base or structural footing extending below the frost line, the steps will settle, causing them to tilt away from the house or crack structural joints."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt; 
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a> &gt; 
+        <span class="text-neutral-600 dark:text-neutral-400 font-medium">steps</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Concrete Steps Calculator
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Accurately estimate the concrete volume and bag counts needed for residential or commercial staircases. This tool models steps as a series of rectangular blocks, allowing you to define the width, rise, run, and top landing depth to produce precise cubic volume and packaging output.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-top-leaderboard-steps" />
+
+    <!-- Interactive Calculator -->
+    <section class="my-4">
+      <ConcreteStepsCalc client:visible />
+    </section>
+
+    <!-- How to Calculate -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        How to Calculate Concrete for Steps
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Concrete steps are constructed as solid blocks or poured over a sloped sub-base. The most reliable way to calculate the volume is the **individual block summation method**:
+      </p>
+      
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li>
+          <strong>Model Each Step as a Block:</strong> Each step is a rectangular block. 
+          <ul class="list-disc pl-5 mt-1 flex flex-col gap-1">
+            <li>The width of each block is the staircase width.</li>
+            <li>The height of each block increases incrementally: Step 1 is 1 rise high, Step 2 is 2 rises high, and so on.</li>
+            <li>The depth of each block is the step run (the top step includes the run plus any extra landing depth).</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Calculate Individual Volume:</strong> Convert your measurements from inches to feet (divide by 12). For each step $i$:
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">
+            Volume of Step $i$ = Width &times; (Rise &times; $i$) &times; Run
+          </div>
+        </li>
+        <li>
+          <strong>Sum and Convert:</strong> Add the volumes of all steps together to get total cubic feet. Divide by 27 to find cubic yards.
+        </li>
+      </ol>
+    </section>
+
+    <!-- Worked Example -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Example Stair Calculation
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Let&rsquo;s calculate the concrete needed for a set of <strong>3 steps</strong> that are <strong>36 inches (3 feet) wide</strong>, with a **7-inch rise** and an **11-inch run**:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li><strong>Convert Dimensions:</strong> Width = 3 ft, Rise = 0.583 ft (7/12), Run = 0.917 ft (11/12)</li>
+        <li><strong>Step 1 Volume:</strong> 3 ft &times; 0.583 ft (1 rise) &times; 0.917 ft = 1.60 cu ft</li>
+        <li><strong>Step 2 Volume:</strong> 3 ft &times; 1.166 ft (2 rises) &times; 0.917 ft = 3.21 cu ft</li>
+        <li><strong>Step 3 Volume (Top):</strong> 3 ft &times; 1.750 ft (3 rises) &times; 0.917 ft = 4.81 cu ft</li>
+        <li><strong>Total Volume:</strong> 1.60 + 3.21 + 4.81 = 9.62 cu ft (~0.36 cubic yards)</li>
+        <li><strong>Bags Needed (80lb):</strong> 9.62 &divide; 0.6 cu ft yield = 16.03 &rarr; <strong>17 bags</strong> (with 10% waste buffer)</li>
+      </ul>
+    </section>
+
+    <!-- Mid Ad Slot -->
+    <AdSlot slotId="ad-in-content-mid-steps" />
+
+    <!-- Common Mistakes -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Common Mistakes in Steps Pours
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li>
+          <strong>Pouring Without Rebar Ties:</strong> Heavy steps will slowly slide away from your house's threshold if they aren't tied directly to the home's foundation using structural rebar pins.
+        </li>
+        <li>
+          <strong>Ignoring Subgrade Slopes:</strong> To save on concrete costs, builders often place a sloped gravel mound beneath the staircase formwork. Ensure you measure this sloped hollow accurately, as over-estimating the sloped height will leave you short on concrete.
+        </li>
+        <li>
+          <strong>Incorrect Rise/Run Dimensions:</strong> If the top step rise doesn't match the standard step rise once the top landing flooring is finished, it creates a dangerous tripping hazard.
+        </li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            What is the standard rise and run for concrete steps?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            For residential buildings, the standard rise (height of each step) is 7 inches, and the standard run (tread depth of each step) is 11 inches. This ratio ensures a comfortable and safe climbing angle.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            How do you calculate concrete for steps with a landing?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            Calculate the steps normally by treating each step as a rectangular block. For the top step (which forms the landing), add the landing depth to the standard step run. Multiply the height of the top step by this combined depth and the width of the staircase to find its volume.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            Should concrete steps have a footing?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            Yes. Concrete steps are extremely heavy. Without a proper subgrade base or structural footing extending below the frost line, the steps will settle, causing them to tilt away from the house or crack structural joints.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Related Links -->
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a
+          href="/calculators/concrete/slab/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium">Estimate concrete needed for flat rectangular pads, patios, and slabs.</span>
+        </a>
+        <a
+          href="/calculators/concrete/footing/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Footing Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium">Estimate concrete needed for piers, fence posts, and deck footings.</span>
+        </a>
+        <a
+          href="/compare/concrete-vs-pavers/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete vs Pavers</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium">Compare cost, durability, maintenance, and DIY difficulty for walkways.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

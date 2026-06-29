@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CompareMaterials from "../components/CompareMaterials";
+import AdSlot from "../components/AdSlot.astro";
+
+const title = "Compare Patio & Driveway Materials";
+const description = "Compare poured concrete, concrete pavers, and pea gravel. Calculate the quantities needed for your dimensions, and compare durability, DIY difficulty, and lifespan.";
+---
+
+<Layout title={title} description={description}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt; 
+        <span class="text-neutral-600 dark:text-neutral-400 font-medium">compare</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Compare Construction Materials
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Planning a new patio, driveway, or walkway? Enter your project dimensions below to generate a comparison matrix. See the exact quantities needed for poured concrete, pavers, and gravel, alongside critical metrics like lifespan, maintenance needs, and DIY feasibility.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-top-compare" />
+
+    <!-- Interactive Component -->
+    <section class="my-4">
+      <CompareMaterials client:load />
+    </section>
+
+    <!-- Editorial Content for SEO (E-E-A-T) -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6 flex flex-col gap-6">
+      <div>
+        <h2 id="durability-comparison" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 tracking-tight">
+          Poured Concrete vs. Pavers vs. Pea Gravel
+        </h2>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+          Choosing the right material depends on your budget, timescale, aesthetic preference, and structural needs. Here is a summary of how they compare in practice:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Poured Concrete</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty">
+            The most permanent, clean-looking option. It provides a solid foundation suitable for heavy patio furniture and vehicular traffic. However, it requires careful mixing, quick pouring, and is prone to cracking if the ground shifts.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Interlocking Pavers</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty">
+            Very durable and highly modular. Since they are separated by sand joints, they flex naturally with ground movements without cracking. Individual pavers can be replaced easily, making them a great long-term DIY investment.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Loose Pea Gravel</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty">
+            The fastest, lowest-cost pathway. It drains stormwater beautifully and offers a rustic look. However, it requires a border border frame, shifting gravel needs regular raking, and it cannot support thin-legged chairs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secondary Ad Slot -->
+    <AdSlot slotId="ad-bottom-compare" />
+  </article>
+</Layout>

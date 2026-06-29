@@ -1,0 +1,217 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConcreteFootingCalc from "../../../components/calculators/ConcreteFootingCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+
+const title = "Concrete Footing Calculator";
+const description = "Calculate concrete requirements for post hole foundations, deck footings, or fence posts. Computes total volume in yards and bag counts for square and cylinder holes.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MathSolver",
+      "@id": "https://homeprojecthub.com/calculators/concrete/footing/#math-solver",
+      "name": "Concrete Footing Volume Math",
+      "description": "Calculates cylinder pier footing and square structural block footing volume.",
+      "potentialAction": {
+        "@type": "SolveAction",
+        "target": "https://homeprojecthub.com/calculators/concrete/footing/?equation={equation}"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://homeprojecthub.com/calculators/concrete/footing/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How deep should a concrete deck footing be?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Footings must extend below your local frost line to prevent shifting during freeze-thaw cycles. In most northern regions, this means a minimum depth of 36 to 48 inches. Always consult local municipal building codes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What diameter hole do I need for a 4x4 post?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As a rule of thumb, the diameter of your post hole footing should be three times the width of the post. For a standard 4x4 structural wood post (which actually measures 3.5 inches), you need a minimum hole diameter of 10 to 12 inches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much concrete does a 12-inch by 3-foot footing hold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A cylindrical footing with a 12-inch diameter and a 3-foot depth has a volume of approximately 2.36 cubic feet. This requires about 4 bags of 80lb concrete mix (yielding 0.6 cu ft per bag) or 5.2 bags of 60lb mix."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt; 
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a> &gt; 
+        <span class="text-neutral-600 dark:text-neutral-400 font-medium">footing</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Concrete Footing Calculator
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Determine the exact volume of concrete needed for structural post foundations, deck piers, and fence supports. Supporting both cylindrical pier holes and rectangular columns, this estimator lists total volume in cubic yards or meters, along with bag configurations adjusted for standard job site wastage.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-top-leaderboard-footing" />
+
+    <!-- Interactive Calculator -->
+    <section class="my-4">
+      <ConcreteFootingCalc client:visible />
+    </section>
+
+    <!-- How to Calculate -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        How to Calculate Concrete Footing Volume
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Structural footings are usually cylindrical (for posts and decks) or square/rectangular (for wall footings and column foundations).
+      </p>
+      
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            1. Cylindrical Pier Holes (Circular Columns)
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2 text-pretty">
+            First, find the radius in feet (diameter in inches divided by 2, then divided by 12). Use the circle area formula, then multiply by depth:
+          </p>
+          <div class="p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">
+            Volume (cu ft) = &pi; &times; Radius&sup2; (ft) &times; Depth (ft)
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            2. Rectangular Block Footings
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2 text-pretty">
+            Convert length, width, and depth to feet (divide inches by 12) and multiply them together:
+          </p>
+          <div class="p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">
+            Volume (cu ft) = Length (ft) &times; Width (ft) &times; Depth (ft)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Worked Example -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Example Footing Calculation
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Let&rsquo;s calculate the concrete required to set <strong>four deck post footings</strong> that are <strong>12 inches in diameter and 3 feet (36 inches) deep</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-450 text-pretty">
+        <li><strong>Hole Radius:</strong> 12 inches diameter &divide; 2 = 6 inches = 0.5 feet</li>
+        <li><strong>Area of Circle:</strong> &pi; &times; 0.5&sup2; = 3.14159 &times; 0.25 = 0.785 sq ft</li>
+        <li><strong>Volume per Footing:</strong> 0.785 sq ft &times; 3 ft depth = 2.356 cu ft</li>
+        <li><strong>Total Volume (4 footings):</strong> 2.356 &times; 4 = 9.424 cu ft (~0.35 cubic yards)</li>
+        <li><strong>Bags Needed (80lb):</strong> 9.424 &divide; 0.6 cu ft yield = 15.7 &rarr; <strong>16 bags</strong></li>
+      </ul>
+    </section>
+
+    <!-- Mid Ad Slot -->
+    <AdSlot slotId="ad-in-content-mid-footing" />
+
+    <!-- Common Mistakes -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Common Mistakes with Foundation Posts
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li>
+          <strong>Not Digging Below the Frost Line:</strong> If the concrete post is set in shallow soil, cold winter weather will freeze the groundwater beneath it. The expanding ice pushes the footing upward, cracking your deck framing.
+        </li>
+        <li>
+          <strong>Leaving Loose Dirt in the Hole:</strong> Shovels leave loose, aerated soil at the bottom of the excavation. If you pour directly over this, the heavy concrete will sink and settle over time. Compact the bottom of the hole thoroughly before pouring.
+        </li>
+        <li>
+          <strong>Forgetting Post-hole Bell Flare:</strong> Flaring the bottom of the hole slightly wider than the top (making a bell shape) increases structural load capacity and prevents frost-heaving forces from squeezing the footing upward.
+        </li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            How deep should a concrete deck footing be?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            Footings must extend below your local frost line to prevent shifting during freeze-thaw cycles. In most northern regions, this means a minimum depth of 36 to 48 inches. Always consult local municipal building codes.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            What diameter hole do I need for a 4x4 post?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            As a rule of thumb, the diameter of your post hole footing should be three times the width of the post. For a standard 4x4 structural wood post (which actually measures 3.5 inches), you need a minimum hole diameter of 10 to 12 inches.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+            How much concrete does a 12-inch by 3-foot footing hold?
+          </h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            A cylindrical footing with a 12-inch diameter and a 3-foot depth has a volume of approximately 2.36 cubic feet. This requires about 4 bags of 80lb concrete mix (yielding 0.6 cu ft per bag) or 5.2 bags of 60lb mix.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Related Links -->
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a
+          href="/calculators/concrete/slab/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium">Estimate concrete needed for flat rectangular pads, patios, and slabs.</span>
+        </a>
+        <a
+          href="/calculators/concrete/steps/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Steps Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium">Estimate concrete required for steps, staircases, and entranceways.</span>
+        </a>
+        <a
+          href="/compare/concrete-vs-pavers/"
+          class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"
+        >
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete vs Pavers</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500 leading-normal font-medium font-mono">Evaluate durability, DIY complexity, maintenance, and lifetime values.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>
