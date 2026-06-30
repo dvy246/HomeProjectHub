@@ -36,7 +36,7 @@ export default function SavedRoomsDashboard() {
   }
 
   return (
-    <div className="flex flex-col gap-6 select-none">
+    <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {rooms.map((room) => (
           <Card key={room.id} className="flex flex-col justify-between">

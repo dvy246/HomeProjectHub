@@ -32,7 +32,7 @@ export default function CompareMaterials() {
   const gravelVolumeCuYd = cuFeetToCuYards(applyWasteFactor(volumeCuFt, 0.10));
 
   return (
-    <div className="flex flex-col gap-8 select-none">
+    <div className="flex flex-col gap-8">
       <Card>
         <h3 className="font-bold text-base uppercase tracking-wider text-neutral-800 dark:text-neutral-200 mb-4">
           Project Dimensions

@@ -8,39 +8,31 @@ interface Props {
 const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.props;
 ---
 
-<div class={`ad-slot-wrapper w-full flex justify-center py-4 my-6 select-none ${className}`}>
-  <!-- Set a minimum height to prevent Layout Shift (CLS) before the ad loads -->
-  <div 
-    class="ad-slot-container min-h-[250px] w-full max-w-[728px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-900 rounded-lg flex items-center justify-center relative overflow-hidden"
+<div class={`ad-slot-wrapper w-full flex justify-center my-6 ${className}`} aria-hidden="true">
+  <div
+    class="ad-slot-container min-h-[120px] w-full max-w-[728px] rounded-lg overflow-hidden"
     data-ad-client={adClient}
     data-ad-slot={slotId}
   >
     <ins
-      class="adsbygoogle"
-      style="display:block"
+      class="adsbygoogle block"
+      style="display:block; min-height:120px;"
       data-ad-client={adClient}
       data-ad-slot={slotId}
       data-ad-format="auto"
       data-full-width-responsive="true"
     ></ins>
-    
-    <!-- Fallback/Placeholder indicator for development/non-loaded state -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none text-neutral-400 dark:text-neutral-600 text-xs">
-      <span class="font-mono tracking-widest uppercase">Advertisement</span>
-      <span class="mt-1 font-mono text-[10px]">ID: {slotId}</span>
-    </div>
   </div>
 </div>
 
 <script>
-  // Lazy-load AdSense scripts when they are close to the viewport
   function setupLazyAdLoading() {
-    const containers = document.querySelectorAll(".ad-slot-container");
+    const containers = document.querySelectorAll(".ad-slot-container:not([data-loaded])");
     if (!containers.length) return;
 
     const observerOptions = {
-      root: null, // viewport
-      rootMargin: "200px 0px", // triggers 200px before entering
+      root: null,
+      rootMargin: "300px 0px",
       threshold: 0.01,
     };
 
@@ -50,8 +42,8 @@ const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.p
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const container = entry.target;
+          container.setAttribute("data-loaded", "true");
 
-          // 1. Inject the Google AdSense global library script if it hasn't been loaded yet
           if (!scriptLoaded) {
             const script = document.createElement("script");
             script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${container.getAttribute("data-ad-client")}`;
@@ -61,15 +53,10 @@ const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.p
             scriptLoaded = true;
           }
 
-          // 2. Trigger the ad load for this specific slot
           try {
-            // @ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } catch (e) {
-            console.error("AdSense push failed", e);
-          }
+          } catch (e) {}
 
-          // Unobserve once loaded
           observer.unobserve(container);
         }
       });
@@ -80,8 +67,6 @@ const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.p
     });
   }
 
-  // Support both initial load and Astro page updates if using dynamic routing
   document.addEventListener("DOMContentLoaded", setupLazyAdLoading);
-  // Also hook into client side load for islands if needed
   setupLazyAdLoading();
 </script>

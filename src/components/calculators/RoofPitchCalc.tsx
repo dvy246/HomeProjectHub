@@ -29,7 +29,7 @@ export default function RoofPitchCalc() {
   const pitchCategory = slopePercent < 10 ? "Low Slope" : slopePercent < 25 ? "Conventional" : slopePercent < 50 ? "Steep" : "Very Steep";
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 select-none">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
       <div className="md:col-span-7 flex flex-col gap-6">
         <Card>
           <div className="border-b border-neutral-100 dark:border-neutral-800 pb-4 mb-4">

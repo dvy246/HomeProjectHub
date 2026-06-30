@@ -70,14 +70,14 @@ export default function ConcreteTubeCalc() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 select-none">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
       <div className="md:col-span-7 flex flex-col gap-6">
         <Card>
           <div className="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-800 pb-4 mb-4">
             <h3 className="font-bold text-sm uppercase tracking-wider text-neutral-800 dark:text-neutral-200">Tube Form Parameters</h3>
             <div className="flex bg-neutral-100 dark:bg-neutral-800 p-0.5 rounded-md text-xs">
-              <button type="button" className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "imperial" ? "bg-white text-black shadow-sm dark:bg-black dark:text-white" : "text-neutral-500"}`} onClick={() => setUnitSystem("imperial")}>Imperial</button>
-              <button type="button" className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "metric" ? "bg-white text-black shadow-sm dark:bg-black dark:text-white" : "text-neutral-500"}`} onClick={() => setUnitSystem("metric")}>Metric</button>
+              <button type="button" aria-label="Use imperial units (feet, inches)" className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "imperial" ? "bg-white text-black shadow-sm dark:bg-black dark:text-white" : "text-neutral-500"}`} onClick={() => setUnitSystem("imperial")}>Imperial</button>
+              <button type="button" aria-label="Use metric units (meters, centimeters)" className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "metric" ? "bg-white text-black shadow-sm dark:bg-black dark:text-white" : "text-neutral-500"}`} onClick={() => setUnitSystem("metric")}>Metric</button>
             </div>
           </div>
 

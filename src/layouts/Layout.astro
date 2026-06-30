@@ -11,6 +11,7 @@ interface Props {
 const { title, description, canonical, schema } = Astro.props;
 
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeprojecthub.com").toString();
+const ogImage = new URL("/og-image.png", canonicalURL).toString();
 ---
 
 <!doctype html>
@@ -18,25 +19,30 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "htt
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <title>{title} | HomeProjectHub</title>
     <meta name="description" content={description} />
-    
+
     <link rel="canonical" href={canonicalURL} />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="HomeProjectHub" />
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
 
     <!-- Google Fonts for Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -48,41 +54,130 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "htt
     )}
   </head>
   <body class="flex flex-col min-h-screen bg-[#ffffff] dark:bg-[#000000] text-[#171717] dark:text-[#ededed] antialiased">
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-black focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">
+      Skip to content
+    </a>
+
     <!-- Header -->
     <header class="sticky top-0 z-40 w-full border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-black/80 backdrop-blur-md">
       <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2 select-none hover:opacity-90 transition-opacity">
+        <a href="/" class="flex items-center gap-2 select-none hover:opacity-90 transition-opacity" aria-label="HomeProjectHub home">
           <span class="font-bold text-lg tracking-tight">HomeProjectHub</span>
-          <span class="text-xs bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-1.5 py-0.5 rounded text-neutral-500 font-mono">v3.0</span>
+          <span class="hidden sm:inline text-xs bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-1.5 py-0.5 rounded text-neutral-500 font-mono">v3.0</span>
         </a>
-        <nav class="flex items-center gap-6 text-sm font-medium">
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Main navigation">
           <a href="/calculators/concrete/" class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Concrete</a>
           <a href="/calculators/roofing/" class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Roofing</a>
           <a href="/compare/" class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Compare</a>
-          <a href="/saved/" class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors flex items-center gap-1.5">
-            <span>Saved Rooms</span>
-          </a>
+          <a href="/saved/" class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Saved</a>
         </nav>
+
+        <!-- Mobile Nav Toggle -->
+        <button
+          type="button"
+          id="mobile-nav-toggle"
+          class="md:hidden flex items-center justify-center w-10 h-10 rounded-md border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
+
+      <!-- Mobile Nav Menu -->
+      <nav id="mobile-nav" class="hidden md:hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-black" aria-label="Mobile navigation">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col gap-1">
+          <a href="/calculators/concrete/" class="px-3 py-2.5 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors">Concrete Calculators</a>
+          <a href="/calculators/roofing/" class="px-3 py-2.5 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors">Roofing Calculators</a>
+          <a href="/compare/" class="px-3 py-2.5 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors">Compare Materials</a>
+          <a href="/saved/" class="px-3 py-2.5 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors">Saved Rooms</a>
+          <div class="border-t border-neutral-100 dark:border-neutral-800 mt-2 pt-2 flex gap-4 px-3">
+            <a href="/about/" class="text-xs text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">About</a>
+            <a href="/privacy/" class="text-xs text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">Privacy</a>
+            <a href="/terms/" class="text-xs text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">Terms</a>
+          </div>
+        </div>
+      </nav>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8 md:py-12">
+    <main id="main-content" class="flex-grow max-w-5xl w-full mx-auto px-4 py-8 md:py-12">
       <slot />
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#111111] py-8 mt-auto select-none">
-      <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
-        <div>
-          &copy; {new Date().getFullYear()} HomeProjectHub. All rights reserved.
+    <footer class="border-t border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#111111] py-8 mt-auto">
+      <div class="max-w-5xl mx-auto px-4 flex flex-col gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs">
+          <div>
+            <h4 class="font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Concrete</h4>
+            <ul class="flex flex-col gap-1.5">
+              <li><a href="/calculators/concrete/slab/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Slab</a></li>
+              <li><a href="/calculators/concrete/footing/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Footing</a></li>
+              <li><a href="/calculators/concrete/column/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Column</a></li>
+              <li><a href="/calculators/concrete/wall/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Wall</a></li>
+              <li><a href="/calculators/concrete/tube/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Tube Form</a></li>
+              <li><a href="/calculators/concrete/steps/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Steps</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Roofing</h4>
+            <ul class="flex flex-col gap-1.5">
+              <li><a href="/calculators/roofing/shingles/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Shingles</a></li>
+              <li><a href="/calculators/roofing/metal/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Metal Roof</a></li>
+              <li><a href="/calculators/roofing/plywood/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Plywood Deck</a></li>
+              <li><a href="/calculators/roofing/pitch/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Roof Pitch</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Tools</h4>
+            <ul class="flex flex-col gap-1.5">
+              <li><a href="/compare/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Compare Materials</a></li>
+              <li><a href="/compare/concrete-vs-pavers/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Concrete vs Pavers</a></li>
+              <li><a href="/saved/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Saved Rooms</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Company</h4>
+            <ul class="flex flex-col gap-1.5">
+              <li><a href="/about/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">About</a></li>
+              <li><a href="/privacy/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Privacy</a></li>
+              <li><a href="/terms/" class="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Terms</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="flex items-center gap-6">
-          <a href="/privacy/" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Privacy</a>
-          <a href="/terms/" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">Terms</a>
-          <a href="/about/" class="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">About</a>
+        <div class="border-t border-neutral-200 dark:border-neutral-800 pt-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+          <div>&copy; {new Date().getFullYear()} HomeProjectHub. All rights reserved.</div>
+          <div class="text-neutral-400">Construction calculators for homeowners and DIY builders.</div>
         </div>
       </div>
     </footer>
+
+    <!-- Mobile nav toggle script -->
+    <script is:inline>
+      (function() {
+        var toggle = document.getElementById('mobile-nav-toggle');
+        var menu = document.getElementById('mobile-nav');
+        if (!toggle || !menu) return;
+        toggle.addEventListener('click', function() {
+          var isOpen = !menu.classList.contains('hidden');
+          if (isOpen) {
+            menu.classList.add('hidden');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-label', 'Open menu');
+          } else {
+            menu.classList.remove('hidden');
+            toggle.setAttribute('aria-expanded', 'true');
+            toggle.setAttribute('aria-label', 'Close menu');
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

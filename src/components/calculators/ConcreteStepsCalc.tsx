@@ -81,7 +81,7 @@ export default function ConcreteStepsCalc() {
   const estimatedWeightLbs = estimateConcreteWeightLbs(totalVolumeWithWasteCuFt);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 select-none">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
       {/* Inputs */}
       <div className="md:col-span-7 flex flex-col gap-6">
         <Card>
