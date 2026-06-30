@@ -1,0 +1,101 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConcreteTubeCalc from "../../../components/calculators/ConcreteTubeCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+
+const title = "Concrete Tube Form Calculator";
+const description = "Calculate concrete volume for cardboard tube forms (Sonotubes). Enter diameter, depth, and quantity to get cubic yards and bag counts.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/concrete/tube/#math-solver", "name": "Concrete Tube Form Volume Calculator", "description": "Calculates cylindrical tube form volume for concrete piers.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/concrete/tube/?equation={equation}" } },
+    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/concrete/tube/#faq", "mainEntity": [
+      { "@type": "Question", "name": "How much concrete do I need for an 8-inch Sonotube?", "acceptedAnswer": { "@type": "Answer", "text": "An 8-inch diameter tube has a cross-sectional area of 0.349 square feet. For each foot of depth, it requires 0.349 cubic feet of concrete. A 4-foot deep 8-inch tube needs 1.40 cubic feet, which equals about 2.3 bags of 80lb concrete mix." } },
+      { "@type": "Question", "name": "How deep should concrete tube forms be?", "acceptedAnswer": { "@type": "Answer", "text": "Tube forms should extend below your local frost line to prevent frost heave. In most northern US regions, this means 36 to 48 inches. In southern regions without frost, a minimum of 24 inches is typical. Always check local building codes." } },
+      { "@type": "Question", "name": "What size Sonotube do I need for a 4x4 post?", "acceptedAnswer": { "@type": "Answer", "text": "For a standard 4x4 post (3.5 inches actual), use an 8-inch diameter tube form. For a 6x6 post (5.5 inches actual), use a 10-inch or 12-inch tube. The general rule is the tube diameter should be at least 2-3 times the post width." } }
+    ]}
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">tube</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Concrete Tube Form Calculator</h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Calculate the exact amount of concrete needed for cardboard tube forms (Sonotubes, Quik-Tubes). Enter the tube diameter, depth, and number of tubes to get total volume in cubic yards, bag counts for all standard sizes, and estimated weight.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-tube" />
+
+    <section class="my-4"><ConcreteTubeCalc client:visible /></section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">How to Calculate Concrete for Tube Forms</h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Cardboard tube forms (commonly known by brand names like Sonotube or Quik-Tube) are used to create cylindrical concrete piers for decks, fences, and pole barns. The calculation uses the cylinder volume formula:
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+        <li><strong>Find the Radius:</strong> Divide the tube diameter (in inches) by 2, then convert to feet by dividing by 12.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Radius (ft) = [Diameter (in) &divide; 2] &divide; 12</div>
+        </li>
+        <li><strong>Calculate Cross-Section Area:</strong> Square the radius and multiply by pi.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Area = &pi; &times; Radius&sup2;</div>
+        </li>
+        <li><strong>Calculate Volume:</strong> Multiply the area by the depth (in feet), then multiply by the number of tubes.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Total Volume = Area &times; Depth (ft) &times; Quantity</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Example Tube Form Calculation</h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Let's calculate the concrete for <strong>6 tube forms</strong> that are <strong>8 inches in diameter and 48 inches (4 feet) deep</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+        <li><strong>Radius:</strong> 8 in &divide; 2 = 4 in = 0.333 ft</li>
+        <li><strong>Cross-Section Area:</strong> &pi; &times; 0.333&sup2; = 0.349 sq ft</li>
+        <li><strong>Volume per Tube:</strong> 0.349 sq ft &times; 4 ft = 1.396 cu ft</li>
+        <li><strong>Total Volume (6 tubes):</strong> 1.396 &times; 6 = 8.38 cu ft (~0.31 cubic yards)</li>
+        <li><strong>Bags Needed (80lb, with 10% waste):</strong> 9.22 cu ft &divide; 0.6 = <strong>16 bags</strong></li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-mid-tube" />
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Common Mistakes with Tube Forms</h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li><strong>Not Accounting for Bell Bottoms:</strong> If you flare the bottom of the hole wider than the tube (a bell footing), you need additional concrete beyond the tube volume. Calculate the bell volume separately and add it.</li>
+        <li><strong>Tube Extending Above Grade:</strong> If the tube extends above the ground line, the above-grade portion still needs concrete. Measure the full tube length, not just the below-grade depth.</li>
+        <li><strong>Overfilling the Tube:</strong> Filling the tube to the very top wastes concrete and makes post-setting difficult. Fill to 2-3 inches below the top to allow for post insertion and concrete settling.</li>
+      </ul>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-6">
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How much concrete do I need for an 8-inch Sonotube?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">An 8-inch diameter tube has a cross-sectional area of 0.349 square feet. For each foot of depth, it requires 0.349 cubic feet of concrete. A 4-foot deep 8-inch tube needs 1.40 cubic feet, which equals about 2.3 bags of 80lb concrete mix.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How deep should concrete tube forms be?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">Tube forms should extend below your local frost line to prevent frost heave. In most northern US regions, this means 36 to 48 inches. In southern regions without frost, a minimum of 24 inches is typical. Always check local building codes.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">What size Sonotube do I need for a 4x4 post?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">For a standard 4x4 post (3.5 inches actual), use an 8-inch diameter tube form. For a 6x6 post (5.5 inches actual), use a 10-inch or 12-inch tube. The general rule is the tube diameter should be at least 2-3 times the post width.</p></div>
+      </div>
+    </section>
+
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Related Construction Tools</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/footing/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Footing Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for pier footings.</span></a>
+        <a href="/calculators/concrete/column/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Column Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate round and square columns.</span></a>
+        <a href="/calculators/concrete/slab/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for flat pours.</span></a>
+      </div>
+    </footer>
+  </article>
+</Layout>

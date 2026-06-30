@@ -1,0 +1,105 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RoofShingleCalc from "../../../components/calculators/RoofShingleCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+
+const title = "Roof Shingle Calculator";
+const description = "Calculate how many bundles of asphalt shingles you need for your roof. Accounts for roof pitch, gable or hip shape, and waste factor.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/roofing/shingles/#math-solver", "name": "Roof Shingle Calculator", "description": "Calculates shingle bundles and squares needed based on roof dimensions and pitch.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/roofing/shingles/?equation={equation}" } },
+    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/roofing/shingles/#faq", "mainEntity": [
+      { "@type": "Question", "name": "How many bundles of shingles do I need for 1000 square feet?", "acceptedAnswer": { "@type": "Answer", "text": "One square of shingles covers 100 square feet and consists of 3 bundles. For 1,000 square feet of roof area, you need 10 squares, which equals 30 bundles. Add 10-15% for waste, bringing the total to approximately 33-35 bundles." } },
+      { "@type": "Question", "name": "How does roof pitch affect shingle quantity?", "acceptedAnswer": { "@type": "Answer", "text": "Steeper roofs have more surface area than flat roofs for the same building footprint. A 4:12 pitch has a multiplier of 1.054, while a 12:12 pitch has a multiplier of 1.414. This means a 12:12 roof requires about 34% more shingles than a flat roof covering the same footprint." } },
+      { "@type": "Question", "name": "What waste factor should I use for shingles?", "acceptedAnswer": { "@type": "Answer", "text": "For gable roofs, use 10-12% waste factor. For hip roofs, use 12-15% due to more cuts at the hips and ridges. If your roof has many valleys, dormers, or complex geometry, increase to 15-18%." } }
+    ]}
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <a href="/calculators/roofing/" class="hover:underline">roofing</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">shingles</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Roof Shingle Calculator</h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Calculate the exact number of asphalt shingle bundles needed for your roofing project. This tool accounts for roof pitch, gable or hip roof geometry, and an adjustable waste factor to produce accurate estimates for squares, bundles, underlayment, and nails.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-shingles" />
+
+    <section class="my-4"><RoofShingleCalc client:visible /></section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">How to Calculate Shingle Quantity</h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Calculating shingle quantity requires converting your building's flat footprint into the actual sloped roof area, then adding waste for cuts and overlaps.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+        <li><strong>Calculate Footprint Area:</strong> Multiply building length by width.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Footprint = Length (ft) &times; Width (ft)</div>
+        </li>
+        <li><strong>Apply Pitch Multiplier:</strong> The pitch factor accounts for the slope. For a pitch of X:12, the multiplier is:
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Multiplier = &radic;(1 + (Pitch &divide; 12)&sup2;)</div>
+        </li>
+        <li><strong>Calculate Roof Area:</strong> Multiply footprint by the pitch multiplier. For hip roofs, add 6% for hip cuts.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Roof Area = Footprint &times; Multiplier (&times; 1.06 for hip)</div>
+        </li>
+        <li><strong>Convert to Squares and Bundles:</strong> Divide total area (with waste) by 100 for squares, then multiply by 3 for bundles.
+          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Squares = Area &divide; 100 | Bundles = Squares &times; 3</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Example Shingle Calculation</h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Let's calculate shingles for a <strong>gable roof on a 40x30 foot building</strong> with a <strong>6:12 pitch</strong> and <strong>12% waste</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+        <li><strong>Footprint:</strong> 40 ft &times; 30 ft = 1,200 sq ft</li>
+        <li><strong>Pitch Multiplier:</strong> &radic;(1 + (6/12)&sup2;) = &radic;1.25 = 1.118</li>
+        <li><strong>Roof Area:</strong> 1,200 &times; 1.118 = 1,341 sq ft</li>
+        <li><strong>With 12% Waste:</strong> 1,341 &times; 1.12 = 1,502 sq ft</li>
+        <li><strong>Squares:</strong> 1,502 &divide; 100 = 15.02 &rarr; <strong>16 squares</strong></li>
+        <li><strong>Bundles:</strong> 16 &times; 3 = <strong>48 bundles</strong></li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-mid-shingles" />
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Common Mistakes in Shingle Estimation</h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li><strong>Using Footprint Instead of Roof Area:</strong> The most common error is ordering shingles based on the building footprint without applying the pitch multiplier. A 6:12 pitch adds 12% surface area; a 12:12 pitch adds 41%.</li>
+        <li><strong>Underestimating Waste on Hip Roofs:</strong> Hip roofs have more cuts at the hips and ridges than gable roofs. Use 12-15% waste for hips versus 10-12% for gables.</li>
+        <li><strong>Forgetting Starter and Ridge Cap Bundles:</strong> Starter strips and ridge caps consume additional shingles. Budget 1 extra bundle per 30 linear feet of starter strip and 1 bundle per 35 linear feet of ridge cap.</li>
+      </ul>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-6">
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How many bundles of shingles do I need for 1000 square feet?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">One square of shingles covers 100 square feet and consists of 3 bundles. For 1,000 square feet of roof area, you need 10 squares, which equals 30 bundles. Add 10-15% for waste, bringing the total to approximately 33-35 bundles.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How does roof pitch affect shingle quantity?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">Steeper roofs have more surface area than flat roofs for the same building footprint. A 4:12 pitch has a multiplier of 1.054, while a 12:12 pitch has a multiplier of 1.414. This means a 12:12 roof requires about 34% more shingles than a flat roof covering the same footprint.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">What waste factor should I use for shingles?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">For gable roofs, use 10-12% waste factor. For hip roofs, use 12-15% due to more cuts at the hips and ridges. If your roof has many valleys, dormers, or complex geometry, increase to 15-18%.</p></div>
+      </div>
+    </section>
+
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Related Roofing Tools</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/roofing/metal/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Metal Roof Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate metal panels and screws.</span></a>
+        <a href="/calculators/roofing/plywood/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Plywood Deck Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate roof sheathing sheets.</span></a>
+        <a href="/calculators/roofing/pitch/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Roof Pitch Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Find pitch, angle, and multiplier.</span></a>
+      </div>
+    </footer>
+  </article>
+</Layout>

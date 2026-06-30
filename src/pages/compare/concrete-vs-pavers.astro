@@ -1,0 +1,105 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CompareMaterials from "../../components/CompareMaterials";
+import AdSlot from "../../components/AdSlot.astro";
+
+const title = "Concrete vs Pavers vs Gravel: Which Material is Best?";
+const description = "Compare poured concrete, concrete pavers, and pea gravel for your patio or driveway. Calculate quantities and compare durability, maintenance, DIY difficulty, and lifespan.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://homeprojecthub.com/compare/concrete-vs-pavers/#faq",
+  "mainEntity": [
+    { "@type": "Question", "name": "Is concrete or pavers better for a patio?", "acceptedAnswer": { "@type": "Answer", "text": "Pavers are better for DIY projects because they are easier to install and repair. Concrete is better for a smooth, permanent surface that can support heavy furniture or vehicles. Pavers cost more upfront but last longer with less cracking." } },
+    { "@type": "Question", "name": "How much does a concrete patio cost vs pavers?", "acceptedAnswer": { "@type": "Answer", "text": "A poured concrete patio costs $4-$8 per square foot installed. Concrete pavers cost $8-$15 per square foot installed. Gravel is the cheapest at $1-$3 per square foot. DIY installation reduces all costs by 40-60%." } },
+    { "@type": "Question", "name": "Which lasts longer: concrete or pavers?", "acceptedAnswer": { "@type": "Answer", "text": "Both can last 25-50 years. Poured concrete may crack over time due to ground movement, while individual pavers can be replaced if damaged. Gravel lasts indefinitely but requires regular raking and top-off." } }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <a href="/compare/" class="hover:underline">compare</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">concrete vs pavers</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Concrete vs Pavers vs Gravel</h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Planning a new patio, driveway, or walkway? Enter your project dimensions below to generate a side-by-side comparison matrix. See exact quantities needed for poured concrete, interlocking pavers, and pea gravel, alongside durability, maintenance, DIY difficulty, and lifespan ratings.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-compare-cvp" />
+
+    <section class="my-4"><CompareMaterials client:load /></section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="durability-comparison" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 tracking-tight">Material Comparison Breakdown</h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 text-pretty">
+        Choosing the right material depends on your budget, timeline, aesthetic preference, and structural needs. Here is a detailed comparison of how each material performs in practice:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Poured Concrete</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty mb-3">
+            The most permanent, clean-looking option. Provides a solid monolith surface suitable for heavy patio furniture and vehicular traffic. Requires careful mixing, quick pouring, and is prone to cracking if the ground shifts or if control joints are not placed correctly.
+          </p>
+          <ul class="text-xs text-neutral-500 flex flex-col gap-1">
+            <li><strong>Cost:</strong> $4-$8/sq ft installed</li>
+            <li><strong>DIY:</strong> Hard (pro help recommended)</li>
+            <li><strong>Maintenance:</strong> Low (seal every 3 years)</li>
+            <li><strong>Lifespan:</strong> 30-50 years</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Interlocking Pavers</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty mb-3">
+            Very durable and highly modular. Since pavers are separated by sand joints, they flex naturally with ground movements without cracking. Individual pavers can be replaced easily if stained or damaged, making them a great long-term DIY investment.
+          </p>
+          <ul class="text-xs text-neutral-500 flex flex-col gap-1">
+            <li><strong>Cost:</strong> $8-$15/sq ft installed</li>
+            <li><strong>DIY:</strong> Medium (great DIY project)</li>
+            <li><strong>Maintenance:</strong> Medium (weed control)</li>
+            <li><strong>Lifespan:</strong> 25-50 years</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Loose Pea Gravel</h3>
+          <p class="text-xs text-neutral-550 dark:text-neutral-400 leading-relaxed text-pretty mb-3">
+            The fastest, lowest-cost pathway option. Drains stormwater beautifully and offers a rustic, natural look. Requires a border edging frame to contain the stones, shifting gravel needs regular raking, and it cannot support thin-legged chairs or tables without a base layer.
+          </p>
+          <ul class="text-xs text-neutral-500 flex flex-col gap-1">
+            <li><strong>Cost:</strong> $1-$3/sq ft installed</li>
+            <li><strong>DIY:</strong> Easy (perfect for beginners)</li>
+            <li><strong>Maintenance:</strong> High (raking & replenishment)</li>
+            <li><strong>Lifespan:</strong> Indefinite (requires top-off)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot slotId="ad-bottom-compare-cvp" />
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-6">
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Is concrete or pavers better for a patio?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">Pavers are better for DIY projects because they are easier to install and repair. Concrete is better for a smooth, permanent surface that can support heavy furniture or vehicles. Pavers cost more upfront but last longer with less cracking.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How much does a concrete patio cost vs pavers?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">A poured concrete patio costs $4-$8 per square foot installed. Concrete pavers cost $8-$15 per square foot installed. Gravel is the cheapest at $1-$3 per square foot. DIY installation reduces all costs by 40-60%.</p></div>
+        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Which lasts longer: concrete or pavers?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">Both can last 25-50 years. Poured concrete may crack over time due to ground movement, while individual pavers can be replaced if damaged. Gravel lasts indefinitely but requires regular raking and top-off.</p></div>
+      </div>
+    </section>
+
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Related Calculators</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/slab/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate concrete for your patio or driveway.</span></a>
+        <a href="/compare/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">All Material Comparisons</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Compare more construction materials.</span></a>
+        <a href="/calculators/concrete/steps/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Steps Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate concrete for stairs and steps.</span></a>
+      </div>
+    </footer>
+  </article>
+</Layout>

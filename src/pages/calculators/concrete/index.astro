@@ -1,0 +1,59 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { Card, CardTitle, CardDescription } from "../../../components/ui/Card";
+
+const title = "Concrete Calculators";
+const description = "Free concrete calculators for slabs, footings, columns, walls, tube forms, and steps. Get cubic yards, bag counts, and weight estimates for any concrete pour.";
+
+const calculators = [
+  { href: "/calculators/concrete/slab/", title: "Concrete Slab Calculator", desc: "Calculate volume and bag counts for rectangular slabs, patios, driveways, and sidewalks.", tags: "Volume, Weight, 40/50/60/80lb Bags" },
+  { href: "/calculators/concrete/footing/", title: "Concrete Footing Calculator", desc: "Estimate concrete for pier holes, deck footings, and fence post foundations.", tags: "Cylinder & Block Volume, Post Diameters" },
+  { href: "/calculators/concrete/steps/", title: "Concrete Steps Calculator", desc: "Calculate step block volumes for staircases with optional landing extensions.", tags: "Multi-Step Volume, Landing Depth" },
+  { href: "/calculators/concrete/column/", title: "Concrete Column Calculator", desc: "Calculate volume for round and square structural columns of any height.", tags: "Round & Square, Multi-Column" },
+  { href: "/calculators/concrete/wall/", title: "Concrete Wall Calculator", desc: "Estimate wall volume with automatic door and window opening deductions.", tags: "Openings, Retaining Walls, Foundation" },
+  { href: "/calculators/concrete/tube/", title: "Concrete Tube Form Calculator", desc: "Calculate concrete for cardboard tube forms (Sonotubes) and cylindrical piers.", tags: "Sonotube, Quik-Tube, Pier Volume" },
+];
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto flex flex-col gap-8 py-4">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">concrete</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Concrete Calculators</h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Professional concrete estimation tools for residential and commercial pours. Calculate volume in cubic yards and cubic meters, bag counts for all standard sizes (40lb, 50lb, 60lb, 80lb), and total weight for delivery planning. Save your project dimensions in-browser to reuse across calculators.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {calculators.map((calc) => (
+        <a href={calc.href} class="block group">
+          <Card hoverable className="h-full flex flex-col justify-between">
+            <div>
+              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
+              <CardDescription>{calc.desc}</CardDescription>
+            </div>
+            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">{calc.tags}</span>
+          </Card>
+        </a>
+      ))}
+    </div>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8">
+      <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Why Trust Our Calculators</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+        <div>
+          <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Open-Source Formulas</h3>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. You can verify the math yourself before ordering materials.</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Imperial & Metric Support</h3>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Switch between imperial (feet, inches, cubic yards) and metric (meters, centimeters, cubic meters) on any calculator. Results update instantly.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

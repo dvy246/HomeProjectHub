@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Terms of Service";
+const description = "HomeProjectHub terms of service. Our calculators provide estimates for informational purposes only. Always verify calculations before ordering materials.";
+---
+
+<Layout title={title} description={description}>
+  <article class="max-w-2xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6">
+      <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-2">Terms of Service</h1>
+      <p class="text-xs text-neutral-400">Last updated: {new Date().toISOString().split("T")[0]}</p>
+    </header>
+
+    <section class="flex flex-col gap-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+      <p>By using HomeProjectHub, you agree to these terms. Our calculators are provided for informational and estimation purposes only.</p>
+
+      <div>
+        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">No Warranty</h2>
+        <p>All calculations are estimates based on standard formulas and the inputs you provide. We do not guarantee the accuracy, completeness, or reliability of any calculation result. Material requirements may vary based on site conditions, installation methods, product variations, and other factors not captured by our tools.</p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">Professional Consultation</h2>
+        <p>Always consult with a licensed contractor, structural engineer, or building official before beginning any construction project. Local building codes may require specific designs, materials, or methods that differ from our general estimates. Never use our calculators as a substitute for professional engineering advice.</p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">External Links</h2>
+        <p>Our site contains links to third-party retailers (such as Lowe's) for your convenience. We are not responsible for the content, pricing, or availability of products on external sites. We may earn affiliate commissions from some links.</p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">Limitation of Liability</h2>
+        <p>HomeProjectHub is not liable for any damages, injuries, or losses resulting from the use of our calculators or the reliance on calculation results. You are solely responsible for verifying all measurements and material orders before purchase or installation.</p>
+      </div>
+    </section>
+  </article>
+</Layout>

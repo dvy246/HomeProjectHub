@@ -1,0 +1,57 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { Card, CardTitle, CardDescription } from "../../../components/ui/Card";
+
+const title = "Roofing Calculators";
+const description = "Free roofing calculators for shingles, metal panels, plywood sheathing, and roof pitch. Estimate materials, screws, underlayment, and accessories for any roofing project.";
+
+const calculators = [
+  { href: "/calculators/roofing/shingles/", title: "Roof Shingle Calculator", desc: "Calculate asphalt shingle bundles, squares, underlayment, and nails for gable and hip roofs.", tags: "Gable & Hip, Squares, Bundles, Nails" },
+  { href: "/calculators/roofing/metal/", title: "Metal Roofing Calculator", desc: "Estimate metal panel count, screws, closure strips, and ridge cap for any panel size.", tags: "Panels, Screws, Closure Strips" },
+  { href: "/calculators/roofing/plywood/", title: "Plywood Deck Calculator", desc: "Calculate plywood or OSB sheathing sheets for roof decking. Supports 4x8, 4x10, 4x12 sheets.", tags: "Sheathing, H-Clips, Underlayment" },
+  { href: "/calculators/roofing/pitch/", title: "Roof Pitch Calculator", desc: "Convert pitch between ratio, degrees, and percentage. Find the pitch multiplier and rafter length.", tags: "Degrees, Multiplier, Rafter Length" },
+];
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto flex flex-col gap-8 py-4">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">roofing</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Roofing Calculators</h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Professional roofing estimation tools for shingle, metal, and plywood deck projects. Calculate material quantities, fasteners, underlayment, and accessories with pitch-corrected surface area formulas. Save your roof dimensions to reuse across calculators.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {calculators.map((calc) => (
+        <a href={calc.href} class="block group">
+          <Card hoverable className="h-full flex flex-col justify-between">
+            <div>
+              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
+              <CardDescription>{calc.desc}</CardDescription>
+            </div>
+            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">{calc.tags}</span>
+          </Card>
+        </a>
+      ))}
+    </div>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8">
+      <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Pitch-Corrected Estimates</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+        <div>
+          <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Accurate Surface Area</h3>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">All roofing calculators apply the pitch multiplier to convert your building footprint into the actual sloped roof area. A 6:12 pitch adds 11.8% surface area; a 12:12 pitch adds 41.4%.</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Complete Material Lists</h3>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Beyond the primary material (shingles, panels, sheets), each calculator estimates screws, nails, underlayment, drip edge, H-clips, and closure strips so you can order everything in one trip.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

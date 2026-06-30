@@ -1,0 +1,188 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConcreteColumnCalc from "../../../components/calculators/ConcreteColumnCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+
+const title = "Concrete Column Calculator";
+const description = "Calculate concrete volume for round and square columns. Computes cubic yards, bag counts, and weight for any number of structural columns.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MathSolver",
+      "@id": "https://homeprojecthub.com/calculators/concrete/column/#math-solver",
+      "name": "Concrete Column Volume Calculator",
+      "description": "Calculates round and square column volume for concrete pours.",
+      "potentialAction": {
+        "@type": "SolveAction",
+        "target": "https://homeprojecthub.com/calculators/concrete/column/?equation={equation}"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://homeprojecthub.com/calculators/concrete/column/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do you calculate concrete volume for a round column?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a round column, use the cylinder volume formula: V = pi x radius squared x height. Convert the diameter to feet by dividing by 12, then halve it for the radius. Square the radius, multiply by pi (3.14159), then multiply by the column height in feet to get cubic feet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much concrete does a 12-inch round column need per foot of height?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A 12-inch diameter round column has a cross-sectional area of 0.785 square feet. For each foot of height, it requires 0.785 cubic feet of concrete, which equals approximately 1.3 bags of 80lb concrete mix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the standard size for concrete porch columns?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Residential porch columns typically range from 10 to 12 inches in diameter for round columns, or 12x12 inches for square columns. Load-bearing columns may need to be 14-16 inches depending on the span and roof weight they support."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt;
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a> &gt;
+        <span class="text-neutral-600 dark:text-neutral-400">column</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Concrete Column Calculator
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Calculate the exact volume of concrete needed for round or square structural columns. Enter your column dimensions and quantity to get cubic yards, bag counts across all standard sizes, and total estimated weight for delivery planning.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-column" />
+
+    <section class="my-4">
+      <ConcreteColumnCalc client:visible />
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        How to Calculate Concrete Column Volume
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Columns are vertical structural members that transfer loads from the roof down to the foundation. They are typically either round (poured using cardboard tubes or forms) or square (poured using lumber forms).
+      </p>
+
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Round Columns (Cylinders)</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2 text-pretty">
+            Convert the diameter from inches to feet (divide by 12), then halve it for the radius. Use the cylinder volume formula:
+          </p>
+          <div class="p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">
+            Volume (cu ft) = &pi; &times; Radius&sup2; (ft) &times; Height (ft)
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Square Columns</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2 text-pretty">
+            Convert the side length from inches to feet (divide by 12), then multiply all three dimensions:
+          </p>
+          <div class="p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">
+            Volume (cu ft) = Side (ft) &times; Side (ft) &times; Height (ft)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Example Column Calculation
+      </h2>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+        Let's calculate the concrete needed for <strong>4 round porch columns</strong> that are <strong>12 inches in diameter and 8 feet tall</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+        <li><strong>Radius:</strong> 12 in &divide; 2 = 6 in = 0.5 ft</li>
+        <li><strong>Cross-section Area:</strong> &pi; &times; 0.5&sup2; = 0.785 sq ft</li>
+        <li><strong>Volume per Column:</strong> 0.785 sq ft &times; 8 ft = 6.28 cu ft</li>
+        <li><strong>Total Volume (4 columns):</strong> 6.28 &times; 4 = 25.13 cu ft (~0.93 cubic yards)</li>
+        <li><strong>Bags Needed (80lb):</strong> 25.13 &divide; 0.6 = 41.9 &rarr; <strong>42 bags</strong> (with 10% waste)</li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-mid-column" />
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Common Mistakes in Column Pours
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+        <li>
+          <strong>Underestimating Column Height:</strong> Columns often extend from the footing below grade to the beam above. Measure the full height including the below-grade portion, not just the visible section.
+        </li>
+        <li>
+          <strong>Not Vibrating the Concrete:</strong> Tall, narrow column forms trap air bubbles against the form walls. Use a concrete vibrator or tap the forms with a hammer during the pour to release trapped air and prevent voids (honeycombing).
+        </li>
+        <li>
+          <strong>Ignoring Rebar Volume:</strong> Vertical rebar inside the column displaces concrete. For columns with heavy rebar cages, reduce the calculated volume by 2-3% to account for steel displacement.
+        </li>
+      </ul>
+    </section>
+
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
+      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How do you calculate concrete volume for a round column?</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            For a round column, use the cylinder volume formula: V = pi x radius squared x height. Convert the diameter to feet by dividing by 12, then halve it for the radius. Square the radius, multiply by pi (3.14159), then multiply by the column height in feet to get cubic feet.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How much concrete does a 12-inch round column need per foot of height?</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            A 12-inch diameter round column has a cross-sectional area of 0.785 square feet. For each foot of height, it requires 0.785 cubic feet of concrete, which equals approximately 1.3 bags of 80lb concrete mix.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">What is the standard size for concrete porch columns?</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+            Residential porch columns typically range from 10 to 12 inches in diameter for round columns, or 12x12 inches for square columns. Load-bearing columns may need to be 14-16 inches depending on the span and roof weight they support.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Related Construction Tools</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/slab/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors">
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for flat pours and patios.</span>
+        </a>
+        <a href="/calculators/concrete/tube/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors">
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Tube Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate concrete for cardboard tube forms.</span>
+        </a>
+        <a href="/calculators/concrete/footing/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors">
+          <span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Footing Calculator</span>
+          <span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for post footings and piers.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

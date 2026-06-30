@@ -3,106 +3,112 @@ import Layout from "../layouts/Layout.astro";
 import { Card, CardTitle, CardDescription } from "../components/ui/Card";
 
 const title = "Professional Home Material Calculators";
-const description = "Calculate concrete slabs, post footings, and step volumes with precision. Save your room dimensions in the browser and compare construction materials instantly.";
+const description = "Free concrete and roofing calculators for homeowners and DIY builders. Calculate slabs, footings, columns, walls, shingles, metal panels, and plywood decks. Save your dimensions and compare materials.";
+
+const concreteCalcs = [
+  { href: "/calculators/concrete/slab/", title: "Concrete Slab Calculator", desc: "Calculate volume in cubic yards and bag counts for rectangular patios, driveways, and sidewalks." },
+  { href: "/calculators/concrete/footing/", title: "Concrete Footing Calculator", desc: "Estimate concrete for pier holes, circular columns, and square structural deck foundations." },
+  { href: "/calculators/concrete/steps/", title: "Concrete Steps Calculator", desc: "Calculate step block volumes for staircases with landing extensions using precise mathematical sums." },
+  { href: "/calculators/concrete/column/", title: "Concrete Column Calculator", desc: "Calculate volume for round and square structural columns of any height and quantity." },
+  { href: "/calculators/concrete/wall/", title: "Concrete Wall Calculator", desc: "Estimate wall volume with automatic door and window opening deductions." },
+  { href: "/calculators/concrete/tube/", title: "Concrete Tube Form Calculator", desc: "Calculate concrete for cardboard tube forms (Sonotubes) and cylindrical piers." },
+];
+
+const roofingCalcs = [
+  { href: "/calculators/roofing/shingles/", title: "Roof Shingle Calculator", desc: "Calculate asphalt shingle bundles, squares, underlayment, and nails for gable and hip roofs." },
+  { href: "/calculators/roofing/metal/", title: "Metal Roofing Calculator", desc: "Estimate metal panel count, screws, closure strips, and ridge cap for any panel size." },
+  { href: "/calculators/roofing/plywood/", title: "Plywood Deck Calculator", desc: "Calculate plywood or OSB sheathing sheets for roof decking. Supports 4x8, 4x10, 4x12." },
+  { href: "/calculators/roofing/pitch/", title: "Roof Pitch Calculator", desc: "Convert pitch between ratio, degrees, and percentage. Find the pitch multiplier and rafter length." },
+];
 ---
 
 <Layout title={title} description={description}>
   <div class="flex flex-col gap-12 max-w-4xl mx-auto py-4">
-    <!-- Hero Header -->
     <header class="text-center flex flex-col gap-4">
       <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 text-balance">
         Estimate Materials & Plan Projects Like a Pro
       </h1>
       <p class="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto text-pretty">
-        HomeProjectHub provides deterministic mathematical estimators for your residential pours and building projects. Store your measurements in-browser to apply them instantly across our tool suites.
+        Free construction calculators for concrete and roofing projects. Get precise volume, bag counts, and material lists with worked examples. Save your dimensions in-browser and compare materials side-by-side.
       </p>
     </header>
 
-    <!-- Core Tools Grid -->
+    <!-- Concrete Cluster -->
     <section class="flex flex-col gap-6">
-      <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-        Active Tools & Calculators
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Concrete Calculators</h2>
+        <a href="/calculators/concrete/" class="text-xs font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">View all &rarr;</a>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Slab Calculator -->
-        <a href="/calculators/concrete/slab/" class="block group">
+        {concreteCalcs.map((calc) => (
+          <a href={calc.href} class="block group">
+            <Card hoverable className="h-full flex flex-col justify-between">
+              <div>
+                <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
+                <CardDescription>{calc.desc}</CardDescription>
+              </div>
+            </Card>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Roofing Cluster -->
+    <section class="flex flex-col gap-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Roofing Calculators</h2>
+        <a href="/calculators/roofing/" class="text-xs font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">View all &rarr;</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {roofingCalcs.map((calc) => (
+          <a href={calc.href} class="block group">
+            <Card hoverable className="h-full flex flex-col justify-between">
+              <div>
+                <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
+                <CardDescription>{calc.desc}</CardDescription>
+              </div>
+            </Card>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Compare & Save -->
+    <section class="flex flex-col gap-6">
+      <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Compare & Save</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="/compare/concrete-vs-pavers/" class="block group">
           <Card hoverable className="h-full flex flex-col justify-between">
             <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">
-                Concrete Slab Calculator &rarr;
-              </CardTitle>
-              <CardDescription>
-                Calculate volume in cubic yards and standard bag counts for flat rectangular patios, driveways, and sidewalks.
-              </CardDescription>
+              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">Concrete vs Pavers vs Gravel &rarr;</CardTitle>
+              <CardDescription>Compare poured concrete, interlocking pavers, and loose gravel quantities, durability, and lifespan.</CardDescription>
             </div>
-            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">Calculates: Volume, Weight, 40/50/60/80lb Bags</span>
           </Card>
         </a>
-
-        <!-- Footing Calculator -->
-        <a href="/calculators/concrete/footing/" class="block group">
+        <a href="/saved/" class="block group">
           <Card hoverable className="h-full flex flex-col justify-between">
             <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">
-                Concrete Footing Calculator &rarr;
-              </CardTitle>
-              <CardDescription>
-                Estimate concrete needs for pier holes, circular columns, and square structural deck foundations.
-              </CardDescription>
+              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">Saved Rooms & Projects &rarr;</CardTitle>
+              <CardDescription>Manage your saved room, deck, and patio dimensions. Load them directly into any calculator.</CardDescription>
             </div>
-            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">Calculates: Cylinder & Block Volume, Post Diameters</span>
-          </Card>
-        </a>
-
-        <!-- Steps Calculator -->
-        <a href="/calculators/concrete/steps/" class="block group">
-          <Card hoverable className="h-full flex flex-col justify-between">
-            <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">
-                Concrete Steps Calculator &rarr;
-              </CardTitle>
-              <CardDescription>
-                Calculate step block volumes for staircases with landing extensions using precise mathematical sums.
-              </CardDescription>
-            </div>
-            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">Calculates: Multi-Step Volume, Extra Landing Depth</span>
-          </Card>
-        </a>
-
-        <!-- Compare Materials -->
-        <a href="/compare/" class="block group">
-          <Card hoverable className="h-full flex flex-col justify-between">
-            <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">
-                Compare Construction Materials &rarr;
-              </CardTitle>
-              <CardDescription>
-                Compare poured concrete, interlocking pavers, and loose gravel quantities based on your project dimensions.
-              </CardDescription>
-            </div>
-            <span class="text-xs font-mono text-neutral-450 dark:text-neutral-500 mt-4 block">Compare: Durability, Lifespan, Maintenance, DIY Difficulty</span>
           </Card>
         </a>
       </div>
     </section>
 
-    <!-- The Moat Section (Highlighting User Experience Value) -->
-    <section class="border-t border-neutral-200 dark:border-neutral-800 pt-8 mt-4 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+    <!-- Value Props -->
+    <section class="border-t border-neutral-200 dark:border-neutral-800 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
       <div>
-        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">
-          Local Storage Planning Workspace
-        </h3>
-        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
-          Tired of typing dimensions repeatedly? Our tools sync with a browser-based memory unit. Save your room, deck, or patio parameters once, and instantly load them in any calculator to check different project configurations.
-        </p>
+        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Save Your Dimensions</h3>
+        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Enter your project dimensions once and reuse them across every calculator. No re-typing measurements.</p>
       </div>
       <div>
-        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">
-          Deterministic Formulas & E-E-A-T
-        </h3>
-        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
-          All calculations are fully open-source and step-by-step. We list exact mathematical formulas, worked examples, and common construction pitfalls to verify structural safety and order accuracy.
-        </p>
+        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Open-Source Formulas</h3>
+        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. Verify the math before ordering.</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Imperial & Metric</h3>
+        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Switch between feet/inches and meters/centimeters on any calculator. Results update instantly.</p>
       </div>
     </section>
   </div>
