@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
+import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 
 export default function ConcreteStepsCalc() {
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
@@ -16,6 +17,18 @@ export default function ConcreteStepsCalc() {
   const [landingDepth, setLandingDepth] = useState<string>("0"); // extra depth on the top step (inches or cm)
   const [wasteFactor, setWasteFactor] = useState<string>("10"); // percent
   const [bagSize, setBagSize] = useState<"40lb" | "50lb" | "60lb" | "80lb">("80lb");
+  
+  // Storage Integration
+  const [roomName, setRoomName] = useState<string>("");
+  const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
+  useEffect(() => {
+    setSavedRooms(getSavedRooms());
+    const handleRoomsChange = () => setSavedRooms(getSavedRooms());
+    window.addEventListener("saved-rooms-changed", handleRoomsChange);
+    return () => window.removeEventListener("saved-rooms-changed", handleRoomsChange);
+  }, []);
 
   const parseInput = (val: string) => {
     const num = parseFloat(val);
@@ -40,9 +53,6 @@ export default function ConcreteStepsCalc() {
     const lndFt = landingVal / 12;
 
     // Calculate individual steps:
-    // Step 1: Rise * Run * Width
-    // Step 2: (Rise * 2) * Run * Width
-    // Step N: (Rise * N) * (Run + Landing) * Width
     for (let i = 1; i <= stepsCount; i++) {
       const stepHeight = i * rFt;
       const isTopStep = i === stepsCount;
@@ -79,6 +89,42 @@ export default function ConcreteStepsCalc() {
 
   const selectedBags = calculateConcreteBags(totalVolumeWithWasteCuFt, bagSize);
   const estimatedWeightLbs = estimateConcreteWeightLbs(totalVolumeWithWasteCuFt);
+
+  const handleSaveRoom = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!roomName.trim()) return;
+
+    // Save stair footprint in saved workspace
+    // Stair length = steps * run + landing
+    const totalStairLength = stepsCount * runVal + landingVal;
+    
+    saveRoom({
+      name: roomName.trim(),
+      length: unitSystem === "imperial" ? totalStairLength / 12 : totalStairLength / 100, // convert back to feet/meters
+      width: unitSystem === "imperial" ? widthVal / 12 : widthVal / 100, // convert to feet/meters
+      height: stepsCount * riseVal, // total height in inches/cm
+      geometryType: "volume",
+    });
+
+    setRoomName("");
+    setSuccessMessage(`Successfully saved "${roomName.trim()}"!`);
+    setTimeout(() => setSuccessMessage(""), 3000);
+  };
+
+  const applySavedRoom = (room: SavedRoom) => {
+    // Convert back from feet/meters to inches/cm if necessary
+    const scale = unitSystem === "imperial" ? 12 : 100;
+    setStepWidth((room.width * scale).toString());
+    
+    // Estimate stair rise and run based on saved dimensions
+    const estimatedRun = (room.length * scale) / stepsCount;
+    setStepRun(estimatedRun.toFixed(0));
+    
+    if (room.height) {
+      const estimatedRise = room.height / stepsCount;
+      setStepRise(estimatedRise.toFixed(0));
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -138,7 +184,7 @@ export default function ConcreteStepsCalc() {
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input
-              label={unitSystem === "imperial" ? "Step Rise (height)" : "Step Rise (height)"}
+              label="Step Rise (height)"
               type="number"
               inputMode="decimal"
               autocomplete="off"
@@ -147,7 +193,7 @@ export default function ConcreteStepsCalc() {
               placeholder="e.g. 7…"
             />
             <Input
-              label={unitSystem === "imperial" ? "Step Run (depth)" : "Step Run (depth)"}
+              label="Step Run (depth)"
               type="number"
               inputMode="decimal"
               autocomplete="off"
@@ -159,7 +205,7 @@ export default function ConcreteStepsCalc() {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <Input
-              label={unitSystem === "imperial" ? "Top Landing Extra Depth" : "Top Landing Extra Depth"}
+              label="Top Landing Extra Depth"
               type="number"
               inputMode="decimal"
               autocomplete="off"
@@ -200,6 +246,54 @@ export default function ConcreteStepsCalc() {
               ))}
             </div>
           </div>
+        </Card>
+
+        {/* Save Workspace */}
+        <Card>
+          <h4 className="font-bold text-sm uppercase tracking-wider text-neutral-800 dark:text-neutral-200 mb-4">
+            Save Stair Workspace
+          </h4>
+          <form onSubmit={handleSaveRoom} className="flex gap-2 items-end">
+            <div className="flex-grow">
+              <Input
+                label="Save As (e.g. Front Porch, Garden Steps)"
+                type="text"
+                autocomplete="off"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                placeholder="e.g. Porch Stairs…"
+              />
+            </div>
+            <Button type="submit" variant="secondary" className="h-10">
+              Save Set
+            </Button>
+          </form>
+          {successMessage && (
+            <p className="text-xs text-green-600 dark:text-green-500 font-semibold mt-2" aria-live="polite">
+              {successMessage}
+            </p>
+          )}
+
+          {/* Apply Saved Rooms */}
+          {savedRooms.length > 0 && (
+            <div className="border-t border-neutral-100 dark:border-neutral-800 pt-4 mt-4">
+              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-500 block mb-2">
+                Apply Saved Dimensions:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {savedRooms.map((room) => (
+                  <button
+                    key={room.id}
+                    type="button"
+                    onClick={() => applySavedRoom(room)}
+                    className="text-xs px-2.5 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 text-neutral-700 dark:text-neutral-300 font-medium transition-colors"
+                  >
+                    {room.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </Card>
       </div>
 

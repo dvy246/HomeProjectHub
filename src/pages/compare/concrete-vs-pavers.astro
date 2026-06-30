@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import CompareMaterials from "../../components/CompareMaterials";
 import AdSlot from "../../components/AdSlot.astro";
 
+<<<<<<< HEAD
 const title = "Concrete vs Pavers vs Gravel: Which Material is Best?";
 const description = "Compare poured concrete, concrete pavers, and pea gravel for your patio or driveway. Calculate quantities and compare durability, maintenance, DIY difficulty, and lifespan.";
 
@@ -78,10 +79,71 @@ const schema = {
             <li><strong>Maintenance:</strong> High (raking & replenishment)</li>
             <li><strong>Lifespan:</strong> Indefinite (requires top-off)</li>
           </ul>
+=======
+const title = "Poured Concrete vs. Interlocking Pavers";
+const description = "Compare poured concrete and interlocking pavers for patios and driveways. Calculate quantities, compare installation costs, maintenance, and durability.";
+---
+
+<Layout title={title} description={description}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
+      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
+        <a href="/" class="hover:underline">home</a> &gt; 
+        <a href="/compare/" class="hover:underline">compare</a> &gt; 
+        <span class="text-neutral-600 dark:text-neutral-400 font-medium">concrete-vs-pavers</span>
+      </nav>
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+        Poured Concrete vs. Interlocking Pavers
+      </h1>
+      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+        Deciding between a poured concrete slab and interlocking stone pavers? Poured concrete offers a low-cost, smooth monolithic surface, while pavers provide superior durability against cracking and a premium modular look. Enter your dimensions below to compare required materials.
+      </p>
+    </header>
+
+    <!-- Ad Slot -->
+    <AdSlot slotId="ad-compare-pavers-top" />
+
+    <!-- Interactive Grid -->
+    <section class="my-4">
+      <CompareMaterials client:load />
+    </section>
+
+    <!-- Editorial Comparison Details -->
+    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6 flex flex-col gap-8 text-sm text-neutral-600 dark:text-neutral-400">
+      <div>
+        <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 tracking-tight">
+          Key Comparison Factors
+        </h2>
+        <p class="leading-relaxed text-pretty">
+          To choose between poured concrete and pavers, evaluate these critical operational categories:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-bold text-neutral-800 dark:text-neutral-200 mb-2">1. Resistance to Cracking & Ground Movement</h3>
+          <p class="leading-relaxed text-pretty">
+            Poured concrete acts as a single, rigid sheet. When the soil below freezes, swells, or settles, the tensile stress forces concrete to crack. Control joints help guide these cracks, but cannot prevent them. 
+          </p>
+          <p class="mt-2 leading-relaxed text-pretty">
+            Pavers are individual interlocking pieces resting on compacted sand and gravel. This modular design allows the surface to flex and move with the earth, completely eliminating surface cracking.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-neutral-800 dark:text-neutral-200 mb-2">2. Maintenance & Long-Term Costs</h3>
+          <p class="leading-relaxed text-pretty">
+            Concrete requires sealing every 2 to 3 years to prevent moisture absorption and staining. If concrete cracks or stains heavily, repairs require patching (which leaves visible scars) or jackhammering the entire slab.
+          </p>
+          <p class="mt-2 leading-relaxed text-pretty">
+            Pavers require regular weed control in the joints and occasional polymer sand replenishment. However, if a single paver is damaged or stained by oil, you can pull it out individually and replace it in minutes.
+          </p>
+>>>>>>> bd338c3 (s)
         </div>
       </div>
     </section>
 
+<<<<<<< HEAD
     <AdSlot slotId="ad-bottom-compare-cvp" />
 
     <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
@@ -101,5 +163,9 @@ const schema = {
         <a href="/calculators/concrete/steps/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Steps Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate concrete for stairs and steps.</span></a>
       </div>
     </footer>
+=======
+    <!-- Ad Slot -->
+    <AdSlot slotId="ad-compare-pavers-bottom" />
+>>>>>>> bd338c3 (s)
   </article>
 </Layout>

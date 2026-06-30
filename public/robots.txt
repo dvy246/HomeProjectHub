@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://homeprojecthub.com/sitemap.xml
+Sitemap: https://homeprojecthub.com/sitemap-index.xml

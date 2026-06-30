@@ -2,38 +2,54 @@
 import Layout from "../layouts/Layout.astro";
 
 const title = "Terms of Service";
-const description = "HomeProjectHub terms of service. Our calculators provide estimates for informational purposes only. Always verify calculations before ordering materials.";
+const description = "Terms of service and usage conditions for HomeProjectHub.";
 ---
 
 <Layout title={title} description={description}>
-  <article class="max-w-2xl mx-auto flex flex-col gap-6">
-    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6">
-      <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-2">Terms of Service</h1>
-      <p class="text-xs text-neutral-400">Last updated: {new Date().toISOString().split("T")[0]}</p>
+  <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
+    <header class="border-b border-neutral-150 dark:border-neutral-800 pb-6 mb-2">
+      <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-2">
+        Terms of Service
+      </h1>
+      <p class="text-xs text-neutral-400 dark:text-neutral-500 font-mono">
+        Last Updated: June 30, 2026
+      </p>
     </header>
 
-    <section class="flex flex-col gap-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-      <p>By using HomeProjectHub, you agree to these terms. Our calculators are provided for informational and estimation purposes only.</p>
+    <div class="flex flex-col gap-6 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+      <p>
+        Welcome to HomeProjectHub. By accessing our website at https://homeprojecthub.com, you agree to bound by these Terms of Service and all applicable laws and regulations.
+      </p>
 
-      <div>
-        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">No Warranty</h2>
-        <p>All calculations are estimates based on standard formulas and the inputs you provide. We do not guarantee the accuracy, completeness, or reliability of any calculation result. Material requirements may vary based on site conditions, installation methods, product variations, and other factors not captured by our tools.</p>
-      </div>
+      <h2 class="text-lg font-bold text-neutral-800 dark:text-neutral-250 mt-4">
+        1. License to Use
+      </h2>
+      <p>
+        Permission is granted to temporarily use the interactive calculators and materials planning utilities on HomeProjectHub for personal, non-commercial structural planning. This is the grant of a license, not a transfer of title, and under this license you may not:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2">
+        <li>Modify or copy the source code or formula structures.</li>
+        <li>Use the materials for any commercial venture or public display without attribution.</li>
+        <li>Attempt to reverse engineer any calculations or layout scripts.</li>
+        <li>Remove any copyright or other proprietary notations from the materials.</li>
+      </ul>
 
-      <div>
-        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">Professional Consultation</h2>
-        <p>Always consult with a licensed contractor, structural engineer, or building official before beginning any construction project. Local building codes may require specific designs, materials, or methods that differ from our general estimates. Never use our calculators as a substitute for professional engineering advice.</p>
-      </div>
+      <h2 class="text-lg font-bold text-neutral-800 dark:text-neutral-250 mt-4">
+        2. Disclaimer
+      </h2>
+      <p>
+        The materials and calculator outputs on HomeProjectHub are provided on an 'as is' basis. HomeProjectHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property.
+      </p>
+      <p>
+        Furthermore, HomeProjectHub does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site. Always consult a certified structural engineer before ordering structural materials.
+      </p>
 
-      <div>
-        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">External Links</h2>
-        <p>Our site contains links to third-party retailers (such as Lowe's) for your convenience. We are not responsible for the content, pricing, or availability of products on external sites. We may earn affiliate commissions from some links.</p>
-      </div>
-
-      <div>
-        <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2">Limitation of Liability</h2>
-        <p>HomeProjectHub is not liable for any damages, injuries, or losses resulting from the use of our calculators or the reliance on calculation results. You are solely responsible for verifying all measurements and material orders before purchase or installation.</p>
-      </div>
-    </section>
+      <h2 class="text-lg font-bold text-neutral-800 dark:text-neutral-250 mt-4">
+        3. Limitations of Liability
+      </h2>
+      <p>
+        In no event shall HomeProjectHub or its suppliers be liable for any damages (including, without limitation, damages for loss of materials, structural failure, project delays, or cost overruns) arising out of the use or inability to use the calculators on HomeProjectHub.
+      </p>
+    </div>
   </article>
 </Layout>
