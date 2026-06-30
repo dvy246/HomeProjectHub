@@ -9,16 +9,18 @@ const description = "Compare poured concrete and loose gravel for paths, drivewa
 
 <Layout title={title} description={description}>
   <article class="max-w-4xl mx-auto flex flex-col gap-6">
-    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
-      <nav class="text-xs text-neutral-400 dark:text-neutral-50 font-mono mb-2">
-        <a href="/" class="hover:underline">home</a> &gt; 
-        <a href="/compare/" class="hover:underline">compare</a> &gt; 
-        <span class="text-neutral-600 dark:text-neutral-400 font-medium">concrete-vs-gravel</span>
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/compare/" class="hover:underline">compare</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">concrete-vs-gravel</span>
       </nav>
-      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
         Poured Concrete vs. Pea Gravel
       </h1>
-      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
         Struggling to choose between poured concrete and pea gravel for your path or driveway? Poured concrete provides a rigid, permanent, and clean surface that is highly durable under load, whereas pea gravel offers a budget-friendly, permeable drainage system with a classic texture.
       </p>
     </header>
@@ -32,33 +34,33 @@ const description = "Compare poured concrete and loose gravel for paths, drivewa
     </section>
 
     <!-- Editorial Comparison Details -->
-    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6 flex flex-col gap-8 text-sm text-neutral-600 dark:text-neutral-400">
+    <section class="pt-8 mt-6 flex flex-col gap-8">
       <div>
-        <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 tracking-tight">
+        <h2 class="text-xl font-bold tracking-tight mb-4">
           Key Comparison Factors
         </h2>
-        <p class="leading-relaxed text-pretty">
+        <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
           Evaluate these operational trade-offs between concrete and aggregate gravel:
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="font-bold text-neutral-800 dark:text-neutral-200 mb-2">1. Permeability & Stormwater Drainage</h3>
-          <p class="leading-relaxed text-pretty">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-bold text-[var(--fg)] mb-2">1. Permeability & Stormwater Drainage</h3>
+          <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             Poured concrete is a completely impermeable barrier. When rain falls, water runs off the edges of the slab, which can saturate the surrounding soil and cause local flooding. You must slope concrete slabs at 1/4 inch per foot to guide water safely away.
           </p>
-          <p class="mt-2 leading-relaxed text-pretty">
+          <p class="mt-2 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             Pea gravel is 100% permeable. Rain drains straight through the rocks into the soil below, preventing standing water and erosion, making it an excellent eco-friendly option.
           </p>
         </div>
 
-        <div>
-          <h3 class="font-bold text-neutral-800 dark:text-neutral-200 mb-2">2. Cost & Installation Speed</h3>
-          <p class="leading-relaxed text-pretty">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-bold text-[var(--fg)] mb-2">2. Cost & Installation Speed</h3>
+          <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             Concrete requires excavation, building heavy timber forms, placing steel rebar reinforcement, pouring, leveling, finishing, and curing for 5–7 days. The cost is high due to labor and material weight.
           </p>
-          <p class="mt-2 leading-relaxed text-pretty">
+          <p class="mt-2 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             Gravel installation is extremely fast and DIY-friendly. You dig out 2–3 inches, lay down landscape fabric, build a simple border border, dump the gravel, and rake it flat. It can be fully completed in a single afternoon at a fraction of the cost.
           </p>
         </div>

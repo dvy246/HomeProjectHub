@@ -1,115 +1,215 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Card, CardTitle, CardDescription } from "../components/ui/Card";
 
 const title = "Professional Home Material Calculators";
 const description = "Free concrete and roofing calculators for homeowners and DIY builders. Calculate slabs, footings, columns, walls, shingles, metal panels, and plywood decks. Save your dimensions and compare materials.";
 
 const concreteCalcs = [
-  { href: "/calculators/concrete/slab/", title: "Concrete Slab Calculator", desc: "Calculate volume in cubic yards and bag counts for rectangular patios, driveways, and sidewalks." },
-  { href: "/calculators/concrete/footing/", title: "Concrete Footing Calculator", desc: "Estimate concrete for pier holes, circular columns, and square structural deck foundations." },
-  { href: "/calculators/concrete/steps/", title: "Concrete Steps Calculator", desc: "Calculate step block volumes for staircases with landing extensions using precise mathematical sums." },
-  { href: "/calculators/concrete/column/", title: "Concrete Column Calculator", desc: "Calculate volume for round and square structural columns of any height and quantity." },
-  { href: "/calculators/concrete/wall/", title: "Concrete Wall Calculator", desc: "Estimate wall volume with automatic door and window opening deductions." },
-  { href: "/calculators/concrete/tube/", title: "Concrete Tube Form Calculator", desc: "Calculate concrete for cardboard tube forms (Sonotubes) and cylindrical piers." },
+  { href: "/calculators/concrete/slab/", title: "Slab", desc: "Patios, driveways, sidewalks", icon: "slab" },
+  { href: "/calculators/concrete/footing/", title: "Footing", desc: "Pier holes, deck foundations", icon: "footing" },
+  { href: "/calculators/concrete/column/", title: "Column", desc: "Round & square columns", icon: "column" },
+  { href: "/calculators/concrete/wall/", title: "Wall", desc: "Walls with opening deductions", icon: "wall" },
+  { href: "/calculators/concrete/tube/", title: "Tube Form", desc: "Sonotubes & cylindrical piers", icon: "tube" },
+  { href: "/calculators/concrete/steps/", title: "Steps", desc: "Staircases with landings", icon: "steps" },
 ];
 
 const roofingCalcs = [
-  { href: "/calculators/roofing/shingles/", title: "Roof Shingle Calculator", desc: "Calculate asphalt shingle bundles, squares, underlayment, and nails for gable and hip roofs." },
-  { href: "/calculators/roofing/metal/", title: "Metal Roofing Calculator", desc: "Estimate metal panel count, screws, closure strips, and ridge cap for any panel size." },
-  { href: "/calculators/roofing/plywood/", title: "Plywood Deck Calculator", desc: "Calculate plywood or OSB sheathing sheets for roof decking. Supports 4x8, 4x10, 4x12." },
-  { href: "/calculators/roofing/pitch/", title: "Roof Pitch Calculator", desc: "Convert pitch between ratio, degrees, and percentage. Find the pitch multiplier and rafter length." },
+  { href: "/calculators/roofing/shingles/", title: "Shingles", desc: "Bundles, squares, nails", icon: "shingle" },
+  { href: "/calculators/roofing/metal/", title: "Metal Roof", desc: "Panels, screws, ridge cap", icon: "metal" },
+  { href: "/calculators/roofing/plywood/", title: "Plywood Deck", desc: "Sheathing sheets & H-clips", icon: "plywood" },
+  { href: "/calculators/roofing/pitch/", title: "Roof Pitch", desc: "Degrees, multiplier, rafter", icon: "pitch" },
 ];
+
+const faqs = [
+  { q: "Are these calculators free to use?", a: "Yes. Every calculator on HomeProjectHub is completely free. No sign-up, no paywall, no data collection. Your dimensions are stored locally in your browser and never sent to a server." },
+  { q: "How accurate are the calculations?", a: "All formulas use standard engineering math: geometric volume calculations, pitch-corrected surface area, and manufacturer-published bag yields. Every calculator shows its formula and a worked example so you can verify the math yourself." },
+  { q: "Can I save my project dimensions?", a: "Yes. Use the Save Measurement feature on any calculator to store your dimensions in-browser via localStorage. Visit the Saved Rooms page to manage and reload them into any calculator instantly." },
+  { q: "Do you support metric units?", a: "Every concrete calculator supports both imperial (feet, inches, cubic yards) and metric (meters, centimeters, cubic meters) with a one-click toggle. Results update instantly." },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://homeprojecthub.com/#website",
+      "url": "https://homeprojecthub.com/",
+      "name": "HomeProjectHub",
+      "description": "Free construction calculators for concrete and roofing projects."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://homeprojecthub.com/#faq",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
+};
 ---
 
-<Layout title={title} description={description}>
-  <div class="flex flex-col gap-12 max-w-4xl mx-auto py-4">
-    <header class="text-center flex flex-col gap-4">
-      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 text-balance">
-        Estimate Materials & Plan Projects Like a Pro
+<Layout title={title} description={description} schema={schema}>
+  <!-- Hero -->
+  <section class="relative overflow-hidden -mx-4 sm:-mx-6 px-4 sm:px-6 -mt-8 md:-mt-12 pt-12 md:pt-20 pb-16">
+    <div class="absolute inset-0 bg-grid opacity-50"></div>
+    <div class="relative max-w-3xl mx-auto text-center flex flex-col gap-6">
+      <div class="inline-flex items-center gap-2 self-center px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--bg-subtle)] text-xs font-medium text-[var(--fg-secondary)]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
+        10 free calculators — no sign-up required
+      </div>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.05]">
+        Estimate materials.
+        <br />
+        <span class="text-[var(--fg-muted)]">Plan like a pro.</span>
       </h1>
-      <p class="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto text-pretty">
-        Free construction calculators for concrete and roofing projects. Get precise volume, bag counts, and material lists with worked examples. Save your dimensions in-browser and compare materials side-by-side.
+      <p class="text-base sm:text-lg text-[var(--fg-secondary)] max-w-xl mx-auto text-pretty leading-relaxed">
+        Precise concrete and roofing calculators with transparent formulas, worked examples, and bag-count breakdowns. Save your dimensions and compare materials side-by-side.
       </p>
-    </header>
-
-    <!-- Concrete Cluster -->
-    <section class="flex flex-col gap-6">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Concrete Calculators</h2>
-        <a href="/calculators/concrete/" class="text-xs font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">View all &rarr;</a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {concreteCalcs.map((calc) => (
-          <a href={calc.href} class="block group">
-            <Card hoverable className="h-full flex flex-col justify-between">
-              <div>
-                <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
-                <CardDescription>{calc.desc}</CardDescription>
-              </div>
-            </Card>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <!-- Roofing Cluster -->
-    <section class="flex flex-col gap-6">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Roofing Calculators</h2>
-        <a href="/calculators/roofing/" class="text-xs font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">View all &rarr;</a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {roofingCalcs.map((calc) => (
-          <a href={calc.href} class="block group">
-            <Card hoverable className="h-full flex flex-col justify-between">
-              <div>
-                <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">{calc.title} &rarr;</CardTitle>
-                <CardDescription>{calc.desc}</CardDescription>
-              </div>
-            </Card>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <!-- Compare & Save -->
-    <section class="flex flex-col gap-6">
-      <h2 class="text-lg font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">Compare & Save</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <a href="/compare/concrete-vs-pavers/" class="block group">
-          <Card hoverable className="h-full flex flex-col justify-between">
-            <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">Concrete vs Pavers vs Gravel &rarr;</CardTitle>
-              <CardDescription>Compare poured concrete, interlocking pavers, and loose gravel quantities, durability, and lifespan.</CardDescription>
-            </div>
-          </Card>
+      <div class="flex flex-col sm:flex-row gap-3 self-center mt-2">
+        <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-all active:scale-[0.98]">
+          Browse Calculators
+          <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
         </a>
-        <a href="/saved/" class="block group">
-          <Card hoverable className="h-full flex flex-col justify-between">
-            <div>
-              <CardTitle className="group-hover:text-[#0070f3] dark:group-hover:text-white transition-colors">Saved Rooms & Projects &rarr;</CardTitle>
-              <CardDescription>Manage your saved room, deck, and patio dimensions. Load them directly into any calculator.</CardDescription>
-            </div>
-          </Card>
+        <a href="/compare/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-all active:scale-[0.98]">
+          Compare Materials
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Value Props -->
-    <section class="border-t border-neutral-200 dark:border-neutral-800 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-      <div>
-        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Save Your Dimensions</h3>
-        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Enter your project dimensions once and reuse them across every calculator. No re-typing measurements.</p>
+  <!-- Stats bar -->
+  <section class="border-y border-[var(--border)] -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 mb-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+      <div class="text-center">
+        <div class="text-2xl font-bold tracking-tight tabular-nums">10</div>
+        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Calculators</div>
       </div>
-      <div>
-        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Open-Source Formulas</h3>
-        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. Verify the math before ordering.</p>
+      <div class="text-center">
+        <div class="text-2xl font-bold tracking-tight tabular-nums">2</div>
+        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Unit Systems</div>
       </div>
-      <div>
-        <h3 class="font-bold text-base text-neutral-900 dark:text-neutral-50 mb-2">Imperial & Metric</h3>
-        <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">Switch between feet/inches and meters/centimeters on any calculator. Results update instantly.</p>
+      <div class="text-center">
+        <div class="text-2xl font-bold tracking-tight tabular-nums">0</div>
+        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Cookies Used</div>
       </div>
-    </section>
-  </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold tracking-tight tabular-nums">100%</div>
+        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Free Forever</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Concrete Calculators -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight">Concrete</h2>
+        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Volume, bags, and weight for any pour</p>
+      </div>
+      <a href="/calculators/concrete/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1">
+        View all
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {concreteCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4H4zM4 10h16v10H4z" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Roofing Calculators -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight">Roofing</h2>
+        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Pitch-corrected material estimates</p>
+      </div>
+      <a href="/calculators/roofing/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1">
+        View all
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {roofingCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12L12 3l9 9M5 10v10h14V10" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Why trust us -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold tracking-tight mb-6">Why trust our calculators</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
+        <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-sm font-semibold mb-1.5">Open formulas</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. Verify the math before ordering.</p>
+      </div>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
+        <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
+        </div>
+        <h3 class="text-sm font-semibold mb-1.5">Imperial & metric</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Switch between feet/inches and meters/centimeters on any calculator. Results update instantly.</p>
+      </div>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
+        <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+          </svg>
+        </div>
+        <h3 class="text-sm font-semibold mb-1.5">Save your dimensions</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Enter project dimensions once and reuse them across every calculator. No re-typing. Stored locally.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mb-8">
+    <h2 class="text-xl font-bold tracking-tight mb-6">Frequently asked questions</h2>
+    <div class="flex flex-col gap-2">
+      {faqs.map((faq, i) => (
+        <details class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer p-4 text-sm font-medium text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors list-none">
+            {faq.q}
+            <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            {faq.a}
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
 </Layout>

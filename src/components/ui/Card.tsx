@@ -28,9 +28,9 @@ export const Card: React.FC<CardProps> = ({
       tabIndex={isClickable ? 0 : undefined}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      className={`border rounded-lg bg-neutral-50/50 dark:bg-neutral-900/30 border-neutral-200 dark:border-neutral-800 p-6 transition-all duration-200 ${
+      className={`rounded-xl border bg-[var(--card-bg)] border-[var(--border)] p-6 transition-all duration-200 ${
         hoverable || isClickable
-          ? "hover:border-black dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-pointer"
+          ? "hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] cursor-pointer card-elevated"
           : ""
       } ${className}`}
     >
@@ -50,7 +50,7 @@ export const CardTitle: React.FC<CardTitleProps> = ({
 }) => {
   return (
     <h3
-      className={`text-base font-medium tracking-tight text-neutral-900 dark:text-neutral-100 text-balance mb-2 ${className}`}
+      className={`text-base font-semibold tracking-tight text-[var(--fg)] text-balance mb-1.5 ${className}`}
     >
       {children}
     </h3>
@@ -68,7 +68,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
 }) => {
   return (
     <p
-      className={`text-sm text-neutral-500 dark:text-neutral-400 text-pretty ${className}`}
+      className={`text-sm text-[var(--fg-secondary)] text-pretty leading-relaxed ${className}`}
     >
       {children}
     </p>

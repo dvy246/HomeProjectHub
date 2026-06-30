@@ -7,16 +7,16 @@ const description = "The page you are looking for does not exist. Browse our con
 
 <Layout title={title} description={description}>
   <div class="max-w-2xl mx-auto flex flex-col items-center justify-center text-center gap-6 py-16">
-    <div class="text-7xl font-extrabold tracking-tight text-neutral-200 dark:text-neutral-800">404</div>
-    <h1 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">Page Not Found</h1>
-    <p class="text-sm text-neutral-500 dark:text-neutral-400 max-w-md text-pretty">
+    <div class="text-7xl font-extrabold tracking-tight text-[var(--fg-muted)]">404</div>
+    <h1 class="text-2xl font-bold tracking-tight text-[var(--fg)]">Page Not Found</h1>
+    <p class="text-sm text-[var(--fg-secondary)] max-w-md text-pretty">
       The page you are looking for may have been moved or deleted. Try one of our calculators below.
     </p>
     <div class="flex flex-col sm:flex-row gap-3 mt-2">
-      <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-md bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-colors">
+      <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] border border-[var(--accent)] hover:opacity-90 transition-all">
         Go Home
       </a>
-      <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-md border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:border-neutral-900 dark:hover:border-neutral-100 transition-colors">
+      <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-all">
         Browse Calculators
       </a>
     </div>

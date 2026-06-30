@@ -31,46 +31,48 @@ const schema = {
 
 <Layout title={title} description={description} schema={schema}>
   <article class="max-w-4xl mx-auto flex flex-col gap-6">
-    <header class="border-b border-neutral-100 dark:border-neutral-800 pb-6 mb-2">
-      <nav class="text-xs text-neutral-400 dark:text-neutral-500 font-mono mb-2">
-        <a href="/" class="hover:underline">home</a> &gt;
-        <a href="/calculators/concrete/" class="hover:underline">concrete</a> &gt;
-        <span class="text-neutral-600 dark:text-neutral-400">wall</span>
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">wall</span>
       </nav>
-      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-3 text-balance">Concrete Wall Calculator</h1>
-      <p class="text-base text-neutral-500 dark:text-neutral-400 leading-relaxed text-pretty">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Concrete Wall Calculator</h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
         Calculate the concrete volume needed for foundation walls, retaining walls, and basement walls. This tool automatically subtracts standard door and window openings from the total volume, then applies your waste factor to produce precise cubic yard and bag count estimates.
       </p>
     </header>
 
     <AdSlot slotId="ad-top-wall" />
 
-    <section class="my-4"><ConcreteWallCalc client:visible /></section>
+    <section><ConcreteWallCalc client:visible /></section>
 
-    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
-      <h2 id="how-to-calculate" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">How to Calculate Concrete Wall Volume</h2>
-      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Concrete Wall Volume</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
         Concrete walls are calculated by finding the gross face area, subtracting any openings, then multiplying by the wall thickness. Follow these steps:
       </p>
-      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
         <li><strong>Calculate Gross Area:</strong> Multiply the wall length by the wall height.
-          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Gross Area = Length (ft) &times; Height (ft)</div>
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Gross Area = Length (ft) &times; Height (ft)</div>
         </li>
         <li><strong>Subtract Openings:</strong> Deduct standard doors (21 sq ft each) and windows (12 sq ft each) from the gross area.
-          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Net Area = Gross Area &minus; (Doors &times; 21) &minus; (Windows &times; 12)</div>
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Net Area = Gross Area &minus; (Doors &times; 21) &minus; (Windows &times; 12)</div>
         </li>
         <li><strong>Calculate Volume:</strong> Convert thickness from inches to feet (divide by 12), then multiply by the net area.
-          <div class="my-2 p-3 bg-neutral-50 dark:bg-neutral-900 rounded font-mono text-center text-xs">Volume (cu ft) = Net Area &times; [Thickness (in) &divide; 12]</div>
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Volume (cu ft) = Net Area &times; [Thickness (in) &divide; 12]</div>
         </li>
       </ol>
     </section>
 
-    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
-      <h2 id="example-calculation" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Example Wall Calculation</h2>
-      <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4 text-pretty">
+    <section>
+      <h2 id="example-calculation" class="text-xl font-bold tracking-tight mb-4">Example Wall Calculation</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
         Let's calculate a <strong>20-foot long, 8-foot high basement wall</strong> that is <strong>8 inches thick</strong> with <strong>1 door and 2 windows</strong>:
       </p>
-      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
         <li><strong>Gross Area:</strong> 20 ft &times; 8 ft = 160 sq ft</li>
         <li><strong>Openings:</strong> 1 door (21 sq ft) + 2 windows (24 sq ft) = 45 sq ft</li>
         <li><strong>Net Area:</strong> 160 &minus; 45 = 115 sq ft</li>
@@ -82,30 +84,39 @@ const schema = {
 
     <AdSlot slotId="ad-mid-wall" />
 
-    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
-      <h2 id="common-mistakes" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Common Mistakes in Wall Pours</h2>
-      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-neutral-600 dark:text-neutral-400 text-pretty">
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Wall Pours</h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)] text-pretty">
         <li><strong>Forgetting Opening Deductions:</strong> Doors and windows can account for 10-30% of a wall's face area. Failing to subtract them leads to significant over-ordering and wasted concrete costs.</li>
         <li><strong>Underestimating Form Pressure:</strong> Tall walls (over 4 feet) generate enormous hydrostatic pressure on formwork. Use strong forms with tight tie spacing, or pour in lifts of 4 feet with a short set time between lifts.</li>
         <li><strong>Not Accounting for Footing Key:</strong> Many foundation walls include a keyway groove in the footing that adds 2-5% to the wall volume. Include this in your estimate to avoid running short.</li>
       </ul>
     </section>
 
-    <section class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-6">
-      <h2 id="faq" class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">Frequently Asked Questions</h2>
-      <div class="flex flex-col gap-6">
-        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How thick should a concrete retaining wall be?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">A concrete retaining wall under 4 feet tall should be at least 8 inches thick at the base, tapering to 6 inches at the top. Walls over 4 feet require engineering design and typically need 12 inches or more at the base with rebar reinforcement.</p></div>
-        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How do you calculate concrete volume for a wall with openings?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">Multiply the wall length by the height to get the gross area. Subtract the area of each door (approximately 21 sq ft for a standard 3x7 door) and each window (approximately 12 sq ft for a standard 3x4 window). Multiply the net area by the wall thickness in feet to get cubic feet.</p></div>
-        <div><h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-2">How much concrete do I need for a 10x8 foundation wall?</h3><p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">A 10-foot long, 8-foot high wall with 8-inch thickness has a gross area of 80 square feet. With no openings, the volume is 80 sq ft x 0.667 ft = 53.3 cubic feet, or approximately 1.97 cubic yards. Add 10% waste for a total of about 2.2 cubic yards.</p></div>
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How thick should a concrete retaining wall be?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">A concrete retaining wall under 4 feet tall should be at least 8 inches thick at the base, tapering to 6 inches at the top. Walls over 4 feet require engineering design and typically need 12 inches or more at the base with rebar reinforcement.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How do you calculate concrete volume for a wall with openings?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Multiply the wall length by the height to get the gross area. Subtract the area of each door (approximately 21 sq ft for a standard 3x7 door) and each window (approximately 12 sq ft for a standard 3x4 window). Multiply the net area by the wall thickness in feet to get cubic feet.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much concrete do I need for a 10x8 foundation wall?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">A 10-foot long, 8-foot high wall with 8-inch thickness has a gross area of 80 square feet. With no openings, the volume is 80 sq ft x 0.667 ft = 53.3 cubic feet, or approximately 1.97 cubic yards. Add 10% waste for a total of about 2.2 cubic yards.</p>
+        </details>
       </div>
     </section>
 
-    <footer class="border-t border-neutral-100 dark:border-neutral-800 pt-8 mt-12 mb-6">
-      <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-4">Related Construction Tools</h4>
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Construction Tools</h4>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <a href="/calculators/concrete/slab/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Slab Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for flat pours.</span></a>
-        <a href="/calculators/concrete/column/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Column Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Calculate round and square columns.</span></a>
-        <a href="/calculators/concrete/footing/" class="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-md hover:border-black dark:hover:border-white transition-colors"><span class="block text-xs font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Concrete Footing Calculator</span><span class="text-[10px] text-neutral-450 dark:text-neutral-500">Estimate concrete for footings.</span></a>
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span><span class="text-[10px] text-[var(--fg-muted)]">Estimate concrete for flat pours.</span></a>
+        <a href="/calculators/concrete/column/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Column Calculator</span><span class="text-[10px] text-[var(--fg-muted)]">Calculate round and square columns.</span></a>
+        <a href="/calculators/concrete/footing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Footing Calculator</span><span class="text-[10px] text-[var(--fg-muted)]">Estimate concrete for footings.</span></a>
       </div>
     </footer>
   </article>

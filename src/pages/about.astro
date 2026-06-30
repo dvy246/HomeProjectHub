@@ -7,33 +7,39 @@ const description = "Learn about the mission, calculations, and engineering goal
 
 <Layout title={title} description={description}>
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
-    <header class="border-b border-neutral-150 dark:border-neutral-800 pb-6 mb-2">
-      <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-50 mb-2">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">About</span>
+    </nav>
+
+    <header class="pb-6 mb-2 border-b border-[var(--border)]">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
         About HomeProjectHub
       </h1>
-      <p class="text-sm text-neutral-500 dark:text-neutral-450 leading-relaxed text-pretty">
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
         Empowering homeowners and DIYers with transparent, mathematically rigorous planning tools.
       </p>
     </header>
 
-    <div class="flex flex-col gap-6 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-pretty">
+    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
       <p>
         HomeProjectHub was founded to bridge the gap between complex engineering calculations and everyday home improvement projects. When planning a renovation, backyard project, or major construction pour, getting the material quantities correct is the difference between a successful project and an expensive headache.
       </p>
 
-      <h2 class="text-lg font-bold text-neutral-800 dark:text-neutral-250 mt-4">
+      <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Our Core Philosophy
       </h2>
       <p>
         We believe that planning calculators shouldn't just be black boxes that output a single number. To help build real homeowner expertise (E-E-A-T), we are committed to:
       </p>
-      <ul class="list-disc pl-5 flex flex-col gap-2">
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
         <li><strong>Open Math Formulas:</strong> Every single calculator on our platform outlines the exact arithmetic, geometry, and material weight equations used.</li>
         <li><strong>Worked Examples:</strong> We provide real-world worked scenarios so you can double check the math yourself using a pen and paper.</li>
         <li><strong>Structural Nuance:</strong> We highlight common construction mistakes (like soil compaction and formwork flexing) that simple calculators ignore, preventing you from running short on materials.</li>
       </ul>
 
-      <h2 class="text-lg font-bold text-neutral-800 dark:text-neutral-250 mt-4">
+      <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Our Engineering Principles
       </h2>
       <p>

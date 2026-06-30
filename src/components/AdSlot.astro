@@ -8,9 +8,9 @@ interface Props {
 const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.props;
 ---
 
-<div class={`ad-slot-wrapper w-full flex justify-center my-6 ${className}`} aria-hidden="true">
+<div class={`ad-slot-wrapper w-full flex justify-center my-8 ${className}`} aria-hidden="true">
   <div
-    class="ad-slot-container min-h-[120px] w-full max-w-[728px] rounded-lg overflow-hidden"
+    class="ad-slot-container min-h-[120px] w-full max-w-[728px] rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]"
     data-ad-client={adClient}
     data-ad-slot={slotId}
   >
