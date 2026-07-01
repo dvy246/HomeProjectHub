@@ -2,31 +2,57 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteWallCalc from "../../../components/calculators/ConcreteWallCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/wall/";
 
 const title = "Concrete Wall Calculator";
 const description = "Calculate concrete volume for retaining walls, foundation walls, and basement walls. Automatically subtracts door and window openings.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Concrete Wall Volume Calculator",
+    description: "Calculates wall volume with door and window opening deductions for foundation and retaining walls.",
+    formula: "V = (L × H - Openings) × T",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete for a Wall",
+    "Find the volume of concrete needed for a wall with opening deductions.",
+    [
+      {
+        heading: "Calculate gross face area",
+        text: "Multiply the wall length by the wall height. All measurements in feet.",
+      },
+      {
+        heading: "Subtract openings",
+        text: "Subtract the area of each door (≈21 sq ft for 3×7) and each window (≈12 sq ft for 3×4).",
+      },
+      {
+        heading: "Multiply by thickness",
+        text: "Net area × wall thickness (in feet). Convert inches to feet by dividing by 12.",
+      },
+      {
+        heading: "Add waste factor",
+        text: "Multiply by 1.05 to 1.10 (5-10% waste) and convert to cubic yards (÷27).",
+      },
+    ]
+  ),
+  faqPageSchema([
     {
-      "@type": "MathSolver",
-      "@id": "https://homeprojecthub.com/calculators/concrete/wall/#math-solver",
-      "name": "Concrete Wall Volume Calculator",
-      "description": "Calculates wall volume with door and window opening deductions.",
-      "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/concrete/wall/?equation={equation}" }
+      q: "How thick should a concrete retaining wall be?",
+      a: "Under 4 feet tall: at least 8 inches at base, tapering to 6 inches at top. Over 4 feet: requires engineering, typically 12 inches or more at base with rebar.",
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://homeprojecthub.com/calculators/concrete/wall/#faq",
-      "mainEntity": [
-        { "@type": "Question", "name": "How thick should a concrete retaining wall be?", "acceptedAnswer": { "@type": "Answer", "text": "A concrete retaining wall under 4 feet tall should be at least 8 inches thick at the base, tapering to 6 inches at the top. Walls over 4 feet require engineering design and typically need 12 inches or more at the base with rebar reinforcement." } },
-        { "@type": "Question", "name": "How do you calculate concrete volume for a wall with openings?", "acceptedAnswer": { "@type": "Answer", "text": "Multiply the wall length by the height to get the gross area. Subtract the area of each door (approximately 21 sq ft for a standard 3x7 door) and each window (approximately 12 sq ft for a standard 3x4 window). Multiply the net area by the wall thickness in feet to get cubic feet." } },
-        { "@type": "Question", "name": "How much concrete do I need for a 10x8 foundation wall?", "acceptedAnswer": { "@type": "Answer", "text": "A 10-foot long, 8-foot high wall with 8-inch thickness has a gross area of 80 square feet. With no openings, the volume is 80 sq ft x 0.667 ft = 53.3 cubic feet, or approximately 1.97 cubic yards. Add 10% waste for a total of about 2.2 cubic yards." } }
-      ]
-    }
-  ]
-};
+      q: "How do you calculate concrete for a wall with openings?",
+      a: "Gross area = length × height. Subtract opening areas (door ≈21 sq ft, window ≈12 sq ft). Net area × wall thickness in feet = cubic feet.",
+    },
+    {
+      q: "How much concrete for a 10×8 foundation wall?",
+      a: "80 sq ft × 0.667 ft (8 inches) = 53.3 cu ft, or about 1.97 cu yd. Add 10% waste for ≈2.2 cu yd.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

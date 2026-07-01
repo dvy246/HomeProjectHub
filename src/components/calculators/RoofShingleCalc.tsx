@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
+import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { parseNumber } from "../../lib/helpers";
 
-const SHINGLE_COVERAGE_PER_BUNDLE = 33.33; // sq ft per bundle (3 bundles = 1 square = 100 sq ft)
+const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
 
 export default function RoofShingleCalc() {
   const [roofShape, setRoofShape] = useState<"gable" | "hip">("gable");
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
-  const [pitch, setPitch] = useState<string>("4"); // rise per 12 inches run
+  const [pitch, setPitch] = useState<string>("4");
   const [wasteFactor, setWasteFactor] = useState<string>("12");
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
@@ -25,37 +26,27 @@ export default function RoofShingleCalc() {
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
 
-  const parse = (v: string) => {
-    const n = parseFloat(v);
-    return isNaN(n) || n < 0 ? 0 : n;
-  };
+  const lenNum = parseNumber(length);
+  const widNum = parseNumber(width);
+  const pitchNum = parseNumber(pitch);
+  const waste = parseNumber(wasteFactor) / 100;
 
-  const lenNum = parse(length);
-  const widNum = parse(width);
-  const pitchNum = parse(pitch);
-  const waste = parse(wasteFactor) / 100;
-
-  // Calculate roof area based on pitch
-  // Pitch factor = sqrt(1 + (pitch/12)^2)
   const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
 
-  // Gable roof: two sides, each = length * (width/2) * pitchFactor
-  // Hip roof: total footprint * pitchFactor (simplified, slightly conservative)
   let roofArea = 0;
   if (roofShape === "gable") {
     const halfWidth = widNum / 2;
     const oneSide = calculateRectArea(lenNum, halfWidth) * pitchFactor;
     roofArea = oneSide * 2;
   } else {
-    // Hip roof approximation: footprint * pitchFactor * 1.06 (hip factor for waste)
     roofArea = calculateRectArea(lenNum, widNum) * pitchFactor * 1.06;
   }
 
   const areaWithWaste = applyWasteFactor(roofArea, waste);
   const squares = areaWithWaste / 100;
   const bundles = calculatePackaging(areaWithWaste, SHINGLE_COVERAGE_PER_BUNDLE);
-  const nails = Math.ceil(squares * 4); // ~4 boxes of nails per square
-  const underlayment = Math.ceil(squares * 4 / 10); // rolls of underlayment (10 squares per roll)
+  const nails = Math.ceil(squares * 4);
+  const underlayment = Math.ceil(squares * 4 / 10);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,17 +57,22 @@ export default function RoofShingleCalc() {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  const applySavedRoom = (room: SavedRoom) => {
+    setLength(room.length.toString());
+    setWidth(room.width.toString());
+    if (room.height) setPitch(room.height.toString());
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Input panel */}
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Roof Parameters</h3>
           </div>
 
-          {/* Roof shape selection */}
-          <div className="grid grid-cols-2 gap-2 mb-5">
+          <fieldset className="grid grid-cols-2 gap-2 mb-5">
+            <legend className="sr-only">Roof shape</legend>
             <button
               type="button"
               onClick={() => setRoofShape("gable")}
@@ -91,7 +87,7 @@ export default function RoofShingleCalc() {
             >
               Hip Roof
             </button>
-          </div>
+          </fieldset>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label="Building Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 40" />
@@ -103,35 +99,20 @@ export default function RoofShingleCalc() {
           </div>
         </Card>
 
-        <Card>
-          <h4 className="text-sm font-semibold tracking-tight mb-4">Save Roof Project</h4>
-          <form onSubmit={handleSave} className="flex gap-2 items-end">
-            <div className="flex-grow">
-              <Input label="Project name" type="text" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g. House Roof" />
-            </div>
-            <Button type="submit" variant="secondary" className="h-10">Save</Button>
-          </form>
-          {successMessage && (
-            <p className="text-xs text-[var(--success)] font-medium mt-2 animate-fade-in-up" aria-live="polite">{successMessage}</p>
-          )}
-          {savedRooms.length > 0 && (
-            <div className="border-t border-[var(--border)] pt-4 mt-4">
-              <span className="text-xs font-medium text-[var(--fg-muted)] block mb-2">Saved Projects:</span>
-              <div className="flex flex-wrap gap-2">
-                {savedRooms.map((room) => (
-                  <button key={room.id} type="button" className="text-xs px-2.5 py-1 rounded-md bg-[var(--bg-muted)] border border-[var(--border)] hover:border-[var(--border-hover)] text-[var(--fg-secondary)] font-medium transition-colors">
-                    {room.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Card>
+        <SaveMeasurementCard
+          roomName={roomName}
+          onRoomNameChange={setRoomName}
+          onSave={handleSave}
+          successMessage={successMessage}
+          savedRooms={savedRooms}
+          onApplyRoom={applySavedRoom}
+          heading="Save Roof Project"
+          placeholder="e.g. House Roof"
+          projectsLabel="Saved Projects:"
+        />
       </div>
 
-      {/* Output panel */}
       <div className="lg:col-span-5 flex flex-col gap-4">
-        {/* Primary result card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Shingle Material Output</h3>
           <div className="flex flex-col gap-5">
@@ -166,9 +147,8 @@ export default function RoofShingleCalc() {
           </div>
         </div>
 
-        {/* Additional materials */}
         <Card>
-          <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h4>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
               <span className="text-sm font-medium">Underlayment Rolls</span>

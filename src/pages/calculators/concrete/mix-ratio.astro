@@ -1,0 +1,186 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import MixRatioCalc from "../../../components/calculators/MixRatioCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/mix-ratio/";
+
+const title = "Concrete Mix Ratio Calculator";
+const description = "Calculate the exact amount of cement, sand, and gravel needed for any concrete mix ratio. Supports standard mix designs from 1:2:3 to 1:3:5 with bag counts.";
+
+const schema = graphSchema(
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Concrete Mix Ratio Formula",
+    description: "Calculate material quantities based on mix ratio and total volume.",
+    formula: "Material = (Ratio Part ÷ Total Parts) × Total Volume",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete Mix Materials",
+    "Follow these steps to determine cement, sand, and gravel for any concrete mix.",
+    [
+      {
+        heading: "Choose your mix ratio",
+        text: "Standard concrete uses a 1:2:3 ratio (cement:sand:gravel). High-strength applications use 1:2:2. Footings and foundations use 1:3:3. The first number is always cement.",
+      },
+      {
+        heading: "Calculate total parts",
+        text: "Add the three ratio numbers together. For 1:2:3: 1 + 2 + 3 = 6 total parts. Cement represents 1/6 of the volume, sand is 2/6, and gravel is 3/6.",
+      },
+      {
+        heading: "Determine material volumes",
+        text: "Multiply the total concrete volume by each fraction. Cement volume × 94 lb/cu ft gives the total cement weight. Sand and gravel volumes are converted to cubic yards for ordering.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "What is the best concrete mix ratio?",
+      a: "For general-purpose concrete (driveways, sidewalks, slabs), use a 1:2:3 ratio (cement:sand:gravel). For higher strength requirements like structural columns, use 1:2:2. For footings and foundations, 1:3:3 is sufficient.",
+    },
+    {
+      q: "How many 94lb bags of cement are in a cubic yard?",
+      a: "A 94lb bag of Portland cement yields approximately 1 cubic foot of cement volume. For a standard 1:2:3 mix, one cubic yard of concrete needs about 5 bags of cement.",
+    },
+    {
+      q: "How much water do I add to concrete mix?",
+      a: "Use approximately 4.5 gallons of water per 94lb bag of cement. The water-to-cement ratio should be 0.45 to 0.50 by weight for optimal strength. Too much water weakens the concrete.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">mix ratio</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
+        Concrete Mix Ratio Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Determine the exact quantities of cement, sand, and gravel required for any concrete mix. Whether you are ordering ready-mix or mixing on-site, this calculator converts your desired volume into bag counts and tonnage for each material.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <MixRatioCalc client:visible />
+    </section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">
+        How to Calculate Mix Ratios
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Concrete mix ratios are expressed as parts of cement to sand to gravel by volume. The ratio determines the final strength and workability of the concrete.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Determine Total Parts:</strong> Add the three numbers in your chosen ratio. For a 1:2:3 mix, total parts = 6.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Total Parts = Cement Parts + Sand Parts + Gravel Parts
+          </div>
+        </li>
+        <li>
+          <strong>Calculate Material Fractions:</strong> Each material occupies a fraction of the total volume. Cement = 1/6, Sand = 2/6, Gravel = 3/6.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Material Volume = (Material Parts &divide; Total Parts) &times; Total Concrete Volume
+          </div>
+        </li>
+        <li>
+          <strong>Convert to Orderable Units:</strong> Cement weight = volume × 94 lb/cu ft. Sand and gravel are typically ordered by the cubic yard or ton.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="example-calculation" class="text-xl font-bold tracking-tight mb-4">
+        Example Calculation
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        For <strong>1 cubic yard of 1:2:3 mix</strong> using <strong>94lb cement bags</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+        <li><strong>Total parts:</strong> 1 + 2 + 3 = 6</li>
+        <li><strong>Cement:</strong> 1/6 × 27 cu ft = 4.5 cu ft → 4.5 × 94 lb = 423 lbs → 5 bags</li>
+        <li><strong>Sand:</strong> 2/6 × 27 cu ft = 9 cu ft → 9/27 = 0.33 cu yd → ~0.7 tons</li>
+        <li><strong>Gravel:</strong> 3/6 × 27 cu ft = 13.5 cu ft → 13.5/27 = 0.5 cu yd → ~1.0 tons</li>
+        <li><strong>Water:</strong> 5 bags × 4.5 gallons = ~22.5 gallons</li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">
+        Common Mix Ratio Mistakes
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Adding too much water:</strong> The water-to-cement ratio is the single most important factor in concrete strength. Adding extra water for workability reduces strength by up to 50%. Use a water-reducing admixture instead.
+        </li>
+        <li>
+          <strong>Using damp sand without adjusting volume:</strong> Damp sand bulks up and takes more volume than dry sand. If your sand is wet, increase the measured volume by 15-25% to get the same dry equivalent.
+        </li>
+        <li>
+          <strong>Confusing weight with volume:</strong> Cement is sold by weight (94lb bags) but mixes are specified by volume (parts). A 94lb bag equals about 1 cubic foot of cement volume. Always use volume-based ratios, not weight.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">What is the best concrete mix ratio?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            For general-purpose use (slabs, driveways, sidewalks), 1:2:3 (cement:sand:gravel) is standard. For higher strength like structural columns, use 1:1.5:2. For footings and foundations, 1:3:3 is adequate. Always match the ratio to the application.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How many 94lb bags of cement are in a cubic yard?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            For a 1:2:3 mix, one cubic yard of concrete requires approximately 5 bags of 94lb Portland cement. A 94lb bag yields about 1 cubic foot of cement volume. Higher-strength mixes with more cement may require 6-7 bags per cubic yard.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much water do I add to concrete mix?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Use about 4.5 gallons of clean water per 94lb bag of cement. The ideal water-to-cement ratio is 0.45-0.50 by weight. For hot weather, use cool water to slow the set time. Never exceed 0.60 water-to-cement ratio.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Calculate volume and bag counts for slabs.</span>
+        </a>
+        <a href="/calculators/concrete/footing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Footing Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate concrete for pier footings.</span>
+        </a>
+        <a href="/calculators/concrete/block-fill/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Block Fill Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate blocks, mortar, and grout for CMU walls.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

@@ -2,56 +2,54 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteSlabCalc from "../../../components/calculators/ConcreteSlabCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/slab/";
 
 const title = "Concrete Slab Calculator";
 const description = "Calculate concrete volume in cubic yards, cubic feet, and number of bags needed for your rectangular slab. Perfect for patios, driveways, and shed slabs.";
 
-// Schema structured data for FAQ and MathSolver
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
+const schema = graphSchema(
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Concrete Slab Volume Formula",
+    description: "Calculate concrete volume using length, width, and thickness measurements.",
+    formula: "Volume (cu yd) = [Length (ft) × Width (ft) × Thickness (ft)] ÷ 27",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete Slab Volume",
+    "Follow these three steps to calculate how much concrete you need for a rectangular slab.",
+    [
+      {
+        heading: "Find the surface area",
+        text: "Measure the length and width of the slab in feet. Multiply them: Area = Length × Width.",
+      },
+      {
+        heading: "Convert thickness to feet",
+        text: "Divide your slab thickness in inches by 12. For a 4-inch slab: 4 ÷ 12 = 0.333 feet.",
+      },
+      {
+        heading: "Calculate cubic yards",
+        text: "Multiply area by thickness in feet to get cubic feet. Divide by 27 for cubic yards: (Area × Thickness ft) ÷ 27.",
+      },
+    ]
+  ),
+  faqPageSchema([
     {
-      "@type": "MathSolver",
-      "@id": "https://homeprojecthub.com/calculators/concrete/slab/#math-solver",
-      "name": "Concrete Slab Volume Formula",
-      "description": "Calculates concrete volume using length, width, and thickness measurements.",
-      "potentialAction": {
-        "@type": "SolveAction",
-        "target": "https://homeprojecthub.com/calculators/concrete/slab/?equation={equation}"
-      }
+      q: "How do you calculate concrete slab volume?",
+      a: "Multiply length (in feet) by width (in feet) to find the surface area. Convert thickness from inches to feet (divide by 12). Multiply the surface area by the thickness in feet for volume in cubic feet. Divide by 27 to convert to cubic yards.",
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://homeprojecthub.com/calculators/concrete/slab/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do you calculate concrete slab volume?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Multiply length (in feet) by width (in feet) to find the surface area in square feet. Then, convert your thickness from inches to feet by dividing by 12. Multiply the surface area by this thickness in feet to get the volume in cubic feet. Finally, divide by 27 to convert cubic feet to cubic yards."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How many 80lb bags of concrete are in a cubic yard?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A standard 80lb bag of concrete yields approximately 0.6 cubic feet of mixed concrete. Since there are 27 cubic feet in one cubic yard, you will need 45 bags of 80lb concrete mix to make one full cubic yard."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How thick should a concrete shed slab be?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A standard concrete slab for a backyard tool shed or residential walkway should be 4 inches thick. For heavy-duty driveways or heavy equipment, a thickness of 5 to 6 inches is recommended along with rebar reinforcement."
-          }
-        }
-      ]
-    }
-  ]
-};
+      q: "How many 80lb bags of concrete are in a cubic yard?",
+      a: "An 80lb bag yields approximately 0.6 cubic feet. Since 1 cubic yard = 27 cubic feet, you need 45 bags of 80lb mix for one cubic yard.",
+    },
+    {
+      q: "How thick should a concrete shed slab be?",
+      a: "A standard shed slab or walkway should be 4 inches thick. Driveways require 5-6 inches with rebar reinforcement for heavy loads.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>
@@ -151,7 +149,109 @@ const schema = {
       </ul>
     </section>
 
-    <!-- Section 6: FAQ (Schema.org compliant answers) -->
+    <!-- Section 6: Concrete Slab Cost Guide -->
+    <section>
+      <h2 id="cost-guide" class="text-xl font-bold tracking-tight mb-4">
+        Concrete Slab Cost Guide
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Concrete slab costs (2026) range from <strong>$4 to $12 per square foot</strong> installed, depending on thickness, reinforcement, finish, and your region. Here is a breakdown of common project costs:
+      </p>
+      <div class="overflow-x-auto mb-4">
+        <table class="w-full text-xs text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Project</th>
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Dimensions</th>
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Cu Yd</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Est. Cost</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Patio</td>
+              <td class="py-2 pr-4">10&prime; &times; 12&prime; &times; 4″</td>
+              <td class="py-2 pr-4">1.5</td>
+              <td class="py-2">$580–$1,150</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Driveway</td>
+              <td class="py-2 pr-4">20&prime; &times; 24&prime; &times; 6″</td>
+              <td class="py-2 pr-4">8.9</td>
+              <td class="py-2">$1,780–$3,560</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Sidewalk</td>
+              <td class="py-2 pr-4">3&prime; &times; 40&prime; &times; 4″</td>
+              <td class="py-2 pr-4">1.5</td>
+              <td class="py-2">$480–$960</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Shed Base</td>
+              <td class="py-2 pr-4">8&prime; &times; 10&prime; &times; 4″</td>
+              <td class="py-2 pr-4">1.0</td>
+              <td class="py-2">$320–$640</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        <strong>Pro tip:</strong> Ready-mix concrete costs $125–$175 per cubic yard delivered (2026). For pours under 1 yard, bagged concrete is typically cheaper despite the higher per-yard cost, since you avoid the minimum delivery fee ($150–$250).
+      </p>
+    </section>
+
+    <!-- Section 7: Types of Concrete Slabs -->
+    <section>
+      <h2 id="types-of-slabs" class="text-xl font-bold tracking-tight mb-4">
+        Types of Concrete Slabs
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Choosing the right slab type depends on your soil conditions, climate, and structural requirements:
+      </p>
+      <dl class="flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <dt class="font-semibold text-[var(--fg)] mb-1">Monolithic Slab (Floating Slab)</dt>
+          <dd class="leading-relaxed text-pretty">
+            A single pour where the slab and thickened edge footing are cast together. Common in warm climates without deep frost. The slab "floats" on the ground, reinforced with rebar around the perimeter. Best for sheds, garages, and small structures.
+          </dd>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <dt class="font-semibold text-[var(--fg)] mb-1">Suspended Slab</dt>
+          <dd class="leading-relaxed text-pretty">
+            Poured over a structural framework of beams and columns, not directly on grade. Used for multi-story buildings, balconies, and parking garages. Requires deeper engineering and thicker reinforcement with a minimum 6-inch thickness.
+          </dd>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <dt class="font-semibold text-[var(--fg)] mb-1">Stamped Concrete Slab</dt>
+          <dd class="leading-relaxed text-pretty">
+            A standard 4-inch slab with an exposed-aggregate surface or textural pattern applied before curing. Costs $8–$15 per square foot but eliminates the need for separate paving materials. Popular for patios, pool decks, and walkways.
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- Section 8: Reinforcement Options -->
+    <section>
+      <h2 id="reinforcement" class="text-xl font-bold tracking-tight mb-4">
+        Reinforcement Options
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Proper reinforcement prevents cracking and extends the life of your slab. Here are the standard methods:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Welded Wire Mesh (6×6 – W1.4/W1.4):</strong> The most common reinforcement for residential slabs. Lay the mesh on plastic chairs so it sits at mid-depth (2 inches from the bottom of a 4-inch slab). Cost: $0.25–$0.50 per square foot.
+        </li>
+        <li>
+          <strong>Rebar (#3 or #4):</strong> For driveways and load-bearing slabs, use #3 (⅜-inch) or #4 (½-inch) rebar in a 24-inch grid pattern. Rebar provides superior tensile strength compared to mesh. Cost: $0.50–$1.00 per square foot.
+        </li>
+        <li>
+          <strong>Fiber Mesh (Synthetic Fibers):</strong> Mixed directly into the concrete, millions of microscopic fibers control thermal and shrinkage cracking. Not a replacement for wire mesh or rebar in structural applications. Cost: $0.10–$0.20 per square foot.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 9: FAQ (Schema.org compliant answers) -->
     <section>
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
         Frequently Asked Questions

@@ -2,6 +2,7 @@ import React, { useId } from "react";
 
 interface InputProps {
   label: string;
+  name?: string;
   type?: string;
   inputMode?: "text" | "decimal" | "numeric" | "tel" | "email" | "url";
   value: string;
@@ -15,10 +16,13 @@ interface InputProps {
   step?: string;
   ariaLabel?: string;
   error?: string;
+  required?: boolean;
+  spellcheck?: boolean;
 }
 
 export function Input({
   label,
+  name,
   type = "text",
   inputMode,
   value,
@@ -32,8 +36,11 @@ export function Input({
   step,
   ariaLabel,
   error,
+  required,
+  spellcheck,
 }: InputProps) {
   const id = useId();
+  const descriptionId = error || helperText ? `${id}-desc` : undefined;
 
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
@@ -42,6 +49,7 @@ export function Input({
       </label>
       <input
         id={id}
+        name={name}
         type={type}
         inputMode={inputMode}
         value={value}
@@ -51,16 +59,19 @@ export function Input({
         min={min}
         max={max}
         step={step}
+        required={required}
+        spellCheck={spellcheck}
         aria-label={ariaLabel || label}
         aria-invalid={error ? "true" : "false"}
-        className={`w-full text-sm bg-[var(--bg-inset)] border rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-all tabular-nums ${
+        aria-describedby={descriptionId}
+        className={`w-full text-sm bg-[var(--bg-inset)] border rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors ${
           error ? "border-[var(--error)]" : "border-[var(--border)]"
-        }`}
+        } ${type === "number" ? "tabular-nums" : ""}`}
       />
       {error ? (
-        <span className="text-[10px] text-[var(--error)] leading-tight">{error}</span>
+        <span id={descriptionId} className="text-[10px] text-[var(--error)] leading-tight">{error}</span>
       ) : helperText ? (
-        <span className="text-[10px] text-[var(--fg-muted)] leading-tight">{helperText}</span>
+        <span id={descriptionId} className="text-[10px] text-[var(--fg-muted)] leading-tight">{helperText}</span>
       ) : null}
     </div>
   );

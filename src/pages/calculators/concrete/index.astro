@@ -1,5 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import { breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Concrete Calculators";
 const description = "Free concrete calculators for slabs, footings, columns, walls, tube forms, and steps. Get cubic yards, bag counts, and weight estimates for any concrete pour.";
@@ -7,20 +8,20 @@ const description = "Free concrete calculators for slabs, footings, columns, wal
 const calculators = [
   { href: "/calculators/concrete/slab/", title: "Slab", desc: "Rectangular slabs, patios, driveways, sidewalks", tags: ["Volume", "Weight", "Bag Counts"] },
   { href: "/calculators/concrete/footing/", title: "Footing", desc: "Pier holes, deck footings, fence post foundations", tags: ["Cylinder", "Block", "Post"] },
+  { href: "/calculators/concrete/rebar/", title: "Rebar", desc: "Rebar quantity, spacing, weight, and ties for slabs", tags: ["#3-#8", "Grid", "Tonnage"] },
+  { href: "/calculators/concrete/block-fill/", title: "Block Fill", desc: "CMU blocks, mortar, and grout fill for walls", tags: ["4-12 in", "Core Fill", "Mortar"] },
+  { href: "/calculators/concrete/mix-ratio/", title: "Mix Ratio", desc: "Cement, sand, and gravel quantities by mix ratio", tags: ["1:2:3", "Parts", "Water"] },
   { href: "/calculators/concrete/steps/", title: "Steps", desc: "Staircases with optional landing extensions", tags: ["Multi-Step", "Landing"] },
   { href: "/calculators/concrete/column/", title: "Column", desc: "Round and square structural columns", tags: ["Round", "Square", "Multi"] },
   { href: "/calculators/concrete/wall/", title: "Wall", desc: "Walls with door and window opening deductions", tags: ["Openings", "Retaining"] },
   { href: "/calculators/concrete/tube/", title: "Tube Form", desc: "Cardboard tube forms (Sonotubes) and piers", tags: ["Sonotube", "Pier"] },
+  { href: "/calculators/concrete/curb-gutter/", title: "Curb & Gutter", desc: "Concrete volume for curbs, gutters, and drainage channels", tags: ["Street", "Drainage", "Forms"] },
 ];
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://homeprojecthub.com/" },
-    { "@type": "ListItem", "position": 2, "name": "Concrete Calculators", "item": "https://homeprojecthub.com/calculators/concrete/" }
-  ]
-};
+const schema = breadcrumbListSchema([
+  { name: "Home", path: "/" },
+  { name: "Concrete Calculators", path: "/calculators/concrete/" },
+]);
 ---
 
 <Layout title={title} description={description} schema={schema}>

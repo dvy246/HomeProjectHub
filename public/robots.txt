@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /privacy/
+Disallow: /terms/
+Disallow: /disclaimer/
 
-Sitemap: https://homeprojecthub.com/sitemap-index.xml
+Sitemap: https://homeprojecthub.com/sitemap.xml

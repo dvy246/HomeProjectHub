@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import { parseNumber } from "../../lib/helpers";
 
 export default function RoofPitchCalc() {
   const [rise, setRise] = useState<string>("6");
@@ -8,29 +9,23 @@ export default function RoofPitchCalc() {
   const [buildingLength, setBuildingLength] = useState<string>("40");
   const [buildingWidth, setBuildingWidth] = useState<string>("30");
 
-  const parse = (v: string) => {
-    const n = parseFloat(v);
-    return isNaN(n) || n <= 0 ? 0 : n;
-  };
-
-  const riseNum = parse(rise);
-  const runNum = parse(run);
-  const bLen = parse(buildingLength);
-  const bWid = parse(buildingWidth);
+  const riseNum = parseNumber(rise) || 0.001;
+  const runNum = parseNumber(run) || 0.001;
+  const bLen = parseNumber(buildingLength);
+  const bWid = parseNumber(buildingWidth);
 
   const pitchRatio = `${riseNum}:${runNum}`;
-  const pitchDegrees = runNum > 0 ? Math.atan(riseNum / runNum) * (180 / Math.PI) : 0;
-  const pitchFactor = runNum > 0 ? Math.sqrt(1 + Math.pow(riseNum / runNum, 2)) : 1;
-  const slopePercent = runNum > 0 ? (riseNum / runNum) * 100 : 0;
+  const pitchDegrees = Math.atan(riseNum / runNum) * (180 / Math.PI);
+  const pitchFactor = Math.sqrt(1 + Math.pow(riseNum / runNum, 2));
+  const slopePercent = (riseNum / runNum) * 100;
 
   const roofArea = bLen * bWid * pitchFactor;
-  const rafterLength = runNum > 0 ? (bWid / 2) * pitchFactor : 0;
+  const rafterLength = (bWid / 2) * pitchFactor;
 
   const pitchCategory = slopePercent < 10 ? "Low Slope" : slopePercent < 25 ? "Conventional" : slopePercent < 50 ? "Steep" : "Very Steep";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Input panel */}
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
@@ -52,7 +47,7 @@ export default function RoofPitchCalc() {
         </Card>
 
         <Card>
-          <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Common Roof Pitches</h4>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Common Roof Pitches</h3>
           <div className="grid grid-cols-2 gap-2 text-xs">
             {[
               { pitch: "2:12", use: "Low-slope / shed" },
@@ -71,9 +66,7 @@ export default function RoofPitchCalc() {
         </Card>
       </div>
 
-      {/* Output panel */}
       <div className="lg:col-span-5 flex flex-col gap-4">
-        {/* Primary result card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Pitch Analysis</h3>
           <div className="flex flex-col gap-5">
@@ -113,7 +106,7 @@ export default function RoofPitchCalc() {
 
         {bLen > 0 && bWid > 0 && (
           <Card>
-            <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Derived Roof Values</h4>
+            <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Derived Roof Values</h3>
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
                 <span className="text-sm font-medium">Actual Roof Area</span>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
+import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { parseNumber } from "../../lib/helpers";
 
-const PLYWOOD_SHEET_AREA = 32; // 4x8 sheet = 32 sq ft
+const PLYWOOD_SHEET_AREA = 32;
 
 export default function PlywoodDeckCalc() {
   const [length, setLength] = useState<string>("40");
@@ -25,15 +26,10 @@ export default function PlywoodDeckCalc() {
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
 
-  const parse = (v: string) => {
-    const n = parseFloat(v);
-    return isNaN(n) || n < 0 ? 0 : n;
-  };
-
-  const lenNum = parse(length);
-  const widNum = parse(width);
-  const pitchNum = parse(pitch);
-  const waste = parse(wasteFactor) / 100;
+  const lenNum = parseNumber(length);
+  const widNum = parseNumber(width);
+  const pitchNum = parseNumber(pitch);
+  const waste = parseNumber(wasteFactor) / 100;
 
   const sheetAreas: Record<string, number> = { "4x8": 32, "4x10": 40, "4x12": 48 };
   const sheetArea = sheetAreas[sheetSize];
@@ -42,8 +38,8 @@ export default function PlywoodDeckCalc() {
   const roofArea = calculateRectArea(lenNum, widNum) * pitchFactor;
   const areaWithWaste = applyWasteFactor(roofArea, waste);
   const sheets = calculatePackaging(areaWithWaste, sheetArea);
-  const screws = Math.ceil(roofArea / 4); // ~1 screw per 4 sq ft
-  const hClips = Math.ceil((lenNum * pitchFactor) / 2); // every 2 ft on edges
+  const screws = Math.ceil(roofArea / 4);
+  const hClips = Math.ceil((lenNum * pitchFactor) / 2);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,9 +50,14 @@ export default function PlywoodDeckCalc() {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  const applySavedRoom = (room: SavedRoom) => {
+    setLength(room.length.toString());
+    setWidth(room.width.toString());
+    if (room.height) setPitch(room.height.toString());
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Input panel */}
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
@@ -73,44 +74,31 @@ export default function PlywoodDeckCalc() {
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Sheet Size</label>
-            <div className="grid grid-cols-3 gap-2">
-              {(["4x8", "4x10", "4x12"] as const).map((s) => (
-                <button key={s} type="button" onClick={() => setSheetSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${sheetSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
-              ))}
-            </div>
+            <fieldset>
+              <legend className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Sheet Size</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {(["4x8", "4x10", "4x12"] as const).map((s) => (
+                  <button key={s} type="button" onClick={() => setSheetSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${sheetSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
+                ))}
+              </div>
+            </fieldset>
           </div>
         </Card>
 
-        <Card>
-          <h4 className="text-sm font-semibold tracking-tight mb-4">Save Deck Project</h4>
-          <form onSubmit={handleSave} className="flex gap-2 items-end">
-            <div className="flex-grow">
-              <Input label="Project name" type="text" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g. Roof Sheathing" />
-            </div>
-            <Button type="submit" variant="secondary" className="h-10">Save</Button>
-          </form>
-          {successMessage && (
-            <p className="text-xs text-[var(--success)] font-medium mt-2 animate-fade-in-up" aria-live="polite">{successMessage}</p>
-          )}
-          {savedRooms.length > 0 && (
-            <div className="border-t border-[var(--border)] pt-4 mt-4">
-              <span className="text-xs font-medium text-[var(--fg-muted)] block mb-2">Saved Projects:</span>
-              <div className="flex flex-wrap gap-2">
-                {savedRooms.map((room) => (
-                  <button key={room.id} type="button" className="text-xs px-2.5 py-1 rounded-md bg-[var(--bg-muted)] border border-[var(--border)] hover:border-[var(--border-hover)] text-[var(--fg-secondary)] font-medium transition-colors">
-                    {room.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Card>
+        <SaveMeasurementCard
+          roomName={roomName}
+          onRoomNameChange={setRoomName}
+          onSave={handleSave}
+          successMessage={successMessage}
+          savedRooms={savedRooms}
+          onApplyRoom={applySavedRoom}
+          heading="Save Deck Project"
+          placeholder="e.g. Roof Sheathing"
+          projectsLabel="Saved Projects:"
+        />
       </div>
 
-      {/* Output panel */}
       <div className="lg:col-span-5 flex flex-col gap-4">
-        {/* Primary result card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Plywood / OSB Output</h3>
           <div className="flex flex-col gap-5">
@@ -144,9 +132,8 @@ export default function PlywoodDeckCalc() {
           </div>
         </div>
 
-        {/* Additional materials */}
         <Card>
-          <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h4>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
               <span className="text-sm font-medium">H-Clips</span>

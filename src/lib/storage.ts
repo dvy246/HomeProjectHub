@@ -14,8 +14,7 @@ export function getSavedRooms(): SavedRoom[] {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
-  } catch (error) {
-    console.error("Failed to read localStorage", error);
+  } catch {
     return [];
   }
 }
@@ -37,8 +36,7 @@ export function saveRoom(room: Omit<SavedRoom, "id"> & { id?: string }): SavedRo
     localStorage.setItem(STORAGE_KEY, JSON.stringify(rooms));
     // Dispatch a custom event to notify other components of the storage change
     window.dispatchEvent(new Event("saved-rooms-changed"));
-  } catch (error) {
-    console.error("Failed to write to localStorage", error);
+  } catch {
   }
   return rooms;
 }
@@ -51,8 +49,7 @@ export function deleteRoom(id: string): SavedRoom[] {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
     window.dispatchEvent(new Event("saved-rooms-changed"));
-  } catch (error) {
-    console.error("Failed to write to localStorage", error);
+  } catch {
   }
   return filtered;
 }

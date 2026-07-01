@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
+import UnitToggle from "../ui/UnitToggle";
+import BagSizeSelector from "../ui/BagSizeSelector";
+import ConcreteBagMatrix from "../ui/ConcreteBagMatrix";
+import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea, subtractOpenings, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
-import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs, CONCRETE_BAG_YIELDS } from "../../lib/materialEngine";
+import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { parseNumber } from "../../lib/helpers";
 
 export default function ConcreteWallCalc() {
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
@@ -26,39 +30,23 @@ export default function ConcreteWallCalc() {
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
 
-  const parse = (v: string) => {
-    const n = parseFloat(v);
-    return isNaN(n) || n < 0 ? 0 : n;
-  };
+  const lenNum = parseNumber(length);
+  const hNum = parseNumber(height);
+  const thickNum = parseNumber(thickness);
+  const doors = Math.round(parseNumber(doorCount));
+  const windows = Math.round(parseNumber(windowCount));
+  const waste = parseNumber(wasteFactor) / 100;
 
-  const lenNum = parse(length);
-  const hNum = parse(height);
-  const thickNum = parse(thickness);
-  const doors = Math.round(parse(doorCount));
-  const windows = Math.round(parse(windowCount));
-  const waste = parse(wasteFactor) / 100;
-
-  let grossArea = 0;
-  let netArea = 0;
-  let totalVolumeCuFt = 0;
+  let grossArea = 0, netArea = 0, totalVolumeCuFt = 0;
 
   if (unitSystem === "imperial") {
     grossArea = calculateRectArea(lenNum, hNum);
-    netArea = subtractOpenings(grossArea, [
-      { type: "door", count: doors },
-      { type: "window", count: windows },
-    ]);
-    const thickFt = thickNum / 12;
-    totalVolumeCuFt = calculateVolume(netArea, thickFt);
+    netArea = subtractOpenings(grossArea, [{ type: "door", count: doors }, { type: "window", count: windows }]);
+    totalVolumeCuFt = calculateVolume(netArea, thickNum / 12);
   } else {
     grossArea = calculateRectArea(lenNum, hNum);
-    netArea = subtractOpenings(grossArea, [
-      { type: "door", count: doors },
-      { type: "window", count: windows },
-    ]);
-    const thickM = thickNum / 100;
-    const volCuM = calculateVolume(netArea, thickM);
-    totalVolumeCuFt = volCuM * 35.3147;
+    netArea = subtractOpenings(grossArea, [{ type: "door", count: doors }, { type: "window", count: windows }]);
+    totalVolumeCuFt = calculateVolume(netArea, thickNum / 100) * 35.3147;
   }
 
   const volWithWaste = applyWasteFactor(totalVolumeCuFt, waste);
@@ -81,34 +69,19 @@ export default function ConcreteWallCalc() {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
-  const bagMatrix = [
-    { size: "80 lb", yield: "0.60 cu ft", count: bags80 },
-    { size: "60 lb", yield: "0.45 cu ft", count: bags60 },
-    { size: "50 lb", yield: "0.375 cu ft", count: bags50 },
-    { size: "40 lb", yield: "0.30 cu ft", count: bags40 },
-  ];
+  const applySavedRoom = (room: SavedRoom) => {
+    setLength(room.length.toString());
+    if (room.height) setHeight(room.height.toString());
+    setThickness(room.width.toString());
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Input panel */}
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Wall Parameters</h3>
-            <div className="flex bg-[var(--bg-muted)] p-0.5 rounded-lg text-xs">
-              <button
-                type="button"
-                aria-label="Use imperial units"
-                className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "imperial" ? "bg-[var(--bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)]"}`}
-                onClick={() => setUnitSystem("imperial")}
-              >Imperial</button>
-              <button
-                type="button"
-                aria-label="Use metric units"
-                className={`px-3 py-1.5 rounded-md font-medium transition-all ${unitSystem === "metric" ? "bg-[var(--bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)]"}`}
-                onClick={() => setUnitSystem("metric")}
-              >Metric</button>
-            </div>
+            <UnitToggle unitSystem={unitSystem} onChange={setUnitSystem} />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -125,45 +98,21 @@ export default function ConcreteWallCalc() {
             <Input label="Standard Windows (12 sq ft each)" type="number" inputMode="numeric" value={windowCount} onChange={(e) => setWindowCount(e.target.value)} placeholder="0" helperText="Subtracted from wall area" />
           </div>
 
-          <div className="border-t border-[var(--border)] pt-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Bag Size for Output</label>
-            <div className="grid grid-cols-4 gap-2">
-              {(["40lb", "50lb", "60lb", "80lb"] as const).map((s) => (
-                <button key={s} type="button" onClick={() => setBagSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${bagSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
-              ))}
-            </div>
-          </div>
+          <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
-        <Card>
-          <h4 className="text-sm font-semibold tracking-tight mb-4">Save Measurement</h4>
-          <form onSubmit={handleSave} className="flex gap-2 items-end">
-            <div className="flex-grow">
-              <Input label="Project name" type="text" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g. Basement Wall" />
-            </div>
-            <Button type="submit" variant="secondary" className="h-10">Save</Button>
-          </form>
-          {successMessage && (
-            <p className="text-xs text-[var(--success)] font-medium mt-2 animate-fade-in-up" aria-live="polite">{successMessage}</p>
-          )}
-          {savedRooms.length > 0 && (
-            <div className="border-t border-[var(--border)] pt-4 mt-4">
-              <span className="text-xs font-medium text-[var(--fg-muted)] block mb-2">Saved Projects:</span>
-              <div className="flex flex-wrap gap-2">
-                {savedRooms.map((room) => (
-                  <button key={room.id} type="button" className="text-xs px-2.5 py-1 rounded-md bg-[var(--bg-muted)] border border-[var(--border)] hover:border-[var(--border-hover)] text-[var(--fg-secondary)] font-medium transition-colors">
-                    {room.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Card>
+        <SaveMeasurementCard
+          roomName={roomName}
+          onRoomNameChange={setRoomName}
+          onSave={handleSave}
+          successMessage={successMessage}
+          savedRooms={savedRooms}
+          onApplyRoom={applySavedRoom}
+          placeholder="e.g. Basement Wall"
+        />
       </div>
 
-      {/* Output panel */}
       <div className="lg:col-span-5 flex flex-col gap-4">
-        {/* Primary result card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
           <div className="flex flex-col gap-5">
@@ -174,27 +123,17 @@ export default function ConcreteWallCalc() {
                 <span className="text-sm text-[var(--fg-muted)]">{unitSystem === "imperial" ? "sq ft" : "sq m"}</span>
               </div>
               {(doors > 0 || windows > 0) && (
-                <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                  Net after openings: {netArea.toFixed(1)} {unitSystem === "imperial" ? "sq ft" : "sq m"}
-                </span>
+                <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">Net after openings: {netArea.toFixed(1)} {unitSystem === "imperial" ? "sq ft" : "sq m"}</span>
               )}
             </div>
-
             <div>
               <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>
               <div className="flex items-baseline gap-2 tabular-nums">
-                <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">
-                  {unitSystem === "imperial" ? volCuYd.toFixed(2) : volCuM.toFixed(2)}
-                </span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">
-                  {unitSystem === "imperial" ? "cu yd" : "cu m"}
-                </span>
+                <span className="text-4xl font-extrabold tracking-tight">{unitSystem === "imperial" ? volCuYd.toFixed(2) : volCuM.toFixed(2)}</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? "cu yd" : "cu m"}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                {volWithWaste.toFixed(1)} cu ft total
-              </span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{volWithWaste.toFixed(1)} cu ft total</span>
             </div>
-
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
                 <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags ({bagSize})</span>
@@ -214,21 +153,7 @@ export default function ConcreteWallCalc() {
           </div>
         </div>
 
-        {/* Bag matrix */}
-        <Card>
-          <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Bags by Size</h4>
-          <div className="flex flex-col gap-1">
-            {bagMatrix.map((row) => (
-              <div key={row.size} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium tabular-nums">{row.size}</span>
-                  <span className="text-xs text-[var(--fg-muted)] font-mono">{row.yield}</span>
-                </div>
-                <span className="text-sm font-bold tabular-nums">{row.count}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
+        <ConcreteBagMatrix bags80={bags80} bags60={bags60} bags50={bags50} bags40={bags40} />
       </div>
     </div>
   );

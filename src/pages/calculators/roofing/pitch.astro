@@ -2,21 +2,53 @@
 import Layout from "../../../layouts/Layout.astro";
 import RoofPitchCalc from "../../../components/calculators/RoofPitchCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/roofing/pitch/";
 
 const title = "Roof Pitch Calculator";
 const description = "Calculate roof pitch in degrees, percentage, and ratio. Find the pitch multiplier for material estimation and determine rafter length from building dimensions.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/roofing/pitch/#math-solver", "name": "Roof Pitch Calculator", "description": "Converts roof pitch between ratio, degrees, and percentage. Calculates pitch multiplier and rafter length.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/roofing/pitch/?equation={equation}" } },
-    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/roofing/pitch/#faq", "mainEntity": [
-      { "@type": "Question", "name": "What is roof pitch?", "acceptedAnswer": { "@type": "Answer", "text": "Roof pitch is the steepness of a roof, expressed as a ratio of vertical rise to horizontal run. For example, a 6:12 pitch means the roof rises 6 inches for every 12 inches of horizontal distance. Pitch can also be expressed in degrees or as a percentage." } },
-      { "@type": "Question", "name": "How do you convert roof pitch to degrees?", "acceptedAnswer": { "@type": "Answer", "text": "To convert roof pitch to degrees, use the arctangent function: degrees = arctan(rise / run) x (180 / pi). For a 6:12 pitch, arctan(6/12) = 0.4636 radians, which equals 26.57 degrees." } },
-      { "@type": "Question", "name": "What is a roof pitch multiplier?", "acceptedAnswer": { "@type": "Answer", "text": "The roof pitch multiplier (or correction factor) converts a flat building footprint into the actual sloped roof area. It is calculated as the square root of (1 + (rise/run) squared). A 6:12 pitch has a multiplier of 1.118, meaning the roof surface is 11.8% larger than the footprint." } }
-    ]}
-  ]
-};
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Roof Pitch Calculator",
+    description: "Converts roof pitch between ratio, degrees, and percentage. Calculates pitch multiplier and rafter length.",
+    formula: "PitchMultiplier = √(1 + (rise/12)²)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Roof Pitch",
+    "Convert roof pitch between ratio, degrees, and percentage forms.",
+    [
+      {
+        heading: "Measure rise and run",
+        text: "Measure vertical rise (inches) per 12 inches of horizontal run.",
+      },
+      {
+        heading: "Convert to degrees",
+        text: "Degrees = arctan(rise / run) × (180 / π).",
+      },
+      {
+        heading: "Find pitch multiplier",
+        text: "Multiplier = √(1 + (rise/run)²). Multiply building footprint by this to get true roof area.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "What is roof pitch?",
+      a: "Roof pitch is the steepness ratio of vertical rise to horizontal run. A 6:12 pitch rises 6 inches per 12 inches of run. Also expressed in degrees or percentage.",
+    },
+    {
+      q: "How do you convert roof pitch to degrees?",
+      a: "degrees = arctan(rise / run) × (180/π). For 6:12: arctan(0.5) × (180/π) = 26.57°.",
+    },
+    {
+      q: "What is a roof pitch multiplier?",
+      a: "Converts building footprint to sloped roof area. √(1 + (rise/run)²). A 6:12 pitch has a 1.118 multiplier — 11.8% more surface than the footprint.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

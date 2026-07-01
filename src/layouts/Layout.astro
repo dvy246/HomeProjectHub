@@ -5,17 +5,18 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
-  schema?: Record<string, any>;
+  schema?: Record<string, unknown>;
 }
 
 const { title, description, canonical, schema } = Astro.props;
 
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeprojecthub.com").toString();
 const ogImage = new URL("/og-image.png", canonicalURL).toString();
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" style="color-scheme: light dark;" suppressHydrationWarning>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,6 +24,7 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;" />
 
     <title>{title} | HomeProjectHub</title>
     <meta name="description" content={description} />
@@ -42,11 +44,22 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
     <meta property="twitter:image" content={ogImage} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
     {schema && (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      <script type="application/ld+json" set:text={JSON.stringify(schema)} />
+    )}
+
+    {import.meta.env.PUBLIC_GA_ID && import.meta.env.PUBLIC_GA_ID !== 'G-XXXXXXXXXX' && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`} />
+        <script set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${import.meta.env.PUBLIC_GA_ID}');`} />
+      </>
     )}
 
     <!-- Dark mode init — runs before paint to prevent flash -->
@@ -79,10 +92,10 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
 
         <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
-          <a href="/calculators/concrete/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors">Concrete</a>
-          <a href="/calculators/roofing/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors">Roofing</a>
-          <a href="/compare/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors">Compare</a>
-          <a href="/saved/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors">Saved</a>
+          <a href="/calculators/concrete/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/concrete") ? "page" : undefined}>Concrete</a>
+          <a href="/calculators/roofing/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/roofing") ? "page" : undefined}>Roofing</a>
+          <a href="/compare/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>Compare</a>
+          <a href="/saved/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/saved/" ? "page" : undefined}>Saved</a>
         </nav>
 
         <div class="flex items-center gap-2">
@@ -121,10 +134,10 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
       <!-- Mobile Nav -->
       <nav id="mobile-nav" class="hidden md:hidden border-t border-[var(--border)] bg-[var(--bg)]" aria-label="Mobile navigation">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-0.5">
-          <a href="/calculators/concrete/" class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors">Concrete Calculators</a>
-          <a href="/calculators/roofing/" class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors">Roofing Calculators</a>
-          <a href="/compare/" class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors">Compare Materials</a>
-          <a href="/saved/" class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors">Saved Rooms</a>
+          <a href="/calculators/concrete/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/calculators/concrete") ? "page" : undefined}>Concrete Calculators</a>
+          <a href="/calculators/roofing/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/calculators/roofing") ? "page" : undefined}>Roofing Calculators</a>
+          <a href="/compare/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>Compare Materials</a>
+          <a href="/saved/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath === "/saved/" ? "page" : undefined}>Saved Rooms</a>
           <div class="border-t border-[var(--border)] mt-2 pt-2 flex gap-4 px-3">
             <a href="/about/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">About</a>
             <a href="/contact/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
@@ -160,10 +173,14 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
             <ul class="flex flex-col gap-2">
               <li><a href="/calculators/concrete/slab/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Slab</a></li>
               <li><a href="/calculators/concrete/footing/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Footing</a></li>
+              <li><a href="/calculators/concrete/rebar/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Rebar</a></li>
+              <li><a href="/calculators/concrete/block-fill/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Block Fill</a></li>
               <li><a href="/calculators/concrete/column/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Column</a></li>
               <li><a href="/calculators/concrete/wall/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Wall</a></li>
               <li><a href="/calculators/concrete/tube/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Tube Form</a></li>
               <li><a href="/calculators/concrete/steps/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Steps</a></li>
+              <li><a href="/calculators/concrete/curb-gutter/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Curb &amp; Gutter</a></li>
+              <li><a href="/calculators/concrete/mix-ratio/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Mix Ratio</a></li>
             </ul>
           </div>
           <div>
@@ -173,6 +190,8 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
               <li><a href="/calculators/roofing/metal/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Metal Roof</a></li>
               <li><a href="/calculators/roofing/plywood/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Plywood Deck</a></li>
               <li><a href="/calculators/roofing/pitch/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Roof Pitch</a></li>
+              <li><a href="/calculators/roofing/ice-water-shield/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Ice &amp; Water Shield</a></li>
+              <li><a href="/calculators/roofing/snow-load/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Snow Load</a></li>
             </ul>
           </div>
           <div>
@@ -189,40 +208,45 @@ const ogImage = new URL("/og-image.png", canonicalURL).toString();
         </div>
         <div class="border-t border-[var(--border)] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p class="text-xs text-[var(--fg-muted)]">&copy; {new Date().getFullYear()} HomeProjectHub</p>
-          <p class="text-xs text-[var(--fg-muted)]">Built with Astro. No tracking. No cookies.</p>
+          <p class="text-xs text-[var(--fg-muted)]">Built with Astro. No third-party tracking by default.</p>
         </div>
       </div>
     </footer>
 
     <script is:inline>
-      // Dark mode toggle
-      (function() {
-        var toggle = document.getElementById('theme-toggle');
-        if (!toggle) return;
-        toggle.addEventListener('click', function() {
-          var isDark = document.documentElement.classList.toggle('dark');
+      const toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
           localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
-      })();
+      }
 
-      // Mobile nav toggle
-      (function() {
-        var toggle = document.getElementById('mobile-nav-toggle');
-        var menu = document.getElementById('mobile-nav');
-        if (!toggle || !menu) return;
-        toggle.addEventListener('click', function() {
-          var isOpen = !menu.classList.contains('hidden');
+      const navToggle = document.getElementById('mobile-nav-toggle');
+      const navMenu = document.getElementById('mobile-nav');
+      if (navToggle && navMenu) {
+        const toggleMobile = () => {
+          const isOpen = !navMenu.classList.contains('hidden');
           if (isOpen) {
-            menu.classList.add('hidden');
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.setAttribute('aria-label', 'Open menu');
+            navMenu.classList.add('hidden');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Open menu');
           } else {
-            menu.classList.remove('hidden');
-            toggle.setAttribute('aria-expanded', 'true');
-            toggle.setAttribute('aria-label', 'Close menu');
+            navMenu.classList.remove('hidden');
+            navToggle.setAttribute('aria-expanded', 'true');
+            navToggle.setAttribute('aria-label', 'Close menu');
+          }
+        };
+        navToggle.addEventListener('click', toggleMobile);
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !navMenu.classList.contains('hidden')) {
+            navMenu.classList.add('hidden');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Open menu');
+            navToggle.focus();
           }
         });
-      })();
+      }
     </script>
   </body>
 </html>

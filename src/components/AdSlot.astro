@@ -3,27 +3,42 @@ interface Props {
   slotId: string;
   adClient?: string;
   className?: string;
+  format?: "auto" | "rectangle" | "horizontal" | "vertical";
 }
 
-const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.props;
+const { slotId, adClient, className = "", format = "auto" } = Astro.props;
+const clientId = adClient || import.meta.env.PUBLIC_ADSENSE_CLIENT || "";
+const hasAdClient = clientId && clientId !== "ca-pub-0000000000000000" && import.meta.env.PROD;
+
+const formatToStyle: Record<string, string> = {
+  auto: "display:block; min-height:120px;",
+  rectangle: "display:block; min-height:250px; width:300px;",
+  horizontal: "display:block; min-height:90px;",
+  vertical: "display:block; min-height:600px; width:160px;",
+};
+
+const containerHeight = format === "auto" ? "min-h-[120px]" : format === "vertical" ? "min-h-[600px]" : "min-h-[90px]";
+const containerWidth = format === "vertical" ? "max-w-[160px]" : "w-full max-w-[728px]";
 ---
 
-<div class={`ad-slot-wrapper w-full flex justify-center my-8 ${className}`} aria-hidden="true">
-  <div
-    class="ad-slot-container min-h-[120px] w-full max-w-[728px] rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]"
-    data-ad-client={adClient}
-    data-ad-slot={slotId}
-  >
-    <ins
-      class="adsbygoogle block"
-      style="display:block; min-height:120px;"
-      data-ad-client={adClient}
+{hasAdClient && (
+  <div class={`ad-slot-wrapper w-full flex justify-center my-8 ${className}`} aria-hidden="true">
+    <div
+      class={`ad-slot-container ${containerHeight} ${containerWidth} rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]`}
+      data-ad-client={clientId}
       data-ad-slot={slotId}
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
+    >
+      <ins
+        class="adsbygoogle block"
+        style={formatToStyle[format]}
+        data-ad-client={clientId}
+        data-ad-slot={slotId}
+        data-ad-format={format === "auto" ? "auto" : format}
+        data-full-width-responsive="true"
+      ></ins>
+    </div>
   </div>
-</div>
+)}
 
 <script>
   function setupLazyAdLoading() {
@@ -45,8 +60,11 @@ const { slotId, adClient = "ca-pub-0000000000000000", className = "" } = Astro.p
           container.setAttribute("data-loaded", "true");
 
           if (!scriptLoaded) {
+            const clientId = container.getAttribute("data-ad-client");
+            if (!clientId) return;
+
             const script = document.createElement("script");
-            script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${container.getAttribute("data-ad-client")}`;
+            script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}`;
             script.async = true;
             script.crossOrigin = "anonymous";
             document.head.appendChild(script);

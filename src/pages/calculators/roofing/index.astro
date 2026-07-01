@@ -1,24 +1,23 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import { breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Roofing Calculators";
 const description = "Free roofing calculators for shingles, metal panels, plywood sheathing, and roof pitch. Estimate materials, screws, underlayment, and accessories for any roofing project.";
 
 const calculators = [
-  { href: "/calculators/roofing/shingles/", title: "Shingles", desc: "Asphalt shingle bundles, squares, underlayment, nails", tags: ["Gable", "Hip", "Squares"] },
-  { href: "/calculators/roofing/metal/", title: "Metal Roof", desc: "Panel count, screws, closure strips, ridge cap", tags: ["Panels", "Screws", "Ridge"] },
-  { href: "/calculators/roofing/plywood/", title: "Plywood Deck", desc: "Plywood or OSB sheathing sheets for roof decking", tags: ["Sheathing", "H-Clips"] },
-  { href: "/calculators/roofing/pitch/", title: "Roof Pitch", desc: "Convert pitch between ratio, degrees, and percentage", tags: ["Degrees", "Multiplier"] },
+  { href: "/calculators/roofing/shingles/", title: "Shingles", desc: "Asphalt shingle bundles, squares, nails, and underlayment for any roof shape", tags: ["Gable", "Hip", "Waste"] },
+  { href: "/calculators/roofing/metal/", title: "Metal Roof", desc: "Standing seam and corrugated metal panel counts, screws, and closures", tags: ["Panels", "Trim", "Fasteners"] },
+  { href: "/calculators/roofing/plywood/", title: "Plywood Deck", desc: "Plywood and OSB sheathing sheets, fasteners, and H-clips for roof decks", tags: ["4x8", "4x10", "4x12"] },
+  { href: "/calculators/roofing/pitch/", title: "Roof Pitch", desc: "Roof angle, slope percentage, pitch multiplier, and derived rafter values", tags: ["Angle", "Rafter", "Multiplier"] },
+  { href: "/calculators/roofing/ice-water-shield/", title: "Ice & Water Shield", desc: "Ice and water shield underlayment for eaves, rakes, and valleys", tags: ["Membrane", "Eaves", "Valleys"] },
+  { href: "/calculators/roofing/snow-load/", title: "Snow Load", desc: "Roof snow load analysis based on depth, density, and building code values", tags: ["psf", "Safety", "Code"] },
 ];
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://homeprojecthub.com/" },
-    { "@type": "ListItem", "position": 2, "name": "Roofing Calculators", "item": "https://homeprojecthub.com/calculators/roofing/" }
-  ]
-};
+const schema = breadcrumbListSchema([
+  { name: "Home", path: "/" },
+  { name: "Roofing Calculators", path: "/calculators/roofing/" },
+]);
 ---
 
 <Layout title={title} description={description} schema={schema}>

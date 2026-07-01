@@ -28,7 +28,7 @@ export const Card: React.FC<CardProps> = ({
       tabIndex={isClickable ? 0 : undefined}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      className={`rounded-xl border bg-[var(--card-bg)] border-[var(--border)] p-6 transition-all duration-200 ${
+      className={`rounded-xl border bg-[var(--card-bg)] border-[var(--border)] p-6 transition-[border-color,background-color] duration-200 ${
         hoverable || isClickable
           ? "hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] cursor-pointer card-elevated"
           : ""

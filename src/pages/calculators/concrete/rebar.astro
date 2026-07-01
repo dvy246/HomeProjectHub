@@ -1,0 +1,186 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RebarCalc from "../../../components/calculators/RebarCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/rebar/";
+
+const title = "Rebar Calculator";
+const description = "Calculate rebar length, weight, and quantity for concrete slabs. Estimate number of bars, ties, and total tonnage for any rebar size and spacing pattern.";
+
+const schema = graphSchema(
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Rebar Quantity Formula",
+    description: "Calculate rebar quantity based on slab dimensions, spacing, and bar size.",
+    formula: "Bars per direction = (Dimension × 12 ÷ Spacing) + 1",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Rebar for a Concrete Slab",
+    "Follow these steps to estimate rebar needed for a rectangular slab.",
+    [
+      {
+        heading: "Determine bar spacing",
+        text: "Standard residential slabs use #4 rebar at 18–24 inches on-center. Driveways and heavy-load slabs use 12–18 inch spacing. Closer spacing means more bars and higher load capacity.",
+      },
+      {
+        heading: "Count bars in each direction",
+        text: "Divide the slab length (in inches) by the spacing, then add 1 for the starting bar. Do the same for the width. This gives the number of long-direction and short-direction bars.",
+      },
+      {
+        heading: "Calculate total length and weight",
+        text: "Multiply each bar count by its respective dimension, sum both directions, and multiply by the number of layers. Apply waste factor (5–10%) for lap splices. Multiply by the bar weight per foot and divide by 2000 for tons.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "What size rebar should I use for a slab?",
+      a: "For residential slabs (4 inch thick), use #3 (⅜ in) or #4 (½ in) rebar. For driveways and garage slabs (5–6 inch thick), use #4 at 18 inches on-center. Heavy-duty industrial slabs require #5 or larger with closer spacing.",
+    },
+    {
+      q: "How far apart should rebar be spaced?",
+      a: "Standard spacing for residential slabs is 18–24 inches on-center. Driveways should use 12–18 inch spacing. For high-load areas, space rebar at 12 inches on-center. Always follow local building codes.",
+    },
+    {
+      q: "Does a 4-inch slab need rebar?",
+      a: "A 4-inch slab on grade does not require rebar if the soil is stable and the slab is not load-bearing. However, adding #3 or #4 rebar at 24 inches on-center significantly reduces cracking and is recommended for long-term durability.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">rebar</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
+        Rebar Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate the rebar needed for concrete slabs, footings, and walls. This calculator provides bar counts in both directions, total linear footage, weight in tons, and the number of ties required. Supports rebar sizes #3 through #8 with adjustable spacing and layers.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <RebarCalc client:visible />
+    </section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">
+        How to Calculate Rebar Quantity
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Estimating rebar for a concrete slab involves calculating how many bars run in each direction based on the spacing.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Count Bars Per Direction:</strong> Divide the perpendicular dimension (in inches) by the spacing, then add 1.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Bars = (Dimension (in) &divide; Spacing (in)) + 1
+          </div>
+        </li>
+        <li>
+          <strong>Total Linear Feet:</strong> For each direction, multiply the bar count by the slab dimension in that direction.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Total Length = (Long Bars &times; Length) + (Short Bars &times; Width)
+          </div>
+        </li>
+        <li>
+          <strong>Apply Waste & Layers:</strong> Multiply by number of layers (1 for single mat, 2 for top + bottom) and add 5–10% for lap splices and cutoff waste.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="example-calculation" class="text-xl font-bold tracking-tight mb-4">
+        Example Calculation
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        For a <strong>20 ft × 12 ft slab</strong> with <strong>#4 rebar at 18 inches on-center</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+        <li><strong>Long bars:</strong> (12 ft &times; 12 &divide; 18) + 1 = 9 bars &times; 20 ft = 180 linear ft</li>
+        <li><strong>Short bars:</strong> (20 ft &times; 12 &divide; 18) + 1 = 14 bars &times; 12 ft = 168 linear ft</li>
+        <li><strong>Total:</strong> 180 + 168 = 348 linear ft</li>
+        <li><strong>Weight:</strong> 348 ft &times; 0.668 lb/ft (#4) &divide; 2000 = 0.12 tons</li>
+        <li><strong>With 5% waste:</strong> 365 linear ft, ~0.13 tons</li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">
+        Common Rebar Mistakes
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Rebar too close to the surface:</strong> Rebar must be placed at mid-depth of the slab (2 inches from bottom for a 4-inch slab). Use concrete chairs or dobies to support bars off the ground.
+        </li>
+        <li>
+          <strong>Insufficient overlap at splices:</strong> When bars need to be extended, the lap splice must be at least 40 bar diameters. For #4 rebar, that is 20 inches of overlap.
+        </li>
+        <li>
+          <strong>Forgetting corner reinforcement:</strong> Slab corners are the first place cracks appear. Add diagonal bars or corner reinforcing to prevent 45-degree corner cracks.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">What size rebar should I use for a slab?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            For residential 4-inch slabs, #3 (⅜ in) or #4 (½ in) rebar at 18-24 inches on-center is standard. Driveways and garage slabs (5-6 inches) should use #4 at 18 inches on-center. For heavy-load areas, consult an engineer.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How far apart should rebar be spaced?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Standard residential spacing is 18-24 inches on-center. Driveways use 12-18 inches. For high-load applications, 12 inches on-center is recommended. Always verify with local building codes.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Does a 4-inch slab need rebar?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Not strictly required on stable soil, but adding #3 or #4 rebar at 24 inches on-center significantly improves crack resistance and is recommended for long-term durability in any climate with freeze-thaw cycles.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate concrete volume and bag counts for slabs.</span>
+        </a>
+        <a href="/calculators/concrete/block-fill/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Block Fill Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate blocks, mortar, and grout for CMU walls.</span>
+        </a>
+        <a href="/calculators/concrete/wall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Wall Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Calculate volume for retaining and foundation walls.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

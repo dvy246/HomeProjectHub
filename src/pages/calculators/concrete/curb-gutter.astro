@@ -1,0 +1,151 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import CurbGutterCalc from "../../../components/calculators/CurbGutterCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/curb-gutter/";
+
+const title = "Curb & Gutter Calculator";
+const description = "Calculate concrete volume for curbs and gutters. Estimate cubic yards, cubic feet, and bag counts for street curbs, driveway transitions, and drainage channels.";
+
+const schema = graphSchema(
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Curb & Gutter Concrete Volume Formula",
+    description: "Calculate concrete volume by summing curb and gutter cross-sections along the length.",
+    formula: "Volume = (Curb Area + Gutter Area) × Length",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Curb & Gutter Concrete",
+    "Follow these steps to estimate concrete needed for a combined curb and gutter section.",
+    [
+      {
+        heading: "Measure the cross-section dimensions",
+        text: "The curb is typically 6 inches wide and 18 inches tall. The gutter pan extends behind the curb, usually 24-36 inches wide and 6 inches deep. Measure each in inches.",
+      },
+      {
+        heading: "Convert to feet and find volumes",
+        text: "Convert all dimensions to feet (divide by 12). Curb volume = width × height × length. Gutter volume = width × depth × length. Add them for the total.",
+      },
+      {
+        heading: "Apply waste and convert to yards",
+        text: "Add 5-10% for waste and form overflow. Divide cubic feet by 27 to get cubic yards for ordering ready-mix concrete.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How much concrete is needed for a standard curb and gutter?",
+      a: "A standard curb (6 in wide × 18 in tall) with gutter (24 in wide × 6 in deep) requires approximately 0.37 cubic yards per 10 linear feet. For 100 linear feet, that is about 3.7 cubic yards.",
+    },
+    {
+      q: "What is the standard size of a curb and gutter?",
+      a: "Standard curb dimensions are 6 inches wide and 18 inches tall (6 × 18 curb). Standard gutter sections are 24-36 inches wide and 6 inches deep. The combined section is typically 30-42 inches wide overall.",
+    },
+    {
+      q: "How much does curb and gutter concrete cost?",
+      a: "Curb and gutter concrete costs $12-$25 per linear foot installed (2026). Material cost is $8-$12 per linear foot for the concrete itself. Labor and formwork account for the remainder.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">curb &amp; gutter</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
+        Curb & Gutter Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate the concrete volume needed for curb and gutter sections. Whether you are planning a driveway transition, street curb, or parking lot drainage channel, this calculator handles the combined curb and gutter cross-section with adjustable dimensions.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <CurbGutterCalc client:visible />
+    </section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">
+        How to Calculate Curb & Gutter Concrete
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Calculating concrete for a combined curb and gutter section requires treating each part of the cross-section separately.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Calculate Curb Cross-Section:</strong> Convert curb width and height from inches to feet, then multiply. This gives the cross-sectional area of the curb in square feet.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Curb Volume (cu ft) = (Width in &divide; 12) &times; (Height in &divide; 12) &times; Length (ft)
+          </div>
+        </li>
+        <li>
+          <strong>Calculate Gutter Cross-Section:</strong> Do the same for the gutter width and depth.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Gutter Volume (cu ft) = (Width in &divide; 12) &times; (Depth in &divide; 12) &times; Length (ft)
+          </div>
+        </li>
+        <li>
+          <strong>Total Volume:</strong> Add the two volumes together. Convert to cubic yards by dividing by 27. Apply 5-10% waste for form overflow and grade variations.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much concrete is needed for a standard curb and gutter?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            A standard 6×18 curb with a 24×6 gutter requires about 0.37 cubic yards per 10 linear feet. For 100 feet, plan on 3.7 cubic yards including 5% waste.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">What is the standard size of a curb and gutter?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Standard dimensions are curb: 6 inches wide × 18 inches tall, gutter: 24-36 inches wide × 6 inches deep. The combined width is typically 30-42 inches. Local DOT specifications may vary.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much does curb and gutter concrete cost?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Installed curb and gutter costs $12-$25 per linear foot (2026). Material is $8-$12 per foot for ready-mix concrete. The remainder covers form setup, labor, and finishing. For small DIY projects, bagged concrete may be cheaper.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate concrete for rectangular pours.</span>
+        </a>
+        <a href="/calculators/concrete/footing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Footing Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate volume for pier footings.</span>
+        </a>
+        <a href="/calculators/concrete/mix-ratio/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Mix Ratio Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Calculate cement, sand, and gravel quantities.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

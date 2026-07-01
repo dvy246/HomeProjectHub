@@ -2,55 +2,49 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteFootingCalc from "../../../components/calculators/ConcreteFootingCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/footing/";
 
 const title = "Concrete Footing Calculator";
 const description = "Calculate concrete requirements for post hole foundations, deck footings, or fence posts. Computes total volume in yards and bag counts for square and cylinder holes.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Concrete Footing Volume Formula",
+    description: "Calculate cylinder pier footing and square structural block footing volume.",
+    formula: "Volume = Area × Depth",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete for a Footing",
+    "Determine the volume of concrete needed for deck footings or pier holes.",
+    [
+      {
+        heading: "Determine the footing shape",
+        text: "Identify whether your footing is cylindrical (round post hole) or rectangular (block footing).",
+      },
+      {
+        heading: "Measure the dimensions",
+        text: "For cylindrical: measure the diameter and depth. For rectangular: measure length, width, and depth.",
+      },
+      {
+        heading: "Calculate volume per footing",
+        text: "For cylinders: V = π × r² × depth. For rectangles: V = length × width × depth. Multiply by the number of footings.",
+      },
+    ]
+  ),
+  faqPageSchema([
     {
-      "@type": "MathSolver",
-      "@id": "https://homeprojecthub.com/calculators/concrete/footing/#math-solver",
-      "name": "Concrete Footing Volume Math",
-      "description": "Calculates cylinder pier footing and square structural block footing volume.",
-      "potentialAction": {
-        "@type": "SolveAction",
-        "target": "https://homeprojecthub.com/calculators/concrete/footing/?equation={equation}"
-      }
+      q: "How deep should a concrete deck footing be?",
+      a: "Footings must extend below your local frost line to prevent shifting during freeze-thaw cycles. In most northern regions, this means a minimum depth of 36 to 48 inches. Always consult local municipal building codes.",
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://homeprojecthub.com/calculators/concrete/footing/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How deep should a concrete deck footing be?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Footings must extend below your local frost line to prevent shifting during freeze-thaw cycles. In most northern regions, this means a minimum depth of 36 to 48 inches. Always consult local municipal building codes."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What diameter hole do I need for a 4x4 post?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "As a rule of thumb, the diameter of your post hole footing should be three times the width of the post. For a standard 4x4 structural wood post (which actually measures 3.5 inches), you need a minimum hole diameter of 10 to 12 inches."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much concrete does a 12-inch by 3-foot footing hold?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A cylindrical footing with a 12-inch diameter and a 3-foot depth has a volume of approximately 2.36 cubic feet. This requires about 4 bags of 80lb concrete mix (yielding 0.6 cu ft per bag) or 5.2 bags of 60lb mix."
-          }
-        }
-      ]
-    }
-  ]
-};
+      q: "What diameter hole do I need for a 4x4 post?",
+      a: "The diameter of your post hole footing should be three times the width of the post. For a standard 4x4 post (3.5 inches actual), you need a minimum hole diameter of 10 to 12 inches.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

@@ -4,7 +4,6 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", SFMono-Regular, Consolas, monospace;
 
-  /* Brand accent — warm amber for construction/contracting feel */
   --color-brand-50: #fffbeb;
   --color-brand-100: #fef3c7;
   --color-brand-200: #fde68a;
@@ -15,18 +14,30 @@
   --color-brand-700: #b45309;
   --color-brand-800: #92400e;
   --color-brand-900: #78350f;
+
+  --animate-fade-in-up: fadeInUp 0.3s ease-out;
+  --animate-shimmer: shimmer 1.5s infinite;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 @layer base {
   :root {
-    /* Light mode — clean, high-contrast, paper-like */
     --bg: #ffffff;
     --bg-subtle: #fafafa;
     --bg-muted: #f4f4f5;
     --bg-inset: #f9fafb;
     --fg: #09090b;
-    --fg-secondary: #52525b;
-    --fg-muted: #a1a1aa;
+    --fg-secondary: #3f3f46;
+    --fg-muted: #52525b;
     --border: #e4e4e7;
     --border-strong: #d4d4d8;
     --border-hover: #09090b;
@@ -44,7 +55,6 @@
   }
 
   html.dark {
-    /* Dark mode — true black like Linear/Vercel */
     --bg: #000000;
     --bg-subtle: #0a0a0a;
     --bg-muted: #18181b;
@@ -68,9 +78,7 @@
     --card-bg-hover: #111113;
   }
 
-  * {
-    border-color: var(--border);
-  }
+  * { border-color: var(--border); }
 
   body {
     background-color: var(--bg);
@@ -80,16 +88,10 @@
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Premium focus ring */
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible,
-  [tabindex]:focus-visible {
+  a:focus-visible, button:focus-visible, input:focus-visible,
+  select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ring);
     border-radius: 4px;
@@ -100,11 +102,8 @@
     text-wrap: balance;
   }
 
-  p, li {
-    text-wrap: pretty;
-  }
+  p, li { text-wrap: pretty; }
 
-  /* Smooth theme transition */
   @media (prefers-reduced-motion: no-preference) {
     body, * {
       transition-duration: 0.15s;
@@ -120,74 +119,40 @@
       scroll-behavior: auto !important;
     }
   }
+
+  button, a, input, select, textarea, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #mobile-nav { overscroll-behavior: contain; }
 }
 
-@layer components {
-  /* Premium card elevation */
-  .card-elevated {
-    box-shadow:
-      0 1px 2px hsl(var(--shadow-color) / 0.04),
-      0 1px 3px hsl(var(--shadow-color) / 0.06);
+@utility card-elevated {
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.04), 0 1px 3px hsl(var(--shadow-color) / 0.06);
+  &:hover {
+    box-shadow: 0 4px 6px hsl(var(--shadow-color) / 0.07), 0 10px 15px hsl(var(--shadow-color) / 0.05);
   }
+}
 
-  .card-elevated:hover {
-    box-shadow:
-      0 4px 6px hsl(var(--shadow-color) / 0.07),
-      0 10px 15px hsl(var(--shadow-color) / 0.05);
-  }
+@utility bg-grid {
+  background-image: linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
+}
 
-  /* Subtle grid background for hero */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, var(--border) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
-  }
+@utility text-gradient {
+  background: linear-gradient(135deg, var(--fg) 0%, var(--fg-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  /* Animated gradient text */
-  .text-gradient {
-    background: linear-gradient(135deg, var(--fg) 0%, var(--fg-secondary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* Shimmer for loading states */
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  .shimmer {
-    background: linear-gradient(90deg, var(--bg-muted) 25%, var(--bg-subtle) 50%, var(--bg-muted) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  /* Fade-in-up animation for result reveal */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.3s ease-out;
-  }
-
-  /* Smooth accordion */
-  .accordion-content {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.2s ease;
-  }
-
-  .accordion-content[data-open="true"] {
-    grid-template-rows: 1fr;
-  }
-
-  .accordion-content > div {
-    overflow: hidden;
-  }
+@utility accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+  &[data-open="true"] { grid-template-rows: 1fr; }
+  & > div { overflow: hidden; }
 }

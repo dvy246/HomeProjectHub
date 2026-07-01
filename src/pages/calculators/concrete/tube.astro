@@ -2,21 +2,53 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteTubeCalc from "../../../components/calculators/ConcreteTubeCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/tube/";
 
 const title = "Concrete Tube Form Calculator";
 const description = "Calculate concrete volume for cardboard tube forms (Sonotubes). Enter diameter, depth, and quantity to get cubic yards and bag counts.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/concrete/tube/#math-solver", "name": "Concrete Tube Form Volume Calculator", "description": "Calculates cylindrical tube form volume for concrete piers.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/concrete/tube/?equation={equation}" } },
-    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/concrete/tube/#faq", "mainEntity": [
-      { "@type": "Question", "name": "How much concrete do I need for an 8-inch Sonotube?", "acceptedAnswer": { "@type": "Answer", "text": "An 8-inch diameter tube has a cross-sectional area of 0.349 square feet. For each foot of depth, it requires 0.349 cubic feet of concrete. A 4-foot deep 8-inch tube needs 1.40 cubic feet, which equals about 2.3 bags of 80lb concrete mix." } },
-      { "@type": "Question", "name": "How deep should concrete tube forms be?", "acceptedAnswer": { "@type": "Answer", "text": "Tube forms should extend below your local frost line to prevent frost heave. In most northern US regions, this means 36 to 48 inches. In southern regions without frost, a minimum of 24 inches is typical. Always check local building codes." } },
-      { "@type": "Question", "name": "What size Sonotube do I need for a 4x4 post?", "acceptedAnswer": { "@type": "Answer", "text": "For a standard 4x4 post (3.5 inches actual), use an 8-inch diameter tube form. For a 6x6 post (5.5 inches actual), use a 10-inch or 12-inch tube. The general rule is the tube diameter should be at least 2-3 times the post width." } }
-    ]}
-  ]
-};
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Concrete Tube Form Volume Calculator",
+    description: "Calculates cylindrical tube form volume for concrete piers using Sonotubes and other form tubes.",
+    formula: "V = π × (D/2)² × d × N",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete for Tube Forms",
+    "Determine the concrete needed for cylindrical tube forms (Sonotubes).",
+    [
+      {
+        heading: "Find the radius",
+        text: "Tube diameter (in inches) ÷ 2, then convert to feet by dividing by 12.",
+      },
+      {
+        heading: "Calculate cross-section area",
+        text: "Area = π × radius² in square feet.",
+      },
+      {
+        heading: "Multiply by depth and quantity",
+        text: "Volume = area × depth (ft) × number of tubes. Convert to cu yd (÷27).",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How much concrete for an 8-inch Sonotube?",
+      a: "An 8-inch tube has 0.349 sq ft cross-section. Per foot of depth: 0.349 cu ft. A 4-ft deep tube needs 1.40 cu ft, about 2.3 bags of 80lb mix.",
+    },
+    {
+      q: "How deep should concrete tube forms be?",
+      a: "Below your local frost line. Northern US: 36-48 inches. Southern (no frost): minimum 24 inches. Always check local building codes.",
+    },
+    {
+      q: "What size Sonotube for a 4×4 post?",
+      a: "Use 8-inch diameter for a 4×4 (3.5″ actual). For a 6×6 (5.5″ actual), use 10 or 12-inch tube. Tube diameter should be at least 2-3× the post width.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

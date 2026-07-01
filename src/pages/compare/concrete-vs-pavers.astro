@@ -2,20 +2,16 @@
 import Layout from "../../layouts/Layout.astro";
 import CompareMaterials from "../../components/CompareMaterials";
 import AdSlot from "../../components/AdSlot.astro";
+import { faqPageSchema } from "../../lib/schema";
 
 const title = "Concrete vs Pavers vs Gravel: Which Material is Best?";
 const description = "Compare poured concrete, concrete pavers, and pea gravel for your patio or driveway. Calculate quantities and compare durability, maintenance, DIY difficulty, and lifespan.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://homeprojecthub.com/compare/concrete-vs-pavers/#faq",
-  "mainEntity": [
-    { "@type": "Question", "name": "Is concrete or pavers better for a patio?", "acceptedAnswer": { "@type": "Answer", "text": "Pavers are better for DIY projects because they are easier to install and repair. Concrete is better for a smooth, permanent surface that can support heavy furniture or vehicles. Pavers cost more upfront but last longer with less cracking." } },
-    { "@type": "Question", "name": "How much does a concrete patio cost vs pavers?", "acceptedAnswer": { "@type": "Answer", "text": "A poured concrete patio costs $4-$8 per square foot installed. Concrete pavers cost $8-$15 per square foot installed. Gravel is the cheapest at $1-$3 per square foot. DIY installation reduces all costs by 40-60%." } },
-    { "@type": "Question", "name": "Which lasts longer: concrete or pavers?", "acceptedAnswer": { "@type": "Answer", "text": "Both can last 25-50 years. Poured concrete may crack over time due to ground movement, while individual pavers can be replaced if damaged. Gravel lasts indefinitely but requires regular raking and top-off." } }
-  ]
-};
+const schema = faqPageSchema([
+  { q: "Is concrete or pavers better for a patio?", a: "Pavers are better for DIY projects because they are easier to install and repair. Concrete is better for a smooth, permanent surface that can support heavy furniture or vehicles. Pavers cost more upfront but last longer with less cracking." },
+  { q: "How much does a concrete patio cost vs pavers?", a: "A poured concrete patio costs $4-$8 per square foot installed. Concrete pavers cost $8-$15 per square foot installed. Gravel is the cheapest at $1-$3 per square foot. DIY installation reduces all costs by 40-60%." },
+  { q: "Which lasts longer: concrete or pavers?", a: "Both can last 25-50 years. Poured concrete may crack over time due to ground movement, while individual pavers can be replaced if damaged. Gravel lasts indefinitely but requires regular raking and top-off." },
+], "https://homeprojecthub.com/compare/concrete-vs-pavers/");
 ---
 
 <Layout title={title} description={description} schema={schema}>

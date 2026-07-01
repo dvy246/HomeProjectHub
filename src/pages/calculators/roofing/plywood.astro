@@ -2,21 +2,53 @@
 import Layout from "../../../layouts/Layout.astro";
 import PlywoodDeckCalc from "../../../components/calculators/PlywoodDeckCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/roofing/plywood/";
 
 const title = "Roof Plywood / OSB Deck Calculator";
 const description = "Calculate how many sheets of plywood or OSB sheathing you need for your roof. Accounts for pitch, sheet size (4x8, 4x10, 4x12), and waste factor.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/roofing/plywood/#math-solver", "name": "Roof Plywood Deck Calculator", "description": "Calculates plywood or OSB sheathing sheets for roof decking.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/roofing/plywood/?equation={equation}" } },
-    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/roofing/plywood/#faq", "mainEntity": [
-      { "@type": "Question", "name": "How many sheets of plywood do I need for my roof?", "acceptedAnswer": { "@type": "Answer", "text": "A standard 4x8 sheet of plywood covers 32 square feet. Divide your total roof area (including waste) by 32 to get the number of sheets. For a 1,500 sq ft roof with 10% waste, you need 1,650 sq ft divided by 32, which equals approximately 52 sheets." } },
-      { "@type": "Question", "name": "What thickness plywood should I use for a roof?", "acceptedAnswer": { "@type": "Answer", "text": "Roof sheathing should be at minimum 7/16-inch OSB or 1/2-inch plywood for rafters spaced 16 inches on center. For rafters spaced 24 inches on center, use 5/8-inch plywood or 19/32-inch OSB to prevent sagging under snow and wind loads." } },
-      { "@type": "Question", "name": "Should I use plywood or OSB for roof decking?", "acceptedAnswer": { "@type": "Answer", "text": "OSB is less expensive and more commonly used for roof decking. However, plywood dries faster and holds fasteners better. In high-humidity or coastal areas, plywood is preferred. For most residential applications, OSB is sufficient and more cost-effective." } }
-    ]}
-  ]
-};
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Roof Plywood Deck Calculator",
+    description: "Calculates plywood or OSB sheathing sheets for roof decking.",
+    formula: "Sheets = (Footprint × PitchMultiplier × (1 + Waste)) ÷ SheetArea",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Roof Sheathing Sheets",
+    "Determine the number of plywood or OSB sheets for your roof deck.",
+    [
+      {
+        heading: "Calculate roof area",
+        text: "Multiply building footprint by the pitch multiplier: √(1 + (rise/12)²).",
+      },
+      {
+        heading: "Divide by sheet coverage",
+        text: "Standard 4×8 sheet = 32 sq ft. Use total roof area ÷ sheet area, rounding up.",
+      },
+      {
+        heading: "Add waste factor",
+        text: "Add 10% for waste and off-cuts. Order extra sheets for ridge and valley cuts.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How many sheets of plywood for my roof?",
+      a: "Divide total roof area (including waste) by 32 (4×8 sheet). A 1,500 sq ft roof with 10% waste: 1,650 ÷ 32 ≈ 52 sheets.",
+    },
+    {
+      q: "What thickness plywood for a roof?",
+      a: "Minimum 7/16″ OSB or 1/2″ plywood for rafters at 16″ o.c. For 24″ o.c. rafters, use 5/8″ plywood or 19/32″ OSB.",
+    },
+    {
+      q: "Plywood or OSB for roof decking?",
+      a: "OSB is cheaper and common for roof decking. Plywood dries faster and holds fasteners better — preferred in high-humidity or coastal areas.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

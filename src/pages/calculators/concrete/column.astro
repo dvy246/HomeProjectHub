@@ -2,55 +2,57 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteColumnCalc from "../../../components/calculators/ConcreteColumnCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/column/";
 
 const title = "Concrete Column Calculator";
 const description = "Calculate concrete volume for round and square columns. Computes cubic yards, bag counts, and weight for any number of structural columns.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Concrete Column Volume Calculator",
+    description: "Calculates round and square column volume for concrete pours.",
+    formula: "V = π × r² × h (round) or V = w² × h (square)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete for a Column",
+    "Determine the volume of concrete needed for round or square structural columns.",
+    [
+      {
+        heading: "Choose the column shape",
+        text: "Select round or square. For round columns, measure the diameter. For square, measure the side length.",
+      },
+      {
+        heading: "Measure height and calculate area",
+        text: "For round: area = π × (diameter/2)². For square: area = side × side. All in feet.",
+      },
+      {
+        heading: "Multiply by height and quantity",
+        text: "Volume = area × height (ft) × number of columns. Convert cubic feet to cubic yards by dividing by 27.",
+      },
+    ]
+  ),
+  faqPageSchema([
     {
-      "@type": "MathSolver",
-      "@id": "https://homeprojecthub.com/calculators/concrete/column/#math-solver",
-      "name": "Concrete Column Volume Calculator",
-      "description": "Calculates round and square column volume for concrete pours.",
-      "potentialAction": {
-        "@type": "SolveAction",
-        "target": "https://homeprojecthub.com/calculators/concrete/column/?equation={equation}"
-      }
+      q: "How do you calculate concrete volume for a round column?",
+      a: "Use the cylinder volume formula: V = π × r² × h. Convert the diameter to feet by dividing by 12, take half for the radius, square it, multiply by π, then multiply by the height in feet.",
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://homeprojecthub.com/calculators/concrete/column/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do you calculate concrete volume for a round column?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "For a round column, use the cylinder volume formula: V = pi x radius squared x height. Convert the diameter to feet by dividing by 12, then halve it for the radius. Square the radius, multiply by pi (3.14159), then multiply by the column height in feet to get cubic feet."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much concrete does a 12-inch round column need per foot of height?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A 12-inch diameter round column has a cross-sectional area of 0.785 square feet. For each foot of height, it requires 0.785 cubic feet of concrete, which equals approximately 1.3 bags of 80lb concrete mix."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the standard size for concrete porch columns?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Residential porch columns typically range from 10 to 12 inches in diameter for round columns, or 12x12 inches for square columns. Load-bearing columns may need to be 14-16 inches depending on the span and roof weight they support."
-          }
-        }
-      ]
-    }
-  ]
-};
+      q: "How much concrete does a 12-inch round column need per foot?",
+      a: "A 12-inch diameter round column has a cross-sectional area of 0.785 sq ft. For each foot of height, it needs 0.785 cu ft of concrete, or about 1.3 bags of 80lb mix.",
+    },
+    {
+      q: "What is the standard size for concrete porch columns?",
+      a: "Residential porch columns typically range from 10-12 inches diameter for round, or 12x12 inches for square. Load-bearing columns may need 14-16 inches depending on structural requirements.",
+    },
+    {
+      q: "How many bags of concrete for a 12x12 square column?",
+      a: "A 12x12 inch square column has a cross-section of 1 sq ft. For an 8-foot height, that's 8 cu ft. With an 80lb bag yielding 0.6 cu ft, you need about 14 bags per column.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

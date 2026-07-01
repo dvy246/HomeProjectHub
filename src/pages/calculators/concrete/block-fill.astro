@@ -1,0 +1,183 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BlockFillCalc from "../../../components/calculators/BlockFillCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/concrete/block-fill/";
+
+const title = "Concrete Block & Fill Calculator";
+const description = "Calculate number of concrete blocks (CMU), mortar bags, and grout fill needed for walls. Supports multiple block sizes and core fill options.";
+
+const schema = graphSchema(
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Concrete Block Quantity Formula",
+    description: "Calculate block count based on wall area and block face area.",
+    formula: "Blocks = (Wall Length × Wall Height) ÷ Block Face Area × (1 + Waste)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Concrete Block Quantity",
+    "Follow these steps to estimate blocks, mortar, and grout for a CMU wall.",
+    [
+      {
+        heading: "Calculate wall area",
+        text: "Measure the length and height of the wall in feet. Multiply them to get the total surface area in square feet.",
+      },
+      {
+        heading: "Determine blocks per square foot",
+        text: "A standard 8x8x16 block covers 1.125 sq ft including the mortar joint (1.78 sq ft face minus ⅜ inch joint). Divide 1 by the adjusted face area for blocks per sq ft.",
+      },
+      {
+        heading: "Add waste and estimate materials",
+        text: "Multiply raw block count by 1.05 to 1.10 for cuts and breakage. Mortar is roughly 1 bag per 100 blocks. Grout fill depends on core configuration.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How many concrete blocks do I need per square foot?",
+      a: "For standard 8x8x16 blocks with a ⅜ inch mortar joint, you need approximately 0.89 blocks per square foot. That means one block covers about 1.125 sq ft of wall area.",
+    },
+    {
+      q: "How much mortar do I need per block?",
+      a: "A standard 80lb bag of mortar mix covers approximately 30-40 blocks (8x8x16). For a large wall, plan on 1 bag per 35 blocks. This includes both the bed joint and head joints.",
+    },
+    {
+      q: "Should I fill concrete blocks with grout?",
+      a: "Filling cores with grout adds structural strength and is required for load-bearing walls, earthquake zones, and walls over 8 feet tall. Partial fill (every other core) is common for retaining walls under 4 feet.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">block fill</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
+        Concrete Block & Fill Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate the number of concrete masonry units (CMU blocks), mortar bags, and grout fill needed for any wall project. Supports block sizes from 4 to 12 inches wide with optional core filling.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <BlockFillCalc client:visible />
+    </section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">
+        How to Calculate Block Quantity
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Calculating block quantity is based on the face area of each block and the total wall surface.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Find the Wall Area:</strong> Measure the length and height of the wall in feet. Multiply for total square footage: Area = Length × Height.
+        </li>
+        <li>
+          <strong>Blocks Per Square Foot:</strong> A standard 8x8x16 block with ⅜ inch joint covers approximately 1.125 sq ft. Divide 1 by this to get ~0.89 blocks per sq ft.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Blocks = Wall Area &times; Blocks per sq ft &times; (1 + Waste)
+          </div>
+        </li>
+        <li>
+          <strong>Mortar Estimation:</strong> Plan on one 80lb bag of mortar mix per 35 blocks. Add 10% for waste.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="example-calculation" class="text-xl font-bold tracking-tight mb-4">
+        Example Calculation
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        For a <strong>30 ft long, 8 ft tall wall</strong> using <strong>8x8x16 blocks with 5% waste</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+        <li><strong>Wall area:</strong> 30 ft × 8 ft = 240 sq ft</li>
+        <li><strong>Raw blocks:</strong> 240 sq ft × 0.89 blocks/sq ft = 214 blocks</li>
+        <li><strong>With 5% waste:</strong> 214 × 1.05 = 225 blocks</li>
+        <li><strong>Mortar needed:</strong> 225 ÷ 35 = ~7 bags of 80lb mortar mix</li>
+        <li><strong>Grout (full fill):</strong> ~7.2 cu ft of grout = 12 bags of 80lb grout mix</li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">
+        Common Block Wall Mistakes
+      </h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Not accounting for openings:</strong> For walls with doors or windows, subtract the area of each opening from the total wall area before calculating blocks. This calculator uses gross wall area.
+        </li>
+        <li>
+          <strong>Incorrect mortar mixing:</strong> Too much water weakens the mortar. Mix mortar to a peanut butter consistency. Let it slake for 10-15 minutes before use for maximum bond strength.
+        </li>
+        <li>
+          <strong>Skipping control joints:</strong> For walls over 20 feet long, install control joints every 20-25 ft to prevent cracking from thermal expansion and settlement.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How many concrete blocks do I need per square foot?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            For standard 8x8x16 blocks with a ⅜ inch mortar joint, you need approximately 0.89 blocks per square foot, meaning each block covers about 1.125 sq ft of wall.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much mortar do I need per block?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            One 80lb bag of mortar mix covers approximately 30-40 standard 8x8x16 blocks, including both bed and head joints. Plan for 1 bag per 35 blocks as a safe average.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Should I fill concrete blocks with grout?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Core filling adds structural strength and is required for load-bearing walls, seismic zones, and walls exceeding 8 feet in height. Partial fill (every other core) is common for retaining walls under 4 feet. Non-load-bearing partition walls typically do not require fill.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/concrete/wall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Wall Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Calculate concrete volume for poured walls.</span>
+        </a>
+        <a href="/calculators/concrete/rebar/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Rebar Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate rebar, ties, and weight for slabs.</span>
+        </a>
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate concrete volume for rectangular slabs.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

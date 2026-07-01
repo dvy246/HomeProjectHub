@@ -2,21 +2,53 @@
 import Layout from "../../../layouts/Layout.astro";
 import MetalRoofCalc from "../../../components/calculators/MetalRoofCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/roofing/metal/";
 
 const title = "Metal Roofing Calculator";
 const description = "Calculate how many metal roofing panels you need. Accounts for roof pitch, panel dimensions, and waste factor. Includes screws, closure strips, and ridge cap estimates.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/roofing/metal/#math-solver", "name": "Metal Roofing Panel Calculator", "description": "Calculates metal panel count, screws, and accessories for roofing projects.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/roofing/metal/?equation={equation}" } },
-    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/roofing/metal/#faq", "mainEntity": [
-      { "@type": "Question", "name": "How many metal roof panels do I need?", "acceptedAnswer": { "@type": "Answer", "text": "Divide your total roof area (including waste) by the coverage area of one panel. A standard 36-inch wide, 12-foot long panel covers 36 square feet. For a 1,500 sq ft roof with 7% waste, you need 1,605 sq ft divided by 36, which equals approximately 45 panels." } },
-      { "@type": "Question", "name": "How much waste should I add for metal roofing?", "acceptedAnswer": { "@type": "Answer", "text": "Metal roofing typically requires 5-10% waste factor. Simple gable roofs with few penetrations need 5%, while roofs with many valleys, dormers, or skylights need 10%. Always order a few extra panels for future repairs." } },
-      { "@type": "Question", "name": "How many screws per square foot of metal roofing?", "acceptedAnswer": { "@type": "Answer", "text": "Standard corrugated metal roofing requires approximately 1.5 screws per square foot of roof area. This includes fasteners at every rib on the overlaps and every other rib in the field. A 1,000 sq ft roof needs approximately 1,500 screws." } }
-    ]}
-  ]
-};
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Metal Roofing Panel Calculator",
+    description: "Calculates metal panel count, screws, and accessories for roofing projects.",
+    formula: "Panels = (Footprint × PitchMultiplier × (1 + Waste)) ÷ (PanelWidth × PanelLength)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Metal Roofing Panels",
+    "Determine the number of metal panels and fasteners needed.",
+    [
+      {
+        heading: "Calculate roof area",
+        text: "Multiply footprint by pitch multiplier: √(1 + (rise/12)²).",
+      },
+      {
+        heading: "Divide by panel coverage",
+        text: "Total roof area ÷ single panel area (width × length). Round up to the nearest whole panel.",
+      },
+      {
+        heading: "Calculate accessories",
+        text: "Screws: ~1.5 per sq ft. Ridge cap: ridge length + overlaps. Closure strips: panel count × 2.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How many metal roof panels do I need?",
+      a: "Divide total roof area (with waste) by panel coverage. A standard 36×144 inch panel covers 36 sq ft. For 1,500 sq ft with 7% waste: 1,605 ÷ 36 ≈ 45 panels.",
+    },
+    {
+      q: "How much waste for metal roofing?",
+      a: "5-10%. Simple gable roofs: 5%. Roofs with valleys/dormers/skylights: 10%. Order a few extra panels for future repairs.",
+    },
+    {
+      q: "How many screws per square foot?",
+      a: "Standard corrugated: ~1.5 screws per sq ft. A 1,000 sq ft roof needs approximately 1,500 screws.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

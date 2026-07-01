@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
+import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { parseNumber } from "../../lib/helpers";
 
-const METAL_PANEL_WIDTH = 36; // inches of coverage per panel (standard standing seam)
-const METAL_PANEL_LENGTH = 144; // 12 ft standard panel
+const METAL_PANEL_WIDTH = 36;
+const METAL_PANEL_LENGTH = 144;
 
 export default function MetalRoofCalc() {
   const [length, setLength] = useState<string>("40");
@@ -27,27 +28,21 @@ export default function MetalRoofCalc() {
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
 
-  const parse = (v: string) => {
-    const n = parseFloat(v);
-    return isNaN(n) || n < 0 ? 0 : n;
-  };
-
-  const lenNum = parse(length);
-  const widNum = parse(width);
-  const pitchNum = parse(pitch);
-  const pWidth = parse(panelWidth) || METAL_PANEL_WIDTH;
-  const pLength = parse(panelLength) || METAL_PANEL_LENGTH;
-  const waste = parse(wasteFactor) / 100;
+  const lenNum = parseNumber(length);
+  const widNum = parseNumber(width);
+  const pitchNum = parseNumber(pitch);
+  const pWidth = parseNumber(panelWidth) || METAL_PANEL_WIDTH;
+  const pLength = parseNumber(panelLength) || METAL_PANEL_LENGTH;
+  const waste = parseNumber(wasteFactor) / 100;
 
   const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
   const roofArea = calculateRectArea(lenNum, widNum) * pitchFactor;
   const areaWithWaste = applyWasteFactor(roofArea, waste);
 
-  // Panel coverage in sq ft
   const panelCoverageSqFt = (pWidth / 12) * (pLength / 12);
   const panels = calculatePackaging(areaWithWaste, panelCoverageSqFt);
-  const screws = Math.ceil(roofArea * 1.5); // ~1.5 screws per sq ft
-  const closureStrips = Math.ceil((lenNum * pitchFactor) / (pWidth / 12)) * 2; // top + bottom
+  const screws = Math.ceil(roofArea * 1.5);
+  const closureStrips = Math.ceil((lenNum * pitchFactor) / (pWidth / 12)) * 2;
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,9 +53,14 @@ export default function MetalRoofCalc() {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
+  const applySavedRoom = (room: SavedRoom) => {
+    setLength(room.length.toString());
+    setWidth(room.width.toString());
+    if (room.height) setPitch(room.height.toString());
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Input panel */}
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
@@ -85,35 +85,20 @@ export default function MetalRoofCalc() {
           </div>
         </Card>
 
-        <Card>
-          <h4 className="text-sm font-semibold tracking-tight mb-4">Save Roof Project</h4>
-          <form onSubmit={handleSave} className="flex gap-2 items-end">
-            <div className="flex-grow">
-              <Input label="Project name" type="text" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g. Garage Metal Roof" />
-            </div>
-            <Button type="submit" variant="secondary" className="h-10">Save</Button>
-          </form>
-          {successMessage && (
-            <p className="text-xs text-[var(--success)] font-medium mt-2 animate-fade-in-up" aria-live="polite">{successMessage}</p>
-          )}
-          {savedRooms.length > 0 && (
-            <div className="border-t border-[var(--border)] pt-4 mt-4">
-              <span className="text-xs font-medium text-[var(--fg-muted)] block mb-2">Saved Projects:</span>
-              <div className="flex flex-wrap gap-2">
-                {savedRooms.map((room) => (
-                  <button key={room.id} type="button" className="text-xs px-2.5 py-1 rounded-md bg-[var(--bg-muted)] border border-[var(--border)] hover:border-[var(--border-hover)] text-[var(--fg-secondary)] font-medium transition-colors">
-                    {room.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Card>
+        <SaveMeasurementCard
+          roomName={roomName}
+          onRoomNameChange={setRoomName}
+          onSave={handleSave}
+          successMessage={successMessage}
+          savedRooms={savedRooms}
+          onApplyRoom={applySavedRoom}
+          heading="Save Roof Project"
+          placeholder="e.g. Garage Metal Roof"
+          projectsLabel="Saved Projects:"
+        />
       </div>
 
-      {/* Output panel */}
       <div className="lg:col-span-5 flex flex-col gap-4">
-        {/* Primary result card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Metal Panel Output</h3>
           <div className="flex flex-col gap-5">
@@ -158,9 +143,8 @@ export default function MetalRoofCalc() {
           </div>
         </div>
 
-        {/* Additional materials */}
         <Card>
-          <h4 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h4>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
               <span className="text-sm font-medium">Butyl Tape (rolls)</span>

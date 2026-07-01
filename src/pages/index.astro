@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { graphSchema, webSiteSchema, faqPageSchema } from "../lib/schema";
+
+const SITE_URL = "https://homeprojecthub.com";
 
 const title = "Professional Home Material Calculators";
 const description = "Free concrete and roofing calculators for homeowners and DIY builders. Calculate slabs, footings, columns, walls, shingles, metal panels, and plywood decks. Save your dimensions and compare materials.";
@@ -27,27 +30,10 @@ const faqs = [
   { q: "Do you support metric units?", a: "Every concrete calculator supports both imperial (feet, inches, cubic yards) and metric (meters, centimeters, cubic meters) with a one-click toggle. Results update instantly." },
 ];
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://homeprojecthub.com/#website",
-      "url": "https://homeprojecthub.com/",
-      "name": "HomeProjectHub",
-      "description": "Free construction calculators for concrete and roofing projects."
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://homeprojecthub.com/#faq",
-      "mainEntity": faqs.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    }
-  ]
-};
+const schema = graphSchema(
+  webSiteSchema("HomeProjectHub", "Free construction calculators for concrete and roofing projects."),
+  faqPageSchema(faqs, SITE_URL)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

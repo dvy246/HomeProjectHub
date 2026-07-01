@@ -2,21 +2,53 @@
 import Layout from "../../../layouts/Layout.astro";
 import RoofShingleCalc from "../../../components/calculators/RoofShingleCalc";
 import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/roofing/shingles/";
 
 const title = "Roof Shingle Calculator";
 const description = "Calculate how many bundles of asphalt shingles you need for your roof. Accounts for roof pitch, gable or hip shape, and waste factor.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "MathSolver", "@id": "https://homeprojecthub.com/calculators/roofing/shingles/#math-solver", "name": "Roof Shingle Calculator", "description": "Calculates shingle bundles and squares needed based on roof dimensions and pitch.", "potentialAction": { "@type": "SolveAction", "target": "https://homeprojecthub.com/calculators/roofing/shingles/?equation={equation}" } },
-    { "@type": "FAQPage", "@id": "https://homeprojecthub.com/calculators/roofing/shingles/#faq", "mainEntity": [
-      { "@type": "Question", "name": "How many bundles of shingles do I need for 1000 square feet?", "acceptedAnswer": { "@type": "Answer", "text": "One square of shingles covers 100 square feet and consists of 3 bundles. For 1,000 square feet of roof area, you need 10 squares, which equals 30 bundles. Add 10-15% for waste, bringing the total to approximately 33-35 bundles." } },
-      { "@type": "Question", "name": "How does roof pitch affect shingle quantity?", "acceptedAnswer": { "@type": "Answer", "text": "Steeper roofs have more surface area than flat roofs for the same building footprint. A 4:12 pitch has a multiplier of 1.054, while a 12:12 pitch has a multiplier of 1.414. This means a 12:12 roof requires about 34% more shingles than a flat roof covering the same footprint." } },
-      { "@type": "Question", "name": "What waste factor should I use for shingles?", "acceptedAnswer": { "@type": "Answer", "text": "For gable roofs, use 10-12% waste factor. For hip roofs, use 12-15% due to more cuts at the hips and ridges. If your roof has many valleys, dormers, or complex geometry, increase to 15-18%." } }
-    ]}
-  ]
-};
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Roof Shingle Calculator",
+    description: "Calculates shingle bundles and squares needed based on roof dimensions and pitch.",
+    formula: "Bundles = (Footprint × PitchMultiplier × (1 + Waste)) ÷ (100 × 3)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Roof Shingle Quantity",
+    "Determine the number of shingle bundles and squares for your roof.",
+    [
+      {
+        heading: "Calculate footprint area",
+        text: "Multiply building length by width to get the flat footprint in square feet.",
+      },
+      {
+        heading: "Apply pitch multiplier",
+        text: "Multiply the footprint by the pitch correction factor: √(1 + (rise/12)²).",
+      },
+      {
+        heading: "Add waste and convert",
+        text: "Add 10-15% waste. Roof area in squares = total ÷ 100. Bundles = squares × 3.",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "How many bundles for 1000 square feet?",
+      a: "One square = 100 sq ft = 3 bundles. For 1000 sq ft: 10 squares = 30 bundles. Add 10-15% waste for 33-35 bundles.",
+    },
+    {
+      q: "How does roof pitch affect shingle quantity?",
+      a: "Steeper roofs have more surface area. A 4:12 pitch has a 1.054 multiplier, while a 12:12 pitch has 1.414 — requiring 34% more shingles for the same footprint.",
+    },
+    {
+      q: "What waste factor should I use?",
+      a: "Gable roofs: 10-12%. Hip roofs: 12-15% (more hip/ridge cuts). Complex roofs with valleys/dormers: 15-18%.",
+    },
+  ], canonical)
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

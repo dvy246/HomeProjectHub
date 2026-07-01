@@ -1,0 +1,150 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import IceWaterShieldCalc from "../../../components/calculators/IceWaterShieldCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/roofing/ice-water-shield/";
+
+const title = "Ice & Water Shield Calculator";
+const description = "Calculate ice and water shield underlayment needed for roof eaves, rakes, and valleys. Estimate rolls and coverage area based on roof dimensions and pitch.";
+
+const schema = graphSchema(
+  mathSolverSchema({
+    name: "Ice & Water Shield Coverage Formula",
+    description: "Calculate total underlayment area based on eave length, overhang, valley length, and roof pitch.",
+    formula: "Total Area = (Eave Length × Overhang × Pitch Factor) + (Valley Length × Valley Width × 2)",
+    url: canonical,
+  }),
+  howToSchema(
+    "Calculate Ice & Water Shield Quantities",
+    "Follow these steps to estimate the ice and water shield underlayment needed for your roof.",
+    [
+      {
+        heading: "Measure eaves and rakes",
+        text: "Measure the total linear footage of the eaves (horizontal edges) and rakes (sloped edges). In cold climates, ice & water shield extends 3 ft or more from the eave edge.",
+      },
+      {
+        heading: "Measure valleys",
+        text: "Valleys need protection extending 12-24 inches on each side of the valley centerline. Measure each valley's length and multiply by the combined width.",
+      },
+      {
+        heading: "Apply pitch factor",
+        text: "Steeper roofs have more surface area. Multiply the eave area by the pitch factor (1.06 for 4:12, 1.12 for 6:12, 1.20 for 8:12).",
+      },
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "Where is ice and water shield required on a roof?",
+      a: "Ice and water shield is required at all eaves (extending 24-36 inches past the interior wall line), in valleys, around chimneys and skylights, and at roof-to-wall intersections. Building codes in cold climates typically mandate it on the entire roof deck.",
+    },
+    {
+      q: "How far up the roof should ice and water shield go?",
+      a: "Standard practice is 3 ft (36 inches) up from the eave edge measured along the roof slope. In areas with heavy snow or ice dam risk, extend it 6 ft or to 24 inches past the interior wall line, whichever is greater.",
+    },
+    {
+      q: "Can I install shingles directly over ice and water shield?",
+      a: "Yes, asphalt shingles can be installed directly over ice and water shield. The membrane provides a secondary waterproof barrier beneath the shingles. However, you must ensure the shingles are properly nailed through the membrane into the deck.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/roofing/" class="hover:underline">roofing</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">ice &amp; water shield</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">
+        Ice & Water Shield Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate the ice and water shield underlayment needed to protect your roof&rsquo;s most vulnerable areas. This calculator covers eave protection, rake edges, and valley flashing to help you budget rolls of self-adhering waterproof membrane.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <IceWaterShieldCalc client:visible />
+    </section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">
+        How to Calculate Ice & Water Shield
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Ice and water shield is applied to specific vulnerable areas of the roof. The total quantity depends on the roof geometry and local building code requirements.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Eave Protection Area:</strong> Multiply the total eave length by the overhang width (typically 3 ft). Apply the pitch factor since the membrane follows the roof slope.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Eave Area = Eave Length &times; Overhang Width &times; Pitch Factor
+          </div>
+        </li>
+        <li>
+          <strong>Valley Protection:</strong> Valleys need membrane extending 12-24 inches on each side. Multiply valley length by the total width (both sides) in feet.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Valley Area = Valley Length &times; (Valley Width &times; 2 sides)
+          </div>
+        </li>
+        <li>
+          <strong>Total Rolls:</strong> Add all areas and divide by the roll coverage (typically 200 sq ft per roll for standard 36-inch wide rolls). Add 8-12% for overlap and waste.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">
+        Frequently Asked Questions
+      </h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Where is ice and water shield required on a roof?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            It is required at eaves (24-36 inches past the interior wall), valleys, around chimneys and skylights, and at roof-to-wall intersections. Many cold-climate building codes mandate full deck coverage in ice-prone areas.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How far up the roof should ice and water shield go?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Standard practice is 3 ft (36 inches) up from the eave edge along the roof slope. For areas with heavy snow or ice dam risk, extend 6 ft or to 24 inches past the interior wall line.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Can I install shingles directly over ice and water shield?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Yes, asphalt shingles go directly over ice and water shield. Nail properly through the membrane into the deck. Do not nail into the membrane within the overlap zone without sealing the nail hole.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">
+        Related Construction Tools
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/roofing/shingles/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Roof Shingle Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Calculate shingles, bundles, and squares needed.</span>
+        </a>
+        <a href="/calculators/roofing/metal/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Metal Roof Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Estimate metal panels, screws, and closures.</span>
+        </a>
+        <a href="/calculators/roofing/pitch/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Roof Pitch Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)] leading-normal">Determine roof pitch angle and slope.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>
