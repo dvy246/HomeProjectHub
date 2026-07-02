@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import RoofShingleCalc from "../../../components/calculators/RoofShingleCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/shingles/";
 
 const title = "Roof Shingle Calculator";
 const description = "Calculate how many bundles of asphalt shingles you need for your roof. Accounts for roof pitch, gable or hip shape, and waste factor.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Roof Shingle Calculator",
     description: "Calculates shingle bundles and squares needed based on roof dimensions and pitch.",

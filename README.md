@@ -1,46 +1,54 @@
-# Astro Starter Kit: Basics
+# HomeProjectHub
+
+Free construction and home improvement planning calculators built with Astro.js.
+
+**Live:** https://homeprojecthub.com
+
+## Calculators
+
+- **Concrete:** Slab, Footing, Column, Wall, Tube, Steps, Curb & Gutter, Rebar, Block Fill, Mix Ratio
+- **Roofing:** Shingles, Metal, Plywood Deck, Pitch, Ice & Water Shield, Snow Load
+- **Paint:** Interior paint coverage with door/window deductions
+- **Tile:** Floor tile with layout pattern waste factors
+
+## Features
+
+- Workspace: Save room dimensions across all calculators (browser localStorage)
+- Compare: Side-by-side material comparison matrix
+- Guides: In-depth planning guides
+- Planner: End-to-end project workflow
+- Dark mode, metric/imperial toggle, accessible UI
+
+## Tech Stack
+
+- **Framework:** Astro 7 (Static Site Generation)
+- **Interactive:** React 19 Islands
+- **Styling:** Tailwind CSS v4
+- **Hosting:** Cloudflare Pages
+
+## Development
 
 ```sh
-npm create astro@latest -- --template basics
+npm run dev       # Start dev server (localhost:4321)
+npm run build     # Production build to ./dist/
+npm run preview   # Preview production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Project Structure
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+src/
+├── components/
+│   ├── calculators/     # React calculator components (islands)
+│   └── ui/              # Reusable UI components
+├── content/guide/       # Markdown guide content
+├── layouts/             # Page layout templates
+├── lib/                 # Shared utilities (geometry, material engine, storage, SEO)
+└── pages/              # Astro pages (routes)
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Architecture
 
-## 🧞 Commands
+All calculators use a shared formula engine (`lib/geometry.ts` + `lib/materialEngine.ts`) for consistent math. React components hydrate on client scroll (`client:visible`) for optimal performance. AdSense is lazy-loaded via IntersectionObserver.
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+No tracking cookies by default. All user data stays in browser localStorage.

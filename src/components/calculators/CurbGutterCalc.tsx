@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -21,7 +21,7 @@ export default function CurbGutterCalc() {
   const curbVolume = len * cw * ch;
   const gutterVolume = len * gw * gd;
   const totalVolumeCubicFeet = curbVolume + gutterVolume;
-  const totalVolumeCubicYards = totalVolumeCubicFeet / 27;
+  const _totalVolumeCubicYards = totalVolumeCubicFeet / 27;
   const volumeWithWaste = totalVolumeCubicFeet * (1 + waste);
   const yardsWithWaste = volumeWithWaste / 27;
 

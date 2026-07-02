@@ -41,7 +41,7 @@ export function calculateRectArea(length: number, width: number): number {
  * Calculates raw area for a circle.
  */
 export function calculateCircleArea(radius: number): number {
-  return Math.PI * Math.pow(radius, 2);
+  return Math.PI * radius ** 2;
 }
 
 /**

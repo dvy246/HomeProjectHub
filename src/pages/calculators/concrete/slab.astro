@@ -2,14 +2,21 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteSlabCalc from "../../../components/calculators/ConcreteSlabCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/slab/";
 
 const title = "Concrete Slab Calculator";
 const description = "Calculate concrete volume in cubic yards, cubic feet, and number of bags needed for your rectangular slab. Perfect for patios, driveways, and shed slabs.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   webApplicationSchema(title, description, canonical),
   mathSolverSchema({
     name: "Concrete Slab Volume Formula",
@@ -77,6 +84,15 @@ const schema = graphSchema(
     <section>
       <ConcreteSlabCalc client:visible />
     </section>
+
+    <EstimateMethodology
+      formula="Volume (cu yd) = length (ft) × width (ft) × thickness (in ÷ 12) ÷ 27"
+      assumptions={[
+        "Default waste factor is user-controlled and should usually be 5-15% for small residential pours.",
+        "Bag counts use common dry mix yields: 40 lb = 0.30 cu ft, 50 lb = 0.375 cu ft, 60 lb = 0.45 cu ft, 80 lb = 0.60 cu ft.",
+        "The calculator assumes a rectangular slab with uniform thickness and does not evaluate reinforcement, soil, drainage, permits, or code requirements.",
+      ]}
+    />
 
     <!-- Section 3: How to Calculate (Step-by-step formula explanation) -->
     <section>

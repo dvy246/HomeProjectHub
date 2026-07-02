@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import CurbGutterCalc from "../../../components/calculators/CurbGutterCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/curb-gutter/";
 
 const title = "Curb & Gutter Calculator";
 const description = "Calculate concrete volume for curbs and gutters. Estimate cubic yards, cubic feet, and bag counts for street curbs, driveway transitions, and drainage channels.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   webApplicationSchema(title, description, canonical),
   mathSolverSchema({
     name: "Curb & Gutter Concrete Volume Formula",
@@ -100,6 +106,38 @@ const schema = graphSchema(
           <strong>Total Volume:</strong> Add the two volumes together. Convert to cubic yards by dividing by 27. Apply 5-10% waste for form overflow and grade variations.
         </li>
       </ol>
+    </section>
+
+    <section>
+      <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Calculation</h2>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <p class="text-sm font-semibold text-[var(--fg)] mb-2">Standard curb and gutter section &mdash; 50 linear feet</p>
+        <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+          <li><strong>Curb:</strong> 6 in wide &times; 18 in tall = 0.75 &times; 1.5 = 1.125 sq ft cross-section</li>
+          <li><strong>Gutter:</strong> 24 in wide &times; 6 in deep = 2 &times; 0.5 = 1.0 sq ft cross-section</li>
+          <li><strong>Combined volume per foot:</strong> 1.125 + 1.0 = 2.125 cu ft per linear foot</li>
+          <li><strong>Total for 50 ft:</strong> 2.125 &times; 50 = 106.25 cu ft &divide; 27 = <strong>3.94 cu yd</strong></li>
+          <li><strong>With 8% waste:</strong> 3.94 &times; 1.08 = <strong>4.25 cu yd</strong> &mdash; order 4.5 yards</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Curb &amp; Gutter Estimation</h2>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Ignoring the curb-gutter transition radius</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">The angled transition between the curb and gutter adds extra volume that simple rectangular calculations miss. Add 5-8% or model the transition as a right triangle for greater accuracy.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting form overfill and spillage</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Curb and gutter pours often have minor form leakage, overfill, and spillage. Unlike slab pours, these forms are narrow and harder to finish cleanly. Always include at least 8% waste.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Mixing up curb height vs total section height</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Standard curb height is measured from the gutter flow line, not from the subgrade. Measure from the finished gutter surface to the top of the curb, not from the bottom of the form.</p>
+        </div>
+      </div>
     </section>
 
     <section>

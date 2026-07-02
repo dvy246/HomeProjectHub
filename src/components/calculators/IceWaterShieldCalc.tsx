@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -20,7 +20,7 @@ export default function IceWaterShieldCalc() {
   const pitchNum = parseNumber(pitch);
   const waste = parseNumber(wasteFactor) / 100;
 
-  const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
+  const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
 
   const eaveArea = eLen * eWid * pitchFactor;
   const valleyArea = vLen * vWid * 2;

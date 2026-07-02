@@ -1,0 +1,160 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TileCalc from "../../../components/calculators/TileCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/tile/";
+const title = "Tile Calculator";
+const description = "Calculate how many tiles and boxes you need for floor or wall projects. Adjust for rectangular tile size, layout pattern, tiles per box, and waste factor.";
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Tile Calculator", path: "/calculators/tile/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  faqPageSchema([
+    {
+      q: "How many 12x12 tiles do I need for a 10x10 room?",
+      a: "A 10x10 room is 100 square feet. With 12x12 inch tiles (1 sq ft each), you need 100 tiles plus 10% waste = 110 tiles. If the box contains 10 tiles, that equals 11 boxes.",
+    },
+    {
+      q: "How much extra tile should I buy for waste?",
+      a: "Add 10% for grid layouts, 15% for diagonal layouts, and 20% for herringbone patterns. It's always better to have extra tiles for future repairs than to run short during installation.",
+    },
+    {
+      q: "Does tile layout pattern affect how many tiles I need?",
+      a: "Yes. Diagonal and herringbone patterns create more cut waste than straight grid layouts. Diagonal uses about 5% more, herringbone about 10% more than a standard grid layout.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">tile</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Tile Calculator</h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate how many tiles and boxes you need for flooring, backsplashes, or wall tile projects. Account for rectangular tile size, layout pattern, tiles per box, and waste before ordering.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-tile" />
+    <section><TileCalc client:visible /></section>
+
+    <EstimateMethodology
+      formula="Tiles = [area (sq ft) × 144 × (1 + waste %)] ÷ [tile width (in) × tile length (in)]"
+      assumptions={[
+        "Layout waste is added to your entered waste factor: diagonal adds 5 percentage points and herringbone adds 10 percentage points.",
+        "The calculator assumes one rectangular area. For L-shaped rooms, calculate each rectangle separately and add the tile counts.",
+        "Box counts use the tiles-per-box value you enter. If a product lists square-foot coverage per box instead, divide the waste-adjusted square footage by that coverage and round up.",
+      ]}
+    />
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Tile Quantity</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Calculating tile quantities requires measuring the floor area, choosing a tile size and layout pattern, and accounting for waste from cuts. Here is the step-by-step method.
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Measure the floor area:</strong> Multiply room length by width to get the total square footage. For L-shaped or irregular rooms, divide into rectangles, calculate each, and sum them.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Area (sq ft) = Length (ft) &times; Width (ft)
+          </div>
+        </li>
+        <li>
+          <strong>Calculate tiles needed:</strong> Divide the area by the area of one tile. For 12&times;12 inch tiles, each covers 1 sq ft. For 12&times;24 inch tiles, each covers 2 sq ft.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Tile Count = Total Area &divide; (Tile Width in &times; Tile Length in &divide; 144)
+          </div>
+        </li>
+        <li>
+          <strong>Apply waste factor by pattern:</strong> Grid layouts waste ~10%, diagonal ~15%, herringbone ~20%. Multiply the tile count by (1 + waste) to get the total.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Total with Waste = Tile Count &times; (1 + Waste %)
+          </div>
+        </li>
+        <li>
+          <strong>Convert to boxes:</strong> Divide by the number of tiles per box (typically 10, 12, or 15) and round up.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Calculation</h2>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <p class="text-sm font-semibold text-[var(--fg)] mb-2">12&times;12 ft bathroom with 12&times;24 in tiles on a diagonal pattern</p>
+        <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+          <li><strong>Floor area:</strong> 12 &times; 12 = <strong>144 sq ft</strong></li>
+          <li><strong>Tile area:</strong> 12 in &times; 24 in = 2 sq ft per tile</li>
+          <li><strong>Base tile count:</strong> 144 &divide; 2 = <strong>72 tiles</strong></li>
+          <li><strong>Waste (diagonal 15%):</strong> 144 sq ft &times; 1.15 = 165.6 sq ft target coverage</li>
+          <li><strong>Total needed:</strong> 165.6 &divide; 2 = <strong>83 tiles</strong> rounded up</li>
+          <li><strong>Boxes (10 per box):</strong> 83 &divide; 10 = 9 boxes (round up)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Tile Estimation</h2>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Not accounting for pattern waste</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">A herringbone pattern wastes more tile than a simple grid. The exact number of extra tiles depends on tile size; use waste-adjusted square footage first, then divide by the tile area.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting to order extra for future repairs</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Always buy 1-2 extra boxes beyond your calculated waste. If a tile cracks in two years and the batch is discontinued, matching the color and finish is nearly impossible. Store extras in a dry area.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Measuring in inches instead of feet</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">A 144-inch room (12 ft) is very different from 144 sq ft. Always work in consistent units. Convert all measurements to feet or all to inches before calculating to avoid off-by-factor-of-12 errors.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How many 12x12 tiles do I need for a 10x10 room?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">A 10x10 room is 100 square feet. With 12x12 inch tiles (1 sq ft each), you need 100 tiles plus 10% waste = 110 tiles. If the box contains 10 tiles, that equals 11 boxes.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much extra tile should I buy for waste?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Add 10% for grid layouts, 15% for diagonal layouts, and 20% for herringbone patterns. It's always better to have extra tiles for future repairs than to run short.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Should I use the same tile for floor and shower walls?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Yes, using the same tile creates a seamless look and simplifies ordering. However, floor tiles need a higher slip resistance rating (COF &ge; 0.6) than wall tiles. Large-format floor tiles may be too heavy for wall installation without additional backing.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Tools</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/guides/paint-estimating-guide/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Paint Estimating Guide</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Learn how to estimate paint for any room.</span>
+        </a>
+        <a href="/calculators/paint/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Paint Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Estimate paint for your room.</span>
+        </a>
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Calculate concrete for patios.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

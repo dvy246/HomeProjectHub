@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
@@ -35,7 +36,7 @@ export default function MetalRoofCalc() {
   const pLength = parseNumber(panelLength) || METAL_PANEL_LENGTH;
   const waste = parseNumber(wasteFactor) / 100;
 
-  const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
+  const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
   const roofArea = calculateRectArea(lenNum, widNum) * pitchFactor;
   const areaWithWaste = applyWasteFactor(roofArea, waste);
 
@@ -77,7 +78,7 @@ export default function MetalRoofCalc() {
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Panel Dimensions</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Panel Dimensions</p>
             <div className="grid grid-cols-2 gap-4">
               <Input label="Panel Coverage Width (inches)" type="number" inputMode="decimal" value={panelWidth} onChange={(e) => setPanelWidth(e.target.value)} placeholder="e.g. 36" />
               <Input label="Panel Length (inches)" type="number" inputMode="decimal" value={panelLength} onChange={(e) => setPanelLength(e.target.value)} placeholder="e.g. 144" />

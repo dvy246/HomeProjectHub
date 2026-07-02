@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import RoofPitchDiagram from "../diagrams/RoofPitchDiagram";
 import { parseNumber } from "../../lib/helpers";
 
 export default function RoofPitchCalc() {
@@ -16,7 +17,7 @@ export default function RoofPitchCalc() {
 
   const pitchRatio = `${riseNum}:${runNum}`;
   const pitchDegrees = Math.atan(riseNum / runNum) * (180 / Math.PI);
-  const pitchFactor = Math.sqrt(1 + Math.pow(riseNum / runNum, 2));
+  const pitchFactor = Math.sqrt(1 + (riseNum / runNum) ** 2);
   const slopePercent = (riseNum / runNum) * 100;
 
   const roofArea = bLen * bWid * pitchFactor;
@@ -27,6 +28,10 @@ export default function RoofPitchCalc() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-4 overflow-hidden">
+          <RoofPitchDiagram rise={riseNum} run={runNum} />
+        </div>
+
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Pitch Measurements</h3>
@@ -38,7 +43,7 @@ export default function RoofPitchCalc() {
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Building Footprint (Optional)</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Building Footprint (Optional)</p>
             <div className="grid grid-cols-2 gap-4">
               <Input label="Building Length (ft)" type="number" inputMode="decimal" value={buildingLength} onChange={(e) => setBuildingLength(e.target.value)} placeholder="e.g. 40" />
               <Input label="Building Width (ft)" type="number" inputMode="decimal" value={buildingWidth} onChange={(e) => setBuildingWidth(e.target.value)} placeholder="e.g. 30" />

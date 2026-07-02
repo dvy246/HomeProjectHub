@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -53,7 +53,7 @@ export default function MixRatioCalc() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label={`Volume (${unit === "cuyd" ? "cubic yards" : "cubic feet"})`} type="number" inputMode="decimal" value={volume} onChange={(e) => setVolume(e.target.value)} placeholder="e.g. 1" />
             <div>
-              <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Unit</label>
+              <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Unit</p>
               <div className="grid grid-cols-2 gap-2">
                 <button type="button" onClick={() => setUnit("cuyd")} className={`border rounded-lg py-2 text-xs font-semibold transition-all ${unit === "cuyd" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Cubic Yards</button>
                 <button type="button" onClick={() => setUnit("cuft")} className={`border rounded-lg py-2 text-xs font-semibold transition-all ${unit === "cuft" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Cubic Feet</button>
@@ -67,7 +67,7 @@ export default function MixRatioCalc() {
             <h3 className="text-sm font-semibold tracking-tight">Mix Design</h3>
           </div>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Mix Ratio (Cement : Sand : Gravel)</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Mix Ratio (Cement : Sand : Gravel)</p>
             <div className="grid grid-cols-1 gap-1.5">
               {Object.keys(RATIOS).map((label) => {
                 const [c, s, g] = RATIOS[label];

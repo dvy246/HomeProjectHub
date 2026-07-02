@@ -1,13 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Button } from "../components/ui/Button";
-import { Input } from "../components/ui/Input";
 
 const title = "Contact Us";
 const description = "Get in touch with the engineering and support team at HomeProjectHub.";
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} canonical="https://homeprojecthub.com/contact/">
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
@@ -29,12 +28,35 @@ const description = "Get in touch with the engineering and support team at HomeP
       <div class="md:col-span-8">
         <form
           class="flex flex-col gap-4"
-          action="https://formspree.io/f/{YOUR_FORM_ID}"
+          action={import.meta.env.PUBLIC_FORMSPREE_ID ? `https://formspree.io/f/${import.meta.env.PUBLIC_FORMSPREE_ID}` : "https://formspree.io/f/meojvddk"}
           method="POST"
         >
           <div class="grid grid-cols-2 gap-4">
-            <Input label="Name" name="name" type="text" autocomplete="name" required placeholder="e.g. John Doe…" />
-            <Input label="Email" name="email" type="email" autocomplete="email" required placeholder="e.g. john@example.com…" spellcheck="false" />
+            <div class="flex flex-col gap-1.5">
+              <label for="name" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="e.g. John Doe"
+                class="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="email" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                spellcheck="false"
+                placeholder="e.g. john@example.com"
+                class="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors"
+              />
+            </div>
           </div>
           <div class="flex flex-col gap-1.5">
             <label for="message" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">Message</label>
@@ -43,7 +65,7 @@ const description = "Get in touch with the engineering and support team at HomeP
               name="message"
               required
               rows={5}
-              placeholder="Your inquiry details…"
+              placeholder="Your inquiry details"
               class="w-full text-sm bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg p-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] transition-colors"
             ></textarea>
           </div>

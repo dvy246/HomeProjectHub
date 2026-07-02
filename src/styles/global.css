@@ -105,7 +105,7 @@
   p, li { text-wrap: pretty; }
 
   @media (prefers-reduced-motion: no-preference) {
-    body, * {
+    body, a, button, input, select, textarea, [role="button"], [role="tab"], [role="option"] {
       transition-duration: 0.15s;
       transition-property: background-color, border-color, color;
     }

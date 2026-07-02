@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import BlockFillCalc from "../../../components/calculators/BlockFillCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/block-fill/";
 
 const title = "Concrete Block & Fill Calculator";
 const description = "Calculate number of concrete blocks (CMU), mortar bags, and grout fill needed for walls. Supports multiple block sizes and core fill options.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   webApplicationSchema(title, description, canonical),
   mathSolverSchema({
     name: "Concrete Block Quantity Formula",

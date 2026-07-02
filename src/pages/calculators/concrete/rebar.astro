@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import RebarCalc from "../../../components/calculators/RebarCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/rebar/";
 
 const title = "Rebar Calculator";
 const description = "Calculate rebar length, weight, and quantity for concrete slabs. Estimate number of bars, ties, and total tonnage for any rebar size and spacing pattern.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   webApplicationSchema(title, description, canonical),
   mathSolverSchema({
     name: "Rebar Quantity Formula",

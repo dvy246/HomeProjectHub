@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import PlywoodDeckCalc from "../../../components/calculators/PlywoodDeckCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/plywood/";
 
 const title = "Roof Plywood / OSB Deck Calculator";
 const description = "Calculate how many sheets of plywood or OSB sheathing you need for your roof. Accounts for pitch, sheet size (4x8, 4x10, 4x12), and waste factor.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Roof Plywood Deck Calculator",
     description: "Calculates plywood or OSB sheathing sheets for roof decking.",

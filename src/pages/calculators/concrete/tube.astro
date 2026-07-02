@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteTubeCalc from "../../../components/calculators/ConcreteTubeCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/tube/";
 
 const title = "Concrete Tube Form Calculator";
 const description = "Calculate concrete volume for cardboard tube forms (Sonotubes). Enter diameter, depth, and quantity to get cubic yards and bag counts.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Concrete Tube Form Volume Calculator",
     description: "Calculates cylindrical tube form volume for concrete piers using Sonotubes and other form tubes.",

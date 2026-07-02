@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import RoofPitchCalc from "../../../components/calculators/RoofPitchCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/pitch/";
 
 const title = "Roof Pitch Calculator";
 const description = "Calculate roof pitch in degrees, percentage, and ratio. Find the pitch multiplier for material estimation and determine rafter length from building dimensions.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Roof Pitch Calculator",
     description: "Converts roof pitch between ratio, degrees, and percentage. Calculates pitch multiplier and rafter length.",
@@ -117,6 +123,39 @@ const schema = graphSchema(
             <tr><td class="p-3 font-mono font-bold">12:12</td><td class="p-3">45.00&deg;</td><td class="p-3">1.414</td><td class="p-3">100.0%</td><td class="p-3 text-[var(--fg-muted)]">Very Steep</td></tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Pitch Calculation</h2>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <p class="text-sm font-semibold text-[var(--fg)] mb-2">Calculating roof area for a 6:12 pitch, 40&prime; &times; 30&prime; building</p>
+        <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+          <li><strong>Step 1:</strong> Rise = 6 in per 12 in run &rarr; Ratio = 6/12 = 0.5</li>
+          <li><strong>Step 2:</strong> Pitch angle = arctan(0.5) &times; (180/&pi;) = <strong>26.57&deg;</strong></li>
+          <li><strong>Step 3:</strong> Pitch multiplier = &radic;(1 + 0.5&sup2;) = <strong>1.118</strong></li>
+          <li><strong>Step 4:</strong> Building footprint = 40 &times; 30 = 1,200 sq ft</li>
+          <li><strong>Step 5:</strong> Actual roof area = 1,200 &times; 1.118 = <strong>1,342 sq ft</strong></li>
+          <li><strong>Step 6:</strong> Slope percentage = 0.5 &times; 100 = <strong>50%</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Roof Pitch Measurement</h2>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Measuring pitch from the attic ceiling</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Pitch is measured from the roof sheathing, not the ceiling joists. Ceiling joists may have additional framing that changes the effective slope. Always measure directly on the rafters.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Confusing pitch with slope percentage</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">A 6:12 pitch equals a 50% slope, not 6%. The pitch ratio is rise over 12 inches of run; the percentage is rise divided by run times 100. Mixing these up leads to ordering the wrong materials.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Using the wrong multiplier for complex roofs</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">The pitch multiplier only works for simple gable roofs. Hip roofs, gambrels, and roofs with dormers have more complex geometry. Measure each roof plane separately and sum the areas.</p>
+        </div>
       </div>
     </section>
 

@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteStepsCalc from "../../../components/calculators/ConcreteStepsCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/steps/";
 
 const title = "Concrete Steps Calculator";
 const description = "Calculate the volume of concrete needed for stairs and steps. Computes required cubic yards, cubic feet, and bag counts for steps with optional landing.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Concrete Steps Volume Equation",
     description: "Calculates the total cubic volume of a concrete staircase by summing individual step blocks.",

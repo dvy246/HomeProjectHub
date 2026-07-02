@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
 import { Card } from "./ui/Card";
 import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../lib/geometry";
 import { applyWasteFactor } from "../lib/materialEngine";
+import { buildAffiliateUrl } from "../lib/affiliates";
 
 export default function CompareMaterials() {
   const [length, setLength] = useState<string>("20");
@@ -12,7 +12,7 @@ export default function CompareMaterials() {
 
   const parseInput = (val: string) => {
     const num = parseFloat(val);
-    return isNaN(num) || num < 0 ? 0 : num;
+    return Number.isNaN(num) || num < 0 ? 0 : num;
   };
 
   const lenNum = parseInput(length);
@@ -112,32 +112,35 @@ export default function CompareMaterials() {
 
       {/* Supplier cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <p className="md:col-span-3 text-[10px] text-[var(--fg-muted)] leading-relaxed">
+          Shopping links are optional and may be affiliate links. Always verify product coverage, availability, delivery fees, and local code requirements before buying.
+        </p>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">Concrete Sourcing</h4>
             <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">Best for permanent patios. Order ready-mix delivery for projects over 1.5 cubic yards.</p>
           </div>
-          <Button variant="secondary" size="sm" onClick={() => window.open(`https://www.lowes.com/search?searchTerm=concrete+mix+80lb`, "_blank")} className="w-full">
+          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=concrete+mix+80lb")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
             Shop at Lowe's
-          </Button>
+          </a>
         </Card>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">Paver Sourcing</h4>
             <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">Perfect for modular patio setups. Order individually or by the pallet.</p>
           </div>
-          <Button variant="secondary" size="sm" onClick={() => window.open(`https://www.lowes.com/search?searchTerm=concrete+pavers`, "_blank")} className="w-full">
+          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=concrete+pavers")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
             Shop at Lowe's
-          </Button>
+          </a>
         </Card>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">Gravel Sourcing</h4>
             <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">Low-cost pathway option. Pick up bags locally or order bulk delivery.</p>
           </div>
-          <Button variant="secondary" size="sm" onClick={() => window.open(`https://www.lowes.com/search?searchTerm=pea+gravel`, "_blank")} className="w-full">
+          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=pea+gravel")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
             Shop at Lowe's
-          </Button>
+          </a>
         </Card>
       </div>
     </div>

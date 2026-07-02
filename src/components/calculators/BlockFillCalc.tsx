@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -15,7 +15,7 @@ export default function BlockFillCalc() {
   const [length, setLength] = useState<string>("30");
   const [height, setHeight] = useState<string>("8");
   const [blockSize, setBlockSize] = useState<string>("8x8x16");
-  const [mortarJoint, setMortarJoint] = useState<string>("⅜");
+  const [_mortarJoint, _setMortarJoint] = useState<string>("⅜");
   const [coreFill, setCoreFill] = useState<"none" | "partial" | "full">("none");
   const [wasteFactor, setWasteFactor] = useState<string>("5");
 
@@ -57,7 +57,7 @@ export default function BlockFillCalc() {
             <h3 className="text-sm font-semibold tracking-tight">Block Configuration</h3>
           </div>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Block Size</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Block Size</p>
             <div className="grid grid-cols-5 gap-1.5">
               {Object.keys(BLOCK_SIZES).map((s) => (
                 <button key={s} type="button" onClick={() => setBlockSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${blockSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
@@ -65,7 +65,7 @@ export default function BlockFillCalc() {
             </div>
           </div>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Core Fill</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Core Fill</p>
             <div className="grid grid-cols-3 gap-2">
               {(["none", "partial", "full"] as const).map((opt) => (
                 <button key={opt} type="button" onClick={() => setCoreFill(opt)} className={`border rounded-lg py-2 text-xs font-semibold transition-all active:scale-[0.97] ${coreFill === opt ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{opt === "none" ? "None" : opt === "partial" ? "Partial" : "Full"}</button>

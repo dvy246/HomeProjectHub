@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
@@ -31,7 +32,7 @@ export default function RoofShingleCalc() {
   const pitchNum = parseNumber(pitch);
   const waste = parseNumber(wasteFactor) / 100;
 
-  const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
+  const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
 
   let roofArea = 0;
   if (roofShape === "gable") {
@@ -46,7 +47,7 @@ export default function RoofShingleCalc() {
   const squares = areaWithWaste / 100;
   const bundles = calculatePackaging(areaWithWaste, SHINGLE_COVERAGE_PER_BUNDLE);
   const nails = Math.ceil(squares * 4);
-  const underlayment = Math.ceil(squares * 4 / 10);
+  const underlayment = Math.ceil(areaWithWaste / 400);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

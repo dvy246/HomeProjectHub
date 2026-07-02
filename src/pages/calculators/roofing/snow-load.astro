@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import SnowLoadCalc from "../../../components/calculators/SnowLoadCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/snow-load/";
 
 const title = "Snow Load Calculator";
 const description = "Calculate roof snow load based on snow depth, density, and building code ground snow load values. Check if your roof is safe under current snow conditions.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Snow Load Formula",
     description: "Calculate design snow load based on depth, density, pitch, and code ground snow load.",
@@ -99,6 +105,37 @@ const schema = graphSchema(
           <strong>Design Load:</strong> The higher of the two values is the design load. If it exceeds 50 psf, the roof may be at risk and snow removal should be considered.
         </li>
       </ol>
+    </section>
+
+    <section>
+      <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Snow Load Calculation</h2>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <p class="text-sm font-semibold text-[var(--fg)] mb-2">2 ft of settled snow on a 4:12 pitch roof</p>
+        <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+          <li><strong>Depth-based load:</strong> 2 ft &times; 15 pcf (settled) &times; 1.25 safety factor = <strong>37.5 psf</strong></li>
+          <li><strong>Code-based load:</strong> 30 psf ground snow &times; 0.7 roof factor = <strong>21 psf</strong></li>
+          <li><strong>Design load (higher):</strong> <strong>37.5 psf</strong> &mdash; within safe range for standard roof design (50 psf)</li>
+          <li><strong>Equivalent wet snow:</strong> 2 ft &times; 40 pcf &times; 1.25 = <strong>100 psf</strong> &mdash; this would exceed typical design limits and require immediate removal</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Snow Load Estimation</h2>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Using average snow depth instead of maximum drift</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Snow drifts at valleys, roof-to-wall intersections, and around obstructions can be 3-5 times deeper than the average roof depth. Check the worst-case drift location, not the average across the whole roof.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting the roof factor on steep slopes</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Steep roofs shed snow naturally, reducing the effective load. But a sudden thaw followed by freeze can create ice dams that hold snow in place. Always use the code roof factor, not manual judgment.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Ignoring unbalanced snow loading</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Wind can deposit more snow on one side of a roof. Building codes often require designing for 1.5 times the balanced load on the leeward side while the windward side gets reduced load. This unbalanced condition can be more dangerous than uniform loading.</p>
+        </div>
+      </div>
     </section>
 
     <section>

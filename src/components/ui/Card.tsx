@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 interface CardProps {
   children: React.ReactNode;
@@ -22,21 +22,26 @@ export const Card: React.FC<CardProps> = ({
     }
   };
 
-  return (
-    <div
-      role={isClickable ? "button" : undefined}
-      tabIndex={isClickable ? 0 : undefined}
-      onClick={onClick}
-      onKeyDown={handleKeyDown}
-      className={`rounded-xl border bg-[var(--card-bg)] border-[var(--border)] p-6 transition-[border-color,background-color] duration-200 ${
-        hoverable || isClickable
-          ? "hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] cursor-pointer card-elevated"
-          : ""
-      } ${className}`}
-    >
-      {children}
-    </div>
-  );
+  const cardClassName = `rounded-xl border bg-[var(--card-bg)] border-[var(--border)] p-6 transition-[border-color,background-color] duration-200 ${
+    hoverable || isClickable
+      ? "hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] cursor-pointer card-elevated"
+      : ""
+  } ${className}`;
+
+  if (isClickable) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+        className={`${cardClassName} text-left w-full`}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  return <div className={cardClassName}>{children}</div>;
 };
 
 interface CardTitleProps {

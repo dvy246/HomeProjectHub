@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteColumnCalc from "../../../components/calculators/ConcreteColumnCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/column/";
 
 const title = "Concrete Column Calculator";
 const description = "Calculate concrete volume for round and square columns. Computes cubic yards, bag counts, and weight for any number of structural columns.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Concrete Column Volume Calculator",
     description: "Calculates round and square column volume for concrete pours.",

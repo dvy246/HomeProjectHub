@@ -5,6 +5,7 @@ import UnitToggle from "../ui/UnitToggle";
 import BagSizeSelector from "../ui/BagSizeSelector";
 import ConcreteBagMatrix from "../ui/ConcreteBagMatrix";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
+import ConcreteSlabDiagram from "../diagrams/ConcreteSlabDiagram";
 import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
@@ -12,8 +13,8 @@ import { parseNumber } from "../../lib/helpers";
 
 type UnitSystem = "imperial" | "metric";
 
-function convertValue(value: number, from: UnitSystem, to: UnitSystem, field: "length" | "thickness"): number {
-  if (from === to) return value;
+function convertValue(value: number, from: UnitSystem, to: UnitSystem, field: "length" | "thickness"): string {
+  if (from === to) return String(value);
   if (field === "thickness") {
     return from === "imperial" ? (value * 2.54).toFixed(1) : (value / 2.54).toFixed(1);
   }
@@ -96,6 +97,10 @@ export default function ConcreteSlabCalc() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-4 mb-2 overflow-hidden">
+          <ConcreteSlabDiagram length={lenNum} width={widNum} thickness={thickNum} unitSystem={unitSystem} />
+        </div>
+
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Slab Parameters</h3>

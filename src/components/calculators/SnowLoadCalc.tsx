@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -26,7 +26,7 @@ export default function SnowLoadCalc() {
   const gsl = parseNumber(groundSnowLoad);
 
   const density = SNOW_DENSITIES[snowType] || 15;
-  const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
+  const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
   const roofArea = bLen * bWid * pitchFactor;
 
   const depthSnowLoad = dep * density * 1.25;
@@ -49,7 +49,7 @@ export default function SnowLoadCalc() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label="Snow Depth (inches)" type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="e.g. 24" />
             <div>
-              <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Snow Type</label>
+              <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Snow Type</p>
               <div className="grid grid-cols-1 gap-1">
                 {Object.entries(SNOW_DENSITIES).map(([label]) => (
                   <button key={label} type="button" onClick={() => setSnowType(label)} className={`border rounded-lg py-1.5 text-xs font-semibold transition-all ${snowType === label ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{label}</button>

@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import MetalRoofCalc from "../../../components/calculators/MetalRoofCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/metal/";
 
 const title = "Metal Roofing Calculator";
 const description = "Calculate how many metal roofing panels you need. Accounts for roof pitch, panel dimensions, and waste factor. Includes screws, closure strips, and ridge cap estimates.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Metal Roofing Panel Calculator",
     description: "Calculates metal panel count, screws, and accessories for roofing projects.",

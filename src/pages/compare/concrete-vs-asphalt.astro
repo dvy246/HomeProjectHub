@@ -1,0 +1,126 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { faqPageSchema } from "../../lib/schema";
+
+const title = "Concrete vs Asphalt Driveway: Which Is Better?";
+const description = "Compare concrete and asphalt driveways. Cost, durability, maintenance, lifespan, and climate considerations for your driveway project.";
+
+const schema = faqPageSchema([
+  { q: "Is concrete or asphalt cheaper for a driveway?", a: "Asphalt is cheaper upfront ($3-$5 per sq ft installed vs $4-$8 for concrete). However, concrete lasts 30-50 years with minimal maintenance, while asphalt needs resealing every 3-5 years and lasts 15-25 years." },
+  { q: "Which driveway material lasts longer?", a: "Concrete lasts 30-50 years with proper maintenance. Asphalt lasts 15-25 years before needing replacement. Concrete has higher upfront cost but lower lifetime cost." },
+  { q: "Is concrete or asphalt better for cold climates?", a: "Asphalt performs better in freeze-thaw climates because it's flexible and resists cracking. Concrete in cold climates requires proper reinforcement and control joints to prevent frost heave damage." },
+], "https://homeprojecthub.com/compare/concrete-vs-asphalt/");
+---
+
+<Layout title={title} description={description} canonical="https://homeprojecthub.com/compare/concrete-vs-asphalt/" schema={schema}>
+  <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/compare/" class="hover:text-[var(--fg)] transition-colors">Compare</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Concrete vs Asphalt</span>
+    </nav>
+
+    <header class="pb-6 mb-2 border-b border-[var(--border)]">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Concrete vs Asphalt Driveway</h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Choosing between concrete and asphalt for your driveway is one of the biggest home improvement decisions. This comparison covers cost, durability, maintenance, climate suitability, and resale value.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-compare" />
+
+    <section>
+      <h2 id="cost-comparison" class="text-xl font-bold tracking-tight mb-4">Cost Comparison</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Factor</th>
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Concrete</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Asphalt</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]"><td class="py-2 pr-4">Installed cost per sq ft</td><td class="py-2 pr-4">$4-$8</td><td class="py-2">$3-$5</td></tr>
+            <tr class="border-b border-[var(--border)]"><td class="py-2 pr-4">DIY cost per sq ft</td><td class="py-2 pr-4">$2-$4 (not recommended)</td><td class="py-2">$2-$3</td></tr>
+            <tr class="border-b border-[var(--border)]"><td class="py-2 pr-4">Annual maintenance cost</td><td class="py-2 pr-4">~$50 (seal every 3 yrs)</td><td class="py-2">~$200 (seal every 3-5 yrs)</td></tr>
+            <tr><td class="py-2 pr-4">Lifetime cost (40 yrs)</td><td class="py-2 pr-4">~$6,000</td><td class="py-2">~$9,000 (includes 1 replacement)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="quick-comparison" class="text-xl font-bold tracking-tight mb-4">Quick Comparison</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+          <h3 class="text-sm font-bold mb-2">Concrete</h3>
+          <ul class="text-xs text-[var(--fg-secondary)] flex flex-col gap-1.5">
+            <li><strong>Lifespan:</strong> 30-50 years</li>
+            <li><strong>Maintenance:</strong> Low (seal every 3 years)</li>
+            <li><strong>Climate:</strong> Best in warm climates</li>
+            <li><strong>Repair:</strong> Difficult, cracks are visible</li>
+            <li><strong>Resale value:</strong> Adds more to home value</li>
+            <li><strong>Appearance:</strong> Clean, modern, customizable</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+          <h3 class="text-sm font-bold mb-2">Asphalt</h3>
+          <ul class="text-xs text-[var(--fg-secondary)] flex flex-col gap-1.5">
+            <li><strong>Lifespan:</strong> 15-25 years</li>
+            <li><strong>Maintenance:</strong> High (seal every 3-5 years)</li>
+            <li><strong>Climate:</strong> Better for freeze-thaw climates</li>
+            <li><strong>Repair:</strong> Easier, patching is seamless</li>
+            <li><strong>Resale value:</strong> Adds less to home value</li>
+            <li><strong>Appearance:</strong> Dark, uniform, heats up in summer</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot slotId="ad-mid-compare" />
+
+    <section>
+      <h2 id="verdict" class="text-xl font-bold tracking-tight mb-4">Which Should You Choose?</h2>
+      <div class="text-sm text-[var(--fg-secondary)] leading-relaxed flex flex-col gap-3 text-pretty">
+        <p><strong>Choose concrete if:</strong> You plan to stay in your home long-term, want the highest resale value, prefer minimal maintenance, and live in a warm climate. The higher upfront cost pays off over 30+ years.</p>
+        <p><strong>Choose asphalt if:</strong> You need the lowest upfront cost, live in a freeze-thaw climate, or plan to sell within 10 years. Asphalt's lower initial cost and better cold-weather performance make it practical for budget-conscious projects.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Is concrete or asphalt cheaper for a driveway?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt is cheaper upfront ($3-$5 per sq ft installed vs $4-$8 for concrete). However, concrete lasts 30-50 years with minimal maintenance, while asphalt needs resealing every 3-5 years and lasts 15-25 years. Over 40 years, concrete can be more cost-effective.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Which driveway material lasts longer?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Concrete lasts 30-50 years with proper maintenance. Asphalt lasts 15-25 years before needing replacement. Concrete has higher upfront cost but lower lifetime cost.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Is concrete or asphalt better for cold climates?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt performs better in freeze-thaw climates because it's flexible and resists cracking. Concrete in cold climates requires proper reinforcement, control joints, and a gravel base below the frost line to prevent frost heave damage.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Tools</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Calculate concrete for your driveway.</span>
+        </a>
+        <a href="/compare/concrete-vs-pavers/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete vs Pavers</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Compare concrete and paver driveways.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

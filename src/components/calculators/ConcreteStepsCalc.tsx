@@ -5,7 +5,7 @@ import UnitToggle from "../ui/UnitToggle";
 import BagSizeSelector from "../ui/BagSizeSelector";
 import ConcreteBagMatrix from "../ui/ConcreteBagMatrix";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
-import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
+import { cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 import { parseNumber } from "../../lib/helpers";

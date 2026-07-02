@@ -3,5 +3,7 @@ Allow: /
 Disallow: /privacy/
 Disallow: /terms/
 Disallow: /disclaimer/
+Disallow: /saved/
+Disallow: /planner/
 
-Sitemap: https://homeprojecthub.com/sitemap.xml
+Sitemap: https://homeprojecthub.com/sitemap-index.xml

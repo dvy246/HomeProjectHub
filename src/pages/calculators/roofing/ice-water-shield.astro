@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import IceWaterShieldCalc from "../../../components/calculators/IceWaterShieldCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/roofing/ice-water-shield/";
 
 const title = "Ice & Water Shield Calculator";
 const description = "Calculate ice and water shield underlayment needed for roof eaves, rakes, and valleys. Estimate rolls and coverage area based on roof dimensions and pitch.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Ice & Water Shield Coverage Formula",
     description: "Calculate total underlayment area based on eave length, overhang, valley length, and roof pitch.",
@@ -99,6 +105,38 @@ const schema = graphSchema(
           <strong>Total Rolls:</strong> Add all areas and divide by the roll coverage (typically 200 sq ft per roll for standard 36-inch wide rolls). Add 8-12% for overlap and waste.
         </li>
       </ol>
+    </section>
+
+    <section>
+      <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Calculation</h2>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <p class="text-sm font-semibold text-[var(--fg)] mb-2">Two-eave gable roof &mdash; 40&prime; &times; 30&prime; building, 6:12 pitch, 3-ft overhang</p>
+        <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+          <li><strong>Eave protection (2 sides):</strong> 40 ft &times; 2 = 80 linear ft of eave &times; 3 ft overhang &times; 1.118 pitch factor = <strong>268 sq ft</strong></li>
+          <li><strong>Rake edges (2 sides):</strong> 30 ft &times; 2 = 60 linear ft &times; 1 ft strip = <strong>60 sq ft</strong></li>
+          <li><strong>Valley (1 valley):</strong> 16 ft &times; (2 ft per side &times; 2) = <strong>64 sq ft</strong></li>
+          <li><strong>Total membrane:</strong> 268 + 60 + 64 = <strong>392 sq ft</strong></li>
+          <li><strong>Rolls needed:</strong> 392 &divide; 200 sq ft per roll = <strong>2 rolls</strong> (with 10% waste included)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Ice &amp; Water Shield Estimation</h2>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting the pitch factor on eave protection</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Eave overhangs follow the roof slope, not the ground plane. Failing to multiply by the pitch multiplier can under-estimate membrane by 5-15% depending on roof steepness.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Not accounting for overlap seams</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Ice and water shield requires 3-6 inch overlaps at each horizontal seam. In cold weather, the membrane is less sticky and needs extra overlap. Add 10% to your total for seam overlap and starter strips.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Skipping rake-edge protection</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Building codes require ice and water shield at gable rakes for 12-24 inches up from the eave in many regions. Check local codes — skipping this can fail inspection and void the roof warranty.</p>
+        </div>
+      </div>
     </section>
 
     <section>

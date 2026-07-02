@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
@@ -7,7 +8,7 @@ import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 import { parseNumber } from "../../lib/helpers";
 
-const PLYWOOD_SHEET_AREA = 32;
+const _PLYWOOD_SHEET_AREA = 32;
 
 export default function PlywoodDeckCalc() {
   const [length, setLength] = useState<string>("40");
@@ -34,7 +35,7 @@ export default function PlywoodDeckCalc() {
   const sheetAreas: Record<string, number> = { "4x8": 32, "4x10": 40, "4x12": 48 };
   const sheetArea = sheetAreas[sheetSize];
 
-  const pitchFactor = Math.sqrt(1 + Math.pow(pitchNum / 12, 2));
+  const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
   const roofArea = calculateRectArea(lenNum, widNum) * pitchFactor;
   const areaWithWaste = applyWasteFactor(roofArea, waste);
   const sheets = calculatePackaging(areaWithWaste, sheetArea);

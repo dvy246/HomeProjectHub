@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import { Card } from "./ui/Card";
@@ -103,7 +104,7 @@ export default function SavedRoomsDashboard() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Measurement Type</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Measurement Type</p>
             <div className="flex bg-[var(--bg-muted)] p-0.5 rounded-lg text-xs w-fit">
               <button
                 type="button"

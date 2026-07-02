@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteFootingCalc from "../../../components/calculators/ConcreteFootingCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/footing/";
 
 const title = "Concrete Footing Calculator";
 const description = "Calculate concrete requirements for post hole foundations, deck footings, or fence posts. Computes total volume in yards and bag counts for square and cylinder holes.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Concrete Footing Volume Formula",
     description: "Calculate cylinder pier footing and square structural block footing volume.",

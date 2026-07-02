@@ -2,14 +2,20 @@
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteWallCalc from "../../../components/calculators/ConcreteWallCalc";
 import AdSlot from "../../../components/AdSlot.astro";
-import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeprojecthub.com/calculators/concrete/wall/";
 
 const title = "Concrete Wall Calculator";
 const description = "Calculate concrete volume for retaining walls, foundation walls, and basement walls. Automatically subtracts door and window openings.";
 
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
 const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: title, path: PAGE_PATH },
+  ]),
   mathSolverSchema({
     name: "Concrete Wall Volume Calculator",
     description: "Calculates wall volume with door and window opening deductions for foundation and retaining walls.",

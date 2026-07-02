@@ -1,0 +1,146 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PaintCalc from "../../../components/calculators/PaintCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/calculators/paint/";
+const title = "Paint Calculator";
+const description = "Calculate how many gallons of paint you need for any room. Enter room dimensions, doors, windows, and coats to get an accurate paint estimate.";
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Paint Calculator", path: "/calculators/paint/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  faqPageSchema([
+    {
+      q: "How much paint do I need for a 12x12 room?",
+      a: "A 12x12 room with 8-ft ceilings, one door, and one window needs about 1.5 gallons for one coat or 3 gallons for two coats, including ceiling paint if desired.",
+    },
+    {
+      q: "How many square feet does a gallon of paint cover?",
+      a: "One gallon of interior paint typically covers 350-400 square feet. Higher quality paints often have better coverage. Dark colors and textured surfaces may need more paint.",
+    },
+    {
+      q: "Do I need primer before painting?",
+      a: "Primer is recommended when painting over dark colors, new drywall, or stained surfaces. For most repaints of similar colors, two coats of paint without primer is sufficient.",
+    },
+  ], canonical)
+);
+
+const paintCalcs = [
+  { href: "/calculators/paint/", title: "Interior Paint", desc: "Walls, ceilings, trim" },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">paint</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Paint Calculator</h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Estimate exactly how many gallons of paint you need for any room. Account for doors, windows, multiple coats, and ceiling paint. No more guessing at the hardware store.
+      </p>
+    </header>
+
+    <AdSlot slotId="ad-top-paint" />
+
+    <section><PaintCalc client:visible /></section>
+
+    <section>
+      <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Paint Coverage</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Calculating paint is a straightforward area subtraction problem:
+      </p>
+      <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+        <li>
+          <strong>Find your wall area:</strong> Multiply the room perimeter (2 x (length + width)) by the wall height.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Wall Area = 2 x (Length + Width) x Height
+          </div>
+        </li>
+        <li>
+          <strong>Subtract openings:</strong> Deduct the area of doors (21 sq ft each) and windows (12 sq ft each).
+        </li>
+        <li>
+          <strong>Add ceiling if needed:</strong> Length x Width for the ceiling area.
+        </li>
+        <li>
+          <strong>Multiply by coats:</strong> Multiply by the number of coats. Most jobs need 2 coats.
+          <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+            Gallons = (Net Area x Coats) / 350
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 id="example-calculation" class="text-xl font-bold tracking-tight mb-4">Example Calculation</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Let's calculate paint for a <strong>12x14 ft bedroom</strong> with <strong>8-ft ceilings</strong>, <strong>2 doors</strong>, and <strong>2 windows</strong>, with <strong>2 coats</strong>:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+        <li><strong>Perimeter:</strong> 2 x (12 + 14) = 52 ft</li>
+        <li><strong>Gross wall area:</strong> 52 ft x 8 ft = 416 sq ft</li>
+        <li><strong>Less doors:</strong> 2 x 21 = 42 sq ft</li>
+        <li><strong>Less windows:</strong> 2 x 12 = 24 sq ft</li>
+        <li><strong>Net wall area:</strong> 416 - 66 = 350 sq ft</li>
+        <li><strong>Two coats:</strong> 350 x 2 = 700 sq ft</li>
+        <li><strong>Gallons needed:</strong> 700 / 350 = <strong>2 gallons</strong></li>
+      </ul>
+    </section>
+
+    <AdSlot slotId="ad-mid-paint" />
+
+    <section>
+      <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Paint Estimation</h2>
+      <ul class="list-disc pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)] text-pretty">
+        <li><strong>Forgetting to subtract doors and windows:</strong> Two doors and two windows reduce your wall area by 66 sq ft — nearly a fifth of a gallon of wasted paint.</li>
+        <li><strong>Not accounting for textured walls:</strong> Popcorn, knockdown, and orange-peel textures consume 15-20% more paint than smooth walls.</li>
+        <li><strong>Assuming one coat is enough:</strong> Most colors require two coats. Dark reds and yellows may need three. Always buy enough for two coats.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How much paint do I need for a 12x12 room?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">A 12x12 room with 8-ft ceilings, one door, and one window needs about 1.5 gallons for one coat or 3 gallons for two coats, including ceiling paint if desired.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">How many square feet does a gallon of paint cover?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">One gallon of interior paint typically covers 350-400 square feet. Higher quality paints often have better coverage. Dark colors and textured surfaces may need more paint.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">Do I need primer before painting?</summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Primer is recommended when painting over dark colors, new drywall, or stained surfaces. For most repaints of similar colors, two coats of paint without primer is sufficient.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-6 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Resources</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/guides/paint-estimating-guide/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Paint Estimating Guide</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Complete guide to calculating paint coverage.</span>
+        </a>
+        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Calculate concrete for patios and slabs.</span>
+        </a>
+        <a href="/compare/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Compare Materials</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Side-by-side material comparison.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

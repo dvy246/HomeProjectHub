@@ -22,7 +22,7 @@ const containerWidth = format === "vertical" ? "max-w-[160px]" : "w-full max-w-[
 ---
 
 {hasAdClient && (
-  <div class={`ad-slot-wrapper w-full flex justify-center my-8 ${className}`} aria-hidden="true">
+  <aside class={`ad-slot-wrapper w-full flex justify-center my-8 ${className}`} aria-label="Advertisement">
     <div
       class={`ad-slot-container ${containerHeight} ${containerWidth} rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--bg-subtle)]`}
       data-ad-client={clientId}
@@ -37,10 +37,11 @@ const containerWidth = format === "vertical" ? "max-w-[160px]" : "w-full max-w-[
         data-full-width-responsive="true"
       ></ins>
     </div>
-  </div>
+  </aside>
 )}
 
-<script>
+{hasAdClient && (
+<script is:inline>
   function setupLazyAdLoading() {
     const containers = document.querySelectorAll(".ad-slot-container:not([data-loaded])");
     if (!containers.length) return;
@@ -72,7 +73,8 @@ const containerWidth = format === "vertical" ? "max-w-[160px]" : "w-full max-w-[
           }
 
           try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            window.adsbygoogle = window.adsbygoogle || [];
+            window.adsbygoogle.push({});
           } catch (e) {}
 
           observer.unobserve(container);
@@ -88,3 +90,4 @@ const containerWidth = format === "vertical" ? "max-w-[160px]" : "w-full max-w-[
   document.addEventListener("DOMContentLoaded", setupLazyAdLoading);
   setupLazyAdLoading();
 </script>
+)}

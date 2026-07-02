@@ -22,7 +22,14 @@ export function getSavedRooms(): SavedRoom[] {
 export function saveRoom(room: Omit<SavedRoom, "id"> & { id?: string }): SavedRoom[] {
   if (typeof window === "undefined") return [];
   const rooms = getSavedRooms();
-  const id = room.id || crypto.randomUUID();
+  let id = room.id;
+  if (!id) {
+    try {
+      id = crypto.randomUUID();
+    } catch {
+      id = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    }
+  }
   const newRoom: SavedRoom = { ...room, id };
 
   const existingIndex = rooms.findIndex((r) => r.id === id);

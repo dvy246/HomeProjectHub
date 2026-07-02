@@ -6,8 +6,7 @@ const title = "My Saved Rooms & Projects";
 const description = "Manage your saved room, deck, and patio dimensions. Load them directly into any of our calculators to compare materials instantly.";
 ---
 
-<Layout title={title} description={description}>
-  <meta name="robots" content="noindex, follow" />
+<Layout title={title} description={description} noindex={true}>
   <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>

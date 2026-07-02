@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -16,14 +16,15 @@ export default function RebarCalc() {
 
   const len = parseNumber(length);
   const wid = parseNumber(width);
-  const sp = parseNumber(spacing);
-  const layersNum = parseNumber(layers) || 1;
+  const sp = Math.max(1, parseNumber(spacing));
+  const layersNum = Math.max(1, parseNumber(layers));
   const waste = parseNumber(wasteFactor) / 100;
 
   const weightPerFt = REBAR_WEIGHTS[rebarSize] || 0.668;
 
-  const longBars = Math.ceil(wid * 12 / sp) + 1;
-  const shortBars = Math.ceil(len * 12 / sp) + 1;
+  const canCompute = len > 0 && wid > 0;
+  const longBars = canCompute ? Math.ceil(wid * 12 / sp) + 1 : 0;
+  const shortBars = canCompute ? Math.ceil(len * 12 / sp) + 1 : 0;
 
   const longBarLength = len * longBars;
   const shortBarLength = wid * shortBars;
@@ -55,7 +56,7 @@ export default function RebarCalc() {
             <Input label="Layers" type="number" inputMode="numeric" value={layers} onChange={(e) => setLayers(e.target.value)} placeholder="e.g. 1" helperText="1 for slab, 2 for double mat" />
           </div>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] mb-2 block">Rebar Size</label>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Rebar Size</p>
             <div className="grid grid-cols-6 gap-1.5">
               {REBAR_SIZES.map((s) => (
                 <button key={s} type="button" onClick={() => setRebarSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${rebarSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
