@@ -17,4 +17,8 @@
 - `[x]` Build Legal pages: Privacy Policy, Terms, About, Contact, Disclaimer
 - `[x]` Build comparison pages to fix 404s (`/compare/concrete-vs-pavers.astro`, `/compare/concrete-vs-gravel.astro`)
 - `[x]` Connect ConcreteStepsCalc to save to localStorage
-- `[/]` Run clean npm run build to verify compile
+- `[x]` Implement click-to-focus SVG hotspots (Length, Width, Thickness sync)
+- `[x]` Build 3D Pallet/Bags Stack Visualizer & Mixer Truck volume fills
+- `[x]` Build interactive Hired Contractor vs DIY cost dials
+- `[x]` Build tactile Site Condition slider to guide waste percentages
+- `[x]` Build interactive mathematical formula step-by-step walkthroughs

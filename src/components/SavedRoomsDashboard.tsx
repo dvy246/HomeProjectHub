@@ -139,6 +139,12 @@ export default function SavedRoomsDashboard() {
           <p className="text-xs text-[var(--fg-muted)] text-pretty max-w-sm mx-auto">
             Add your first measurement above, or use the Save button on any calculator to store dimensions here.
           </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <a href="/calculators/concrete/" className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] font-medium">Concrete Calculators</a>
+            <a href="/calculators/roofing/" className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] font-medium">Roofing Calculators</a>
+            <a href="/calculators/paint/" className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] font-medium">Paint Calculators</a>
+            <a href="/calculators/tile/" className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] font-medium">Tile & Flooring</a>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -5,8 +5,8 @@ import { graphSchema, webSiteSchema, faqPageSchema, webPageSchema } from "../lib
 
 const SITE_URL = "https://homeplanninghub.com";
 
-const title = "Free Home Improvement Calculators & Project Planning Tools — Plan Every Project With Confidence";
-const description = "Plan any home improvement project with free material calculators for concrete, roofing, paint, tile, gravel, and more. Estimate materials, compare options, and build a shopping list before you buy. Open formulas, no sign-up required.";
+const title = "HomePlanningHub — Professional-Grade Construction Calculators";
+const description = "Free material calculators for concrete, roofing, paint, tile, and more. Get precise estimation lists with transparent math formulas and zero sign-up.";
 
 const concreteCalcs = [
   { href: "/calculators/concrete/slab/", title: "Slab", desc: "Patios, driveways, sidewalks" },
@@ -64,17 +64,18 @@ const schema = graphSchema(
   <!-- HERO -->
   <section class="relative overflow-hidden -mx-4 sm:-mx-6 px-4 sm:px-6 -mt-8 md:-mt-12 pt-12 md:pt-20 pb-16">
     <div class="absolute inset-0 bg-grid opacity-50"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-[radial-gradient(ellipse_at_top,var(--border-strong),transparent_60%)] opacity-30 pointer-events-none -z-10"></div>
     <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
       <div class="flex flex-col gap-6">
         <div class="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--bg-subtle)] text-xs font-medium text-[var(--fg-secondary)]">
           <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
           Free project planning tools for homeowners
         </div>
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.05]">
-          Plan Every Home Improvement Project With Accurate Material Calculators
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.05] text-gradient">
+          Build with Precision, Estimate with Confidence
         </h1>
         <p class="text-base sm:text-lg text-[var(--fg-secondary)] text-pretty leading-relaxed">
-          Stop over-ordering or running short. Whether you are pouring a concrete slab, shingling a roof, painting a bedroom, or laying tile — enter your dimensions once and get precise material counts with open formulas you can verify yourself. No sign-up, no ads, no guesswork.
+          Free, professional-grade calculators for concrete, roofing, paint, and tile. Get accurate material lists instantly with open formulas and zero sign-up.
         </p>
         <div class="flex flex-col sm:flex-row gap-3 mt-2">
           <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-colors active:scale-[0.98]">

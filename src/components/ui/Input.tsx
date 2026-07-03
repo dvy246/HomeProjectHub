@@ -1,5 +1,4 @@
-import type React from "react";
-import { useId } from "react";
+import React, { forwardRef, useId } from "react";
 
 interface InputProps {
   label: string;
@@ -21,7 +20,7 @@ interface InputProps {
   spellcheck?: boolean;
 }
 
-export function Input({
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
   label,
   name,
   type = "text",
@@ -39,7 +38,7 @@ export function Input({
   error,
   required,
   spellcheck,
-}: InputProps) {
+}: InputProps, ref) {
   const id = useId();
   const descriptionId = error || helperText ? `${id}-desc` : undefined;
 
@@ -49,6 +48,7 @@ export function Input({
         {label}
       </label>
       <input
+        ref={ref}
         id={id}
         name={name}
         type={type}
@@ -76,4 +76,4 @@ export function Input({
       ) : null}
     </div>
   );
-}
+});
