@@ -1,0 +1,82 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/maintenance/first-time-homeowner/";
+const title = "First-Time Homeowner Maintenance Checklist";
+const description = "Essential first-year home maintenance checklist for new homeowners. Learn what to inspect, maintain, and budget for in your first 12 months.";
+const PAGE_PATH = "/maintenance/first-time-homeowner/";
+
+const monthlyTasks = [
+  { title: "Replace HVAC filter", detail: "Check monthly, replace every 1-3 months. Set a recurring reminder on your phone." },
+  { title: "Test smoke & CO detectors", detail: "Press the test button. Replace batteries yearly or when they chirp." },
+  { title: "Test GFCI outlets", detail: "Press the test/reset buttons on outlets near water sources (kitchen, bathrooms, garage)." },
+  { title: "Walk the property", detail: "Look for leaks, cracks, pest signs, and unusual odors. Early detection prevents major repairs." },
+];
+const seasonalTasks = [
+  { season: "Spring", tasks: ["Inspect roof for winter damage", "Clean gutters", "Service AC unit", "Check exterior caulking", "Test sprinkler system", "Seal driveway", "Check deck/patio for damage"] },
+  { season: "Fall", tasks: ["Clean gutters after leaves drop", "Service furnace", "Add weatherstripping", "Winterize sprinklers", "Insulate exposed pipes", "Drain and store garden hoses", "Test snow removal equipment"] },
+];
+const budget = { "1%": "$3,500/year on $350k home", "DIY savings": "30-50% on labor by doing tasks yourself", "emergency fund": "Set aside $2,000-5,000 for unexpected repairs" };
+
+const firstYearItems = [
+  { title: "Learn your home's systems", detail: "Locate water shutoff, gas shutoff, electrical panel, furnace filter location, water heater shutoff, and main sewer cleanout." },
+  { title: "Build a tool kit", detail: "Start with: hammer, screwdriver set, adjustable wrench, pliers, tape measure, level, utility knife, cordless drill, flashlight, and 6-ft ladder." },
+  { title: "Find service providers", detail: "Research and save contacts for: HVAC contractor, plumber, electrician, roofer, chimney sweep, and pest control. Check reviews before an emergency." },
+  { title: "Set up a maintenance calendar", detail: "Schedule recurring reminders for filter changes, gutter cleaning, and seasonal maintenance. Our interactive planner can help track everything." },
+  { title: "Create a home file", detail: "Keep receipts, warranties, appliance manuals, and service records in one place. Take photos of serial numbers for insurance purposes." },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "First-Time Homeowner", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "First-Time Homeowner Maintenance" }),
+  howToSchema("Complete first-year home maintenance", "A structured guide for new homeowners covering essential monthly, seasonal, and one-time tasks.", [
+    { heading: "Learn home systems", text: "Locate shutoff valves, electrical panel, and key system components on day one." },
+    { heading: "Set monthly routines", text: "Build habits around filter changes, detector tests, and property walks." },
+    { heading: "Budget for maintenance", text: "Set aside 1% of home value annually for preventive maintenance." },
+    { heading: "Build a tool kit", text: "Essential tools every homeowner needs for basic repairs and maintenance." },
+  ]),
+  faqPageSchema([
+    { q: "What should I do immediately after buying a home?", a: "Locate the main water shutoff, change all locks, test all smoke/CO detectors, clean gutters, change HVAC filter, and create a home file for all documents and warranties." },
+    { q: "How much should a first-time homeowner budget for maintenance?", a: "Plan for 1% of your home's purchase price per year. For a $350,000 home, that's $3,500 annually, or about $290 per month. Build this into your monthly budget from day one." },
+    { q: "What tools do I need as a new homeowner?", a: "Essential: hammer, cordless drill, screwdriver set, adjustable wrench, tape measure, level, utility knife, pliers, 6-ft ladder, and a wet/dry vacuum. Add a lawn mower, trimmer, and leaf blower for outdoor maintenance." },
+    { q: "When should I hire a home inspector after buying?", a: "Schedule your own inspection within the first 6 months (separate from your purchase inspection). Focus on roof, HVAC, foundation, and electrical. Create a priority list of needed repairs." },
+    { q: "What home maintenance can I ignore in the first year?", a: "Nothing should be 'ignored,' but lower-urgency tasks include: deep carpet cleaning, appliance replacement, repainting, and landscaping redesign. Focus on safety and preventive tasks first." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">First-Time Homeowner</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">First-Time Homeowner Maintenance Checklist</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Congratulations on your new home. This guide covers everything you need to know in your first year — from monthly habits to seasonal checklists — so you can protect your investment and avoid costly surprises.</p>
+
+    <section><h2 id="first-week" class="text-xl font-bold mb-3">Your First Week as a Homeowner</h2><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">{firstYearItems.slice(0, 3).map((item) => (<div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">{item.title}</div><p class="text-xs text-[var(--fg-secondary)]">{item.detail}</p></div>))}</div></section>
+
+    <section><h2 id="monthly" class="text-xl font-bold mb-3">Monthly Habits (10 Minutes Total)</h2><div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4 text-sm space-y-2">{monthlyTasks.map((t) => (<details><summary class="font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0 inline">{t.title}</h3></summary><p class="mt-1 text-xs text-[var(--fg-secondary)]">{t.detail}</p></details>))}</div></section>
+
+    <section><h2 id="seasonal" class="text-xl font-bold mb-3">Seasonal Checklists</h2><div class="grid grid-cols-1 sm:grid-cols-2 gap-4">{seasonalTasks.map((s) => (<div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-2">{s.season}</div><ul class="text-xs text-[var(--fg-secondary)] space-y-1">{s.tasks.map((t) => (<li>{t}</li>))}</ul></div>))}</div></section>
+
+    <section><h2 id="budgeting" class="text-xl font-bold mb-3">Budgeting for Home Maintenance</h2><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">{Object.entries(budget).map(([key, val]) => (<div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1 capitalize">{key.replace(/-/g, " ")}</div><p class="text-xs text-[var(--fg-secondary)]">{val}</p></div>))}</div><p class="text-xs text-[var(--fg-muted)] mt-2">Use our <a href="/maintenance/cost-estimator/" class="text-[var(--accent)] hover:underline">cost estimator</a> for a personalized maintenance budget based on your specific home.</p></section>
+
+    <section><h2 id="remaining" class="text-xl font-bold mb-3">Other First-Year Priorities</h2><div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">{firstYearItems.slice(3).map((item) => (<div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">{item.title}</div><p class="text-xs text-[var(--fg-secondary)]">{item.detail}</p></div>))}</div></section>
+
+    <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the most common first-year homeowner mistake?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Not budgeting for maintenance. New homeowners often spend their full budget on furnishings and renovations, leaving nothing for preventive maintenance. Build maintenance costs into your monthly budget from month one.</p></details>
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need a home warranty as a first-time buyer?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Home warranties cost $500-800/year and cover major system failures (HVAC, plumbing, electrical). Read the fine print — many have exclusions, service fees per visit, and coverage caps. For new construction, the builder's warranty covers major systems for 1-10 years.</p></details>
+    </div></section>
+
+    <div class="flex gap-4 text-sm">
+      <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>
+      <a href="/maintenance/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">All maintenance guides →</a>
+    </div>
+  </article>
+</Layout>

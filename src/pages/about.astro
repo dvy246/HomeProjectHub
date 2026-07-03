@@ -1,11 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { graphSchema, aboutPageSchema, breadcrumbListSchema } from "../lib/schema";
 
-const title = "About Us";
-const description = "Learn about the mission and calculation standards behind HomeProjectHub. We build transparent planning calculators for homeowners and DIY builders.";
+const title = "About HomeProjectHub — Free Construction Calculators for Homeowners";
+const description = "Learn about the mission and calculation standards behind HomeProjectHub. We build transparent, free material calculators for homeowners and DIY builders with visible formulas and clear assumptions.";
+
+const schema = graphSchema(
+  aboutPageSchema(),
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about/" },
+  ]),
+);
 ---
 
-<Layout title={title} description={description} canonical="https://homeprojecthub.com/about/">
+<Layout title={title} description={description} canonical="https://homeprojecthub.com/about/" schema={schema}>
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
@@ -18,44 +27,59 @@ const description = "Learn about the mission and calculation standards behind Ho
         About HomeProjectHub
       </h1>
       <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
-        Helping US homeowners and DIYers plan projects with transparent formulas, clear assumptions, and practical estimating workflows.
+        We build transparent, free calculators that help homeowners and DIYers estimate materials accurately before buying or hiring a contractor. Every formula and assumption is visible on the page.
       </p>
     </header>
 
     <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
       <p>
-        HomeProjectHub was built to make common home improvement estimates easier to check before you shop or call a contractor. When planning a renovation, backyard project, or small residential pour, a clear material estimate can help you budget, compare options, and avoid obvious ordering mistakes.
+        HomeProjectHub was created to solve a common problem in home improvement: the difficulty of estimating materials without either overbuying by a significant margin or running short mid-project. When planning a concrete patio, a roof replacement, a room repaint, or a tile floor installation, having a reliable material estimate before visiting the supplier makes the difference between a smooth project and a frustrating one.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
-        Our Approach
+        What we build
       </h2>
       <p>
-        Every calculator on HomeProjectHub uses visible formulas and plain-language assumptions. We do not use black-box algorithms. Calculator pages show the math, common inputs, and limitations so you can verify whether the estimate fits your project.
-      </p>
-      <p>
-        Material constants such as concrete bag yields, paint coverage rates, and roofing bundle coverage are based on commonly published manufacturer ranges. Always compare the estimate against the label, product data sheet, or contractor quote for the exact material you buy.
+        Every calculator on this site covers a specific material estimation scenario. The concrete calculators handle slabs, footings, walls, columns, tubes, steps, curb and gutter, block fill, rebar, and mix ratios. The roofing calculators cover shingles, metal roofing, plywood sheathing, roof pitch, ice and water shield, and snow loads. We also provide an interior paint calculator and a tile calculator for flooring and walls. Each page follows a consistent structure: an interactive calculator, a step-by-step how-to guide, a worked example, common mistakes to avoid, a cost reference when applicable, and a FAQ section.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
-        Technical Standards
+        How we calculate
       </h2>
       <p>
-        HomeProjectHub is built with modern static web technology (Astro, React, Tailwind CSS v4) to ensure fast load times, zero tracking cookies by default, and strong Core Web Vitals. Your project data is stored entirely locally in your browser.
+        All formulas use standard geometry and published material coverage rates. Concrete volume is calculated as length times width times depth, converted to cubic yards by dividing by 27. Roofing area uses the footprint area multiplied by a pitch adjustment factor based on the roof slope. Paint estimates subtract standard door and window openings from the wall area, then divide by the coverage rate printed on the paint can. Tile counts divide the floor area by the area of a single tile and apply a waste percentage appropriate for the layout pattern. Every formula is displayed on the calculator page so you can verify the math yourself.
+      </p>
+      <p>
+        Material constants such as concrete bag yields, paint coverage rates, and shingle bundle coverage are drawn from commonly published manufacturer ranges. Always compare our estimate against the label, product data sheet, or contractor quote for the exact product you plan to buy.
+      </p>
+
+      <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
+        Technical standards
+      </h2>
+      <p>
+        The site is built with Astro, React, and Tailwind CSS v4 to deliver fast load times and strong Core Web Vitals. No tracking cookies are set by default. Calculator components load only when you scroll to them. Your project measurements are stored in your browser's localStorage and are never sent to a server. There is no user account system, no login, and no data collection.
+      </p>
+
+      <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
+        Who this is for
+      </h2>
+      <p>
+        Homeowners planning their own projects. DIYers who want to compare material options before buying. Contractors who need a quick cross-check on material quantities. Anyone who has ever stood in a building supply aisle wondering, "How much do I actually need?" Calculators on this site do not replace structural engineering, permit requirements, or professional contractor bids. They provide a planning estimate so you start the conversation from an informed position.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Contact
       </h2>
       <p>
-        Have questions about a calculation, found an error, or want to suggest a new tool? Contact us at <a href="mailto:support@homeprojecthub.com" class="underline underline-offset-2 hover:no-underline">support@homeprojecthub.com</a>.
+        Have questions about a calculation, found an error, or want to suggest a new tool or material? Contact us at <a href="mailto:support@homeprojecthub.com" class="underline underline-offset-2 hover:no-underline">support@homeprojecthub.com</a>.
       </p>
 
       <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 mt-2">
-        <h3 class="text-sm font-semibold mb-1">Methodology & References</h3>
+        <h3 class="text-sm font-semibold mb-1">Limitations and disclaimer</h3>
         <p class="text-xs leading-relaxed">
-          HomeProjectHub focuses on estimating, not structural design. Volume and area calculators use standard geometry; package counts use stated coverage/yield assumptions; cost references are treated as broad US planning ranges when shown. If a project affects structure, drainage, permits, load paths, electrical, plumbing, or safety, verify the plan with a qualified local professional.
+          HomeProjectHub calculators are planning tools, not design or engineering instruments. Volume and area estimates use standard geometry. Package counts use stated coverage and yield assumptions. Cost references, when shown, are broad US planning ranges and do not constitute a quote. If your project involves structural loads, foundation design, frost depth considerations, electrical wiring, plumbing, or anything that could affect the safety or habitability of a structure, consult a qualified licensed professional in your jurisdiction. Read the <a href="/disclaimer/" class="underline">full disclaimer</a>.
         </p>
+        <p class="text-xs text-[var(--fg-muted)] mt-2">Last updated: July 2026</p>
       </div>
     </div>
   </article>

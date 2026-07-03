@@ -9,6 +9,7 @@ import { calculateCircleArea, calculateRectArea, calculateVolume, cuFeetToCuYard
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 import { parseNumber } from "../../lib/helpers";
+import ConcreteColumnDiagram from "../diagrams/ConcreteColumnDiagram";
 
 export default function ConcreteColumnCalc() {
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
@@ -133,6 +134,9 @@ export default function ConcreteColumnCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <ConcreteColumnDiagram diameter={diaNum} height={hNum} isRound={columnShape === "round"} unitSystem={unitSystem} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
           <div className="flex flex-col gap-5">

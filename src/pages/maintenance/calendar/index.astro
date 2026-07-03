@@ -1,0 +1,37 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import MaintenanceCalendar from "../../../components/maintenance/MaintenanceCalendar";
+import { graphSchema, webPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/maintenance/calendar/";
+const title = "Home Maintenance Calendar — Monthly Task Schedule";
+const description = "View and manage your home maintenance tasks by month. Interactive calendar with task tracking, category filtering, and completion status.";
+const PAGE_PATH = "/maintenance/calendar/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Calendar", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "Home Maintenance Calendar" }),
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Calendar</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Home Maintenance Calendar</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">View all maintenance tasks organized by month. Click a month to see details, check off completed tasks, and track your progress.</p>
+
+    <MaintenanceCalendar client:load />
+
+    <div class="flex gap-4 text-sm">
+      <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>
+      <a href="/maintenance/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← All guides</a>
+    </div>
+  </article>
+</Layout>

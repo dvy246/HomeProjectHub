@@ -1,0 +1,43 @@
+{
+  "densities": {
+    "steel_a36": { "lb_per_cu_ft": 490, "kg_per_cu_m": 7850, "name": "Steel A36" },
+    "steel_1018": { "lb_per_cu_ft": 490, "kg_per_cu_m": 7850, "name": "Steel 1018" },
+    "steel_4140": { "lb_per_cu_ft": 490, "kg_per_cu_m": 7850, "name": "Steel 4140" },
+    "steel_stainless_304": { "lb_per_cu_ft": 499, "kg_per_cu_m": 8000, "name": "Stainless 304" },
+    "steel_stainless_316": { "lb_per_cu_ft": 500, "kg_per_cu_m": 8010, "name": "Stainless 316" },
+    "aluminum_6061": { "lb_per_cu_ft": 169, "kg_per_cu_m": 2700, "name": "Aluminum 6061" },
+    "aluminum_7075": { "lb_per_cu_ft": 174, "kg_per_cu_m": 2810, "name": "Aluminum 7075" },
+    "aluminum_2024": { "lb_per_cu_ft": 173, "kg_per_cu_m": 2780, "name": "Aluminum 2024" },
+    "copper": { "lb_per_cu_ft": 559, "kg_per_cu_m": 8960, "name": "Copper" },
+    "brass": { "lb_per_cu_ft": 525, "kg_per_cu_m": 8410, "name": "Brass" },
+    "granite": { "lb_per_cu_ft": 190, "kg_per_cu_m": 3050, "name": "Granite" },
+    "marble": { "lb_per_cu_ft": 170, "kg_per_cu_m": 2700, "name": "Marble" },
+    "limestone_stone": { "lb_per_cu_ft": 175, "kg_per_cu_m": 2800, "name": "Limestone" },
+    "sandstone": { "lb_per_cu_ft": 145, "kg_per_cu_m": 2320, "name": "Sandstone" },
+    "concrete_density": { "lb_per_cu_ft": 150, "kg_per_cu_m": 2400, "name": "Concrete" },
+    "concrete": { "lb_per_cu_ft": 150, "kg_per_cu_m": 2400, "name": "Concrete" },
+    "glass_annealed": { "lb_per_cu_ft": 161, "kg_per_cu_m": 2580, "name": "Annealed Glass" },
+    "lumber_douglas_fir": { "lb_per_cu_ft": 34, "kg_per_cu_m": 545, "name": "Douglas Fir" },
+    "lumber_oak": { "lb_per_cu_ft": 47, "kg_per_cu_m": 753, "name": "Oak" },
+    "lumber_pine": { "lb_per_cu_ft": 30, "kg_per_cu_m": 480, "name": "Pine" },
+    "lumber_cedar": { "lb_per_cu_ft": 27, "kg_per_cu_m": 432, "name": "Cedar" },
+    "lumber_maple": { "lb_per_cu_ft": 43, "kg_per_cu_m": 689, "name": "Maple" },
+    "lumber_walnut": { "lb_per_cu_ft": 40, "kg_per_cu_m": 641, "name": "Walnut" }
+  },
+  "aggregates": {
+    "gravel_pea": { "lb_per_cu_ft": 100, "tons_per_cu_yd": 1.4, "name": "Pea Gravel" },
+    "gravel_crushed": { "lb_per_cu_ft": 110, "tons_per_cu_yd": 1.5, "name": "Crushed Stone" },
+    "gravel_57": { "lb_per_cu_ft": 105, "tons_per_cu_yd": 1.4, "name": "#57 Crushed Stone" },
+    "gravel_3": { "lb_per_cu_ft": 100, "tons_per_cu_yd": 1.35, "name": "#3 Crushed Stone" },
+    "river_rock": { "lb_per_cu_ft": 110, "tons_per_cu_yd": 1.5, "name": "River Rock" },
+    "rip_rap": { "lb_per_cu_ft": 110, "tons_per_cu_yd": 1.55, "name": "Rip Rap" },
+    "limestone": { "lb_per_cu_ft": 115, "tons_per_cu_yd": 1.55, "name": "Crushed Limestone" },
+    "sand": { "lb_per_cu_ft": 100, "tons_per_cu_yd": 1.35, "name": "Sand" }
+  },
+  "mulch": {
+    "bark": { "lb_per_cu_ft": 25, "bags_per_cu_yd": 13.5, "bag_size_cuft": 2, "name": "Bark Mulch" },
+    "cedar": { "lb_per_cu_ft": 22, "bags_per_cu_yd": 13.5, "bag_size_cuft": 2, "name": "Cedar Mulch" },
+    "rubber": { "lb_per_cu_ft": 55, "bags_per_cu_yd": 13.5, "bag_size_cuft": 2, "name": "Rubber Mulch" },
+    "dyed": { "lb_per_cu_ft": 30, "bags_per_cu_yd": 13.5, "bag_size_cuft": 2, "name": "Dyed Mulch" }
+  }
+}

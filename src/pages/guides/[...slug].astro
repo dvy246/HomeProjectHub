@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import type { GetStaticPaths } from "astro";
+import { graphSchema, articleSchema as articleSchemaFn, breadcrumbListSchema } from "../../lib/schema";
 
 export async function getStaticPaths() {
   const guides = await getCollection("guide");
@@ -14,30 +14,25 @@ export async function getStaticPaths() {
 const SITE = "https://homeprojecthub.com";
 const { guide } = Astro.props;
 const { Content } = await render(guide);
-const articleSchema = {
-  "@type": "Article",
-  "@id": `${SITE}/guides/${guide.id}/#article`,
+const articleSchema = articleSchemaFn({
   headline: guide.data.title,
   description: guide.data.description,
-  author: {
-    "@type": "Person",
-    name: guide.data.author,
-  },
-  publisher: {
-    "@type": "Organization",
-    "@id": `${SITE}/#organization`,
-    name: "HomeProjectHub",
-  },
+  author: guide.data.author,
   datePublished: guide.data.pubDate.toISOString(),
-  ...(guide.data.updatedDate ? { dateModified: guide.data.updatedDate.toISOString() } : {}),
-};
+  dateModified: guide.data.updatedDate?.toISOString(),
+});
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Guides", path: "/guides/" }, { name: guide.data.title, path: `/guides/${guide.id}/` }]),
+  articleSchema,
+);
 ---
 
 <Layout
   title={guide.data.title}
   description={guide.data.description}
   canonical={`${SITE}/guides/${guide.id}/`}
-  schema={{ "@context": "https://schema.org", ...articleSchema }}
+  schema={schema}
   articlePubDate={guide.data.pubDate}
   articleUpdatedDate={guide.data.updatedDate}
 >

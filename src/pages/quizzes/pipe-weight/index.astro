@@ -1,0 +1,50 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Quiz from "../../../components/Quiz";
+import AdSlot from "../../../components/AdSlot.astro";
+import { PIPE_WEIGHT_QUESTIONS } from "../../../data/quizzes/pipe-weight";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/quizzes/pipe-weight/";
+const title = "Pipe Weight Quiz";
+const description = "Test your knowledge of pipe weight calculations. Questions cover steel pipe dimensions, schedule ratings, density values, and weight formulas.";
+const PAGE_PATH = "/quizzes/pipe-weight/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Quizzes", path: "/quizzes/" }, { name: title, path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: title }),
+  faqPageSchema([
+    { q: "What is the pipe weight formula?", a: "Weight per foot = (OD − WT) × WT × 10.69 for steel pipes, where OD is outer diameter and WT is wall thickness in inches." },
+    { q: "What does Schedule 40 mean?", a: "Schedule 40 is a standard wall thickness for steel pipes. Higher schedule numbers mean thicker walls. Schedule 80 is thicker than Schedule 40." },
+    { q: "How much does a 6-inch steel pipe weigh per foot?", a: "A 6-inch Schedule 40 steel pipe weighs approximately 18.97 lb/ft. Schedule 80 is heavier at about 28.57 lb/ft due to thicker walls." },
+    { q: "What is the density of steel used in pipe calculations?", a: "Carbon steel density is 490 lb/cu ft (0.284 lb/cu in). This is the standard value used in pipe weight formulas." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/quizzes/" class="hover:text-[var(--fg)] transition-colors">Quizzes</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Pipe Weight</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Pipe Weight Quiz</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Test your understanding of pipe weight calculations, schedule classifications, and steel material properties. This 8-question quiz covers the essential knowledge for working with steel pipe specifications.</p>
+    <AdSlot slotId="ad-top-leaderboard" />
+    <section><Quiz title="Pipe Weight Quiz" questions={PIPE_WEIGHT_QUESTIONS} client:visible /></section>
+    <AdSlot slotId="ad-in-content-mid" />
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Pipe Weight Reference</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How is pipe weight calculated?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Pipe weight per foot = (OD − WT) × WT × 10.69 for steel. The constant 10.69 accounts for steel density (490 lb/cu ft) and unit conversions. For stainless steel, use 10.78 instead.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is nominal pipe size (NPS)?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">NPS is a North American standard for pipe sizes. NPS 6 does not equal 6 inches OD — it refers to a nominal size. Actual OD of NPS 6 is 6.625 inches.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Why does Schedule 80 weigh more than Schedule 40?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Schedule 80 has thicker walls than Schedule 40 for the same nominal pipe size. More wall material means more weight per foot, despite having the same outer diameter.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How do I calculate weight for a specific pipe length?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Multiply the weight per foot by the total length in feet. Use our Pipe Weight Calculator under Calculators &gt; Weight for quick results.</p></details>
+      </div>
+    </section>
+    <p class="text-xs text-[var(--fg-muted)]">Use our <a href="/calculators/pipe-weight/" class="text-[var(--accent)] hover:underline">Pipe Weight Calculator</a> to compute weights for any pipe size and length.</p>
+  </article>
+</Layout>

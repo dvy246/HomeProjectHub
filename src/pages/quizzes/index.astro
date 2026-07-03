@@ -1,0 +1,74 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/quizzes/";
+const title = "Home Improvement Quizzes";
+const description = "Test your home improvement knowledge with interactive quizzes. Covering pipe weight, stone weight, construction math, and material science.";
+const PAGE_PATH = "/quizzes/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Quizzes", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: title }),
+  faqPageSchema([
+    { q: "What quizzes are available?", a: "We offer interactive quizzes on pipe weight calculation, stone weight estimation, and more home improvement topics coming soon." },
+    { q: "Are the quizzes free?", a: "Yes, all quizzes are completely free. No account or sign-up required." },
+    { q: "How are quiz scores calculated?", a: "Each quiz has multiple-choice questions. You receive 1 point per correct answer. Your score and percentage are shown at the end." },
+    { q: "Can I retake a quiz?", a: "Yes, you can retake any quiz as many times as you'd like. Questions are shuffled each time for a fresh experience." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Quizzes</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Home Improvement Quizzes</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Test your knowledge of construction materials, weight calculations, and home improvement math. Each quiz includes 8 multiple-choice questions with detailed explanations.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <a href="/quizzes/pipe-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 hover:border-[var(--border-hover)] transition-colors">
+        <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center mb-3">
+          <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <h2 class="text-lg font-bold mb-1">Pipe Weight Quiz</h2>
+        <p class="text-sm text-[var(--fg-secondary)]">Test your knowledge of pipe weight calculations, schedule ratings, steel densities, and pipe geometry.</p>
+      </a>
+      <a href="/quizzes/stone-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 hover:border-[var(--border-hover)] transition-colors">
+        <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center mb-3">
+          <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16M4 16h16"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        </div>
+        <h2 class="text-lg font-bold mb-1">Stone Weight Quiz</h2>
+        <p class="text-sm text-[var(--fg-secondary)]">Test your knowledge of natural stone densities, countertop weights, and material properties of granite, marble, and more.</p>
+      </a>
+    </div>
+    <section>
+      <h2 id="how-quizzes-work" class="text-xl font-bold mb-3">How It Works</h2>
+      <ol class="list-decimal list-inside text-sm text-[var(--fg-secondary)] space-y-2">
+        <li><strong>Choose a quiz</strong> from the cards above.</li>
+        <li><strong>Answer 8 multiple-choice questions</strong> at your own pace.</li>
+        <li><strong>Get instant feedback</strong> with explanations for each answer.</li>
+        <li><strong>See your score</strong> and retry to improve your results.</li>
+      </ol>
+    </section>
+    <section>
+      <h2 id="why-take-quizzes" class="text-xl font-bold mb-3">Why Test Your Knowledge?</h2>
+      <ul class="text-sm text-[var(--fg-secondary)] space-y-2">
+        <li><strong>Reinforce learning:</strong> Answering questions helps solidify construction math and material concepts.</li>
+        <li><strong>Identify gaps:</strong> Find areas where you need more study or practice.</li>
+        <li><strong>Apply knowledge:</strong> Understanding material properties helps you make better decisions on projects.</li>
+        <li><strong>Track progress:</strong> Retake quizzes to measure improvement over time.</li>
+      </ul>
+    </section>
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Are new quizzes added regularly?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes, we plan to add quizzes on concrete mix design, roofing materials, lumber grading, and more construction topics in future updates.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Can I suggest quiz topics?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">We welcome suggestions. Contact us through our contact page with your quiz topic ideas.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do quizzes require an account?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">No account needed. All quizzes are free and work entirely in your browser. Your progress is not saved between sessions.</p></details>
+      </div>
+    </section>
+  </article>
+</Layout>

@@ -1,0 +1,68 @@
+import { useState } from "react";
+import { Input } from "../ui/Input";
+import { Card } from "../ui/Card";
+import { cuFeetToCuYards, calculateCircleAreaFromDiameter } from "../../lib/geometry";
+import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
+import { parseNumber } from "../../lib/helpers";
+
+export default function SonotubeCalc() {
+  const [diameter, setDiameter] = useState("10");
+  const [height, setHeight] = useState("48");
+  const [quantity, setQuantity] = useState("1");
+  const [waste, setWaste] = useState("5");
+
+  const d = parseNumber(diameter);
+  const h = parseNumber(height);
+  const qty = Math.max(1, Math.round(parseNumber(quantity) || 1));
+  const ws = parseNumber(waste) / 100;
+  const radiusFt = (d / 2) / 12;
+  const heightFt = h / 12;
+  const volPerTube = Math.PI * radiusFt * radiusFt * heightFt;
+  const totalVol = volPerTube * qty;
+  const cuYd = cuFeetToCuYards(totalVol);
+  const cuYdWaste = applyWasteFactor(cuYd, ws);
+  const bags80 = calculateConcreteBags(totalVol, "80lb");
+  const weightLbs = estimateConcreteWeightLbs(totalVol);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="lg:col-span-7 flex flex-col gap-4">
+        <Card>
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="Tube Diameter (in)" type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="10" />
+            <Input label="Tube Height (in)" type="number" inputMode="decimal" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="48" />
+            <Input label="Number of Tubes" type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="1" />
+            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={waste} onChange={(e) => setWaste(e.target.value)} placeholder="5" />
+          </div>
+        </Card>
+      </div>
+      <div className="lg:col-span-5 flex flex-col gap-4">
+        <Card>
+          <h3 className="text-sm font-semibold mb-3">Sonotube Concrete</h3>
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
+              <span className="text-xs text-[var(--fg-secondary)]">Volume per Tube</span>
+              <span className="text-sm font-semibold tabular-nums">{volPerTube.toFixed(3)} cu ft</span>
+            </div>
+            <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
+              <span className="text-xs text-[var(--fg-secondary)]">Total Concrete ({qty} tubes)</span>
+              <span className="text-sm font-bold tabular-nums">{cuYd.toFixed(3)} cu yd</span>
+            </div>
+            <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
+              <span className="text-xs text-[var(--fg-secondary)]">With {parseNumber(waste).toFixed(0)}% Waste</span>
+              <span className="text-sm font-bold tabular-nums">{cuYdWaste.toFixed(3)} cu yd</span>
+            </div>
+            <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
+              <span className="text-xs text-[var(--fg-secondary)]">80 lb Bags Needed</span>
+              <span className="text-sm font-semibold tabular-nums">{bags80}</span>
+            </div>
+            <div className="flex justify-between items-center py-1.5">
+              <span className="text-xs text-[var(--fg-secondary)]">Weight</span>
+              <span className="text-sm font-semibold tabular-nums">{weightLbs.toFixed(0)} lbs ({ (weightLbs / 2000).toFixed(2) } tons)</span>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

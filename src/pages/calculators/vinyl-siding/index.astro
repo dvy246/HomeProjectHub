@@ -1,0 +1,64 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import VinylSidingCalc from "../../../components/calculators/VinylSidingCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/vinyl-siding/";
+const title = "Vinyl Siding Calculator";
+const description = "Calculate vinyl siding squares, trim pieces, and starter strips.";
+const formula = "Siding Squares = Wall Area (sq ft) / 100 | Trim = Sum of window/door perimeters | Starter = Linear ft of wall base";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Wall & Fence", path: "/calculators/" },
+    { name: title, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({ name: title, description, formula, url: canonical }),
+  howToSchema(title, description, [
+    { name: "Measure area", text: "Review your project measurements." },
+    { name: "Enter dimensions", text: "Input your project dimensions into the calculator." },
+    { name: "Get estimate", text: "Review your material estimate and adjust as needed." },
+  ]),
+  faqPageSchema([
+    { q: "What is a square of siding?", a: "A square is 100 sq ft of siding coverage. It's the standard unit for quoting all lap siding materials." },
+    { q: "How many squares of siding for a 2000 sq ft house?", a: "Rough estimate: exterior wall area of a 2000 sq ft house is about 1600-2000 sq ft = 16-20 squares. This varies by wall height and window count." },
+    { q: "How much waste should I add for vinyl siding?", a: "Add 10-15% for waste. Gable ends, corners, and complex roof lines increase waste. Simple rectangular walls need only 5-10%." },
+    { q: "Do I need starter strip for vinyl siding?", a: "Yes, starter strip is required at the bottom of each wall. It locks the first course of siding in place and provides the angle for proper water drainage." },
+    { q: "What trim pieces are needed for vinyl siding?", a: "Outside corners, inside corners, J-channel around windows/doors, undersill trim, and drip edge at the top of walls are the standard trim pieces." },
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+<article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Vinyl Siding Calculator</span>
+  </nav>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Vinyl Siding Calculator</h1>
+  <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate vinyl siding squares, trim pieces, and starter strips.</p>
+  <AdSlot slotId="ad-top-leaderboard" />
+  <section><VinylSidingCalc client:visible /></section>
+  <EstimateMethodology formula={formula} assumptions={["1 square = 100 sq ft of siding coverage.", "Trim estimated by linear footage of openings.", "Starter strip equals linear ft of wall base.", "J-channel needed around each window and door.", "Add 10-15% waste for cuts and overlaps.", "Gable ends calculated as triangle area."]} />
+  <AdSlot slotId="ad-in-content-mid" />
+  <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is a square of siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A square is 100 sq ft of siding coverage. It's the standard unit for quoting all lap siding materials.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many squares of siding for a 2000 sq ft house?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Rough estimate: exterior wall area of a 2000 sq ft house is about 1600-2000 sq ft = 16-20 squares. This varies by wall height and window count.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much waste should I add for vinyl siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Add 10-15% for waste. Gable ends, corners, and complex roof lines increase waste. Simple rectangular walls need only 5-10%.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need starter strip for vinyl siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes, starter strip is required at the bottom of each wall. It locks the first course of siding in place and provides the angle for proper water drainage.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What trim pieces are needed for vinyl siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Outside corners, inside corners, J-channel around windows/doors, undersill trim, and drip edge at the top of walls are the standard trim pieces.</p></details>
+  </div></section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/vinyl-fence/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Vinyl Fence</span></a>
+    <a href="/calculators/square-footage/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Square Footage</span></a>
+    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Framing</span></a>
+  </div></footer>
+</article>
+</Layout>

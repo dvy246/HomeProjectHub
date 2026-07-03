@@ -1,0 +1,60 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import TonnageCalc from "../../../components/calculators/TonnageCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/tonnage/";
+const title = "Tonnage Calculator";
+const description = "Convert pounds to tons and kilograms with this simple weight converter.";
+const formula = "Tons (short) = Pounds / 2000 | Tons (metric) = Kilograms / 1000";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Weight", path: "/calculators/" },
+    { name: title, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({ name: title, description, formula, url: canonical }),
+  howToSchema(title, description, [
+    { name: "Measure area", text: "Review your project measurements." },
+    { name: "Enter dimensions", text: "Input your project dimensions into the calculator." },
+    { name: "Get estimate", text: "Review your material estimate and adjust as needed." },
+  ]),
+  faqPageSchema([
+    { q: "How many pounds in a ton?", a: "2,000 pounds = 1 short ton (US). 2,240 pounds = 1 long ton (UK). 1,000 kilograms = 1 metric tonne." },
+    { q: "What is the difference between ton and tonne?", a: "Ton (short ton) = 2,000 lbs. Tonne (metric ton) = 1,000 kg = 2,204.6 lbs. Long ton (UK) = 2,240 lbs." },
+    { q: "How many tons is 10,000 pounds?", a: "10,000 lbs / 2,000 = 5 short tons. In metric: 10,000 lbs = 4,536 kg / 1,000 = 4.54 metric tonnes." },
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+<article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Tonnage Calculator</span>
+  </nav>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Tonnage Calculator</h1>
+  <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Convert pounds to tons and kilograms with this simple weight converter.</p>
+  <AdSlot slotId="ad-top-leaderboard" />
+  <section><TonnageCalc client:visible /></section>
+  <EstimateMethodology formula={formula} assumptions={["US short ton = 2,000 lbs.", "UK long ton = 2,240 lbs.", "Metric tonne = 1,000 kg = 2,204.6 lbs.", "Conversion uses standard international values."]} />
+  <AdSlot slotId="ad-in-content-mid" />
+  <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many pounds in a ton?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2,000 pounds = 1 short ton (US). 2,240 pounds = 1 long ton (UK). 1,000 kilograms = 1 metric tonne.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the difference between ton and tonne?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Ton (short ton) = 2,000 lbs. Tonne (metric ton) = 1,000 kg = 2,204.6 lbs. Long ton (UK) = 2,240 lbs.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many tons is 10,000 pounds?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">10,000 lbs / 2,000 = 5 short tons. In metric: 10,000 lbs = 4,536 kg / 1,000 = 4.54 metric tonnes.</p></details>
+  </div></section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/steel-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Steel Weight</span></a>
+    <a href="/calculators/metal-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Metal Weight</span></a>
+    <a href="/calculators/size-to-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Size to Weight</span></a>
+  </div></footer>
+</article>
+</Layout>

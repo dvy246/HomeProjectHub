@@ -1,16 +1,21 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import { faqPageSchema } from "../../lib/schema";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
+const canonical = "https://homeprojecthub.com/compare/concrete-vs-asphalt/";
 const title = "Concrete vs Asphalt Driveway: Which Is Better?";
 const description = "Compare concrete and asphalt driveways. Cost, durability, maintenance, lifespan, and climate considerations for your driveway project.";
 
-const schema = faqPageSchema([
-  { q: "Is concrete or asphalt cheaper for a driveway?", a: "Asphalt is cheaper upfront ($3-$5 per sq ft installed vs $4-$8 for concrete). However, concrete lasts 30-50 years with minimal maintenance, while asphalt needs resealing every 3-5 years and lasts 15-25 years." },
-  { q: "Which driveway material lasts longer?", a: "Concrete lasts 30-50 years with proper maintenance. Asphalt lasts 15-25 years before needing replacement. Concrete has higher upfront cost but lower lifetime cost." },
-  { q: "Is concrete or asphalt better for cold climates?", a: "Asphalt performs better in freeze-thaw climates because it's flexible and resists cracking. Concrete in cold climates requires proper reinforcement and control joints to prevent frost heave damage." },
-], "https://homeprojecthub.com/compare/concrete-vs-asphalt/");
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Compare", path: "/compare/" }, { name: "Concrete vs Asphalt", path: "/compare/concrete-vs-asphalt/" }]),
+  webPageSchema({ url: canonical, topicName: "Concrete vs Asphalt Comparison" }),
+  faqPageSchema([
+    { q: "Is concrete or asphalt cheaper for a driveway?", a: "Asphalt is cheaper upfront ($3-$5 per sq ft installed vs $4-$8 for concrete). However, concrete lasts 30-50 years with minimal maintenance, while asphalt needs resealing every 3-5 years and lasts 15-25 years." },
+    { q: "Which driveway material lasts longer?", a: "Concrete lasts 30-50 years with proper maintenance. Asphalt lasts 15-25 years before needing replacement. Concrete has higher upfront cost but lower lifetime cost." },
+    { q: "Is concrete or asphalt better for cold climates?", a: "Asphalt performs better in freeze-thaw climates because it's flexible and resists cracking. Concrete in cold climates requires proper reinforcement and control joints to prevent frost heave damage." },
+  ], canonical),
+);
 ---
 
 <Layout title={title} description={description} canonical="https://homeprojecthub.com/compare/concrete-vs-asphalt/" schema={schema}>
@@ -95,15 +100,15 @@ const schema = faqPageSchema([
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-3">
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">Is concrete or asphalt cheaper for a driveway?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Is concrete or asphalt cheaper for a driveway?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt is cheaper upfront ($3-$5 per sq ft installed vs $4-$8 for concrete). However, concrete lasts 30-50 years with minimal maintenance, while asphalt needs resealing every 3-5 years and lasts 15-25 years. Over 40 years, concrete can be more cost-effective.</p>
         </details>
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">Which driveway material lasts longer?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Which driveway material lasts longer?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Concrete lasts 30-50 years with proper maintenance. Asphalt lasts 15-25 years before needing replacement. Concrete has higher upfront cost but lower lifetime cost.</p>
         </details>
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">Is concrete or asphalt better for cold climates?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Is concrete or asphalt better for cold climates?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt performs better in freeze-thaw climates because it's flexible and resists cracking. Concrete in cold climates requires proper reinforcement, control joints, and a gravel base below the frost line to prevent frost heave damage.</p>
         </details>
       </div>

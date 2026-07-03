@@ -28,10 +28,6 @@ export default function RoofPitchCalc() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-4 overflow-hidden">
-          <RoofPitchDiagram rise={riseNum} run={runNum} />
-        </div>
-
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Pitch Measurements</h3>
@@ -72,6 +68,9 @@ export default function RoofPitchCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <RoofPitchDiagram rise={riseNum} run={runNum} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Pitch Analysis</h3>
           <div className="flex flex-col gap-5">

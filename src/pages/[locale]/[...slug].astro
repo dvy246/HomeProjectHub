@@ -1,0 +1,395 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import MaintenancePlanner from "../../components/maintenance/MaintenancePlanner";
+import CostEstimator from "../../components/maintenance/CostEstimator";
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type Locale } from "../../i18n";
+import { t } from "../../i18n";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../lib/schema";
+
+export function getStaticPaths() {
+  const contentPaths = [
+    undefined,
+    'about', 'contact', 'strategy', 'guides', 'compare', 'quizzes', 'calculators',
+    'privacy', 'terms', 'disclaimer',
+    'maintenance',
+    'maintenance/planner', 'maintenance/calendar', 'maintenance/cost-estimator',
+    'maintenance/spring', 'maintenance/summer', 'maintenance/fall', 'maintenance/winter',
+    'maintenance/first-time-homeowner',
+  ];
+
+  const out: { params: { locale: string; slug?: string }; props: { locale: string; slug: string } }[] = [];
+
+  for (const locale of SUPPORTED_LOCALES) {
+    if (locale === DEFAULT_LOCALE) continue;
+    for (const slug of contentPaths) {
+      const params: { locale: string; slug?: string } = { locale };
+      if (slug) params.slug = slug;
+      out.push({ params, props: { locale, slug: slug || '' } });
+    }
+  }
+  return out;
+}
+
+const locale = Astro.props.locale as Locale;
+const slugStr = Astro.props.slug;
+const tr = (key: string) => t(locale, key);
+const canonical = slugStr
+  ? `https://homeprojecthub.com/${locale}/${slugStr}/`
+  : `https://homeprojecthub.com/${locale}/`;
+
+function webPage(s: string) {
+  return { schema: graphSchema(webPageSchema({ url: canonical, topicName: s })) };
+}
+
+function pageFor(slug: string): { title: string; description: string; h1: string; subtitle?: string; schema?: Record<string, unknown> } {
+  if (slug === 'about') return { title: tr('about.title'), description: tr('about.description'), h1: tr('about.h1') };
+  if (slug === 'contact') return { title: tr('contact.title'), description: tr('contact.description'), h1: tr('contact.h1'), subtitle: tr('contact.subtitle') };
+  if (slug === 'strategy') return { title: tr('strategy.title'), description: tr('strategy.description'), h1: tr('strategy.h1'), subtitle: tr('strategy.subtitle') };
+  if (slug === 'guides') return { title: tr('guides.title'), description: tr('guides.description'), h1: tr('guides.h1') };
+  if (slug === 'compare') return { title: tr('compare.title'), description: tr('compare.description'), h1: tr('compare.h1') };
+  if (slug === 'quizzes') return { title: tr('quizzes.title'), description: tr('quizzes.description'), h1: tr('quizzes.h1'), subtitle: tr('quizzes.subtitle') };
+  if (slug === 'calculators') return { title: tr('calculators.title'), description: tr('calculators.description'), h1: tr('calculators.h1'), subtitle: tr('calculators.subtitle') };
+  if (slug === 'privacy') return { title: 'Privacy Policy', description: 'Privacy Policy', h1: 'Privacy Policy' };
+  if (slug === 'terms') return { title: 'Terms of Service', description: 'Terms of Service', h1: 'Terms of Service' };
+  if (slug === 'disclaimer') return { title: 'Disclaimer', description: 'Disclaimer', h1: 'Disclaimer' };
+  if (slug === 'maintenance') return { title: tr('maintenance.hub.title'), description: tr('maintenance.hub.description'), h1: tr('maintenance.hub.h1'), subtitle: tr('maintenance.hub.subtitle') };
+  if (slug === 'maintenance/planner') return { title: tr('maintenance.planner.title'), description: tr('maintenance.planner.description'), h1: tr('maintenance.planner.h1') };
+  if (slug === 'maintenance/calendar') return { title: 'Home Maintenance Calendar', description: 'Monthly maintenance task schedule and tracking.', h1: 'Maintenance Calendar' };
+  if (slug === 'maintenance/cost-estimator') return { title: tr('maintenance.costEstimator.title'), description: tr('maintenance.costEstimator.description'), h1: tr('maintenance.costEstimator.h1') };
+  if (slug === 'maintenance/first-time-homeowner') return { title: tr('maintenance.firstTime.title'), description: tr('maintenance.firstTime.description'), h1: tr('maintenance.firstTime.h1') };
+  if (slug === 'maintenance/spring') return { title: tr('maintenance.spring.title'), description: tr('maintenance.spring.description'), h1: tr('maintenance.spring.h1') };
+  if (slug === 'maintenance/summer') return { title: tr('maintenance.summer.title'), description: tr('maintenance.summer.description'), h1: tr('maintenance.summer.h1') };
+  if (slug === 'maintenance/fall') return { title: tr('maintenance.fall.title'), description: tr('maintenance.fall.description'), h1: tr('maintenance.fall.h1') };
+  if (slug === 'maintenance/winter') return { title: tr('maintenance.winter.title'), description: tr('maintenance.winter.description'), h1: tr('maintenance.winter.h1') };
+  return { title: tr('home.title'), description: tr('home.description'), h1: tr('home.h1'), subtitle: tr('home.subtitle') };
+}
+
+const pg = slugStr ? pageFor(slugStr) : { title: tr('home.title'), description: tr('home.description'), h1: tr('home.h1'), subtitle: tr('home.subtitle') };
+const { title, description, h1, subtitle } = pg;
+const lp = (p: string) => `/${locale}${p}`;
+---
+
+<Layout title={title} description={description} canonical={canonical}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+
+    {!slugStr && (
+      <>
+        <section class="relative overflow-hidden -mx-4 sm:-mx-6 px-4 sm:px-6 -mt-8 md:-mt-12 pt-12 md:pt-20 pb-16">
+          <div class="absolute inset-0 bg-grid opacity-50"></div>
+          <div class="relative max-w-3xl mx-auto text-center flex flex-col gap-6">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.05]">{h1}</h1>
+            <p class="text-base sm:text-lg text-[var(--fg-secondary)] max-w-2xl mx-auto">{subtitle}</p>
+            <div class="flex flex-col sm:flex-row gap-3 self-center mt-2">
+              <a href={lp('/calculators/')} class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-all active:scale-[0.98]">
+                {tr('home.cta_calculators')}
+                <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </a>
+              <a href={lp('/maintenance/')} class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-all active:scale-[0.98]">
+                {tr('home.cta_maintenance')}
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-y border-[var(--border)] -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 mb-12">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+            <div class="text-center"><div class="text-2xl font-bold tracking-tight tabular-nums">60+</div><div class="text-xs text-[var(--fg-muted)] mt-0.5">{tr('calculators.title')}</div></div>
+            <div class="text-center"><div class="text-2xl font-bold tracking-tight tabular-nums">2</div><div class="text-xs text-[var(--fg-muted)] mt-0.5">{tr('common.unitsImperial')}</div></div>
+            <div class="text-center"><div class="text-2xl font-bold tracking-tight tabular-nums">0</div><div class="text-xs text-[var(--fg-muted)] mt-0.5">{tr('common.noResults')}</div></div>
+            <div class="text-center"><div class="text-2xl font-bold tracking-tight tabular-nums">100%</div><div class="text-xs text-[var(--fg-muted)] mt-0.5">{tr('common.getStarted')}</div></div>
+          </div>
+        </section>
+
+        <section class="mb-12 max-w-3xl mx-auto">
+          <h2 class="text-xl font-bold tracking-tight mb-4">{tr('home.calculators_title')}</h2>
+          <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">{tr('home.subtitle')}</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {[
+              { cat: tr('calculators.concrete'), link: lp('/calculators/concrete/') },
+              { cat: tr('calculators.roofing'), link: lp('/calculators/roofing/') },
+              { cat: tr('calculators.weight'), link: lp('/calculators/size-to-weight/') },
+              { cat: tr('calculators.landscaping'), link: lp('/calculators/gravel/') },
+              { cat: tr('calculators.walls'), link: lp('/calculators/vinyl-fence/') },
+              { cat: tr('calculators.converters'), link: lp('/calculators/square-footage/') },
+            ].map(cat => (
+              <a href={cat.link} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+                <h3 class="text-sm font-semibold">{cat.cat}</h3>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-12 max-w-3xl mx-auto">
+          <h2 class="text-xl font-bold tracking-tight mb-4">{tr('common.formulas')}</h2>
+          <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">{tr('home.description')}</p>
+        </section>
+
+        <section class="mb-12 max-w-3xl mx-auto rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-6">
+          <h2 class="text-xl font-bold tracking-tight mb-4">{tr('common.results')}</h2>
+          <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+            <li><strong>Concrete:</strong> L (ft) × W (ft) × D (in ÷ 12) ÷ 27</li>
+            <li><strong>Roofing:</strong> Pitch-adjusted area × bundle coverage</li>
+            <li><strong>Paint:</strong> Wall area minus doors/windows ÷ coverage rate</li>
+            <li><strong>Tile:</strong> Floor area ÷ tile area × waste factor</li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-xl font-bold tracking-tight mb-6">{tr('home.guides_title')}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[
+              [tr('common.learnMore'), tr('common.search'), tr('common.filter'), tr('common.save')],
+            ].map((row, i) => (
+              <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+                <div class="w-7 h-7 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-xs font-bold mb-3">{i + 1}</div>
+                <h3 class="text-sm font-semibold mb-1">{row[0]}</h3>
+                <p class="text-xs text-[var(--fg-secondary)]">{row[1]}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-12">
+          <h2 id="faq" class="text-xl font-bold tracking-tight mb-6">{tr('common.faq')}</h2>
+          <div class="flex flex-col gap-2">
+            {[
+              { q: tr('calculators.title'), a: tr('common.noResults') },
+              { q: tr('maintenance.why_title'), a: tr('maintenance.roi_desc') },
+              { q: tr('strategy.title'), a: tr('strategy.subtitle') },
+            ].map(faq => (
+              <details class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 text-sm font-medium hover:bg-[var(--bg-muted)] transition-colors list-none">
+                  <h3 class="text-sm font-medium m-0">{faq.q}</h3>
+                  <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <div class="px-4 pb-4 text-sm text-[var(--fg-secondary)]">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <footer class="border-t border-[var(--border)] pt-8 mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">{tr('nav.calculators')}</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+            <a href={lp('/calculators/concrete/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('calculators.concrete')}</a>
+            <a href={lp('/calculators/roofing/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('calculators.roofing')}</a>
+            <a href={lp('/calculators/paint/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('common.getStarted')}</a>
+            <a href={lp('/strategy/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('nav.strategy')}</a>
+            <a href={lp('/compare/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('nav.compare')}</a>
+            <a href={lp('/guides/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('nav.guides')}</a>
+            <a href={lp('/quizzes/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('nav.quizzes')}</a>
+            <a href={lp('/maintenance/')} class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">{tr('nav.maintenance')}</a>
+          </div>
+        </footer>
+      </>
+    )}
+
+    {slugStr === 'maintenance' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')} class="hover:text-[var(--fg)] transition-colors">{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('nav.maintenance')}</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">{subtitle}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a href={lp('/maintenance/planner/')} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+            <h2 class="text-sm font-bold mb-1">{tr('maintenance.hub.planner_card')}</h2>
+            <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.planner_desc')}</p>
+          </a>
+          <a href={lp('/maintenance/cost-estimator/')} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+            <h2 class="text-sm font-bold mb-1">{tr('maintenance.hub.cost_card')}</h2>
+            <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.cost_desc')}</p>
+          </a>
+          <a href={lp('/maintenance/first-time-homeowner/')} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+            <h2 class="text-sm font-bold mb-1">{tr('maintenance.hub.first_time_card')}</h2>
+            <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.first_time_desc')}</p>
+          </a>
+        </div>
+        <section>
+          <h2 id="seasonal-guides" class="text-xl font-bold mb-3">{tr('maintenance.hub.seasonal_card')}</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { s: 'spring', e: '🌱' }, { s: 'summer', e: '☀️' }, { s: 'fall', e: '🍂' }, { s: 'winter', e: '❄️' }
+            ].map(({ s, e }) => (
+              <a href={lp(`/maintenance/${s}/`)} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-center hover:border-[var(--border-hover)] transition-colors">
+                <div class="text-2xl mb-1">{e}</div>
+                <div class="text-sm font-semibold">{tr(`seasons.${s}`)}</div>
+              </a>
+            ))}
+          </div>
+        </section>
+        <section>
+          <h2 id="why-maintenance-matters" class="text-xl font-bold mb-3">{tr('maintenance.hub.why_title')}</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+              <div class="text-lg font-bold mb-1">{tr('maintenance.hub.roi_stat')}</div>
+              <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.roi_desc')}</p>
+            </div>
+            <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+              <div class="text-lg font-bold mb-1">{tr('maintenance.hub.energy_stat')}</div>
+              <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.energy_desc')}</p>
+            </div>
+            <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+              <div class="text-lg font-bold mb-1">{tr('maintenance.hub.value_stat')}</div>
+              <p class="text-xs text-[var(--fg-secondary)]">{tr('maintenance.hub.value_desc')}</p>
+            </div>
+          </div>
+        </section>
+      </>
+    )}
+
+    {slugStr === 'maintenance/planner' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <a href={lp('/maintenance/')}>{tr('nav.maintenance')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('maintenance.planner.h1')}</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">{tr('maintenance.planner.title')}</p>
+        <MaintenancePlanner client:load />
+        <div class="flex gap-4 text-sm">
+          <a href={lp('/maintenance/cost-estimator/')} class="text-[var(--accent)] hover:underline font-semibold">{tr('maintenance.costEstimator.h1')} →</a>
+          <a href={lp('/maintenance/')} class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← {tr('nav.maintenance')}</a>
+        </div>
+      </>
+    )}
+
+    {slugStr === 'maintenance/cost-estimator' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <a href={lp('/maintenance/')}>{tr('nav.maintenance')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('maintenance.costEstimator.h1')}</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">{description}</p>
+        <CostEstimator client:load />
+        <div class="flex gap-4 text-sm">
+          <a href={lp('/maintenance/planner/')} class="text-[var(--accent)] hover:underline font-semibold">{tr('maintenance.planner.h1')} →</a>
+          <a href={lp('/maintenance/')} class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← {tr('nav.maintenance')}</a>
+        </div>
+      </>
+    )}
+
+    {slugStr && ['maintenance/spring', 'maintenance/summer', 'maintenance/fall', 'maintenance/winter'].includes(slugStr) && (
+      ((seasonSlug) => (
+        <>
+          <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+            <a href={lp('/')}>{tr('nav.home')}</a>
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            <a href={lp('/maintenance/')}>{tr('nav.maintenance')}</a>
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            <span class="text-[var(--fg-secondary)] font-medium">{tr(`seasons.${seasonSlug}`)}</span>
+          </nav>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+          <p class="text-base text-[var(--fg-secondary)]">{description}</p>
+          <div class="flex gap-4 text-sm">
+            <a href={lp('/maintenance/planner/')} class="text-[var(--accent)] hover:underline font-semibold">{tr('maintenance.planner.h1')} →</a>
+            <a href={lp('/maintenance/')} class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← {tr('nav.maintenance')}</a>
+          </div>
+        </>
+      ))(slugStr.split('/').pop()!)
+    )}
+
+    {slugStr === 'maintenance/first-time-homeowner' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <a href={lp('/maintenance/')}>{tr('nav.maintenance')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('maintenance.firstTime.h1')}</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-base text-[var(--fg-secondary)]">{description}</p>
+        <section><h2 class="text-xl font-bold mb-3">{tr('maintenance.firstTime.firstWeek')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('maintenance.firstTime.firstWeekDesc')}</p></section>
+        <section><h2 class="text-xl font-bold mb-3">{tr('maintenance.firstTime.monthly')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('maintenance.firstTime.monthlyDesc')}</p></section>
+        <section><h2 class="text-xl font-bold mb-3">{tr('maintenance.firstTime.seasonal')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('maintenance.firstTime.seasonalDesc')}</p></section>
+        <section><h2 class="text-xl font-bold mb-3">{tr('maintenance.firstTime.budgeting')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('maintenance.firstTime.budgetingDesc')}</p></section>
+        <section><h2 class="text-xl font-bold mb-3">{tr('maintenance.firstTime.yearly')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('maintenance.firstTime.yearlyDesc')}</p></section>
+        <div class="flex gap-4 text-sm mt-4">
+          <a href={lp('/maintenance/planner/')} class="text-[var(--accent)] hover:underline font-semibold">{tr('maintenance.planner.h1')} →</a>
+          <a href={lp('/maintenance/')} class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← {tr('nav.maintenance')}</a>
+        </div>
+      </>
+    )}
+
+    {slugStr === 'about' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('nav.about')}</span>
+        </nav>
+        <header class="pb-6 mb-2 border-b border-[var(--border)]">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">{h1}</h1>
+        </header>
+        <section><h2 class="text-lg font-bold mb-3">{tr('about.mission')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('about.missionDesc')}</p></section>
+        <section><h2 class="text-lg font-bold mb-3">{tr('about.expertise')}</h2><p class="text-sm text-[var(--fg-secondary)]">{tr('about.expertiseDesc')}</p></section>
+      </>
+    )}
+
+    {slugStr === 'contact' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('nav.contact')}</span>
+        </nav>
+        <header class="pb-6 mb-2 border-b border-[var(--border)]">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">{h1}</h1>
+        </header>
+        <p class="text-sm text-[var(--fg-secondary)]">{tr('contact.subtitle')}</p>
+      </>
+    )}
+
+    {slugStr === 'strategy' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')}>{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">{tr('nav.strategy')}</span>
+        </nav>
+        <header class="max-w-3xl">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-4">{h1}</h1>
+          <p class="text-base text-[var(--fg-secondary)]">{subtitle}</p>
+        </header>
+        <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-6 md:p-8">
+          <h2 class="text-xl font-bold tracking-tight mb-6">{tr('strategy.title')}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[1,2,3,4].map(i => (
+              <div class="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border)]">
+                <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center text-sm font-bold mb-3">{i}</div>
+                <h3 class="text-sm font-semibold mb-1">{tr(`strategy.step${i}`)}</h3>
+                <p class="text-xs text-[var(--fg-secondary)]">{tr(`strategy.step${i}Desc`)}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </>
+    )}
+
+    {slugStr && ['guides', 'compare', 'quizzes', 'calculators'].includes(slugStr) && (
+      <>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-base text-[var(--fg-secondary)]">{description}</p>
+        {subtitle && <p class="text-sm text-[var(--fg-secondary)]">{subtitle}</p>}
+      </>
+    )}
+
+    {slugStr && ['privacy', 'terms', 'disclaimer'].includes(slugStr) && (
+      <>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
+        <p class="text-sm text-[var(--fg-muted)]">{description}</p>
+      </>
+    )}
+
+  </article>
+</Layout>

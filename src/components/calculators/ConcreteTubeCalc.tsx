@@ -9,6 +9,7 @@ import { calculateCircleArea, calculateVolume, cuFeetToCuYards } from "../../lib
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 import { parseNumber } from "../../lib/helpers";
+import ConcreteTubeDiagram from "../diagrams/ConcreteTubeDiagram";
 
 export default function ConcreteTubeCalc() {
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
@@ -103,6 +104,9 @@ export default function ConcreteTubeCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <ConcreteTubeDiagram diameter={diaNum} height={depNum} unitSystem={unitSystem} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
           <div className="flex flex-col gap-5">

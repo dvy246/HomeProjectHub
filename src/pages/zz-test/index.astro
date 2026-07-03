@@ -1,0 +1,5 @@
+---
+const agg = (k, l, t) => Object.assign({}, { id: k, label: l, density: t });
+const aggs = [agg("rip_rap", "Rip Rap", 1.55)];
+---
+<p>{aggs[0].label}</p>

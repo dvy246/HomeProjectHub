@@ -1,0 +1,64 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import LumberCalc from "../../../components/calculators/LumberCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/lumber/";
+const title = "Lumber Calculator";
+const description = "Calculate board feet, weight, and volume for lumber by species. Enter dimensions and quantity to estimate material requirements for woodworking projects.";
+const formula = "Board Feet = Length (ft) x Width (in) x Thickness (in) / 12 x Qty | Weight = Volume x Species Density";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Specialty", path: "/calculators/" },
+    { name: title, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({ name: title, description, formula, url: canonical }),
+  howToSchema(title, description, [
+    { name: "Measure area", text: "Review your project measurements." },
+    { name: "Enter dimensions", text: "Input your project dimensions into the calculator." },
+    { name: "Get estimate", text: "Review your material estimate and adjust as needed." },
+  ]),
+  faqPageSchema([
+    { q: "What is a board foot?", a: "A board foot is 1 ft long x 1 ft wide x 1 inch thick (144 cubic inches). It's the standard unit for measuring lumber volume." },
+    { q: "How many board feet in a 2x4x8?", a: "A 2x4x8 contains 5.33 board feet: (8 x 2 x 4) / 12 = 5.33 bd ft. Actual size is 1.5 x 3.5 inches." },
+    { q: "What is the heaviest wood species?", a: "Lignum vitae at 83 lb/cu ft is one of the heaviest. Among common species, hickory at 50 lb/cu ft and white oak at 47 lb/cu ft are at the upper end." },
+    { q: "Does lumber weight matter for projects?", a: "Yes — heavier woods are stronger but harder to work. Weight affects shipping costs, fastener selection, and structural load calculations." },
+    { q: "What's the difference between nominal and actual size?", a: "A 2x4 is nominally 2x4 inches but actually 1.5x3.5 inches. Board foot calculations typically use nominal dimensions for rough lumber and actual for dressed lumber." },
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+<article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Lumber Calculator</span>
+  </nav>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Lumber Calculator</h1>
+  <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate board feet, weight, and volume for lumber by species. Enter dimensions and quantity to estimate material requirements for woodworking projects.</p>
+  <AdSlot slotId="ad-top-leaderboard" />
+  <section><LumberCalc client:visible /></section>
+  <EstimateMethodology formula={formula} assumptions={["Board foot formula uses nominal dimensions.", "Species density values from Wood Database.", "Weight assumes kiln-dried lumber at 12% moisture content.", "Hardwood and softwood densities differ significantly."]} />
+  <AdSlot slotId="ad-in-content-mid" />
+  <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is a board foot?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A board foot is 1 ft long x 1 ft wide x 1 inch thick (144 cubic inches). It's the standard unit for measuring lumber volume.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many board feet in a 2x4x8?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 2x4x8 contains 5.33 board feet: (8 x 2 x 4) / 12 = 5.33 bd ft. Actual size is 1.5 x 3.5 inches.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the heaviest wood species?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Lignum vitae at 83 lb/cu ft is one of the heaviest. Among common species, hickory at 50 lb/cu ft and white oak at 47 lb/cu ft are at the upper end.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Does lumber weight matter for projects?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes — heavier woods are stronger but harder to work. Weight affects shipping costs, fastener selection, and structural load calculations.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the difference between nominal and actual size?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 2x4 is nominally 2x4 inches but actually 1.5x3.5 inches. Board foot calculations typically use nominal dimensions for rough lumber and actual for dressed lumber.</p></details>
+  </div></section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span></a>
+    <a href="/calculators/size-to-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Size to Weight</span></a>
+    <a href="/calculators/log-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Log Weight</span></a>
+  </div></footer>
+</article>
+</Layout>

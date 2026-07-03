@@ -1,0 +1,72 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
+
+const canonical = "https://homeprojecthub.com/maintenance/spring/";
+const title = "Spring Home Maintenance Checklist";
+const description = "Complete spring home maintenance checklist. Prepare your home for warmer weather with roof inspections, gutter cleaning, AC tune-ups, and exterior repairs.";
+const PAGE_PATH = "/maintenance/spring/";
+
+const springTasks = MAINTENANCE_TASKS.filter((t) => t.seasons?.includes("spring"));
+const categories = [...new Set(springTasks.map((t) => t.category))];
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Spring Maintenance", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "Spring Home Maintenance" }),
+  howToSchema("Complete spring home maintenance", "Prepare your home for warmer weather with this seasonal checklist covering exterior, HVAC, and safety tasks.", springTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  faqPageSchema([
+    { q: "What spring home maintenance is most important?", a: "Roof inspection for winter damage, gutter cleaning after leaf debris, and AC tune-up before cooling season are the highest priority spring tasks." },
+    { q: "When should I start spring maintenance?", a: "Start spring maintenance in March or when temperatures consistently stay above freezing. Complete all tasks by May before peak cooling season." },
+    { q: "How do I prepare my AC for summer?", a: "Change the filter, clean condenser coils, check refrigerant levels, and clear vegetation around the outdoor unit. Professional tune-up recommended every spring." },
+    { q: "Should I inspect my roof in spring?", a: "Yes, spring is ideal for roof inspection after winter weather damage. Look for missing shingles, cracked flashing, and ice dam damage from winter." },
+    { q: "What exterior maintenance is needed in spring?", a: "Inspect siding and trim, reseal window caulking, clean gutters, test sprinkler systems, check deck for winter damage, and seal the driveway." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Spring</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Spring Home Maintenance Checklist</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Spring is the most important season for home maintenance. After winter's freeze and before summer's heat, this is your window to inspect, repair, and prepare your home for the warmer months ahead.</p>
+
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4 text-sm space-y-2">
+      {categories.map((cat) => {
+        const catLabel = CATEGORIES.find((c) => c.key === cat)?.label || cat;
+        const catTasks = springTasks.filter((t) => t.category === cat);
+        return (
+          <details>
+            <summary class="text-sm font-semibold cursor-pointer">{catLabel} ({catTasks.length} tasks)</summary>
+            <ul class="mt-2 space-y-1.5">
+              {catTasks.map((t) => (
+                <li class="text-sm text-[var(--fg-secondary)]">{t.title} — <span class="text-[var(--fg-muted)]">{t.explanation}</span></li>
+              ))}
+            </ul>
+          </details>
+        );
+      })}
+    </div>
+
+    <section><h2 id="why-spring-matters" class="text-xl font-bold mb-3">Why Spring Maintenance Matters</h2><p class="text-sm text-[var(--fg-secondary)]">Winter weather takes a toll on your home. Freeze-thaw cycles crack foundations and driveways. Ice dams damage roofs and gutters. Heavy snow loads stress structures. Spring maintenance catches these issues before they compound. Additionally, preparing your AC system for summer prevents mid-season breakdowns when temperatures hit their peak. A well-maintained home entering summer is more energy-efficient, safer, and less likely to need emergency repairs.</p></section>
+
+    <section><h2 id="common-mistakes" class="text-xl font-bold mb-3">Common Spring Maintenance Mistakes</h2><ul class="text-sm text-[var(--fg-secondary)] space-y-2"><li><strong>Skipping the roof inspection:</strong> Winter damage can go unnoticed until a summer rain reveals a leak. Inspect after all snow has melted.</li><li><strong>Forgetting AC maintenance:</strong> Waiting until the first heat wave to test your AC often means waiting days for an emergency service appointment.</li><li><strong>Power washing everything:</strong> High-pressure washing can damage siding, force water behind trim, and strip paint. Use gentle methods for most surfaces.</li></ul></section>
+
+    <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What month should I start spring home maintenance?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">March in warmer climates, April in colder regions. Start when snow has melted and temperatures are consistently above 40°F (4°C).</p></details>
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I clean gutters in spring?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes, spring gutter cleaning removes debris that accumulated over winter plus the tree flowers and seed pods that fall in early spring.</p></details>
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How do I check for winter roof damage?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Look for missing or curled shingles, cracked flashing around chimneys, granules in gutters (sign of shingle wear), and water stains on attic ceiling or walls.</p></details>
+    </div></section>
+
+    <div class="flex gap-4 text-sm">
+      <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>
+      <a href="/maintenance/fall/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Fall maintenance checklist</a>
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,60 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import GallonsPerSqFtCalc from "../../../components/calculators/GallonsPerSqFtCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/gallons-per-sq-ft/";
+const title = "Gallons per Square Foot Calculator";
+const description = "Calculate gallons needed per square foot for painting or coating projects.";
+const formula = "Gallons = Area (sq ft) / Coverage per Gallon";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Construction Converters", path: "/calculators/" },
+    { name: title, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({ name: title, description, formula, url: canonical }),
+  howToSchema(title, description, [
+    { name: "Measure area", text: "Review your project measurements." },
+    { name: "Enter dimensions", text: "Input your project dimensions into the calculator." },
+    { name: "Get estimate", text: "Review your material estimate and adjust as needed." },
+  ]),
+  faqPageSchema([
+    { q: "How many square feet does a gallon of paint cover?", a: "One gallon of paint typically covers 350-400 sq ft for one coat. Darker colors and rougher surfaces may need more." },
+    { q: "How many gallons for a 12x12 room?", a: "A 12x12 room with 8 ft ceilings has about 384 sq ft of wall area. At 350 sq ft per gallon: 1.1 gallons per coat — buy 2 gallons." },
+    { q: "Does primer count as a coat?", a: "Primer covers differently than paint — about 300-350 sq ft per gallon. Always prime new drywall or bare wood before painting." },
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+<article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Gallons per Square Foot Calculator</span>
+  </nav>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Gallons per Square Foot Calculator</h1>
+  <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate gallons needed per square foot for painting or coating projects.</p>
+  <AdSlot slotId="ad-top-leaderboard" />
+  <section><GallonsPerSqFtCalc client:visible /></section>
+  <EstimateMethodology formula={formula} assumptions={["Paint coverage: 350 sq ft per gallon (one coat).", "Rough/textured surfaces reduce coverage by 10-20%.", "Two coats recommended for most projects.", "Always buy 10% extra for touch-ups."]} />
+  <AdSlot slotId="ad-in-content-mid" />
+  <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many square feet does a gallon of paint cover?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">One gallon of paint typically covers 350-400 sq ft for one coat. Darker colors and rougher surfaces may need more.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many gallons for a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room with 8 ft ceilings has about 384 sq ft of wall area. At 350 sq ft per gallon: 1.1 gallons per coat — buy 2 gallons.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Does primer count as a coat?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Primer covers differently than paint — about 300-350 sq ft per gallon. Always prime new drywall or bare wood before painting.</p></details>
+  </div></section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/paint/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Paint</span></a>
+    <a href="/calculators/square-footage/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Square Footage</span></a>
+    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span></a>
+  </div></footer>
+</article>
+</Layout>

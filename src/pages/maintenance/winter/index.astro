@@ -1,0 +1,70 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
+
+const canonical = "https://homeprojecthub.com/maintenance/winter/";
+const title = "Winter Home Maintenance Checklist";
+const description = "Complete winter home maintenance checklist. Prevent frozen pipes, ice dams, and heating emergencies with cold-weather maintenance tasks.";
+const PAGE_PATH = "/maintenance/winter/";
+
+const winterTasks = MAINTENANCE_TASKS.filter((t) => t.seasons?.includes("winter"));
+const categories = [...new Set(winterTasks.map((t) => t.category))];
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Winter Maintenance", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "Winter Home Maintenance" }),
+  howToSchema("Complete winter home maintenance", "Keep your home safe and efficient during cold months with these winter maintenance tasks.", winterTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  faqPageSchema([
+    { q: "How do I prevent frozen pipes in winter?", a: "Keep cabinet doors open under sinks, let faucets drip during extreme cold, insulate exposed pipes, and maintain consistent indoor temperature (55°F minimum)." },
+    { q: "What indoor maintenance is important in winter?", a: "Monitor indoor humidity (30-50%), clean humidifiers, inspect for ice dams, check attic for frost, and test all carbon monoxide detectors." },
+    { q: "Should I run my ceiling fans in winter?", a: "Yes — run ceiling fans clockwise on low speed to push warm air down from the ceiling. This can reduce heating costs by up to 10%." },
+    { q: "How do I deal with ice dams on my roof?", a: "Use a roof rake to remove snow from the lower 4 feet of the roof edge. Never chip ice. Improve attic insulation and ventilation for a permanent fix." },
+    { q: "What emergency supplies should I keep in winter?", a: "Keep pipe repair kits, emergency heat tape, a space heater, flashlights, batteries, and bottled water accessible in case of heating failure or frozen pipes." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Winter</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Winter Home Maintenance Checklist</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Winter is the most demanding season for your home. Sub-freezing temperatures, snow loads, and ice create risks that require proactive monitoring and indoor maintenance.</p>
+
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4 text-sm space-y-2">
+      {categories.map((cat) => {
+        const catLabel = CATEGORIES.find((c) => c.key === cat)?.label || cat;
+        const catTasks = winterTasks.filter((t) => t.category === cat);
+        return (
+          <details>
+            <summary class="text-sm font-semibold cursor-pointer">{catLabel} ({catTasks.length} tasks)</summary>
+            <ul class="mt-2 space-y-1.5">
+              {catTasks.map((t) => (
+                <li class="text-sm text-[var(--fg-secondary)]">{t.title} — <span class="text-[var(--fg-muted)]">{t.explanation}</span></li>
+              ))}
+            </ul>
+          </details>
+        );
+      })}
+    </div>
+
+    <section><h2 id="winter-risks" class="text-xl font-bold mb-3">Common Winter Home Risks</h2><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm"><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">Frozen Pipes</div><p class="text-xs text-[var(--fg-secondary)]">A burst pipe can cause $5,000-70,000 in water damage. Prevention costs under $50 in pipe insulation and takes 30 minutes.</p></div><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">Carbon Monoxide</div><p class="text-xs text-[var(--fg-secondary)]">CO poisoning spikes in winter as homes are sealed tight and heating systems run continuously. Test CO detectors monthly and ensure proper ventilation.</p></div><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">Ice Dams</div><p class="text-xs text-[var(--fg-secondary)]">Ice dams form when attic heat melts roof snow, which refreezes at the eaves. Damage includes leaks, ruined insulation, and gutter destruction.</p></div></div></section>
+
+    <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I let faucets drip in winter?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes — when temperatures drop below 20°F (-7°C), let faucets on exterior walls drip slightly. Moving water is much harder to freeze. A slow drip is enough.</p></details>
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What temperature should I keep my house in winter when away?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Minimum 55°F (13°C) to prevent pipes from freezing. Open cabinet doors under sinks to allow warm air circulation around pipes.</p></details>
+    </div></section>
+
+    <div class="flex gap-4 text-sm">
+      <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>
+      <a href="/maintenance/fall/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← Fall maintenance</a>
+      <a href="/maintenance/spring/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Spring maintenance →</a>
+    </div>
+  </article>
+</Layout>

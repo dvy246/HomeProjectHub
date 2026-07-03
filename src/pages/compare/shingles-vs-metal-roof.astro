@@ -1,16 +1,21 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import { faqPageSchema } from "../../lib/schema";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
+const canonical = "https://homeprojecthub.com/compare/shingles-vs-metal-roof/";
 const title = "Asphalt Shingles vs Metal Roof: Which Is Better?";
 const description = "Compare asphalt shingles and metal roofing. Cost, durability, lifespan, energy efficiency, and climate considerations for your roofing project.";
 
-const schema = faqPageSchema([
-  { q: "Which is cheaper: shingles or metal roof?", a: "Asphalt shingles are significantly cheaper upfront ($5-$9 per sq ft installed vs $8-$15 for metal). However, metal roofs last 40-70 years vs 15-25 for shingles, making metal more cost-effective over the full lifespan." },
-  { q: "How long does a metal roof last vs shingles?", a: "Asphalt shingles last 15-25 years depending on quality and climate. Metal roofs last 40-70 years (steel) to 100+ years (copper). Metal roofs can outlast two to three shingle installations." },
-  { q: "Does a metal roof increase home value?", a: "Yes. Metal roofs add $5,000-$15,000 to resale value and help sell homes faster. Buyers value the longevity, energy efficiency, and low maintenance. Many insurance companies offer discounts for metal roofs." },
-], "https://homeprojecthub.com/compare/shingles-vs-metal-roof/");
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Compare", path: "/compare/" }, { name: "Shingles vs Metal Roof", path: "/compare/shingles-vs-metal-roof/" }]),
+  webPageSchema({ url: canonical, topicName: "Shingles vs Metal Roof Comparison" }),
+  faqPageSchema([
+    { q: "Which is cheaper: shingles or metal roof?", a: "Asphalt shingles are significantly cheaper upfront ($5-$9 per sq ft installed vs $8-$15 for metal). However, metal roofs last 40-70 years vs 15-25 for shingles, making metal more cost-effective over the full lifespan." },
+    { q: "How long does a metal roof last vs shingles?", a: "Asphalt shingles last 15-25 years depending on quality and climate. Metal roofs last 40-70 years (steel) to 100+ years (copper). Metal roofs can outlast two to three shingle installations." },
+    { q: "Does a metal roof increase home value?", a: "Yes. Metal roofs add $5,000-$15,000 to resale value and help sell homes faster. Buyers value the longevity, energy efficiency, and low maintenance. Many insurance companies offer discounts for metal roofs." },
+  ], canonical),
+);
 ---
 
 <Layout title={title} description={description} canonical="https://homeprojecthub.com/compare/shingles-vs-metal-roof/" schema={schema}>
@@ -73,15 +78,15 @@ const schema = faqPageSchema([
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-3">
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">Which is cheaper: shingles or metal roof?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Which is cheaper: shingles or metal roof?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt shingles are significantly cheaper upfront ($5-$9 per sq ft installed vs $8-$15 for metal). However, metal roofs last 40-70 years vs 15-25 for shingles, making metal more cost-effective over the full lifespan.</p>
         </details>
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">How long does a metal roof last vs shingles?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How long does a metal roof last vs shingles?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Asphalt shingles last 15-25 years depending on quality and climate. Metal roofs last 40-70 years (steel) to 100+ years (copper). Metal roofs can outlast two to three shingle installations.</p>
         </details>
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <summary class="text-sm font-semibold cursor-pointer">Does a metal roof increase home value?</summary>
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Does a metal roof increase home value?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Yes. Metal roofs add $5,000-$15,000 to resale value and help sell homes faster. Buyers value the longevity, energy efficiency, and low maintenance. Many insurance companies offer discounts for metal roofs.</p>
         </details>
       </div>

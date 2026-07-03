@@ -2,16 +2,21 @@
 import Layout from "../../layouts/Layout.astro";
 import CompareMaterials from "../../components/CompareMaterials";
 import AdSlot from "../../components/AdSlot.astro";
-import { faqPageSchema } from "../../lib/schema";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
+const canonical = "https://homeprojecthub.com/compare/concrete-vs-gravel/";
 const title = "Poured Concrete vs. Pea Gravel";
 const description = "Compare poured concrete and loose gravel for paths, driveways, and patios. Calculate quantities, compare installation costs, maintenance, and durability.";
 
-const schema = faqPageSchema([
-  { q: "Is poured concrete or pea gravel cheaper?", a: "Pea gravel is significantly cheaper at $1-$3 per square foot installed. Poured concrete costs $4-$8 per square foot. DIY installation reduces gravel costs to $0.50-$1 per square foot (just material), while DIY concrete still requires tool rental and materials." },
-  { q: "Can you drive on pea gravel?", a: "Yes, but pea gravel shifts under vehicle tires and requires regular raking. For driveways, crushed stone (angular) or concrete is better. Loose pea gravel creates ruts and needs topping off annually." },
-  { q: "Does pea gravel drain better than concrete?", a: "Yes. Pea gravel is 100% permeable — water drains straight through. Concrete is impermeable, requiring proper slope (1/4 per foot) to prevent pooling. Gravel is preferred for eco-friendly, low-runoff landscapes." },
-]);
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Compare", path: "/compare/" }, { name: "Concrete vs Gravel", path: "/compare/concrete-vs-gravel/" }]),
+  webPageSchema({ url: canonical, topicName: "Concrete vs Gravel Comparison" }),
+  faqPageSchema([
+    { q: "Is poured concrete or pea gravel cheaper?", a: "Pea gravel is significantly cheaper at $1-$3 per square foot installed. Poured concrete costs $4-$8 per square foot. DIY installation reduces gravel costs to $0.50-$1 per square foot (just material), while DIY concrete still requires tool rental and materials." },
+    { q: "Can you drive on pea gravel?", a: "Yes, but pea gravel shifts under vehicle tires and requires regular raking. For driveways, crushed stone (angular) or concrete is better. Loose pea gravel creates ruts and needs topping off annually." },
+    { q: "Does pea gravel drain better than concrete?", a: "Yes. Pea gravel is 100% permeable — water drains straight through. Concrete is impermeable, requiring proper slope (1/4 per foot) to prevent pooling. Gravel is preferred for eco-friendly, low-runoff landscapes." },
+  ], canonical),
+);
 ---
 
 <Layout title={title} description={description} schema={schema}>

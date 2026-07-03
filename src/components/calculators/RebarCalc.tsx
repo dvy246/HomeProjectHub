@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import ConcreteRebarDiagram from "../diagrams/ConcreteRebarDiagram";
 
 const REBAR_WEIGHTS: Record<string, number> = { "#3": 0.376, "#4": 0.668, "#5": 1.043, "#6": 1.502, "#7": 2.044, "#8": 2.67 };
 const REBAR_SIZES = Object.keys(REBAR_WEIGHTS);
@@ -68,6 +69,9 @@ export default function RebarCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <ConcreteRebarDiagram length={len} width={wid} spacing={sp} unitSystem="imperial" />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Rebar Output</h3>
           <div className="flex flex-col gap-5">

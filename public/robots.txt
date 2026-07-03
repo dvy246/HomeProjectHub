@@ -1,9 +1,17 @@
 User-agent: *
 Allow: /
+Allow: /calculators/
+Allow: /strategy/
+Allow: /quizzes/
+Allow: /guides/
+Allow: /compare/
+Allow: /about/
+Allow: /contact/
 Disallow: /privacy/
 Disallow: /terms/
 Disallow: /disclaimer/
 Disallow: /saved/
 Disallow: /planner/
+Disallow: /projects/
 
 Sitemap: https://homeprojecthub.com/sitemap-index.xml

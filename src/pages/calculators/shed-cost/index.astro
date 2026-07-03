@@ -1,0 +1,64 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import ShedCostCalc from "../../../components/calculators/ShedCostCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/shed-cost/";
+const title = "Shed Cost Calculator";
+const description = "Estimate shed building material costs. Enter dimensions, roof type, siding, and floor material for a detailed cost breakdown of your shed project.";
+const formula = "Total Cost = Floor + Framing + Siding + Roofing + Hardware | Roofing (sq ft) = Floor Area x Roof Pitch Factor";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Specialty", path: "/calculators/" },
+    { name: title, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({ name: title, description, formula, url: canonical }),
+  howToSchema(title, description, [
+    { name: "Measure area", text: "Review your project measurements." },
+    { name: "Enter dimensions", text: "Input your project dimensions into the calculator." },
+    { name: "Get estimate", text: "Review your material estimate and adjust as needed." },
+  ]),
+  faqPageSchema([
+    { q: "How much does it cost to build a 10x12 shed?", a: "Material cost for a 10x12 shed ranges from $1,500-$3,500 for DIY. A contractor-built shed costs $3,000-$8,000 depending on materials and finish level." },
+    { q: "What's the cheapest shed roof type?", a: "A flat or shallow-pitch shed roof is cheapest. Gable roofs cost more but provide attic storage and better water runoff." },
+    { q: "Do I need a permit for a shed?", a: "Most jurisdictions require permits for sheds over 120 sq ft. Setback requirements vary — check with your local building department before building." },
+    { q: "Should I build on a gravel or concrete pad?", a: "Gravel pads cost less and drain better. Concrete pads are more stable for heavier sheds. Pressure-treated skids on gravel work for smaller sheds." },
+    { q: "What siding is most durable for a shed?", a: "HardiePlank fiber cement is most durable but heaviest. T1-11 plywood is budget-friendly. Vinyl siding is low-maintenance but less impact-resistant." },
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+<article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Shed Cost Calculator</span>
+  </nav>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Shed Cost Calculator</h1>
+  <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Estimate shed building material costs. Enter dimensions, roof type, siding, and floor material for a detailed cost breakdown of your shed project.</p>
+  <AdSlot slotId="ad-top-leaderboard" />
+  <section><ShedCostCalc client:visible /></section>
+  <EstimateMethodology formula={formula} assumptions={["Material prices based on national averages — local prices may vary.", "Roofing cost includes sheathing, underlayment, and shingles or metal.", "Hardware includes hinges, handles, hasp, and fasteners.", "Does not include foundation prep, permits, or labor costs."]} />
+  <AdSlot slotId="ad-in-content-mid" />
+  <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does it cost to build a 10x12 shed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Material cost for a 10x12 shed ranges from $1,500-$3,500 for DIY. A contractor-built shed costs $3,000-$8,000 depending on materials and finish level.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the cheapest shed roof type?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A flat or shallow-pitch shed roof is cheapest. Gable roofs cost more but provide attic storage and better water runoff.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need a permit for a shed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Most jurisdictions require permits for sheds over 120 sq ft. Setback requirements vary — check with your local building department before building.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I build on a gravel or concrete pad?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Gravel pads cost less and drain better. Concrete pads are more stable for heavier sheds. Pressure-treated skids on gravel work for smaller sheds.</p></details>
+    <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What siding is most durable for a shed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">HardiePlank fiber cement is most durable but heaviest. T1-11 plywood is budget-friendly. Vinyl siding is low-maintenance but less impact-resistant.</p></details>
+  </div></section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Framing</span></a>
+    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span></a>
+    <a href="/calculators/gravel/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Gravel</span></a>
+  </div></footer>
+</article>
+</Layout>

@@ -1,84 +1,89 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { graphSchema, webSiteSchema, faqPageSchema } from "../lib/schema";
+import { graphSchema, webSiteSchema, faqPageSchema, webPageSchema } from "../lib/schema";
 
 const SITE_URL = "https://homeprojecthub.com";
 
-const title = "Home Improvement Project Planner and Material Calculators";
-const description = "Plan US home improvement projects with free material calculators, saved measurements, comparison guides, and printable shopping checklists for concrete, roofing, paint, and tile.";
+const title = "Free Concrete, Roofing & Paint Calculators — Know Exactly What You Need Before You Buy";
+const description = "Plan home improvement projects with free material calculators for concrete, roofing, paint, and tile. Estimate square footage, compare building materials, and build a shopping checklist before you buy. Open formulas, no sign-up required.";
 
 const concreteCalcs = [
-  { href: "/calculators/concrete/slab/", title: "Slab", desc: "Patios, driveways, sidewalks", icon: "slab" },
-  { href: "/calculators/concrete/footing/", title: "Footing", desc: "Pier holes, deck foundations", icon: "footing" },
-  { href: "/calculators/concrete/column/", title: "Column", desc: "Round & square columns", icon: "column" },
-  { href: "/calculators/concrete/wall/", title: "Wall", desc: "Walls with opening deductions", icon: "wall" },
-  { href: "/calculators/concrete/tube/", title: "Tube Form", desc: "Sonotubes & cylindrical piers", icon: "tube" },
-  { href: "/calculators/concrete/steps/", title: "Steps", desc: "Staircases with landings", icon: "steps" },
+  { href: "/calculators/concrete/slab/", title: "Slab", desc: "Patios, driveways, sidewalks" },
+  { href: "/calculators/concrete/footing/", title: "Footing", desc: "Pier holes, deck foundations" },
+  { href: "/calculators/concrete/column/", title: "Column", desc: "Round & square columns" },
+  { href: "/calculators/concrete/wall/", title: "Wall", desc: "Walls with opening deductions" },
+  { href: "/calculators/concrete/tube/", title: "Tube Form", desc: "Sonotubes & cylindrical piers" },
+  { href: "/calculators/concrete/steps/", title: "Steps", desc: "Staircases with landings" },
 ];
 
 const roofingCalcs = [
-  { href: "/calculators/roofing/shingles/", title: "Shingles", desc: "Bundles, squares, nails", icon: "shingle" },
-  { href: "/calculators/roofing/metal/", title: "Metal Roof", desc: "Panels, screws, ridge cap", icon: "metal" },
-  { href: "/calculators/roofing/plywood/", title: "Plywood Deck", desc: "Sheathing sheets & H-clips", icon: "plywood" },
-  { href: "/calculators/roofing/pitch/", title: "Roof Pitch", desc: "Degrees, multiplier, rafter", icon: "pitch" },
+  { href: "/calculators/roofing/shingles/", title: "Shingles", desc: "Bundles, squares, nails" },
+  { href: "/calculators/roofing/metal/", title: "Metal Roof", desc: "Panels, screws, ridge cap" },
+  { href: "/calculators/roofing/plywood/", title: "Plywood Deck", desc: "Sheathing sheets & H-clips" },
+  { href: "/calculators/roofing/pitch/", title: "Roof Pitch", desc: "Degrees, multiplier, rafter" },
 ];
 
 const paintCalcs = [
-  { href: "/calculators/paint/", title: "Interior Paint", desc: "Gallons for walls & ceilings", icon: "paint" },
+  { href: "/calculators/paint/", title: "Interior Paint", desc: "Gallons for walls & ceilings" },
 ];
 
 const tileCalcs = [
-  { href: "/calculators/tile/", title: "Tile Flooring", desc: "Counts, boxes, patterns", icon: "tile" },
+  { href: "/calculators/tile/", title: "Tile Flooring", desc: "Counts, boxes, patterns" },
 ];
 
 const faqs = [
   { q: "Are these calculators free to use?", a: "Yes. Every calculator on HomeProjectHub is completely free. No sign-up, no paywall, no data collection. Your dimensions are stored locally in your browser and never sent to a server." },
-  { q: "How accurate are the calculations?", a: "All formulas use standard engineering math: geometric volume calculations, pitch-corrected surface area, and manufacturer-published bag yields. Every calculator shows its formula and a worked example so you can verify the math yourself." },
-  { q: "Can I save my project dimensions?", a: "Yes. Use the Save Measurement feature on any calculator to store your dimensions in-browser via localStorage. Visit the Saved Rooms page to manage and reload them into any calculator instantly." },
-  { q: "Do you support metric units?", a: "Every concrete calculator supports both imperial (feet, inches, cubic yards) and metric (meters, centimeters, cubic meters) with a one-click toggle. Results update instantly." },
+  { q: "What is the formula for calculating concrete?", a: "Concrete volume is calculated by multiplying length (in feet) by width (in feet) by thickness (in feet), then dividing by 27 to convert cubic feet to cubic yards. The formula is: Volume (cu yd) = Length (ft) × Width (ft) × Thickness (ft) ÷ 27. Our concrete calculator handles this automatically and also computes bag counts for 40lb, 60lb, and 80lb mixes." },
+  { q: "How much paint do I need for a 12x12 room?", a: "A standard 12x12 foot bedroom with 8-foot ceilings has roughly 320 square feet of wall area after subtracting one door (21 sq ft) and two windows (24 sq ft). One gallon of paint covers about 350 square feet, so a single gallon is usually enough for one coat. Two gallons are recommended for two coats or if painting over a darker color." },
+  { q: "How do I calculate square footage of a room?", a: "Measure the length and width of the room in feet, then multiply them: Area = Length × Width. For an L-shaped room, divide it into two rectangles, calculate each area, and add them together. All of our calculators that accept dimensions perform this square footage calculation automatically before applying material-specific formulas." },
+  { q: "How accurate are the calculations?", a: "All formulas use standard engineering math: geometric volume calculations, pitch-corrected surface area for roofs, and manufacturer-published bag yields and coverage rates. Every calculator shows its formula and a worked example so you can verify the math yourself. Final quantities should always be compared against the specific products you purchase." },
+  { q: "Can I save my project dimensions?", a: "Yes. Use the Save Measurement feature on any calculator to store your room or slab dimensions in-browser via localStorage. Visit the Saved Measurements page to manage and reload them instantly into any calculator. Your data never leaves your device." },
 ];
 
 const schema = graphSchema(
-  webSiteSchema("HomeProjectHub", "Free construction calculators for concrete and roofing projects."),
-  faqPageSchema(faqs, SITE_URL)
+  webSiteSchema("HomeProjectHub", "Free home improvement calculators and material estimation tools for homeowners and DIY builders."),
+  webPageSchema({
+    url: SITE_URL,
+    topicName: "Home Improvement",
+    topicUrl: "https://en.wikipedia.org/wiki/Home_improvement",
+  }),
+  faqPageSchema(faqs, SITE_URL),
 );
 ---
 
 <Layout title={title} description={description} canonical={SITE_URL} schema={schema}>
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="relative overflow-hidden -mx-4 sm:-mx-6 px-4 sm:px-6 -mt-8 md:-mt-12 pt-12 md:pt-20 pb-16">
     <div class="absolute inset-0 bg-grid opacity-50"></div>
     <div class="relative max-w-3xl mx-auto text-center flex flex-col gap-6">
       <div class="inline-flex items-center gap-2 self-center px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--bg-subtle)] text-xs font-medium text-[var(--fg-secondary)]">
         <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
-        Free project planning tools for US homeowners
+        Free project planning tools for homeowners
       </div>
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-balance leading-[1.05]">
-        Plan the project.
-        <br />
-        <span class="text-[var(--fg-muted)]">Then buy with confidence.</span>
+        Free Concrete, Roofing &amp; Paint Calculators — Know Exactly What You Need Before You Buy
       </h1>
-      <p class="text-base sm:text-lg text-[var(--fg-secondary)] max-w-xl mx-auto text-pretty leading-relaxed">
-        Start with dimensions, estimate materials, compare practical options, and turn the result into a shopping checklist. Built for homeowners who want transparent assumptions before they buy or call a contractor.
+      <p class="text-base sm:text-lg text-[var(--fg-secondary)] max-w-2xl mx-auto text-pretty leading-relaxed">
+        Stop over-ordering or running short. Enter your room dimensions once and get precise material counts for concrete slabs, roof shingles, interior paint, and tile flooring — with open formulas you can verify yourself. No sign-up, no ads, no guesswork.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 self-center mt-2">
-        <a href="/planner/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-all active:scale-[0.98]">
+        <a href="/planner/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-colors active:scale-[0.98]">
           Start a Project Plan
-          <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          <svg class="w-4 h-4 ml-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
         </a>
-        <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-all active:scale-[0.98]">
+        <a href="/calculators/concrete/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] transition-colors active:scale-[0.98]">
           Browse Calculators
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Stats bar -->
+  <!-- STATS BAR -->
   <section class="border-y border-[var(--border)] -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 mb-12">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
       <div class="text-center">
         <div class="text-2xl font-bold tracking-tight tabular-nums">18</div>
-        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Calculators & Tools</div>
+        <div class="text-xs text-[var(--fg-muted)] mt-0.5">Calculators &amp; Tools</div>
       </div>
       <div class="text-center">
         <div class="text-2xl font-bold tracking-tight tabular-nums">2</div>
@@ -95,14 +100,111 @@ const schema = graphSchema(
     </div>
   </section>
 
+  <!-- Concrete Calculators -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight">Concrete Calculators</h2>
+        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Volume, bag count, and mix ratios for slabs, footings, walls, columns, and steps</p>
+      </div>
+      <a href="/calculators/concrete/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1 shrink-0">
+        View all
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {concreteCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-colors">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4H4zM4 10h16v10H4z" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty break-words">{calc.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Roofing Calculators -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight">Roofing Calculators</h2>
+        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Pitch-corrected material estimates for shingles, metal, plywood, and underlayment</p>
+      </div>
+      <a href="/calculators/roofing/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1 shrink-0">
+        View all
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {roofingCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-colors">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12L12 3l9 9M5 10v10h14V10" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty break-words">{calc.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Paint & Tile -->
+  <section class="mb-16">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight">Interior Finishing Calculators</h2>
+        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Paint and tile estimates for walls, ceilings, and floors</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {paintCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-colors">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty break-words">{calc.desc}</p>
+        </a>
+      ))}
+      {tileCalcs.map((calc) => (
+        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-colors">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4z" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty break-words">{calc.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Planning Workflow -->
   <section class="mb-16">
     <h2 class="text-xl font-bold tracking-tight mb-6">A planning workflow, not just formulas</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       {[
-        ["1", "Measure", "Save rooms, slabs, roof areas, and project dimensions in your browser."],
-        ["2", "Estimate", "Use calculators with visible formulas, waste factors, and unit conversions."],
-        ["3", "Compare", "Check material tradeoffs such as concrete vs pavers or shingles vs metal roofing."],
-        ["4", "Shop", "Turn estimates into practical checklists and verify products before buying."],
+        ["1", "Measure", "Save rooms, slabs, roof areas, and project dimensions in your browser. Use them across any calculator without re-entering numbers."],
+        ["2", "Estimate", "Apply calculator formulas with visible assumptions, waste factors, and unit conversions. Adjust until the quantity matches your project."],
+        ["3", "Compare", "Check material tradeoffs: poured concrete versus interlocking pavers, architectural shingles versus standing-seam metal, carpet versus tile."],
+        ["4", "Shop", "Turn the final estimate into a practical shopping list. Verify dimensions against the actual job site before purchasing."],
       ].map(([step, heading, copy]) => (
         <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
           <div class="w-7 h-7 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-xs font-bold mb-3">{step}</div>
@@ -113,105 +215,37 @@ const schema = graphSchema(
     </div>
   </section>
 
-  <!-- Concrete Calculators -->
-  <section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-xl font-bold tracking-tight">Concrete</h2>
-        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Volume, bags, and weight for any pour</p>
-      </div>
-      <a href="/calculators/concrete/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1">
-        View all
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-      </a>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-      {concreteCalcs.map((calc) => (
-        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4H4zM4 10h16v10H4z" />
-              </svg>
-            </div>
-          </div>
-          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
-          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
-        </a>
-      ))}
-    </div>
+  <!-- SECTION: Detailed guide to material estimation (SEO) -->
+  <section class="mb-12 max-w-3xl mx-auto">
+    <h2 class="text-xl font-bold tracking-tight mb-4">Material calculators built for planning, not guessing</h2>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+      HomeProjectHub helps homeowners, DIY renovators, and contractors perform accurate construction material takeoffs for common home renovation projects. Whether you are estimating concrete yardage for a patio, calculating how many shingle bundles your roof needs, figuring out how many gallons of paint cover a bedroom, or working out tile counts for a bathroom floor — each calculator converts your room dimensions into precise material quantities using standard engineering formulas and manufacturer-published coverage rates.
+    </p>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+      The goal is to give you a reliable material estimate before you visit the hardware store or call a contractor. Running short mid-project means costly reload fees and schedule delays. Over-ordering means wasted money and materials that sit unused in your garage. A careful quantity takeoff — matched to your actual project dimensions — helps you avoid both outcomes and keeps your renovation on budget.
+    </p>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+      Beyond simple quantities, a good estimate helps you compare material options. Should you pour a concrete driveway or lay asphalt? Will architectural shingles cost less than a standing-seam metal roof over the full lifespan of your home? Our material comparison pages show these tradeoffs with the same project dimensions, so the decision is grounded in hard numbers rather than guesswork.
+    </p>
   </section>
 
-  <!-- Roofing Calculators -->
-  <section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-xl font-bold tracking-tight">Roofing</h2>
-        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Pitch-corrected material estimates</p>
-      </div>
-      <a href="/calculators/roofing/" class="text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors flex items-center gap-1">
-        View all
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-      </a>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {roofingCalcs.map((calc) => (
-        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12L12 3l9 9M5 10v10h14V10" />
-              </svg>
-            </div>
-          </div>
-          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
-          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
-        </a>
-      ))}
-    </div>
+  <!-- SECTION: How Our Calculations Work -->
+  <section class="mb-12 max-w-3xl mx-auto rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-6">
+    <h2 class="text-xl font-bold tracking-tight mb-4">How our calculations work</h2>
+    <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+      <li><strong>Concrete volume</strong> uses the formula <code>L (ft) × W (ft) × D (in ÷ 12) ÷ 27</code> to output cubic yards, then converts to bag counts using published yields (0.6 cu ft per 80lb bag).</li>
+      <li><strong>Roofing material</strong> starts with the pitched roof area (footprint × pitch multiplier), then divides by shingle bundle coverage, metal panel coverage, or plywood sheet coverage.</li>
+      <li><strong>Paint coverage</strong> calculates wall area minus standard door and window openings, then divides by the coverage rate listed on the paint can (typically 350 sq ft per gallon).</li>
+      <li><strong>Tile quantity</strong> divides the floor area by the area of a single tile, then applies a waste percentage based on the layout pattern (grid, diagonal, or herringbone).</li>
+    </ul>
+    <p class="text-xs text-[var(--fg-muted)] mt-3">
+      Assumptions and limitations are stated on each calculator page. Always verify final quantities against the label on the specific product you purchase and consult a licensed contractor for structural work.
+    </p>
   </section>
 
-  <!-- Paint & Tile Calculators -->
-  <section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-xl font-bold tracking-tight">Paint & Tile</h2>
-        <p class="text-sm text-[var(--fg-muted)] mt-0.5">Interior finishing estimates</p>
-      </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {paintCalcs.map((calc) => (
-        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-              </svg>
-            </div>
-          </div>
-          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
-          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
-        </a>
-      ))}
-      {tileCalcs.map((calc) => (
-        <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-9 h-9 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center text-[var(--fg-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-fg)] transition-colors">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4z" />
-              </svg>
-            </div>
-          </div>
-          <h3 class="text-sm font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h3>
-          <p class="text-xs text-[var(--fg-muted)] mt-0.5 text-pretty">{calc.desc}</p>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- Why trust us -->
-  <section class="mb-16">
-    <h2 class="text-xl font-bold tracking-tight mb-6">Why trust our calculators</h2>
+  <!-- Open Formulas & Trust -->
+  <section class="mb-16 max-w-3xl mx-auto">
+    <h2 class="text-xl font-bold tracking-tight mb-6">Open formulas and transparent assumptions</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
         <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
@@ -219,8 +253,8 @@ const schema = graphSchema(
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h3 class="text-sm font-semibold mb-1.5">Open formulas</h3>
-        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. Verify the math before ordering.</p>
+        <h3 class="text-sm font-semibold mb-1.5">Visible formulas</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Every calculation shows its formula, a worked example, and common mistakes. Verify the math before ordering materials or calling a contractor.</p>
       </div>
       <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
         <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
@@ -228,8 +262,8 @@ const schema = graphSchema(
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
           </svg>
         </div>
-        <h3 class="text-sm font-semibold mb-1.5">Imperial & metric</h3>
-        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Switch between feet/inches and meters/centimeters on any calculator. Results update instantly.</p>
+        <h3 class="text-sm font-semibold mb-1.5">Imperial and metric</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Switch between feet and inches or meters and centimeters on any concrete calculator. Results update instantly across all unit displays.</p>
       </div>
       <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
         <div class="w-10 h-10 rounded-lg bg-[var(--bg-muted)] flex items-center justify-center mb-4 text-[var(--fg)]">
@@ -237,21 +271,29 @@ const schema = graphSchema(
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
         </div>
-        <h3 class="text-sm font-semibold mb-1.5">Save your dimensions</h3>
-        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Enter project dimensions once and reuse them across every calculator. No re-typing. Stored locally.</p>
+        <h3 class="text-sm font-semibold mb-1.5">Saved dimensions</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Enter project measurements once and reuse them across every calculator. No re-typing. Data stays in your browser and is never uploaded.</p>
       </div>
+    </div>
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 mt-4">
+      <p class="text-xs text-[var(--fg-secondary)] leading-relaxed">
+        <strong>Methodology:</strong> Concrete volume uses L (ft) × W (ft) × D (in ÷ 12) ÷ 27. Roofing uses pitch-adjusted area × bundle coverage. Paint coverage subtracts standard door (21 sq ft) and window (12 sq ft) openings. Bag counts use manufacturer-published yields (80 lb = 0.60 cu ft). These are planning estimates. Verify all quantities against the specific products you purchase and consult a licensed contractor for structural, electrical, plumbing, or load-bearing work.
+      </p>
+      <p class="text-xs text-[var(--fg-muted)] mt-2">
+        <strong>Last updated:</strong> July 2026
+      </p>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="mb-8">
+  <section class="mb-12">
     <h2 class="text-xl font-bold tracking-tight mb-6">Frequently asked questions</h2>
     <div class="flex flex-col gap-2">
-      {faqs.map((faq, i) => (
+      {faqs.map((faq) => (
         <details class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] overflow-hidden">
           <summary class="flex items-center justify-between cursor-pointer p-4 text-sm font-medium text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors list-none">
-            {faq.q}
-            <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <h3 class="text-sm font-medium m-0">{faq.q}</h3>
+            <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </summary>
@@ -262,4 +304,19 @@ const schema = graphSchema(
       ))}
     </div>
   </section>
+
+  <!-- Internal Links Footer -->
+  <footer class="border-t border-[var(--border)] pt-8 mb-4">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Explore all tools</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+      <a href="/calculators/concrete/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Concrete Calculators</a>
+      <a href="/calculators/roofing/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Roofing Calculators</a>
+      <a href="/calculators/paint/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Interior Paint Calculator</a>
+      <a href="/calculators/tile/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Tile Calculator</a>
+      <a href="/compare/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Material Comparisons</a>
+      <a href="/guides/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Planning Guides</a>
+      <a href="/planner/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Project Planner</a>
+      <a href="/saved/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Saved Measurements</a>
+    </div>
+  </footer>
 </Layout>

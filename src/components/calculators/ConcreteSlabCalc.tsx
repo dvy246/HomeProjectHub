@@ -97,10 +97,6 @@ export default function ConcreteSlabCalc() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-4 mb-2 overflow-hidden">
-          <ConcreteSlabDiagram length={lenNum} width={widNum} thickness={thickNum} unitSystem={unitSystem} />
-        </div>
-
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Slab Parameters</h3>
@@ -134,6 +130,9 @@ export default function ConcreteSlabCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <ConcreteSlabDiagram length={lenNum} width={widNum} thickness={thickNum} unitSystem={unitSystem} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
           <div className="flex flex-col gap-5">

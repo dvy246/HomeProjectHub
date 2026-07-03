@@ -1,0 +1,119 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../lib/schema";
+
+const canonical = "https://homeprojecthub.com/maintenance/";
+const title = "Home Maintenance Planner";
+const description = "Plan and track your home maintenance with interactive checklists, cost estimates, and seasonal guides. Protect your home and avoid expensive repairs.";
+const PAGE_PATH = "/maintenance/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "Home Maintenance" }),
+  howToSchema("Plan annual home maintenance", "Follow a structured maintenance plan covering monthly, seasonal, and yearly tasks to protect your home investment.", [
+    { heading: "Review monthly tasks", text: "Start with monthly essentials like HVAC filter changes and smoke detector tests." },
+    { heading: "Schedule seasonal maintenance", text: "Plan gutter cleaning, roof inspections, and HVAC tune-ups for spring and fall." },
+    { heading: "Budget for yearly costs", text: "Use the cost estimator to understand your annual maintenance budget." },
+  ]),
+  faqPageSchema([
+    { q: "How much should I budget for home maintenance?", a: "The industry standard is 1% of your home's value per year. For a $300,000 home, that's $3,000 annually. Actual costs vary by age, region, and property type." },
+    { q: "What home maintenance is most important?", a: "HVAC filter changes, smoke detector testing, and gutter cleaning are the most impactful for safety and preventing expensive damage." },
+    { q: "How often should I clean my gutters?", a: "Clean gutters at least twice per year — once in spring after pollen season and once in fall after leaves drop." },
+    { q: "When should I replace my HVAC filter?", a: "Standard filters every 1-3 months. High-efficiency filters (MERV 13+) every 6 months. Check monthly during peak usage seasons." },
+    { q: "What happens if I skip home maintenance?", a: "Minor issues escalate into major repairs. A $20 filter replacement can prevent a $5,000 HVAC repair. Regular maintenance saves 3x in avoided repairs." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Home Maintenance</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Home Maintenance Planner</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Stay on top of home upkeep with interactive checklists, seasonal guides, and cost estimates. A well-maintained home is safer, more efficient, and retains its value longer.</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <a href="/maintenance/planner/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+        <h2 class="text-sm font-bold mb-1">Interactive Planner</h2>
+        <p class="text-xs text-[var(--fg-secondary)]">Track monthly, seasonal, and yearly tasks. Check items off and save progress to your browser.</p>
+      </a>
+      <a href="/maintenance/calendar/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+        <h2 class="text-sm font-bold mb-1">Calendar</h2>
+        <p class="text-xs text-[var(--fg-secondary)]">Monthly task view with category colors, completion tracking, and quick access.</p>
+      </a>
+      <a href="/maintenance/cost-estimator/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+        <h2 class="text-sm font-bold mb-1">Cost Estimator</h2>
+        <p class="text-xs text-[var(--fg-secondary)]">Estimate annual maintenance costs based on your home's size, age, region, and type.</p>
+      </a>
+      <a href="/maintenance/first-time-homeowner/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] transition-colors">
+        <h2 class="text-sm font-bold mb-1">First-Time Homeowner</h2>
+        <p class="text-xs text-[var(--fg-secondary)]">Essential first-year maintenance timeline and checklist for new homeowners.</p>
+      </a>
+    </div>
+
+    <section>
+      <h2 id="seasonal-guides" class="text-xl font-bold mb-3">Seasonal Maintenance Guides</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <a href="/maintenance/spring/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-center hover:border-[var(--border-hover)] transition-colors">
+          <div class="text-2xl mb-1">🌱</div>
+          <div class="text-sm font-semibold">Spring</div>
+        </a>
+        <a href="/maintenance/summer/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-center hover:border-[var(--border-hover)] transition-colors">
+          <div class="text-2xl mb-1">☀️</div>
+          <div class="text-sm font-semibold">Summer</div>
+        </a>
+        <a href="/maintenance/fall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-center hover:border-[var(--border-hover)] transition-colors">
+          <div class="text-2xl mb-1">🍂</div>
+          <div class="text-sm font-semibold">Fall</div>
+        </a>
+        <a href="/maintenance/winter/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-center hover:border-[var(--border-hover)] transition-colors">
+          <div class="text-2xl mb-1">❄️</div>
+          <div class="text-sm font-semibold">Winter</div>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="why-maintenance-matters" class="text-xl font-bold mb-3">Why Home Maintenance Matters</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+          <div class="text-lg font-bold mb-1">3x ROI</div>
+          <p class="text-xs text-[var(--fg-secondary)]">Every dollar spent on preventive maintenance saves three dollars in future repairs. A $20 HVAC filter change prevents $5,000 compressor failures.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+          <div class="text-lg font-bold mb-1">2% Value</div>
+          <p class="text-xs text-[var(--fg-secondary)]">Well-maintained homes sell for 2% more on average. Documented maintenance records are a strong selling point during inspection.</p>
+        </div>
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4">
+          <div class="text-lg font-bold mb-1">30% Energy</div>
+          <p class="text-xs text-[var(--fg-secondary)]">Regular maintenance like filter changes, duct sealing, and weatherstripping can reduce energy bills by up to 30% annually.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What home maintenance should I do every month?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Monthly tasks include: replace HVAC air filter, test smoke and CO detectors, test GFCI outlets. These take 10 minutes total and prevent the most common home hazards.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does home maintenance cost per year?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Budget 1% of your home's value annually. For a median US home ($350,000), that's $3,500 per year. Use our interactive cost estimator for a personalized estimate based on your home's size, age, and region.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What happens if I skip seasonal maintenance?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Skipping seasonal tasks like gutter cleaning and roof inspections leads to water damage, foundation issues, and pest infestations. Spring and fall maintenance are critical before extreme weather seasons.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">When should I hire a professional vs DIY?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">DIY tasks: filter changes, smoke detector testing, gutter cleaning, caulking, faucet repairs. Professional tasks: HVAC tune-ups, chimney cleaning, roof inspection, electrical panel work, and major plumbing.</p></details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How do I create a home maintenance schedule?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Use our interactive Maintenance Planner above. Tasks are grouped by monthly, seasonal, and yearly frequency. Check items off as you complete them and revisit regularly.</p></details>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-6">
+      <h2 id="planning-tools" class="text-sm font-bold mb-3">Related Planning Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <a href="/strategy/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Project Strategy Guide</a>
+        <a href="/planner/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Project Planner</a>
+        <a href="/calculators/roofing/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Roofing Calculators</a>
+        <a href="/calculators/square-footage/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">Square Footage Calculator</a>
+      </div>
+    </section>
+  </article>
+</Layout>

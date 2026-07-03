@@ -1,0 +1,69 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
+import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
+
+const canonical = "https://homeprojecthub.com/maintenance/summer/";
+const title = "Summer Home Maintenance Checklist";
+const description = "Complete summer home maintenance checklist. Beat the heat with AC maintenance, pest prevention, deck care, and energy-saving home improvements.";
+const PAGE_PATH = "/maintenance/summer/";
+
+const summerTasks = MAINTENANCE_TASKS.filter((t) => t.seasons?.includes("summer"));
+const categories = [...new Set(summerTasks.map((t) => t.category))];
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Summer Maintenance", path: PAGE_PATH }]),
+  webPageSchema({ url: canonical, topicName: "Summer Home Maintenance" }),
+  howToSchema("Complete summer home maintenance", "Keep your home comfortable and efficient during hot months with these seasonal tasks.", summerTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  faqPageSchema([
+    { q: "What summer maintenance keeps my AC efficient?", a: "Monthly filter changes, keeping outdoor unit clear of debris, and sealing window gaps are the highest-impact tasks for AC efficiency." },
+    { q: "How do I pest-proof my home in summer?", a: "Seal cracks around windows and doors, trim vegetation away from the foundation, remove standing water, and inspect attic and crawlspace vents." },
+    { q: "When should I seal my deck?", a: "Late summer after the wood has dried from spring rains but before fall wet weather. Clean the deck first, then apply sealant in dry 70°F conditions." },
+    { q: "Does summer maintenance reduce energy bills?", a: "Yes. AC filter changes, weatherstripping, attic insulation checks, and ceiling fan optimization can reduce cooling costs by 15-30%." },
+    { q: "Should I inspect my attic in summer?", a: "Yes — summer is ideal for checking attic ventilation and insulation. Proper airflow prevents heat buildup that damages shingles and increases cooling costs." },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Summer</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Summer Home Maintenance Checklist</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Summer heat puts your home's cooling, pest defenses, and exterior surfaces to the test. Use this checklist to keep your home comfortable, efficient, and protected through the hottest months.</p>
+
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-4 text-sm space-y-2">
+      {categories.map((cat) => {
+        const catLabel = CATEGORIES.find((c) => c.key === cat)?.label || cat;
+        const catTasks = summerTasks.filter((t) => t.category === cat);
+        return (
+          <details>
+            <summary class="text-sm font-semibold cursor-pointer">{catLabel} ({catTasks.length} tasks)</summary>
+            <ul class="mt-2 space-y-1.5">
+              {catTasks.map((t) => (
+                <li class="text-sm text-[var(--fg-secondary)]">{t.title} — <span class="text-[var(--fg-muted)]">{t.explanation}</span></li>
+              ))}
+            </ul>
+          </details>
+        );
+      })}
+    </div>
+
+    <section><h2 id="summer-challenges" class="text-xl font-bold mb-3">Summer Home Challenges</h2><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm"><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">Heat &amp; Humidity</div><p class="text-xs text-[var(--fg-secondary)]">High humidity promotes mold, mildew, and pest activity. Attic temperatures over 150°F damage shingles and reduce AC efficiency. Proper ventilation is critical.</p></div><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">Pest Pressure</div><p class="text-xs text-[var(--fg-secondary)]">Ants, termites, mosquitoes, and rodents are most active in summer. A single ant colony can number 300,000 by August if unchecked.</p></div><div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><div class="font-semibold mb-1">UV &amp; Weather</div><p class="text-xs text-[var(--fg-secondary)]">UV radiation degrades paint, sealants, and roofing. Summer storms bring high winds and lightning. Late summer is ideal for inspection before fall rains.</p></div></div></section>
+
+    <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How often should I change my AC filter in summer?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Monthly during peak cooling months (June-August). If you have pets or allergies, consider every 3 weeks.</p></details>
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What exterior painting should I do in summer?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Late summer (August-September) offers ideal conditions — warm but not scorching, low humidity, and enough dry days for paint to cure properly.</p></details>
+    </div></section>
+
+    <div class="flex gap-4 text-sm">
+      <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>
+      <a href="/maintenance/spring/" class="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors">← Spring maintenance</a>
+    </div>
+  </article>
+</Layout>

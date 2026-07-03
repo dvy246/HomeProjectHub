@@ -1,0 +1,109 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import AggregateCalc from "../../../components/calculators/AggregateCalc"
+import AdSlot from "../../../components/AdSlot.astro"
+import EstimateMethodology from "../../../components/EstimateMethodology.astro"
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+
+const canonical = "https://homeprojecthub.com/calculators/river-rock/";
+const title = "River Rock Calculator";
+const description = "Estimate river rock, pea gravel, and cobblestone for landscaping beds, dry creek beds, and decorative ground cover.";
+const formula = "Tons = Cubic Yards × 1.4";
+const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "River Rock Calculator", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: title,
+    description,
+    formula,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Measure area",
+      text: "Review your project measurements.",
+    },
+    {
+      name: "Enter dimensions",
+      text: "Input your project dimensions into the calculator.",
+    },
+    {
+      name: "Get estimate",
+      text: "Review your material estimate and adjust as needed.",
+    },
+  ]),
+  faqPageSchema([
+    {
+      q: "How much river rock for a 10x10 bed?",
+      a: "A 10x10 ft bed at 3\" depth needs about 0.93 cu yd. At 1.4 t/cu yd, that's 1.3 tons.",
+    },
+    {
+      q: "River rock vs pea gravel?",
+      a: "River rock is 1-3\" smooth stones. Pea gravel is 3/8-1/2\" smaller stones. Pea gravel packs better for walkways.",
+    },
+    {
+      q: "How deep should river rock be?",
+      a: "2-3\" for decorative beds, 3-4\" for dry creek beds, 4-6\" for drainage applications.",
+    }
+  ], canonical)
+);
+---
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">River Rock Calculator</span>
+    </nav>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">River Rock Calculator</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Estimate river rock, pea gravel, and cobblestone for landscaping beds, dry creek beds, and decorative ground cover.</p>
+    <AdSlot slotId="ad-top-leaderboard" />
+    <section><AggregateCalc client:visible aggregates={[
+      {
+            id: "river_rock",
+            label: "River Rock (1.4 t/cu yd)",
+            tonsPerCuYd: 1.4
+      },
+      {
+            id: "pea_gravel",
+            label: "Pea Gravel (1.3 t/cu yd)",
+            tonsPerCuYd: 1.3
+      },
+      {
+            id: "cobblestone",
+            label: "Cobblestone (1.5 t/cu yd)",
+            tonsPerCuYd: 1.5
+      }
+]} defaultKey="river_rock" calculatorLabel="River Rock" /></section>
+    <EstimateMethodology
+      formula={formula}
+      assumptions={[
+        "River rock density averages 1.4 tons per cubic yard.",
+        "Rounded stones may require deeper coverage.",
+        "Depth of 2-3 inches recommended for decorative use."
+      ]}
+    />
+    <AdSlot slotId="ad-in-content-mid" />
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much river rock for a 10x10 bed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 10x10 ft bed at 3" depth needs about 0.93 cu yd. At 1.4 t/cu yd, that's 1.3 tons.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">River rock vs pea gravel?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">River rock is 1-3" smooth stones. Pea gravel is 3/8-1/2" smaller stones. Pea gravel packs better for walkways.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How deep should river rock be?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2-3" for decorative beds, 3-4" for dry creek beds, 4-6" for drainage applications.</p></details>
+      </div>
+    </section>
+    <footer class="pt-8 mt-6 border-t border-[var(--border)]">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a href="/calculators/gravel/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Gravel Calculator</span></a>
+      <a href="/calculators/rip-rap/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Rip Rap</span></a>
+      <a href="/calculators/limestone/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Limestone</span></a>
+      </div>
+    </footer>
+  </article>
+</Layout>

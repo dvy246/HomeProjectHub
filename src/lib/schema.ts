@@ -4,7 +4,7 @@ interface QA {
 }
 
 interface HowToStep {
-  heading: string;
+  name: string;
   text: string;
   imageUrl?: string;
 }
@@ -25,6 +25,43 @@ export function webSiteSchema(name: string, description: string) {
     url: SITE_URL,
     name,
     description,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+export function aboutPageSchema() {
+  return {
+    "@type": "AboutPage",
+    "@id": `${SITE_URL}/about/#about-page`,
+    name: "About HomeProjectHub",
+    description: "Free home improvement planning calculators and project estimating guides for homeowners and DIY builders.",
+    url: `${SITE_URL}/about/`,
+  };
+}
+
+export function webPageSchema(opts: {
+  url: string;
+  topicName: string;
+  topicUrl?: string;
+}) {
+  return {
+    "@type": "WebPage",
+    "@id": `${opts.url}#webpage`,
+    url: opts.url,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    about: {
+      "@type": "Thing",
+      name: opts.topicName,
+      ...(opts.topicUrl ? { sameAs: opts.topicUrl } : {}),
+    },
   };
 }
 
@@ -35,7 +72,7 @@ export function webApplicationSchema(name: string, description: string, url: str
     url,
     name,
     description,
-    applicationCategory: "Multimedia",
+    applicationCategory: "Utilities",
     operatingSystem: "All",
     browserRequirements: "Requires JavaScript",
   };
@@ -92,10 +129,41 @@ export function howToSchema(name: string, description: string, steps: HowToStep[
     step: steps.map((step, i) => ({
       "@type": "HowToStep",
       position: i + 1,
-      name: step.heading,
+      name: step.name,
       text: step.text,
       ...(step.imageUrl ? { image: { "@type": "ImageObject", url: step.imageUrl } } : {}),
     })),
+  };
+}
+
+export function articleSchema(opts: {
+  headline: string;
+  description: string;
+  author: string;
+  datePublished: string;
+  dateModified?: string;
+  imageUrl?: string;
+}) {
+  return {
+    "@type": "Article",
+    "@id": `${SITE_URL}/article/#article`,
+    headline: opts.headline,
+    description: opts.description,
+    author: { "@type": "Person", name: opts.author },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "HomeProjectHub" },
+    datePublished: opts.datePublished,
+    ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
+    ...(opts.imageUrl ? { image: { "@type": "ImageObject", url: opts.imageUrl } } : {}),
+  };
+}
+
+export function contactPageSchema() {
+  return {
+    "@type": "ContactPage",
+    "@id": `${SITE_URL}/contact/#contact-page`,
+    name: "Contact HomeProjectHub",
+    description: "Get in touch with the HomeProjectHub team for questions, feedback, or business inquiries.",
+    url: `${SITE_URL}/contact/`,
   };
 }
 

@@ -1,0 +1,215 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { graphSchema, webPageSchema, faqPageSchema, breadcrumbListSchema } from "../../lib/schema";
+
+const title = "Home Project Planning Strategy Guide";
+const description = "A complete guide to planning home improvement projects. Learn how to estimate materials, compare options, and build a project workflow that saves time and money.";
+
+const faqs = [
+  { q: "What is the first step in planning a home improvement project?", a: "Start by measuring the project area. For a patio, measure length and width. For a room, measure wall dimensions and ceiling height. Enter these measurements into the square footage calculator, then use the result in the specific material calculator for your project type." },
+  { q: "Should I use concrete or pavers for a patio?", a: "Concrete is less expensive upfront ($4-12 per sq ft) and requires minimal maintenance, but it can crack over time. Pavers cost more ($8-20 per sq ft) but are easier to repair individually and allow for more design flexibility. Our compare page breaks down the tradeoffs for your specific patio dimensions." },
+  { q: "How much extra material should I order for waste?", a: "Add 5-10% for concrete pours (accounting for compaction and form bowing), 10-15% for tile (depending on layout pattern), 10% for lumber and siding, and 5-10% for paint. Each calculator on this site includes an adjustable waste factor so you can match your project conditions." },
+  { q: "What tools do I need before starting a DIY project?", a: "At minimum: tape measure, calculator, notebook, safety glasses, work gloves, and a level. For concrete projects, you will also need a wheelbarrow, shovel, concrete trowel, and forms. For roofing: a hammer, roofing nailer, ladder, harness, and chalk line. Check each calculator page for specific tool lists." },
+  { q: "Should I get a permit for my project?", a: "Permit requirements vary by location. Most jurisdictions require permits for structural changes, electrical work, plumbing, decks over 30 inches high, sheds over 120 sq ft, and any work that changes the footprint of your home. Check with your local building department before starting." },
+  { q: "How do I choose between different materials?", a: "Consider four factors: cost, durability, maintenance, and DIY difficulty. Concrete is durable and low-maintenance but hard to DIY. Pavers and gravel are more DIY-friendly but require more maintenance. Our compare pages let you see the tradeoffs side by side with your project dimensions." },
+];
+
+const projectTypes = [
+  {
+    name: "Concrete Patio or Slab",
+    description: "A poured concrete slab for a patio, shed base, walkway, or driveway",
+    calcs: ["Concrete Slab", "Rebar", "Mix Ratio"],
+    links: ["/calculators/concrete/slab/", "/calculators/concrete/rebar/", "/calculators/concrete/mix-ratio/"],
+    compare: "/compare/concrete-vs-pavers/",
+  },
+  {
+    name: "Shed or Small Structure",
+    description: "A storage shed, workshop, or garden structure with foundation and roof",
+    calcs: ["Concrete Slab", "Framing", "Roof Shingles", "Vinyl Siding", "Paint"],
+    links: ["/calculators/concrete/slab/", "/calculators/roofing/shingles/", "/calculators/paint/"],
+    compare: null,
+  },
+  {
+    name: "Deck with Stairs",
+    description: "An elevated wood or composite deck with balusters and stair access",
+    calcs: ["Decking", "Baluster", "Concrete Footing", "Stair"],
+    links: ["/calculators/concrete/footing/"],
+    compare: null,
+  },
+  {
+    name: "Roof Replacement",
+    description: "Tear off and replace shingles or metal roofing with underlayment",
+    calcs: ["Roof Pitch", "Shingles", "Plywood", "Ice & Water Shield", "Snow Load"],
+    links: ["/calculators/roofing/pitch/", "/calculators/roofing/shingles/", "/calculators/roofing/plywood/"],
+    compare: "/compare/shingles-vs-metal-roof/",
+  },
+  {
+    name: "Interior Room Finishing",
+    description: "Paint walls, install tile flooring, or add drywall to an existing room",
+    calcs: ["Paint", "Tile", "Drywall", "Square Footage"],
+    links: ["/calculators/paint/", "/calculators/tile/"],
+    compare: null,
+  },
+  {
+    name: "Fence Installation",
+    description: "A wood or vinyl privacy fence with posts, rails, and pickets",
+    calcs: ["Vinyl Fence", "Concrete Footing", "Spindle Spacing"],
+    links: ["/calculators/concrete/footing/"],
+    compare: null,
+  },
+];
+
+const schema = graphSchema(
+  webPageSchema({
+    url: "https://homeprojecthub.com/strategy/",
+    topicName: "Home Improvement Planning",
+  }),
+  faqPageSchema(faqs, "https://homeprojecthub.com/strategy/"),
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Planning Strategy", path: "/strategy/" },
+  ]),
+);
+---
+
+<Layout title={title} description={description} canonical="https://homeprojecthub.com/strategy/" schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-8">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)]" aria-label="Breadcrumb">
+      <a href="/" class="hover:underline">home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)]">planning strategy</span>
+    </nav>
+
+    <header class="max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-4">
+        The Complete Home Project Planning Strategy Guide
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        A step-by-step strategy for planning home improvement projects from start to finish. Measure, estimate, compare materials, and build a shopping list before you buy. This guide links every calculator on the site into a coherent workflow.
+      </p>
+    </header>
+
+    <!-- SECTION: The 4-Phase Strategy -->
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-6 md:p-8">
+      <h2 class="text-xl font-bold tracking-tight mb-6">The Four-Phase Planning Strategy</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border)]">
+          <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center text-sm font-bold mb-3">1</div>
+          <h3 class="text-sm font-semibold mb-1">Measure</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed">Measure the project area. For rooms and slabs, record length, width, and depth. For roofs, measure the footprint and pitch. Use the square footage calculator for irregular shapes.</p>
+        </div>
+        <div class="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border)]">
+          <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center text-sm font-bold mb-3">2</div>
+          <h3 class="text-sm font-semibold mb-1">Calculate</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed">Use the material calculator for your project type. Enter your dimensions, adjust waste factors, and note the quantities. Every calculator shows its formula so you can verify the math.</p>
+        </div>
+        <div class="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border)]">
+          <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center text-sm font-bold mb-3">3</div>
+          <h3 class="text-sm font-semibold mb-1">Compare</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed">Compare material options side by side. Concrete versus pavers, shingles versus metal roof, brick versus vinyl siding. The same dimensions applied to different materials reveal cost and durability tradeoffs.</p>
+        </div>
+        <div class="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border)]">
+          <div class="w-8 h-8 rounded-full bg-[var(--accent)] text-[var(--accent-fg)] flex items-center justify-center text-sm font-bold mb-3">4</div>
+          <h3 class="text-sm font-semibold mb-1">Shop</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed">Compile the final quantities into a shopping list. Verify your dimensions against the actual job site, check the product labels for exact coverage, and compare supplier prices before purchasing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Project Types -->
+    <section>
+      <h2 class="text-xl font-bold tracking-tight mb-6">Project Planning Guides</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-6 text-pretty">
+        Select the project type that matches your plan. Each guide links to the appropriate calculators, compare pages, and planning resources in the right order.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {projectTypes.map((project) => (
+          <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 card-elevated">
+            <h3 class="text-sm font-semibold mb-1">{project.name}</h3>
+            <p class="text-xs text-[var(--fg-muted)] mb-3">{project.description}</p>
+            <p class="text-xs text-[var(--fg-secondary)] mb-3">
+              <strong class="text-[var(--fg)]">Calculators needed:</strong> {project.calcs.join(", ")}
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {project.links.map((link, i) => (
+                <a href={link} class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors">
+                  {project.calcs[i]}
+                </a>
+              ))}
+              {project.compare && (
+                <a href={project.compare} class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:border-[var(--border-hover)] transition-colors">
+                  Compare options
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- SECTION: Why planning matters -->
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-6">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Why a written plan saves money</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        A material estimate before you visit the supplier serves as a budget anchor and a negotiation tool. Knowing the approximate volume or count prevents two common and costly outcomes:
+      </p>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+        <li><strong>Running short mid-project.</strong> A concrete pour that needs an additional half-yard incurs a short-load fee of $150-250 on top of the material cost. A roof that comes up short on shingle bundles delays the project by days.</li>
+        <li><strong>Overbuying by a wide margin.</strong> Extra materials that cannot be returned become sunk cost. Bagged concrete, custom-ordered tile, and cut lumber are often non-returnable.</li>
+        <li><strong>Choosing the wrong material.</strong> Comparing options before buying gives you confidence that the material matches your budget, skill level, and timeline.</li>
+      </ul>
+    </section>
+
+    <!-- SECTION: Workflow visualization -->
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 overflow-hidden">
+      <h2 class="text-sm font-semibold mb-4">Visual Project Workflow</h2>
+      <div class="flex flex-col sm:flex-row items-stretch gap-0">
+        {[
+          { label: "Enter Dimensions", icon: "📏", link: "/calculators/square-footage/" },
+          { label: "Calculate Materials", icon: "🧮", link: "/calculators/concrete/" },
+          { label: "Compare Options", icon: "⚖️", link: "/compare/" },
+          { label: "Build Checklist", icon: "📋", link: "/planner/shopping-list/" },
+        ].map((step, i) => (
+          <>
+            <a href={step.link} class="flex-1 flex flex-col items-center gap-2 p-4 text-center hover:bg-[var(--bg-muted)] transition-colors rounded-lg">
+              <span class="text-2xl">{step.icon}</span>
+              <span class="text-xs font-semibold">{step.label}</span>
+            </a>
+            {i < 3 && <div class="hidden sm:flex items-center text-[var(--fg-muted)]"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></div>}
+          </>
+        ))}
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2 class="text-xl font-bold tracking-tight mb-6">Frequently asked questions</h2>
+      <div class="flex flex-col gap-2">
+        {faqs.map((faq) => (
+          <details class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] overflow-hidden">
+            <summary class="flex items-center justify-between cursor-pointer p-4 text-sm font-medium hover:bg-[var(--bg-muted)] transition-colors list-none">
+              <h3 class="text-sm font-medium m-0">{faq.q}</h3>
+              <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Internal links -->
+    <footer class="border-t border-[var(--border)] pt-8">
+      <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Start planning your project</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+        <a href="/calculators/concrete/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Concrete Calculators</a>
+        <a href="/calculators/roofing/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Roofing Calculators</a>
+        <a href="/calculators/paint/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Paint Calculator</a>
+        <a href="/calculators/tile/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Tile Calculator</a>
+        <a href="/planner/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Project Planner</a>
+        <a href="/saved/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Saved Measurements</a>
+        <a href="/compare/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Material Comparisons</a>
+        <a href="/guides/" class="p-3 rounded-lg hover:bg-[var(--bg-muted)] transition-colors text-[var(--fg-secondary)] hover:text-[var(--fg)]">Planning Guides</a>
+      </div>
+    </footer>
+  </article>
+</Layout>
