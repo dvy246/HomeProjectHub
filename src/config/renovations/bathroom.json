@@ -1,0 +1,548 @@
+{
+  "slug": "bathroom",
+  "name": "Bathroom Renovation Planner",
+  "shortName": "Bathroom",
+  "description": "Plan your bathroom renovation from start to finish. Estimate material quantities, compare finish options, build a planning budget, and generate your shopping list.",
+  "metaDescription": "Free bathroom renovation planner. Compare tile, vinyl, and microcement finishes. Estimate budget, timeline, and materials. Interactive planning tool.",
+  "icon": "bathroom",
+  "defaultDimensions": {
+    "length": 8,
+    "width": 5,
+    "height": 8,
+    "unitSystem": "imperial"
+  },
+  "dimensionFields": [
+    { "key": "length", "label": "Room Length", "default": 8, "unit": "ft", "min": 3, "max": 30 },
+    { "key": "width", "label": "Room Width", "default": 5, "unit": "ft", "min": 3, "max": 20 },
+    { "key": "height", "label": "Ceiling Height", "default": 8, "unit": "ft", "min": 7, "max": 16 },
+    { "key": "tubWidth", "label": "Tub Width", "default": 60, "unit": "in", "optional": true, "min": 48, "max": 72 },
+    { "key": "showerArea", "label": "Shower Floor Area", "default": 9, "unit": "sq ft", "optional": true, "min": 4, "max": 36 }
+  ],
+  "scopeTiers": [
+    {
+      "id": "cosmetic",
+      "name": "Cosmetic Refresh",
+      "description": "Paint, new fixtures, updated hardware, and lighting. Keep existing layout and plumbing.",
+      "includes": ["Paint walls and ceiling", "Replace vanity and sink", "New toilet", "Update lighting fixtures", "Replace mirror and accessories"],
+      "costFactor": 0.6
+    },
+    {
+      "id": "mid-range",
+      "name": "Mid-Range Upgrade",
+      "description": "New floor and wall tile, updated vanity, refreshed tub or shower surround. Minor layout changes.",
+      "includes": ["New floor and wall tile", "Replace vanity with storage", "New toilet and fixtures", "Updated tub or shower surround", "Recessed lighting or new fixture", "Fresh paint throughout"],
+      "costFactor": 1.0
+    },
+    {
+      "id": "full-gut",
+      "name": "Full Gut Renovation",
+      "description": "Strip to studs. New plumbing, electrical, and ventilation. Custom tile work and premium fixtures.",
+      "includes": ["Strip to studs, remove all fixtures", "New plumbing rough-in", "New electrical wiring and outlets", "New ventilation fan and ducting", "Custom tile floor and walls", "Premium vanity and fixtures", "New tub or custom shower", "Heated floor option"],
+      "costFactor": 1.6
+    }
+  ],
+  "qualityTiers": [
+    {
+      "id": "budget",
+      "name": "Budget-Friendly",
+      "description": "Practical materials that perform well at accessible price points.",
+      "materialFactor": 0.7,
+      "fixtureFactor": 0.6
+    },
+    {
+      "id": "mid-range",
+      "name": "Mid-Range",
+      "description": "Quality materials with good durability and style. Best value overall.",
+      "materialFactor": 1.0,
+      "fixtureFactor": 1.0
+    },
+    {
+      "id": "premium",
+      "name": "Premium",
+      "description": "Designer materials, custom tile, and high-end fixtures. Maximum quality and durability.",
+      "materialFactor": 1.6,
+      "fixtureFactor": 2.0
+    }
+  ],
+  "finishCategories": [
+    {
+      "id": "flooring",
+      "name": "Flooring",
+      "description": "Bathroom floor material",
+      "areaSource": "floor",
+      "options": [
+        {
+          "id": "ceramic-tile",
+          "name": "Ceramic Tile",
+          "description": "Classic glazed ceramic. Waterproof, durable, endless style options.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 3, "high": 8 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "porcelain-tile",
+          "name": "Porcelain Tile",
+          "description": "Denser than ceramic. Better for high-moisture areas. Through-body color.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 4, "high": 12 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "25-40 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "luxury-vinyl",
+          "name": "Luxury Vinyl Plank",
+          "description": "100% waterproof. Warm underfoot. Easy to install and maintain.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 3, "high": 7 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "15-25 years",
+            "difficulty": "easy",
+            "waterResistance": "excellent",
+            "warmth": "warm",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "natural-stone",
+          "name": "Natural Stone",
+          "description": "Marble, travertine, or slate. Unique veining. Requires sealing.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 8, "high": 25 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "50+ years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "walls",
+      "name": "Wall Finish",
+      "description": "Bathroom wall and surround material",
+      "areaSource": "walls",
+      "options": [
+        {
+          "id": "paint",
+          "name": "Paint (satin/semi-gloss)",
+          "description": "Cost-effective. Needs mold-resistant paint. Refresh every few years.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 0.5, "high": 1.5 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "3-5 years",
+            "difficulty": "easy",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "ceramic-tile",
+          "name": "Ceramic Tile (wainscot/full)",
+          "description": "Waterproof classic. Easy to clean. Timeless look.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 4, "high": 10 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "subway-tile",
+          "name": "Subway Tile",
+          "description": "Classic 3x6 brick pattern. Versatile, affordable, timeless.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 5, "high": 12 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "25-35 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "microcement",
+          "name": "Microcement",
+          "description": "Seamless, modern. Applied over existing tile. No grout lines.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 8, "high": 18 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "10-15 years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "large-format-slab",
+          "name": "Large-Format Porcelain Slab",
+          "description": "Minimal grout lines. Modern aesthetic. Premium durability.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 10, "high": 25 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "30-50 years",
+            "difficulty": "hard",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "countertop",
+      "name": "Countertop",
+      "description": "Vanity countertop surface",
+      "areaSource": "countertop",
+      "options": [
+        {
+          "id": "laminate",
+          "name": "Laminate",
+          "description": "Budget-friendly. Many patterns. Easy to install.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 15, "high": 35 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "10-15 years",
+            "difficulty": "easy",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "quartz",
+          "name": "Quartz",
+          "description": "Engineered stone. Non-porous. Consistent color. Most popular mid-range choice.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 55, "high": 95 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "granite",
+          "name": "Granite",
+          "description": "Natural stone. Unique veining. Needs annual sealing.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 40, "high": 100 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "30+ years",
+            "difficulty": "moderate",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "marble",
+          "name": "Marble",
+          "description": "Luxury natural stone. Etches easily. High maintenance.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 75, "high": 200 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "50+ years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tub-shower",
+      "name": "Tub / Shower Surround",
+      "description": "Tub or shower wall surround material",
+      "areaSource": "showerWalls",
+      "options": [
+        {
+          "id": "acrylic-surround",
+          "name": "Acrylic Surround",
+          "description": "One-piece or panel surround. Affordable, waterproof, low maintenance.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 5, "high": 12 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "15-25 years",
+            "difficulty": "easy",
+            "waterResistance": "excellent",
+            "warmth": "warm",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "tile-surround",
+          "name": "Tile Surround",
+          "description": "Ceramic or porcelain tile on cement board. Customizable, durable.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 8, "high": 18 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "natural-stone-surround",
+          "name": "Natural Stone Surround",
+          "description": "Slate, travertine, or marble tile. Premium look. Needs sealing.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 12, "high": 30 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "30-50 years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vanity",
+      "name": "Vanity / Storage",
+      "description": "Vanity cabinet and sink type",
+      "areaSource": "vanity",
+      "options": [
+        {
+          "id": "stock-vanity",
+          "name": "Stock Vanity",
+          "description": "Pre-built standard sizes. Most affordable option.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 200, "high": 500 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "10-15 years",
+            "difficulty": "easy",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "semi-custom-vanity",
+          "name": "Semi-Custom Vanity",
+          "description": "Choose size, finish, and countertop. Better quality and fit.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 500, "high": 1200 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "15-25 years",
+            "difficulty": "moderate",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "custom-vanity",
+          "name": "Custom Vanity",
+          "description": "Built to spec. Any size, any material. Premium hardware and soft-close drawers.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 1200, "high": 3000 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "25-40 years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    }
+  ],
+  "budgetCategories": [
+    { "id": "demo", "name": "Demolition & Disposal", "percentage": { "low": 5, "high": 10 }, "description": "Removing old fixtures, tile, and debris. Dumpster or haul-away fees." },
+    { "id": "plumbing", "name": "Plumbing", "percentage": { "low": 12, "high": 18 }, "description": "Rough-in work, new supply lines, drain pipes, and fixture installation." },
+    { "id": "electrical", "name": "Electrical", "percentage": { "low": 5, "high": 10 }, "description": "New wiring, outlets, switches, vanity lighting, and exhaust fan." },
+    { "id": "flooring", "name": "Flooring & Subfloor", "percentage": { "low": 8, "high": 14 }, "description": "Tile, underlayment, subfloor repair, and waterproof membrane." },
+    { "id": "walls", "name": "Walls & Ceiling", "percentage": { "low": 10, "high": 16 }, "description": "Drywall, paint, tile walls, and trim work." },
+    { "id": "fixtures", "name": "Fixtures & Hardware", "percentage": { "low": 15, "high": 22 }, "description": "Toilet, vanity, sink, faucet, tub/shower, mirrors, and accessories." },
+    { "id": "cabinetry", "name": "Cabinetry & Countertop", "percentage": { "low": 12, "high": 18 }, "description": "Vanity cabinet, countertop, backsplash, and storage." },
+    { "id": "ventilation", "name": "Ventilation", "percentage": { "low": 3, "high": 6 }, "description": "Exhaust fan, ducting, and exterior vent." },
+    { "id": "permits", "name": "Permits & Inspections", "percentage": { "low": 2, "high": 5 }, "description": "Building permits, inspection fees, and engineering if required." },
+    { "id": "contingency", "name": "Contingency", "percentage": { "low": 8, "high": 15 }, "description": "Unforeseen issues: water damage, outdated wiring, structural repairs." }
+  ],
+  "timelinePhases": [
+    {
+      "id": "planning",
+      "name": "Planning & Design",
+      "description": "Design decisions, material selection, permits, and contractor quotes.",
+      "order": 1,
+      "details": [
+        "Measure and photograph the space",
+        "Choose finishes and fixtures",
+        "Get contractor quotes (if hiring)",
+        "Pull permits if required",
+        "Order materials and fixtures",
+        "Schedule contractors"
+      ]
+    },
+    {
+      "id": "preparation",
+      "name": "Preparation",
+      "description": "Protect adjoining spaces, set up temporary arrangements, and prepare for demolition.",
+      "order": 2,
+      "details": [
+        "Clear the bathroom completely",
+        "Set up temporary bathroom elsewhere",
+        "Protect floors and hallways with rosin paper",
+        "Turn off water and electricity to bathroom",
+        "Set up containment (plastic sheeting)"
+      ]
+    },
+    {
+      "id": "demolition",
+      "name": "Demolition",
+      "description": "Remove old fixtures, tile, and finishes. Expose the rough structure.",
+      "order": 3,
+      "details": [
+        "Remove vanity, toilet, and fixtures",
+        "Remove old tile from walls and floor",
+        "Remove tub or shower surround",
+        "Remove drywall if doing full gut",
+        "Haul away debris",
+        "Inspect for water damage or mold"
+      ]
+    },
+    {
+      "id": "rough-in",
+      "name": "Rough-In Work",
+      "description": "Plumbing, electrical, and ventilation rough-in before walls are closed.",
+      "order": 4,
+      "details": [
+        "Complete plumbing rough-in (drains, supply lines)",
+        "Run electrical wiring for lights, fan, outlets",
+        "Install exhaust fan ducting",
+        "Install blocking for grab bars and heavy fixtures",
+        "Insulate exterior walls if exposed",
+        "Install cement board or waterproof membrane in wet areas"
+      ]
+    },
+    {
+      "id": "walls-ceiling",
+      "name": "Walls & Ceiling",
+      "description": "Close walls, tape and mud drywall, prepare surfaces for tile and paint.",
+      "order": 5,
+      "details": [
+        "Install drywall on ceiling and non-wet walls",
+        "Tape, mud, and sand drywall joints",
+        "Prime and paint ceiling",
+        "Install tile backer board in shower/tub area",
+        "Apply waterproofing membrane",
+        "Install wall tile (if applicable)"
+      ]
+    },
+    {
+      "id": "flooring",
+      "name": "Flooring",
+      "description": "Prepare subfloor and install finished flooring.",
+      "order": 6,
+      "details": [
+        "Repair or level subfloor as needed",
+        "Install underlayment or heating mats",
+        "Install floor tile, vinyl, or other flooring",
+        "Allow tile/grout to cure",
+        "Install baseboard or tile trim",
+        "Protect finished floor with rosin paper"
+      ]
+    },
+    {
+      "id": "installation",
+      "name": "Fixture Installation",
+      "description": "Install vanity, toilet, tub/shower, and all fixtures.",
+      "order": 7,
+      "details": [
+        "Install vanity and countertop",
+        "Connect sink and faucet",
+        "Install toilet",
+        "Install tub or shower fixtures",
+        "Install mirror and medicine cabinet",
+        "Install lighting and exhaust fan"
+      ]
+    },
+    {
+      "id": "finishing",
+      "name": "Finishing Touches",
+      "description": "Trim, caulk, accessories, and final cleanup.",
+      "order": 8,
+      "details": [
+        "Caulk all joints (tile, counter, toilet, tub)",
+        "Install towel bars, toilet paper holder, robe hooks",
+        "Touch up paint",
+        "Install shower door or curtain",
+        "Final cleanup and inspection",
+        "Restore water and power, test everything"
+      ]
+    }
+  ],
+  "faqs": [
+    { "q": "How long does a bathroom renovation take?", "a": "A cosmetic refresh can take 3-5 days. A mid-range renovation typically takes 2-3 weeks. A full gut renovation usually takes 4-6 weeks depending on scope, contractor availability, and material lead times." },
+    { "q": "Do I need a permit for bathroom renovation?", "a": "Permit requirements vary by location. Generally, permits are required for structural changes, moving plumbing or electrical, and altering load-bearing walls. Cosmetic updates (paint, new fixtures in same location) often don't require permits. Check with your local building department." },
+    { "q": "Should I replace plumbing during a renovation?", "a": "If you have galvanized steel or polybutylene pipes, replacement is strongly recommended. For copper or PEX in good condition, replacement is optional. Access during a gut renovation makes pipe replacement far cheaper than doing it later." },
+    { "q": "What is the most expensive part of a bathroom renovation?", "a": "Plumbing and labor typically account for the largest share (30-40% combined). Custom tile work and premium fixtures are the next biggest cost drivers. On a per-square-foot basis, countertop and custom shower work tend to be the most expensive items." },
+    { "q": "Can I DIY a bathroom renovation?", "a": "Cosmetic updates (paint, new fixtures, replacing vanity) are DIY-friendly for experienced homeowners. Plumbing and electrical rough-in work should be done by licensed professionals in most jurisdictions. Full gut renovations with structural changes almost always require contractors." },
+    { "q": "How much contingency should I budget?", "a": "15-20% of the total budget is standard for bathroom renovations. Common surprises include water damage behind walls, outdated wiring, mold remediation, and subfloor repairs. Opening walls during demolition is when most surprises are discovered." },
+    { "q": "What adds the most resale value to a bathroom renovation?", "a": "Mid-range renovations typically offer the best return on investment (60-70% cost recouped). Key value drivers: quality tile work, updated lighting, good ventilation, and neutral finish choices. Over-building for the neighborhood should be avoided." },
+    { "q": "Can I reuse existing cabinets in a bathroom renovation?", "a": "Existing cabinets can be reused if they are solid wood or plywood construction (not particle board) and in good condition. Refacing or repainting is an option. However, replacing usually costs little more than refacing and allows you to optimize the layout." }
+  ],
+  "relatedCalculators": [
+    { "title": "Tile Calculator", "slug": "tile", "description": "Calculate exact tile quantities for floors and walls" },
+    { "title": "Paint Calculator", "slug": "paint", "description": "Estimate how much paint you need for walls and ceiling" },
+    { "title": "Drywall Calculator", "slug": "drywall", "description": "Calculate drywall sheets, tape, mud, and screws" },
+    { "title": "Concrete Calculator", "slug": "concrete/slab", "description": "Estimate concrete for shower pan or subfloor repair" }
+  ],
+  "standardMaterials": [
+    { "name": "Paint (walls and ceiling)", "unit": "gal", "category": "Finishes", "perUnitArea": true, "areaSource": "paintArea" },
+    { "name": "Tile adhesive", "unit": "lb", "category": "Tile", "perUnitArea": true, "areaSource": "tileArea" },
+    { "name": "Grout", "unit": "lb", "category": "Tile", "perUnitArea": true, "areaSource": "tileArea" },
+    { "name": "Thinset mortar", "unit": "lb", "category": "Tile", "perUnitArea": true, "areaSource": "tileArea" },
+    { "name": "Waterproof membrane", "unit": "sq ft", "category": "Tile", "perUnitArea": true, "areaSource": "showerWalls" },
+    { "name": "Cement board", "unit": "sheets", "category": "Tile", "perUnitArea": true, "areaSource": "showerWalls" },
+    { "name": "Drywall", "unit": "sheets", "category": "Walls", "perUnitArea": true, "areaSource": "walls" },
+    { "name": "Cauking (silicone)", "unit": "tubes", "category": "Finishes", "perUnitArea": false },
+    { "name": "Primer", "unit": "gal", "category": "Finishes", "perUnitArea": true, "areaSource": "walls" },
+    { "name": "Baseboard molding", "unit": "lf", "category": "Finishes", "perUnitArea": true, "areaSource": "perimeter" },
+    { "name": "Subfloor underlayment", "unit": "sq ft", "category": "Flooring", "perUnitArea": true, "areaSource": "floor" }
+  ]
+}

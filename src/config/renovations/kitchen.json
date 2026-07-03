@@ -1,0 +1,502 @@
+{
+  "slug": "kitchen",
+  "name": "Kitchen Renovation Planner",
+  "shortName": "Kitchen",
+  "description": "Plan your kitchen renovation end to end. Compare countertop and cabinet options, budget by category, and build a complete shopping list.",
+  "metaDescription": "Free kitchen renovation planner. Compare quartz, granite, and laminate countertops. Estimate budget, timeline, and materials. Interactive planning tool.",
+  "icon": "kitchen",
+  "defaultDimensions": {
+    "length": 12,
+    "width": 10,
+    "height": 8,
+    "unitSystem": "imperial"
+  },
+  "dimensionFields": [
+    { "key": "length", "label": "Room Length", "default": 12, "unit": "ft", "min": 6, "max": 40 },
+    { "key": "width", "label": "Room Width", "default": 10, "unit": "ft", "min": 6, "max": 30 },
+    { "key": "height", "label": "Ceiling Height", "default": 8, "unit": "ft", "min": 7, "max": 16 },
+    { "key": "linearCounterFeet", "label": "Linear Counter Feet", "default": 16, "unit": "ft", "min": 4, "max": 60 },
+    { "key": "upperCabinetFeet", "label": "Upper Cabinet Width", "default": 12, "unit": "ft", "min": 2, "max": 40 }
+  ],
+  "scopeTiers": [
+    {
+      "id": "cosmetic",
+      "name": "Cosmetic Refresh",
+      "description": "New cabinet fronts, countertops, backsplash, hardware, and appliances. Keep existing layout.",
+      "includes": ["Replace cabinet doors and drawer fronts", "New countertop and backsplash", "New sink and faucet", "Replace appliances", "Fresh paint throughout", "New hardware"],
+      "costFactor": 0.55
+    },
+    {
+      "id": "mid-range",
+      "name": "Mid-Range Renovation",
+      "description": "New cabinets, countertops, flooring, and appliances. Minor layout changes.",
+      "includes": ["New cabinets (semi-custom)", "New countertop and backsplash", "New flooring", "New sink and faucet", "New appliances", "Updated lighting", "Fresh paint"],
+      "costFactor": 1.0
+    },
+    {
+      "id": "full-gut",
+      "name": "Full Gut Renovation",
+      "description": "Strip to studs. Relocate plumbing, gas, and electrical. Custom cabinetry and premium finishes.",
+      "includes": ["Strip to studs", "Relocate plumbing and gas lines", "New electrical layout", "Custom cabinetry", "Premium countertop and backsplash", "New hardwood or tile flooring", "Designer lighting", "Custom vent hood"],
+      "costFactor": 1.7
+    }
+  ],
+  "qualityTiers": [
+    {
+      "id": "budget",
+      "name": "Budget-Friendly",
+      "description": "Smart choices that maximize value. Laminate counters, stock cabinets, and mid-tier appliances.",
+      "materialFactor": 0.65,
+      "fixtureFactor": 0.55
+    },
+    {
+      "id": "mid-range",
+      "name": "Mid-Range",
+      "description": "Quality materials with great durability and style. Quartz counters, semi-custom cabinets, stainless appliances.",
+      "materialFactor": 1.0,
+      "fixtureFactor": 1.0
+    },
+    {
+      "id": "premium",
+      "name": "Premium",
+      "description": "Designer finishes throughout. Custom cabinetry, natural stone, professional-grade appliances.",
+      "materialFactor": 1.7,
+      "fixtureFactor": 2.2
+    }
+  ],
+  "finishCategories": [
+    {
+      "id": "countertop",
+      "name": "Countertop",
+      "description": "Kitchen countertop surface material",
+      "areaSource": "countertop",
+      "options": [
+        {
+          "id": "laminate",
+          "name": "Laminate",
+          "description": "Budget-friendly. Many patterns and colors. Easy to fabricate.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 15, "high": 35 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "10-15 years",
+            "difficulty": "easy",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "butcher-block",
+          "name": "Butcher Block",
+          "description": "Warm, natural wood surface. Can be sanded and refinished. Needs oiling.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 25, "high": 55 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "15-25 years",
+            "difficulty": "moderate",
+            "waterResistance": "poor",
+            "warmth": "warm",
+            "sustainability": "high"
+          }
+        },
+        {
+          "id": "quartz",
+          "name": "Quartz",
+          "description": "Engineered stone. Non-porous, stain-resistant. Most popular choice.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 55, "high": 100 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "granite",
+          "name": "Granite",
+          "description": "Natural stone. Heat resistant. Unique veining. Needs annual sealing.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 45, "high": 120 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "30+ years",
+            "difficulty": "moderate",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "marble",
+          "name": "Marble",
+          "description": "Luxury natural stone. Etches from acids (lemon, vinegar). High maintenance.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 80, "high": 220 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "50+ years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "porcelain-slab",
+          "name": "Porcelain Slab",
+          "description": "Large-format porcelain. Ultra-durable. UV-stable. No sealing needed.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 60, "high": 150 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "30-50 years",
+            "difficulty": "hard",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cabinetry",
+      "name": "Cabinetry",
+      "description": "Cabinet type and construction quality",
+      "areaSource": "cabinetry",
+      "options": [
+        {
+          "id": "stock-cabinets",
+          "name": "Stock Cabinets",
+          "description": "Pre-built standard sizes. Limited styles and finishes. Most affordable.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 100, "high": 250 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "10-15 years",
+            "difficulty": "easy",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "semi-custom-cabinets",
+          "name": "Semi-Custom Cabinets",
+          "description": "Choose size, finish, door style, and interior options. Best value.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 250, "high": 550 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "custom-cabinets",
+          "name": "Custom Cabinets",
+          "description": "Built to exact specifications. Any wood, finish, or configuration possible.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 500, "high": 1200 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "30-50 years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "flooring",
+      "name": "Flooring",
+      "description": "Kitchen floor material",
+      "areaSource": "floor",
+      "options": [
+        {
+          "id": "luxury-vinyl",
+          "name": "Luxury Vinyl Plank",
+          "description": "100% waterproof. Comfortable underfoot. Easy install.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 3, "high": 7 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "15-25 years",
+            "difficulty": "easy",
+            "waterResistance": "excellent",
+            "warmth": "warm",
+            "sustainability": "low"
+          }
+        },
+        {
+          "id": "porcelain-tile",
+          "name": "Porcelain Tile",
+          "description": "Extremely durable. Waterproof. Great for high-traffic kitchens.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 4, "high": 12 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "25-40 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "engineered-hardwood",
+          "name": "Engineered Hardwood",
+          "description": "Real wood veneer. Stable in moisture. Can be refinished 1-2 times.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 6, "high": 14 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "good",
+            "warmth": "warm",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "natural-stone",
+          "name": "Natural Stone",
+          "description": "Marble, travertine, or limestone. Unique. Requires sealing.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 10, "high": 28 },
+          "comparison": {
+            "maintenance": "high",
+            "lifespan": "50+ years",
+            "difficulty": "hard",
+            "waterResistance": "good",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "backsplash",
+      "name": "Backsplash",
+      "description": "Kitchen backsplash material",
+      "areaSource": "backsplash",
+      "options": [
+        {
+          "id": "subway-tile",
+          "name": "Subway Tile",
+          "description": "Classic 3x6 ceramic. Timeless, affordable, easy to install.",
+          "priceTier": 1,
+          "costPerSqFtRange": { "low": 5, "high": 10 },
+          "comparison": {
+            "maintenance": "low",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "mosaic-tile",
+          "name": "Mosaic Tile",
+          "description": "Small tiles on mesh sheets. Intricate patterns. Requires skilled install.",
+          "priceTier": 2,
+          "costPerSqFtRange": { "low": 8, "high": 20 },
+          "comparison": {
+            "maintenance": "medium",
+            "lifespan": "20-30 years",
+            "difficulty": "moderate",
+            "waterResistance": "excellent",
+            "warmth": "cool",
+            "sustainability": "medium"
+          }
+        },
+        {
+          "id": "quartz-slab",
+          "name": "Quartz Slab Backsplash",
+          "description": "Seamless full-height slab. No grout lines. Matches countertop perfectly.",
+          "priceTier": 3,
+          "costPerSqFtRange": { "low": 25, "high": 50 },
+          "comparison": {
+            "maintenance": "very-low",
+            "lifespan": "20-30 years",
+            "difficulty": "hard",
+            "waterResistance": "excellent",
+            "warmth": "neutral",
+            "sustainability": "medium"
+          }
+        }
+      ]
+    }
+  ],
+  "budgetCategories": [
+    { "id": "cabinetry", "name": "Cabinetry & Hardware", "percentage": { "low": 25, "high": 35 }, "description": "Cabinets, drawer boxes, doors, hardware, and installation." },
+    { "id": "countertop", "name": "Countertop & Backsplash", "percentage": { "low": 12, "high": 18 }, "description": "Countertop material, fabrication, backsplash, and installation." },
+    { "id": "appliances", "name": "Appliances", "percentage": { "low": 15, "high": 25 }, "description": "Range, refrigerator, dishwasher, microwave, vent hood." },
+    { "id": "flooring", "name": "Flooring", "percentage": { "low": 5, "high": 10 }, "description": "Floor material, underlayment, and installation." },
+    { "id": "plumbing", "name": "Plumbing", "percentage": { "low": 5, "high": 10 }, "description": "Sink, faucet, garbage disposal, water line, drain rough-in." },
+    { "id": "electrical", "name": "Electrical & Lighting", "percentage": { "low": 5, "high": 8 }, "description": "Rewiring, outlets, switches, under-cabinet lights, pendants." },
+    { "id": "demo", "name": "Demolition & Disposal", "percentage": { "low": 3, "high": 7 }, "description": "Remove old cabinets, demo floors, debris haul-away." },
+    { "id": "walls", "name": "Walls & Ceiling", "percentage": { "low": 4, "high": 8 }, "description": "Drywall repair, paint, crown molding, trim." },
+    { "id": "permits", "name": "Permits & Inspections", "percentage": { "low": 2, "high": 5 }, "description": "Building permits, gas permit, electrical inspection." },
+    { "id": "contingency", "name": "Contingency", "percentage": { "low": 8, "high": 15 }, "description": "Unexpected issues: rotten subfloor, outdated wiring, gas line changes." }
+  ],
+  "timelinePhases": [
+    {
+      "id": "planning",
+      "name": "Planning & Design",
+      "description": "Layout design, material selection, permits, ordering.",
+      "order": 1,
+      "details": [
+        "Measure the kitchen carefully",
+        "Decide on layout (L-shape, galley, U-shape, island)",
+        "Choose cabinets, countertop, backsplash",
+        "Select appliances",
+        "Order cabinets (8-12 week lead time typical)",
+        "Pull permits if needed"
+      ]
+    },
+    {
+      "id": "preparation",
+      "name": "Preparation",
+      "description": "Set up temporary kitchen, protect the home, disconnect services.",
+      "order": 2,
+      "details": [
+        "Set up temporary kitchen (microwave, hot plate, mini-fridge)",
+        "Protect floors and furniture in adjoining rooms",
+        "Turn off water and gas to kitchen",
+        "Disconnect and move appliances",
+        "Clear all cabinets and countertops"
+      ]
+    },
+    {
+      "id": "demolition",
+      "name": "Demolition",
+      "description": "Remove old cabinets, counters, flooring, and appliances.",
+      "order": 3,
+      "details": [
+        "Remove countertop and backsplash",
+        "Remove cabinets",
+        "Remove flooring",
+        "Remove old appliances",
+        "Remove drywall if needed",
+        "Haul away debris"
+      ]
+    },
+    {
+      "id": "rough-in",
+      "name": "Rough-In Work",
+      "description": "Plumbing, electrical, gas lines before walls are closed.",
+      "order": 4,
+      "details": [
+        "Relocate or add electrical outlets",
+        "Run wiring for under-cabinet lights",
+        "Relocate plumbing if changing layout",
+        "Relocate gas line if moving range",
+        "Install vent ducting",
+        "Patch and prep walls"
+      ]
+    },
+    {
+      "id": "walls-floor",
+      "name": "Walls & Flooring",
+      "description": "Prepare and finish walls and floors before cabinets go in.",
+      "order": 5,
+      "details": [
+        "Patch and repair drywall",
+        "Prime and paint walls and ceiling",
+        "Install flooring (if not under cabinets)",
+        "Let flooring acclimate per manufacturer specs"
+      ]
+    },
+    {
+      "id": "cabinetry",
+      "name": "Cabinetry Installation",
+      "description": "Install upper and base cabinets.",
+      "order": 6,
+      "details": [
+        "Install upper cabinets first",
+        "Install base cabinets",
+        "Level and shim all cabinets",
+        "Secure cabinets to wall studs",
+        "Install cabinet hardware"
+      ]
+    },
+    {
+      "id": "countertop",
+      "name": "Countertop & Backsplash",
+      "description": "Template, fabricate, and install countertop and backsplash.",
+      "order": 7,
+      "details": [
+        "Template countertop (after cabinets installed)",
+        "Fabricate countertop (1-2 week lead)",
+        "Install countertop",
+        "Install backsplash tile",
+        "Grout and seal backsplash"
+      ]
+    },
+    {
+      "id": "appliances",
+      "name": "Appliance Installation",
+      "description": "Install and connect all appliances.",
+      "order": 8,
+      "details": [
+        "Install range and connect gas/electric",
+        "Install refrigerator and connect water",
+        "Install dishwasher and connect",
+        "Install microwave and vent hood",
+        "Test all appliances",
+        "Install trim kits"
+      ]
+    },
+    {
+      "id": "finishing",
+      "name": "Finishing Touches",
+      "description": "Trim, caulk, final cleanup.",
+      "order": 9,
+      "details": [
+        "Install sink and faucet",
+        "Caulk countertop seams and backsplash edges",
+        "Install toe kicks and trim",
+        "Touch up paint",
+        "Final deep clean",
+        "Restore water, gas, and power"
+      ]
+    }
+  ],
+  "faqs": [
+    { "q": "How long does a kitchen renovation take?", "a": "A cosmetic refresh typically takes 1-2 weeks. A mid-range renovation takes 4-8 weeks. A full gut renovation with custom cabinets and layout changes can take 8-16 weeks, largely due to cabinet fabrication lead times." },
+    { "q": "Do I need a permit for kitchen renovation?", "a": "Permits are typically required when you change the kitchen layout, relocate plumbing or gas, add electrical circuits, or alter load-bearing walls. Cosmetic updates (countertops, backsplash, painting) usually don't need permits. Always check with your local building department." },
+    { "q": "What is the most expensive part of a kitchen renovation?", "a": "Cabinetry is the single largest expense (25-35% of total budget). Appliances are next (15-25%), followed by countertops and labor. Smart money-saving strategy: keep the same layout to avoid costly plumbing and gas relocations." },
+    { "q": "Should I replace cabinets or reface them?", "a": "Refacing (new doors and drawer fronts) costs 30-50% less than full replacement and works well if the cabinet boxes are solid wood or plywood in good condition. Replace if the layout doesn't work, the boxes are particle board, or you want different cabinet sizes." },
+    { "q": "What is the best kitchen countertop material?", "a": "Quartz is the most popular choice (60% of new kitchens) for its balance of durability, low maintenance, and appearance. Granite offers natural beauty at a similar price. Laminate is best for tight budgets. Marble is for design-forward homeowners who don't mind maintenance." },
+    { "q": "Can I DIY a kitchen renovation?", "a": "Cabinet installation and painting are DIY-friendly. Countertop fabrication, plumbing, gas, and electrical work should be done by licensed professionals. A common compromise: demo the old kitchen yourself, then hire pros for rough-in and countertops." },
+    { "q": "How much contingency should I budget for a kitchen?", "a": "15-20% is standard. Common surprises include: subfloor rot discovered after demo, outdated electrical panels, galvanized pipe replacement, and gas line relocation. Opening walls during demo is where most surprises are found." },
+    { "q": "What adds the most value to a kitchen renovation?", "a": "Mid-range kitchens recoup 55-65% of cost at resale. Top value drivers: quality cabinets, quartz or granite countertops, stainless steel appliances, and good lighting. Avoid over-building for the neighborhood and highly personalized design choices." }
+  ],
+  "relatedCalculators": [
+    { "title": "Tile Calculator", "slug": "tile", "description": "Calculate tile needed for backsplash and flooring" },
+    { "title": "Paint Calculator", "slug": "paint", "description": "Estimate paint needed for walls and ceiling" },
+    { "title": "Drywall Calculator", "slug": "drywall", "description": "Calculate drywall materials for kitchen walls" },
+    { "title": "Concrete Calculator", "slug": "concrete/slab", "description": "Estimate concrete for subfloor leveling" }
+  ],
+  "standardMaterials": [
+    { "name": "Paint (walls and ceiling)", "unit": "gal", "category": "Finishes", "perUnitArea": true, "areaSource": "paintArea" },
+    { "name": "Primer", "unit": "gal", "category": "Finishes", "perUnitArea": true, "areaSource": "paintArea" },
+    { "name": "Cauking (kitchen grade)", "unit": "tubes", "category": "Finishes", "perUnitArea": false },
+    { "name": "Underlayment", "unit": "sq ft", "category": "Flooring", "perUnitArea": true, "areaSource": "floor" },
+    { "name": "Baseboard molding", "unit": "lf", "category": "Finishes", "perUnitArea": true, "areaSource": "perimeter" },
+    { "name": "Drywall", "unit": "sheets", "category": "Walls", "perUnitArea": true, "areaSource": "walls" },
+    { "name": "Tile adhesive", "unit": "lb", "category": "Tile", "perUnitArea": true, "areaSource": "backsplash" },
+    { "name": "Grout", "unit": "lb", "category": "Tile", "perUnitArea": true, "areaSource": "backsplash" }
+  ]
+}
