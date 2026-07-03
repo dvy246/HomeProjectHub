@@ -3,7 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
 import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
 
-const canonical = "https://homeprojecthub.com/maintenance/fall/";
+const canonical = "https://homeplanninghub.com/maintenance/fall/";
 const title = "Fall Home Maintenance Checklist";
 const description = "Complete fall home maintenance checklist. Winterize your home with gutter cleaning, furnace service, weatherstripping, and seasonal safety checks.";
 const PAGE_PATH = "/maintenance/fall/";
@@ -14,7 +14,7 @@ const categories = [...new Set(fallTasks.map((t) => t.category))];
 const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Fall Maintenance", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "Fall Home Maintenance" }),
-  howToSchema("Complete fall home maintenance", "Prepare your home for winter with this essential fall checklist covering heating, weatherproofing, and safety.", fallTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  howToSchema("Complete fall home maintenance", "Prepare your home for winter with this essential fall checklist covering heating, weatherproofing, and safety.", fallTasks.slice(0, 5).map((t) => ({ name: t.title, text: t.explanation }))),
   faqPageSchema([
     { q: "What fall maintenance prevents winter damage?", a: "Gutter cleaning, roof inspection, weatherstripping, furnace service, and pipe insulation are the most important tasks to prevent winter damage." },
     { q: "When should I winterize my sprinkler system?", a: "Before the first hard freeze. Typically late October to early November depending on your region. Drain all lines and blow out remaining water." },

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const ROOF_TYPES = [
   { value: "flat", label: "Flat / Shed Roof", costMultiplier: 1.0 },
@@ -30,6 +33,8 @@ export default function ShedCostCalc() {
   const [sidingType, setSidingType] = useState("plywood");
   const [floorType, setFloorType] = useState("plywood");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("shed-cost", "Shed Cost Calculator");
+
   const sl = parseNumber(shedLength);
   const sw = parseNumber(shedWidth);
   const wh = parseNumber(wallHeight);
@@ -57,6 +62,12 @@ export default function ShedCostCalc() {
 
   const studCount = Math.ceil(sl / 1.33) * 2 + Math.ceil(sw / 1.33) * 2;
   const joistCount = Math.ceil(sl / 1.33) * sw;
+
+  const projectInputs = { shedLength: sl, shedWidth: sw, wallHeight: wh };
+  const projectResults = { floorSqFt, wallArea, roofSqFt, studCount, joistCount, totalLow, totalMid, totalHigh };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Shed Materials (est)", quantity: Math.ceil(totalMid), unit: "dollars", category: "shed" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -94,6 +105,14 @@ export default function ShedCostCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <Card>
           <h3 className="text-sm font-semibold mb-3">Shed Material Estimate</h3>
           <div className="flex flex-col gap-3">

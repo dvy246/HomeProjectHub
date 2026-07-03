@@ -1,5 +1,5 @@
 # Competitor Analysis & Product Moat Strategy
-**Project:** HomeProjectHub  
+**Project:** HomePlanningHub  
 **Date:** June 30, 2026
 
 To build a high-ROI, resilient website that successfully captures search traffic and ranks for Google AdSense and affiliate conversions within 1 year, we must identify and exploit the structural weaknesses of the dominant players.
@@ -37,7 +37,7 @@ To build a high-ROI, resilient website that successfully captures search traffic
 
 ---
 
-## 3. The HomeProjectHub Moat Strategy
+## 3. The HomePlanningHub Moat Strategy
 
 ```mermaid
 graph TD
@@ -50,6 +50,6 @@ graph TD
     E --> G[High Viewability Lazy AdSense]
 ```
 
-1.  **Product Moat:** The "Saved Measurements" workspace creates a structural switching cost. Users will return to HomeProjectHub because their data already exists there.
+1.  **Product Moat:** The "Saved Measurements" workspace creates a structural switching cost. Users will return to HomePlanningHub because their data already exists there.
 2.  **SEO Moat:** Rich structured data (`MathSolver` and `FAQPage`) ensures search engines display our calculators as rich snippets, increasing CTR.
 3.  **Monetization Moat:** By moving the affiliate recommendations (Lowe's and Amazon Associates) into Phase 1, we generate high revenue-per-visitor from small pools of high-intent buyers, making the project profitable long before AdSense traffic spikes.

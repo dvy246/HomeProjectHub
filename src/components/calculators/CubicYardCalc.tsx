@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Select } from "../ui/Select";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateCubicYards, cuFeetToCuYards, cuYardsToCuFeet } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function CubicYardCalc() {
   const [mode, setMode] = useState<"dimensions" | "cuft">("dimensions");
@@ -10,6 +14,8 @@ export default function CubicYardCalc() {
   const [width, setWidth] = useState("10");
   const [depth, setDepth] = useState("4");
   const [cuFtInput, setCuFtInput] = useState("27");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("cubic-yard", "Cubic Yard Calculator");
 
   const len = parseNumber(length);
   const wid = parseNumber(width);
@@ -26,14 +32,15 @@ export default function CubicYardCalc() {
   }
   cuM = totalCuFt * 0.0283168;
 
+  const projectInputs: Record<string, number> = mode === "dimensions" ? { length: len, width: wid, depth: dep } : { cubicFeet: cf };
+  const projectResults = { cuYd, cuFt: totalCuFt, cuM };
+  const projectMaterials: MaterialItem[] = [{ name: "Material Volume", quantity: cuYd, unit: "cu yd", category: "volume" }];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <div className="flex gap-2 mb-4">
-            <button type="button" onClick={() => setMode("dimensions")} className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${mode === "dimensions" ? "bg-[var(--accent)] text-[var(--accent-fg)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>By Dimensions</button>
-            <button type="button" onClick={() => setMode("cuft")} className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${mode === "cuft" ? "bg-[var(--accent)] text-[var(--accent-fg)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>By Cubic Feet</button>
-          </div>
+          <Select label="Calculation Mode" value={mode} onChange={(v) => setMode(v as "dimensions" | "cuft")} options={[{ value: "dimensions", label: "By Dimensions" }, { value: "cuft", label: "By Cubic Feet" }]} />
           {mode === "dimensions" ? (
             <div className="grid grid-cols-3 gap-4">
               <Input label="Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="10" />
@@ -63,6 +70,14 @@ export default function CubicYardCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

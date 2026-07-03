@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { graphSchema, webSiteSchema, faqPageSchema, webPageSchema } from "../lib/schema";
 
-const SITE_URL = "https://homeprojecthub.com";
+const SITE_URL = "https://homeplanninghub.com";
 
 const title = "Free Concrete, Roofing & Paint Calculators — Know Exactly What You Need Before You Buy";
 const description = "Plan home improvement projects with free material calculators for concrete, roofing, paint, and tile. Estimate square footage, compare building materials, and build a shopping checklist before you buy. Open formulas, no sign-up required.";
@@ -32,7 +32,7 @@ const tileCalcs = [
 ];
 
 const faqs = [
-  { q: "Are these calculators free to use?", a: "Yes. Every calculator on HomeProjectHub is completely free. No sign-up, no paywall, no data collection. Your dimensions are stored locally in your browser and never sent to a server." },
+  { q: "Are these calculators free to use?", a: "Yes. Every calculator on HomePlanningHub is completely free. No sign-up, no paywall, no data collection. Your dimensions are stored locally in your browser and never sent to a server." },
   { q: "What is the formula for calculating concrete?", a: "Concrete volume is calculated by multiplying length (in feet) by width (in feet) by thickness (in feet), then dividing by 27 to convert cubic feet to cubic yards. The formula is: Volume (cu yd) = Length (ft) × Width (ft) × Thickness (ft) ÷ 27. Our concrete calculator handles this automatically and also computes bag counts for 40lb, 60lb, and 80lb mixes." },
   { q: "How much paint do I need for a 12x12 room?", a: "A standard 12x12 foot bedroom with 8-foot ceilings has roughly 320 square feet of wall area after subtracting one door (21 sq ft) and two windows (24 sq ft). One gallon of paint covers about 350 square feet, so a single gallon is usually enough for one coat. Two gallons are recommended for two coats or if painting over a darker color." },
   { q: "How do I calculate square footage of a room?", a: "Measure the length and width of the room in feet, then multiply them: Area = Length × Width. For an L-shaped room, divide it into two rectangles, calculate each area, and add them together. All of our calculators that accept dimensions perform this square footage calculation automatically before applying material-specific formulas." },
@@ -41,7 +41,7 @@ const faqs = [
 ];
 
 const schema = graphSchema(
-  webSiteSchema("HomeProjectHub", "Free home improvement calculators and material estimation tools for homeowners and DIY builders."),
+  webSiteSchema("HomePlanningHub", "Free home improvement calculators and material estimation tools for homeowners and DIY builders."),
   webPageSchema({
     url: SITE_URL,
     topicName: "Home Improvement",
@@ -219,7 +219,7 @@ const schema = graphSchema(
   <section class="mb-12 max-w-3xl mx-auto">
     <h2 class="text-xl font-bold tracking-tight mb-4">Material calculators built for planning, not guessing</h2>
     <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
-      HomeProjectHub helps homeowners, DIY renovators, and contractors perform accurate construction material takeoffs for common home renovation projects. Whether you are estimating concrete yardage for a patio, calculating how many shingle bundles your roof needs, figuring out how many gallons of paint cover a bedroom, or working out tile counts for a bathroom floor — each calculator converts your room dimensions into precise material quantities using standard engineering formulas and manufacturer-published coverage rates.
+      HomePlanningHub helps homeowners, DIY renovators, and contractors perform accurate construction material takeoffs for common home renovation projects. Whether you are estimating concrete yardage for a patio, calculating how many shingle bundles your roof needs, figuring out how many gallons of paint cover a bedroom, or working out tile counts for a bathroom floor — each calculator converts your room dimensions into precise material quantities using standard engineering formulas and manufacturer-published coverage rates.
     </p>
     <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
       The goal is to give you a reliable material estimate before you visit the hardware store or call a contractor. Running short mid-project means costly reload fees and schedule delays. Over-ordering means wasted money and materials that sit unused in your garage. A careful quantity takeoff — matched to your actual project dimensions — helps you avoid both outcomes and keeps your renovation on budget.

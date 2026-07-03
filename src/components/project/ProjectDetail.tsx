@@ -1,12 +1,37 @@
 import { useState, useEffect } from "react";
-import { getProject, deleteProject, aggregateMaterials, getProjectProgress, PROJECT_TEMPLATES, type SavedProject } from "../../lib/projectEngine";
+import { getProject, deleteProject, updateProject, aggregateMaterials, getProjectProgress, PROJECT_TEMPLATES, type SavedProject } from "../../lib/projectEngine";
 
 export default function ProjectDetail({ projectId, onBack }: { projectId: string; onBack: () => void }) {
   const [project, setProject] = useState<SavedProject | null>(null);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState("");
+
   useEffect(() => {
     setProject(getProject(projectId));
+    const handler = () => setProject(getProject(projectId));
+    window.addEventListener("saved-projects-changed", handler);
+    return () => window.removeEventListener("saved-projects-changed", handler);
   }, [projectId]);
+
+  const handleRename = () => {
+    if (!editName.trim() || !project) return;
+    updateProject(project.id, { name: editName.trim() });
+    setProject({ ...project, name: editName.trim() });
+    setIsEditing(false);
+  };
+
+  const handleStatusChange = (newStatus: SavedProject["status"]) => {
+    if (!project) return;
+    const updated = updateProject(project.id, { status: newStatus });
+    if (updated) setProject(updated);
+  };
+
+  const startEditing = () => {
+    if (!project) return;
+    setEditName(project.name);
+    setIsEditing(true);
+  };
 
   if (!project) {
     return (
@@ -31,6 +56,14 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
     }
   };
 
+  const handleRemoveCalculation = (calcIndex: number) => {
+    if (!project) return;
+    const updated = updateProject(project.id, {
+      calculations: project.calculations?.filter((_, i) => i !== calcIndex) ?? [],
+    });
+    if (updated) setProject(updated);
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <button type="button" onClick={onBack} className="self-start inline-flex items-center gap-1 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">
@@ -41,8 +74,40 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold tracking-tight">{project.name}</h2>
-            <p className="text-sm text-[var(--fg-muted)] capitalize">{project.projectType} project</p>
+            {isEditing ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleRename(); if (e.key === "Escape") setIsEditing(false); }}
+                  onBlur={handleRename}
+                  className="text-xl font-bold tracking-tight bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 w-full max-w-xs text-[var(--fg)] focus:outline-none focus:border-[var(--accent)]"
+                  autoFocus
+                />
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight">{project.name}</h2>
+                <button type="button" onClick={startEditing} className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label="Rename project">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                </button>
+              </div>
+            )}
+            <div className="flex items-center gap-2 mt-0.5">
+              <p className="text-sm text-[var(--fg-muted)] capitalize">{project.projectType} project</p>
+              <span className="text-[var(--border-strong)]">|</span>
+              <select
+                value={project.status}
+                onChange={(e) => handleStatusChange(e.target.value as SavedProject["status"])}
+                className="text-xs bg-transparent border-none text-[var(--fg-muted)] font-medium cursor-pointer focus:outline-none focus:text-[var(--fg)] appearance-none"
+                aria-label="Project status"
+              >
+                <option value="planning">Planning</option>
+                <option value="calculating">In Progress</option>
+                <option value="complete">Complete</option>
+              </select>
+            </div>
           </div>
           <button type="button" onClick={handleDelete} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label="Delete project">
             Delete
@@ -76,7 +141,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
               {template.recommendedCalculators.map((calc) => {
                 const isDone = project.calculations.some((c) => c.calculatorSlug === calc);
                 return (
-                  <span className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg ${isDone ? "bg-[var(--success)]/10 text-[var(--success)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>
+                  <span key={calc} className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg ${isDone ? "bg-[var(--success)]/10 text-[var(--success)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>
                     {isDone && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                     {calc.replace(/-/g, " ")}
                   </span>
@@ -87,19 +152,29 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
         )}
       </div>
 
-      {project.calculations.length > 0 && (
+      {(project.calculations?.length ?? 0) > 0 && (
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
           <h3 className="text-sm font-semibold mb-4">Saved Calculations ({project.calculations.length})</h3>
           <div className="flex flex-col gap-3">
-            {project.calculations.map((calc, i) => (
-              <div className="bg-[var(--bg-subtle)] rounded-lg p-4">
+            {(project.calculations ?? []).map((calc, i) => (
+              <div key={calc.completedAt + calc.calculatorName + i} className="bg-[var(--bg-subtle)] rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-semibold">{calc.calculatorName}</span>
-                  <span className="text-[10px] text-[var(--fg-muted)]">{new Date(calc.completedAt).toLocaleDateString()}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[var(--fg-muted)]">{new Date(calc.completedAt).toLocaleDateString()}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveCalculation(i)}
+                      className="inline-flex items-center justify-center w-5 h-5 rounded text-[var(--fg-muted)] hover:text-[var(--error)] hover:bg-[var(--error)]/10 transition-colors"
+                      aria-label={`Remove ${calc.calculatorName}`}
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {Object.entries(calc.results).slice(0, 4).map(([key, val]) => (
-                    <div>
+                    <div key={key}>
                       <span className="text-[var(--fg-muted)]">{key.replace(/([A-Z])/g, " $1").trim()}:</span>
                       <span className="font-semibold ml-1">{typeof val === "number" ? val.toFixed(2) : val}</span>
                     </div>
@@ -124,7 +199,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
             </thead>
             <tbody>
               {allMaterials.map((mat) => (
-                <tr className="border-b border-[var(--border)]">
+                <tr key={mat.name} className="border-b border-[var(--border)]">
                   <td className="py-2 text-[var(--fg)]">{mat.name}</td>
                   <td className="py-2 text-right font-semibold tabular-nums">{mat.quantity}</td>
                   <td className="py-2 text-right text-[var(--fg-muted)]">{mat.unit}</td>
@@ -135,7 +210,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
         </div>
       )}
 
-      {project.calculations.length === 0 && (
+      {(project.calculations?.length ?? 0) === 0 && (
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-8 text-center">
           <h3 className="text-sm font-semibold mb-2">No calculations saved yet</h3>
           <p className="text-xs text-[var(--fg-secondary)] mb-4">Use the calculators below and come back to track your progress.</p>

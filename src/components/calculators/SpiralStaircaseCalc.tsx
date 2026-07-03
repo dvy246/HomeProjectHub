@@ -3,12 +3,17 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
 import SpiralStaircaseDiagram from "../diagrams/SpiralStaircaseDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function SpiralStaircaseCalc() {
   const [totalRise, setTotalRise] = useState("108");
   const [diameter, setDiameter] = useState("5");
   const [treadCount, setTreadCount] = useState("13");
   const [treadThickness, setTreadThickness] = useState("2");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("spiral-staircase", "Spiral Staircase Calculator");
 
   const tr = parseNumber(totalRise);
   const d = parseNumber(diameter);
@@ -29,6 +34,14 @@ export default function SpiralStaircaseCalc() {
   const ircRiserOk = actualRiser <= 9.5;
   const ircTreadOk = treadWidthWalk >= 7.5;
 
+  const projectInputs = { totalRise: tr, diameter: d, treadCount: tc, treadThickness: tt };
+  const projectResults = { riserHeight: actualRiser, treadWidthWalk, treadWidthOuter, stringerLength, totalTreads: tc };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Treads", quantity: tc, unit: "pieces", category: "stairs" },
+    { name: "Risers", quantity: tc, unit: "pieces", category: "stairs" },
+    { name: "Stringer (approx)", quantity: 1, unit: "assembly", category: "stairs" },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
@@ -42,6 +55,14 @@ export default function SpiralStaircaseCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <SpiralStaircaseDiagram diameter={d} numSteps={tc} unitSystem="imperial" />
         </div>

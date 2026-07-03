@@ -1,8 +1,8 @@
-# Production System Architecture: HomeProjectHub
+# Production System Architecture: HomePlanningHub
 **Role:** Senior Systems Architect  
 **Target:** High-Growth SEO & Affiliate Platform
 
-This document establishes the scalable system architecture and component structure for **HomeProjectHub**, designed to support millions of monthly visits at near-zero hosting cost, maintaining 100/100 Core Web Vitals, and maximizing Google AdSense/affiliate revenues.
+This document establishes the scalable system architecture and component structure for **HomePlanningHub**, designed to support millions of monthly visits at near-zero hosting cost, maintaining 100/100 Core Web Vitals, and maximizing Google AdSense/affiliate revenues.
 
 ---
 

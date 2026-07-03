@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateRectArea, sqftToSqYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function VinylSidingCalc() {
   const [wallLength, setWallLength] = useState("40");
@@ -12,6 +15,8 @@ export default function VinylSidingCalc() {
   const [doors, setDoors] = useState("1");
   const [doorSqft, setDoorSqft] = useState("21");
   const [waste, setWaste] = useState("10");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("vinyl-siding", "Vinyl Siding Calculator");
 
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);
@@ -29,6 +34,14 @@ export default function VinylSidingCalc() {
   const starterStrip = wl / 12;
   const jChannel = ((wl * 2) + (wh * 2)) / 12;
 
+  const projectInputs = { wallLength: wl, wallHeight: wh, windows: win, windowSqft: winSf, doors: dr, doorSqft: drSf, waste: ws };
+  const projectResults = { grossArea, netArea, withWasteSf, starterPieces: Math.ceil(starterStrip) };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Siding Panels", quantity: Math.ceil(withWasteSf / 100 * 4), unit: "panels", category: "siding" },
+    { name: "J-Channel", quantity: Math.ceil(jChannel), unit: "pieces", category: "siding" },
+    { name: "Starter Strips", quantity: Math.ceil(starterStrip), unit: "pieces", category: "siding" },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
@@ -45,6 +58,14 @@ export default function VinylSidingCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <Card>
           <h3 className="text-sm font-semibold mb-3">Siding Estimate</h3>
           <div className="flex flex-col gap-3">

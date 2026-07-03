@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { computeBox } from "../../lib/isometric";
+import DiagramPart from "./DiagramPart";
 
 interface Props {
   length: number;
@@ -44,16 +45,22 @@ export default function ConcreteSlabDiagram({ length, width, thickness, unitSyst
   const thickEndY2 = box.corners[1].y;
 
   return (
-    <svg viewBox="0 0 380 280" className="w-full h-auto" role="img" aria-label={`Concrete slab diagram: ${length} by ${width} by ${thickness}`}>
+    <svg viewBox="0 0 380 280" className="w-full h-auto diagram-svg" role="img" aria-label={`Concrete slab diagram: ${length} by ${width} by ${thickness}`}>
       <defs>
         <marker id={`arr-${id}`} markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
           <polygon points="0 0, 7 2.5, 0 5" fill="var(--fg-muted)" />
         </marker>
       </defs>
 
-      <polygon points={box.topFace} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
-      <polygon points={box.rightFace} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
-      <polygon points={box.frontFace} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      <DiagramPart title="Top surface">
+        <polygon points={box.topFace} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
+      <DiagramPart title="Side face">
+        <polygon points={box.rightFace} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
+      <DiagramPart title="Front face">
+        <polygon points={box.frontFace} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
 
       <line x1={box.corners[0].x} y1={box.corners[0].y} x2={box.corners[4].x} y2={box.corners[4].y} stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 3" opacity="0.35" />
       <line x1={box.corners[3].x} y1={box.corners[3].y} x2={box.corners[7].x} y2={box.corners[7].y} stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 3" opacity="0.35" />
@@ -61,27 +68,27 @@ export default function ConcreteSlabDiagram({ length, width, thickness, unitSyst
       <line x1={box.corners[7].x} y1={box.corners[7].y} x2={box.corners[6].x} y2={box.corners[6].y} stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 3" opacity="0.35" />
       <line x1={box.corners[5].x} y1={box.corners[5].y} x2={box.corners[6].x} y2={box.corners[6].y} stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 3" opacity="0.35" />
 
-      <line x1={box.corners[1].x} y1={box.corners[1].y + 6} x2={box.corners[5].x} y2={box.corners[5].y + 6} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={lenMidX} y={lenMidY + lenOffsetY} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200">
+      <line x1={box.corners[1].x} y1={box.corners[1].y + 6} x2={box.corners[5].x} y2={box.corners[5].y + 6} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={lenMidX} y={lenMidY + lenOffsetY} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200 diagram-label">
         {l.toFixed(1)}
       </text>
-      <text x={lenMidX} y={lenMidY + lenOffsetY + 14} textAnchor="middle" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui">
+      <text x={lenMidX} y={lenMidY + lenOffsetY + 14} textAnchor="middle" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui" className="diagram-label">
         Length ({lenUnit})
       </text>
 
-      <line x1={box.corners[0].x - 6} y1={box.corners[0].y} x2={box.corners[4].x - 6} y2={box.corners[4].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={widMidX + widOffsetX} y={widMidY + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200">
+      <line x1={box.corners[0].x - 6} y1={box.corners[0].y} x2={box.corners[4].x - 6} y2={box.corners[4].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={widMidX + widOffsetX} y={widMidY + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200 diagram-label">
         {w.toFixed(1)}
       </text>
-      <text x={widMidX + widOffsetX} y={widMidY + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui">
+      <text x={widMidX + widOffsetX} y={widMidY + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui" className="diagram-label">
         Width ({lenUnit})
       </text>
 
-      <line x1={thickEndX} y1={thickEndY1} x2={thickEndX} y2={thickEndY2} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={thickMidX} y={thickMidY + 4} textAnchor="start" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200">
+      <line x1={thickEndX} y1={thickEndY1} x2={thickEndX} y2={thickEndY2} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={thickMidX} y={thickMidY + 4} textAnchor="start" fill="var(--fg)" fontSize="13" fontWeight="600" fontFamily="system-ui" className="transition-[fill] duration-200 diagram-label">
         {t.toFixed(1)}
       </text>
-      <text x={thickMidX} y={thickMidY + 18} textAnchor="start" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui">
+      <text x={thickMidX} y={thickMidY + 18} textAnchor="start" fill="var(--fg-muted)" fontSize="10" fontFamily="system-ui" className="diagram-label">
         Thickness ({thickUnit})
       </text>
     </svg>

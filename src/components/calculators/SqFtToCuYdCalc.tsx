@@ -3,15 +3,24 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function SqFtToCuYdCalc() {
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("4");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("sq-ft-to-cu-yard", "Sq Ft to Cu Yd Calculator");
+
   const sf = parseNumber(sqft);
   const d = parseNumber(depth);
   const cuYd = sqftToCuYd(sf, d);
   const cuFt = sf * (d / 12);
+
+  const projectInputs = { sqft: sf, depth: d };
+  const projectResults = { cuYd, cuFt };
+  const projectMaterials: MaterialItem[] = [{ name: "Material Volume", quantity: cuYd, unit: "cu yd", category: "volume" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -37,6 +46,14 @@ export default function SqFtToCuYdCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

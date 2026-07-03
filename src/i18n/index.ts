@@ -57,9 +57,9 @@ export function t(locale: Locale, key: string): string {
 }
 
 export function getLocaleFromUrl(url: string): Locale {
-  const match = url.match(/^\/([a-z]{2})(\/|$)/);
-  if (match && SUPPORTED_LOCALES.includes(match[1] as Locale)) {
-    return match[1] as Locale;
+  const match = url.match(/^\/([a-z]{2})(\/|$)/i);
+  if (match && SUPPORTED_LOCALES.includes(match[1].toLowerCase() as Locale)) {
+    return match[1].toLowerCase() as Locale;
   }
   return DEFAULT_LOCALE;
 }

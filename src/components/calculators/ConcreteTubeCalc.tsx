@@ -8,6 +8,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateCircleArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteTubeDiagram from "../diagrams/ConcreteTubeDiagram";
 
@@ -21,6 +24,8 @@ export default function ConcreteTubeCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-tube", "Concrete Tube Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -57,6 +62,24 @@ export default function ConcreteTubeCalc() {
   const selectedBags = calculateConcreteBags(volWithWaste, bagSize);
   const weight = estimateConcreteWeightLbs(volWithWaste);
 
+  const projectInputs: Record<string, number> = {
+    diameter: diaNum,
+    depth: depNum,
+    quantity: qtyNum,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    totalVolumeCuFt: volWithWaste,
+    volumeCuYd: volCuYd,
+    volumeCuM: volCuM,
+    bagCount: selectedBags,
+    weightLbs: weight,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix", quantity: selectedBags, unit: `bags (${bagSize})`, category: "concrete" },
+    { name: "Ready-Mix Concrete", quantity: Number(volCuYd.toFixed(2)), unit: "cu yd", category: "concrete" },
+  ];
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -92,6 +115,7 @@ export default function ConcreteTubeCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -101,6 +125,15 @@ export default function ConcreteTubeCalc() {
           onApplyRoom={applySavedRoom}
           placeholder="e.g. Deck Post Tubes"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

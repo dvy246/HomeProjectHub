@@ -4,6 +4,9 @@ import { Card } from "../ui/Card";
 import { calculateBoardFeet } from "../../lib/geometry";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const SPECIES = [
   { key: "lumber_douglas_fir", name: "Douglas Fir" },
@@ -21,6 +24,8 @@ export default function LumberCalc() {
   const [quantity, setQuantity] = useState("10");
   const [species, setSpecies] = useState("lumber_douglas_fir");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("lumber", "Lumber Calculator");
+
   const l = parseNumber(length);
   const w = parseNumber(width);
   const t = parseNumber(thickness);
@@ -31,6 +36,12 @@ export default function LumberCalc() {
   const weight = calculateWeight(species, volumeCuIn);
   const perPieceBdFt = bdFt / qty;
   const cuFt = (l * (w / 12) * (t / 12)) * qty;
+
+  const projectInputs = { length: l, width: w, thickness: t, quantity: qty };
+  const projectResults = { boardFeet: bdFt, perPieceBdFt, cuFt, totalWeightLb: weight.lb };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Lumber Boards", quantity: qty, unit: "pieces", category: "lumber" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -53,6 +64,14 @@ export default function LumberCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <Card>
           <h3 className="text-sm font-semibold mb-3">Lumber Estimate</h3>
           <div className="flex flex-col gap-3">

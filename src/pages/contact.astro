@@ -3,14 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import { Button } from "../components/ui/Button";
 import { graphSchema, webPageSchema, breadcrumbListSchema, contactPageSchema } from "../lib/schema";
 
-const canonical = "https://homeprojecthub.com/contact/";
+const canonical = "https://homeplanninghub.com/contact/";
 const title = "Contact Us";
-const description = "Get in touch with the engineering and support team at HomeProjectHub.";
+const description = "Get in touch with the engineering and support team at HomePlanningHub.";
 const PAGE_PATH = "/contact/";
 
 const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Contact", path: PAGE_PATH }]),
-  webPageSchema({ url: canonical, topicName: "Contact HomeProjectHub" }),
+  webPageSchema({ url: canonical, topicName: "Contact HomePlanningHub" }),
   contactPageSchema(),
 );
 ---
@@ -25,14 +25,14 @@ const schema = graphSchema(
 
     <header class="pb-6 mb-2 border-b border-[var(--border)]">
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
-        Contact HomeProjectHub
+        Contact HomePlanningHub
       </h1>
       <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
         Have questions about a calculation, feedback on our tools, or business inquiries? Send us a message.
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 break-words">
       <!-- Contact Form -->
       <div class="md:col-span-8">
         <form
@@ -40,7 +40,7 @@ const schema = graphSchema(
           action={import.meta.env.PUBLIC_FORMSPREE_ID ? `https://formspree.io/f/${import.meta.env.PUBLIC_FORMSPREE_ID}` : "https://formspree.io/f/meojvddk"}
           method="POST"
         >
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-1.5">
               <label for="name" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">Name</label>
               <input
@@ -78,7 +78,7 @@ const schema = graphSchema(
               class="w-full text-sm bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg p-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] transition-colors"
             ></textarea>
           </div>
-          <Button type="submit" variant="primary" className="self-start mt-2">
+          <Button type="submit" variant="primary" className="w-full sm:w-auto self-start mt-2">
             Send Message
           </Button>
         </form>
@@ -94,7 +94,7 @@ const schema = graphSchema(
         </section>
         <section>
           <h2 class="font-bold text-[var(--fg)] mb-1 text-sm">Email</h2>
-          <p class="text-xs font-mono">support@homeprojecthub.com</p>
+          <p class="text-xs font-mono">support@homeplanninghub.com</p>
         </section>
       </div>
     </div>

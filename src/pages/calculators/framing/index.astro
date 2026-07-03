@@ -5,11 +5,11 @@ import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
-const canonical = "https://homeprojecthub.com/calculators/framing/";
+const canonical = "https://homeplanninghub.com/calculators/framing/";
 const title = "Framing Calculator";
 const description = "Calculate how many studs, plates, and headers you need for wall framing. Enter wall length, height, and stud spacing for accurate lumber estimates.";
 const formula = "Studs = (Wall Length / Stud Spacing) + 1";
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 
 const schema = graphSchema(
   breadcrumbListSchema([
@@ -66,28 +66,81 @@ const schema = graphSchema(
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how many studs, plates, and headers you need for wall framing. Enter wall length, height, and stud spacing for accurate lumber estimates.</p>
     <AdSlot slotId="ad-top-leaderboard" />
 
-    <section><FramingCalc client:visible /></section>
-    <EstimateMethodology
-      formula={formula}
-      assumptions={[
-        "Studs at 16\" OC standard for residential walls.",
-        "Includes 3 plates per wall (top+top+bottom).",
-        "Header lengths estimated at 2 ft per opening."
-      ]}
-    />
-    <AdSlot slotId="ad-in-content-mid" />
-    <section>
-      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
-      <div class="flex flex-col gap-3">
-        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many studs in a 20 ft wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">With 16" OC spacing: (240"/16") + 1 = 16 studs. Add plates: 3 × 20 ft = 60 LF / 8 = 8 more studs. Total: 24 studs + 5% waste = 26.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I use 16" or 24" spacing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">16" OC is standard for load-bearing walls. 24" OC is allowed for non-load-bearing walls and some engineered systems. Check local codes.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What size lumber for wall framing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2×4 for non-load-bearing (interior) walls. 2×6 for exterior walls with insulation. Always use kiln-dried lumber.</p></details>
+  <section><FramingCalc client:visible /></section>
+  <EstimateMethodology
+    formula={formula}
+    assumptions={[
+      "Studs at 16\" OC standard for residential walls.",
+      "Includes 3 plates per wall (top+top+bottom).",
+      "Header lengths estimated at 2 ft per opening."
+    ]}
+  />
+
+  <section>
+    <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Wall Framing</h2>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+      Wall framing material estimation requires calculating studs, top and bottom plates, headers, and waste. The stud spacing determines the number of vertical members, while the wall length determines plate quantities.
+    </p>
+    <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+      <li><strong>Calculate stud count:</strong> Divide the wall length in inches by the stud spacing in inches, then add 1 for the end stud.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Studs = &lceil;Wall Length (in) &divide; Spacing (in)&lceil; + 1</div>
+      </li>
+      <li><strong>Calculate plates:</strong> Multiply the wall length by 3 plates (double top plate + bottom plate). Divide by lumber length (typically 8 ft or 10 ft) and round up.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Plates = &lceil;(Wall Length &times; 3) &divide; Lumber Length&lceil;</div>
+      </li>
+      <li><strong>Account for headers:</strong> Headers above doors and windows use additional lumber. A typical header is 2 ft per opening using two 2x members with plywood spacer.</li>
+      <li><strong>Add waste:</strong> Add 5-10% waste for cutoffs, blocking, fire blocking, and mistakes.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Framing Calculation</h2>
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+      <p class="text-sm font-semibold text-[var(--fg)] mb-2">20 ft wall with standard 16-inch OC stud spacing, 8-ft ceiling, one doorway</p>
+      <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+        <li><strong>Wall length:</strong> 20 ft = <strong>240 inches</strong></li>
+        <li><strong>Studs (16" OC):</strong> (240 &divide; 16) + 1 = <strong>16 studs</strong></li>
+        <li><strong>Plates (3 &times; 20 ft):</strong> 60 linear ft &divide; 8 = <strong>8 studs worth of plates</strong></li>
+        <li><strong>Header (2-ft opening):</strong> <strong>1 header</strong> (uses about 4 ft of 2x material)</li>
+        <li><strong>Total stud equivalents:</strong> 16 + 8 + 1 = <strong>25 studs</strong></li>
+        <li><strong>With 5% waste:</strong> 25 &times; 1.05 = <strong>27 studs</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot slotId="ad-in-content-mid" />
+
+  <section>
+    <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Framing Estimation</h2>
+    <div class="flex flex-col gap-3">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting the double top plate</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Exterior walls require a double top plate to distribute roof and floor loads. Interior walls may only need a single top plate. Forgetting the second plate can underestimate lumber by 30% on a typical wall.</p>
       </div>
-    </section>
-    <footer class="pt-8 mt-6 border-t border-[var(--border)]">
-      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a href="/calculators/board-batten/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board & Batten</span></a>
-      <a href="/calculators/concrete/wall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Concrete Wall</span></a>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Not counting cripple studs</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Windows and doors need cripple studs below the sill and above the header. Each opening adds 4-6 short studs. These are easy to miss but can add 15-20% to your total stud count on a wall with multiple openings.</p>
       </div>
-    </footer>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Ignoring fire blocking requirements</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Building codes require fire blocking in stud cavities at 10-ft intervals and at floor levels. Each cavity needs a horizontal 2x block. For a 20-ft wall with 16" OC studs, that is approximately 15 fire blocks per level.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many studs in a 20 ft wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">With 16" OC spacing: (240"/16") + 1 = 16 studs. Add plates: 3 × 20 ft = 60 LF / 8 = 8 more studs. Total: 24 studs + 5% waste = 26.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I use 16" or 24" spacing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">16" OC is standard for load-bearing walls. 24" OC is allowed for non-load-bearing walls and some engineered systems. Check local codes.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What size lumber for wall framing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2×4 for non-load-bearing (interior) walls. 2×6 for exterior walls with insulation. Always use kiln-dried lumber.</p></details>
+    </div>
+  </section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]">
+    <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Lumber volume and cost</span></a>
+    <a href="/calculators/drywall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Drywall</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Sheets, tape, and compound</span></a>
+    <a href="/calculators/decking/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Decking</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Boards, fasteners, and layout</span></a>
+    </div>
+  </footer>
   </article>
 </Layout>

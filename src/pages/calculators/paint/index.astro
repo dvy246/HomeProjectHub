@@ -4,7 +4,7 @@ import PaintCalc from "../../../components/calculators/PaintCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/paint/";
+const canonical = "https://homeplanninghub.com/calculators/paint/";
 const title = "Paint Calculator";
 const description = "Calculate how many gallons of paint you need for any room. Enter room dimensions, doors, windows, and coats to get an accurate paint estimate.";
 
@@ -30,9 +30,6 @@ const schema = graphSchema(
   ], canonical)
 );
 
-const paintCalcs = [
-  { href: "/calculators/paint/", title: "Interior Paint", desc: "Walls, ceilings, trim" },
-];
 ---
 
 <Layout title={title} description={description} schema={schema}>

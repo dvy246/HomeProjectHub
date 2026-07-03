@@ -3,7 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
 import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
 
-const canonical = "https://homeprojecthub.com/maintenance/summer/";
+const canonical = "https://homeplanninghub.com/maintenance/summer/";
 const title = "Summer Home Maintenance Checklist";
 const description = "Complete summer home maintenance checklist. Beat the heat with AC maintenance, pest prevention, deck care, and energy-saving home improvements.";
 const PAGE_PATH = "/maintenance/summer/";
@@ -14,7 +14,7 @@ const categories = [...new Set(summerTasks.map((t) => t.category))];
 const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Summer Maintenance", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "Summer Home Maintenance" }),
-  howToSchema("Complete summer home maintenance", "Keep your home comfortable and efficient during hot months with these seasonal tasks.", summerTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  howToSchema("Complete summer home maintenance", "Keep your home comfortable and efficient during hot months with these seasonal tasks.", summerTasks.slice(0, 5).map((t) => ({ name: t.title, text: t.explanation }))),
   faqPageSchema([
     { q: "What summer maintenance keeps my AC efficient?", a: "Monthly filter changes, keeping outdoor unit clear of debris, and sealing window gaps are the highest-impact tasks for AC efficiency." },
     { q: "How do I pest-proof my home in summer?", a: "Seal cracks around windows and doors, trim vegetation away from the foundation, remove standing water, and inspect attic and crawlspace vents." },

@@ -11,15 +11,17 @@ export async function getStaticPaths() {
   }));
 }
 
-const SITE = "https://homeprojecthub.com";
+const SITE = "https://homeplanninghub.com";
 const { guide } = Astro.props;
 const { Content } = await render(guide);
+const canonical = `${SITE}/guides/${guide.id}/`;
 const articleSchema = articleSchemaFn({
   headline: guide.data.title,
   description: guide.data.description,
   author: guide.data.author,
   datePublished: guide.data.pubDate.toISOString(),
   dateModified: guide.data.updatedDate?.toISOString(),
+  url: canonical,
 });
 
 const schema = graphSchema(
@@ -66,7 +68,7 @@ const schema = graphSchema(
       </div>
     </header>
 
-    <div class="prose prose-sm max-w-none text-[var(--fg-secondary)] leading-relaxed [&_h2]:text-lg [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-[var(--fg)] [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-[var(--fg)] [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:mb-4 [&_p]:text-pretty [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-1.5 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_ol]:flex [&_ol]:flex-col [&_ol]:gap-2 [&_strong]:text-[var(--fg)] [&_table]:w-full [&_table]:text-xs [&_table]:text-left [&_table]:border-collapse [&_table]:mb-4 [&_th]:py-2 [&_th]:pr-4 [&_th]:font-semibold [&_th]:text-[var(--fg)] [&_th]:border-b [&_th]:border-[var(--border)] [&_td]:py-2 [&_td]:pr-4 [&_td]:text-[var(--fg-secondary)] [&_td]:border-b [&_td]:border-[var(--border)] [&_code]:text-xs [&_code]:font-mono [&_code]:bg-[var(--bg-muted)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-[var(--bg-muted)] [&_pre]:p-4 [&_pre]:rounded-xl [&_pre]:text-xs [&_pre]:font-mono [&_pre]:mb-4 [&_pre]:overflow-x-auto">
+    <div class="text-[var(--fg-secondary)] leading-relaxed [&_h2]:text-lg [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-[var(--fg)] [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-[var(--fg)] [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:mb-4 [&_p]:text-pretty [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-1.5 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_ol]:flex [&_ol]:flex-col [&_ol]:gap-2 [&_li_ul]:mt-2 [&_li_ol]:mt-2 [&_li_ul]:mb-1 [&_li_ol]:mb-1 [&_strong]:text-[var(--fg)] [&_table]:w-full [&_table]:text-xs [&_table]:text-left [&_table]:border-collapse [&_table]:mb-4 [&_table]:rounded-xl [&_table]:overflow-hidden [&_table]:border [&_table]:border-[var(--border)] [&_th]:py-2.5 [&_th]:px-3 [&_th]:font-semibold [&_th]:text-[var(--fg)] [&_th]:bg-[var(--bg-muted)] [&_th]:border-b [&_th]:border-[var(--border)] [&_td]:py-2.5 [&_td]:px-3 [&_td]:text-[var(--fg-secondary)] [&_td]:border-b [&_td]:border-[var(--border)] [&_tr:last-child_td]:border-b-0 [&_code]:text-xs [&_code]:font-mono [&_code]:bg-[var(--bg-muted)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-[var(--bg-muted)] [&_pre]:p-4 [&_pre]:rounded-xl [&_pre]:text-xs [&_pre]:font-mono [&_pre]:mb-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:rounded-none [&_blockquote]:border-l-2 [&_blockquote]:border-[var(--border)] [&_blockquote]:pl-4 [&_blockquote]:text-[var(--fg-muted)] [&_blockquote]:mb-4 [&_blockquote]:italic [&_hr]:border-[var(--border)] [&_hr]:my-8 [&_a]:text-[var(--fg)] [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-[var(--accent)] [&_img]:rounded-xl [&_img]:w-full [&_img]:mb-4">
       <Content />
     </div>
 

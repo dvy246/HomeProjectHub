@@ -4,12 +4,12 @@ import BlockFillCalc from "../../../components/calculators/BlockFillCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/block-fill/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/block-fill/";
 
 const title = "Concrete Block & Fill Calculator";
 const description = "Calculate number of concrete blocks (CMU), mortar bags, and grout fill needed for walls. Supports multiple block sizes and core fill options.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -28,15 +28,15 @@ const schema = graphSchema(
     "Follow these steps to estimate blocks, mortar, and grout for a CMU wall.",
     [
       {
-        heading: "Calculate wall area",
+        name: "Calculate wall area",
         text: "Measure the length and height of the wall in feet. Multiply them to get the total surface area in square feet.",
       },
       {
-        heading: "Determine blocks per square foot",
+        name: "Determine blocks per square foot",
         text: "A standard 8x8x16 block covers 1.125 sq ft including the mortar joint (1.78 sq ft face minus ⅜ inch joint). Divide 1 by the adjusted face area for blocks per sq ft.",
       },
       {
-        heading: "Add waste and estimate materials",
+        name: "Add waste and estimate materials",
         text: "Multiply raw block count by 1.05 to 1.10 for cuts and breakage. Mortar is roughly 1 bag per 100 blocks. Grout fill depends on core configuration.",
       },
     ]

@@ -5,11 +5,11 @@ import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
-const canonical = "https://homeprojecthub.com/calculators/drywall/";
+const canonical = "https://homeplanninghub.com/calculators/drywall/";
 const title = "Drywall Calculator";
 const description = "Calculate drywall sheets, joint tape, compound, and screws for your walls. Enter wall dimensions and sheet size for accurate material estimates.";
 const formula = "Sheets = Ceil(Wall Area (sq ft) / Sheet Area) | Tape (lf) = Wall Area x 0.33 | Compound = Wall Area x 0.06 lb";
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 
 const schema = graphSchema(
   breadcrumbListSchema([
@@ -47,7 +47,64 @@ const schema = graphSchema(
   <AdSlot slotId="ad-top-leaderboard" />
   <section><DrywallCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Wall area calculated as perimeter x ceiling height.", "Standard 4x8 sheet size (32 sq ft per sheet).", "Does not subtract door and window openings — order 10% extra for waste instead.", "Joint compound estimate covers 3 coats of taping/mudding."]} />
+
+  <section>
+    <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Drywall Materials</h2>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+      Drywall estimation requires calculating the total surface area of walls and ceilings, then converting to sheets, joint tape, joint compound, and screws. Understanding the coverage per sheet and the ratio of accessories saves time and money.
+    </p>
+    <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+      <li><strong>Calculate wall area:</strong> Measure each wall's width times height and add them together. Alternatively, multiply the room perimeter by the ceiling height.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Wall Area = Perimeter (ft) &times; Ceiling Height (ft)</div>
+      </li>
+      <li><strong>Add ceiling area:</strong> Multiply the room length by the room width.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Ceiling Area = Length (ft) &times; Width (ft)</div>
+      </li>
+      <li><strong>Calculate sheets:</strong> Add wall and ceiling area, then divide by the sheet area (32 sq ft for 4x8). Add 5-10% waste and round up.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Sheets = &lceil;(Wall Area + Ceiling Area) &times; 1.10 &divide; 32&lceil;</div>
+      </li>
+      <li><strong>Calculate accessories:</strong> Joint tape at approximately 0.33 linear feet per sq ft of drywall. Joint compound at 0.06 lbs per sq ft per coat. Screws at 1 lb per 100 sq ft.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Drywall Calculation</h2>
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+      <p class="text-sm font-semibold text-[var(--fg)] mb-2">12&prime; &times; 12&prime; room with 8-ft ceilings using 4x8 sheets</p>
+      <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+        <li><strong>Room perimeter:</strong> 12 + 12 + 12 + 12 = <strong>48 ft</strong></li>
+        <li><strong>Wall area:</strong> 48 ft &times; 8 ft = <strong>384 sq ft</strong></li>
+        <li><strong>Ceiling area:</strong> 12 ft &times; 12 ft = <strong>144 sq ft</strong></li>
+        <li><strong>Total area:</strong> 384 + 144 = <strong>528 sq ft</strong></li>
+        <li><strong>With 10% waste:</strong> 528 &times; 1.10 = <strong>581 sq ft</strong></li>
+        <li><strong>Sheets (4x8):</strong> 581 &divide; 32 = <strong>19 sheets</strong></li>
+        <li><strong>Joint tape:</strong> 528 &times; 0.33 = <strong>174 linear ft</strong></li>
+        <li><strong>Compound (3 coats):</strong> 528 &times; 0.06 &times; 3 = <strong>95 lbs</strong></li>
+        <li><strong>Screws:</strong> 528 &divide; 100 = <strong>5.3 lbs</strong></li>
+      </ul>
+    </div>
+  </section>
+
   <AdSlot slotId="ad-in-content-mid" />
+
+  <section>
+    <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Drywall Estimation</h2>
+    <div class="flex flex-col gap-3">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Using 4x8 when 4x12 reduces waste</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Standard 4x8 sheets create more seams and waste, especially on walls over 8 ft. A 12-ft wall requires two 4x8 sheets with a horizontal seam, but only one 4x12 sheet with no seam. Using 4x12 sheets can reduce waste by 10-15% and speed up installation.</p>
+      </div>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Forgetting to separate wall and ceiling thickness</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Ceilings typically require 5/8-inch fire-rated drywall (Type X), while walls use 1/2-inch standard. Calculate these separately. Using 1/2-inch on ceilings violates fire code in attached garages and between living units.</p>
+      </div>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Underestimating joint compound quantity</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Three-coat taping uses significantly more compound than most DIYers expect. The first coat fills the joint, the second coats the tape, and the third feathers the edges. Each coat uses roughly 1.5-2 lbs per 4x8 sheet. Skimping on compound leads to visible joints after painting.</p>
+      </div>
+    </div>
+  </section>
+
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many sheets of drywall for a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room with 8 ft ceilings has about 384 sq ft of wall area plus 144 sq ft ceiling = 528 sq ft. At 32 sq ft per 4x8 sheet: 17 sheets.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I subtract windows and doors?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes, subtract 15 sq ft per door and 10 sq ft per window for more accurate estimates. Most pros allow a small waste factor instead.</p></details>
@@ -56,9 +113,9 @@ const schema = graphSchema(
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many screws per sheet of drywall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">About 32 screws per 4x8 sheet on walls (8" OC), 40 screws on ceilings (7" OC). That's roughly 1 lb per 100 sq ft.</p></details>
   </div></section>
   <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Framing</span></a>
-    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span></a>
-    <a href="/calculators/paint/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Paint</span></a>
+    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Wall Framing</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Studs, plates, and headers</span></a>
+    <a href="/calculators/paint/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Paint Calculator</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Gallons of paint and primer</span></a>
+    <a href="/calculators/square-footage/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Square Footage</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Room area measurement</span></a>
   </div></footer>
 </article>
 </Layout>

@@ -143,7 +143,9 @@ export function saveProject(project: Omit<SavedProject, "id" | "createdAt" | "up
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
     window.dispatchEvent(new Event("saved-projects-changed"));
-  } catch {}
+  } catch (e) {
+    console.warn("Failed to save project:", e);
+  }
   return newProject;
 }
 
@@ -155,7 +157,9 @@ export function updateProject(id: string, updates: Partial<SavedProject>): Saved
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
     window.dispatchEvent(new Event("saved-projects-changed"));
-  } catch {}
+  } catch (e) {
+    console.warn("Failed to update project:", e);
+  }
   return projects[idx];
 }
 
@@ -164,7 +168,9 @@ export function deleteProject(id: string): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
     window.dispatchEvent(new Event("saved-projects-changed"));
-  } catch {}
+  } catch (e) {
+    console.warn("Failed to delete project:", e);
+  }
 }
 
 export function getProject(id: string): SavedProject | null {
@@ -185,12 +191,12 @@ export function addCalculationToProject(
 
 export function aggregateMaterials(project: SavedProject): MaterialItem[] {
   const materialMap = new Map<string, MaterialItem>();
-  for (const calc of project.calculations) {
-    for (const mat of calc.materials) {
-      const key = mat.name;
+  for (const calc of project.calculations ?? []) {
+    for (const mat of calc.materials ?? []) {
+      const key = `${mat.name}||${mat.unit}`;
       const existing = materialMap.get(key);
       if (existing) {
-        existing.quantity += mat.quantity;
+        existing.quantity = (existing.quantity ?? 0) + (mat.quantity ?? 0);
       } else {
         materialMap.set(key, { ...mat });
       }

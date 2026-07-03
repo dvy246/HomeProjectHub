@@ -3,7 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
 import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
 
-const canonical = "https://homeprojecthub.com/maintenance/winter/";
+const canonical = "https://homeplanninghub.com/maintenance/winter/";
 const title = "Winter Home Maintenance Checklist";
 const description = "Complete winter home maintenance checklist. Prevent frozen pipes, ice dams, and heating emergencies with cold-weather maintenance tasks.";
 const PAGE_PATH = "/maintenance/winter/";
@@ -14,7 +14,7 @@ const categories = [...new Set(winterTasks.map((t) => t.category))];
 const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Winter Maintenance", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "Winter Home Maintenance" }),
-  howToSchema("Complete winter home maintenance", "Keep your home safe and efficient during cold months with these winter maintenance tasks.", winterTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  howToSchema("Complete winter home maintenance", "Keep your home safe and efficient during cold months with these winter maintenance tasks.", winterTasks.slice(0, 5).map((t) => ({ name: t.title, text: t.explanation }))),
   faqPageSchema([
     { q: "How do I prevent frozen pipes in winter?", a: "Keep cabinet doors open under sinks, let faucets drip during extreme cold, insulate exposed pipes, and maintain consistent indoor temperature (55°F minimum)." },
     { q: "What indoor maintenance is important in winter?", a: "Monitor indoor humidity (30-50%), clean humidifiers, inspect for ice dams, check attic for frost, and test all carbon monoxide detectors." },

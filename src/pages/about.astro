@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import { graphSchema, aboutPageSchema, breadcrumbListSchema } from "../lib/schema";
 
-const title = "About HomeProjectHub — Free Construction Calculators for Homeowners";
-const description = "Learn about the mission and calculation standards behind HomeProjectHub. We build transparent, free material calculators for homeowners and DIY builders with visible formulas and clear assumptions.";
+const title = "About HomePlanningHub — Free Construction Calculators for Homeowners";
+const description = "Learn about the mission and calculation standards behind HomePlanningHub. We build transparent, free material calculators for homeowners and DIY builders with visible formulas and clear assumptions.";
 
 const schema = graphSchema(
   aboutPageSchema(),
@@ -14,7 +14,7 @@ const schema = graphSchema(
 );
 ---
 
-<Layout title={title} description={description} canonical="https://homeprojecthub.com/about/" schema={schema}>
+<Layout title={title} description={description} canonical="https://homeplanninghub.com/about/" schema={schema}>
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
@@ -24,16 +24,16 @@ const schema = graphSchema(
 
     <header class="pb-6 mb-2 border-b border-[var(--border)]">
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
-        About HomeProjectHub
+        About HomePlanningHub
       </h1>
       <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
         We build transparent, free calculators that help homeowners and DIYers estimate materials accurately before buying or hiring a contractor. Every formula and assumption is visible on the page.
       </p>
     </header>
 
-    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty break-words">
       <p>
-        HomeProjectHub was created to solve a common problem in home improvement: the difficulty of estimating materials without either overbuying by a significant margin or running short mid-project. When planning a concrete patio, a roof replacement, a room repaint, or a tile floor installation, having a reliable material estimate before visiting the supplier makes the difference between a smooth project and a frustrating one.
+        HomePlanningHub was created to solve a common problem in home improvement: the difficulty of estimating materials without either overbuying by a significant margin or running short mid-project. When planning a concrete patio, a roof replacement, a room repaint, or a tile floor installation, having a reliable material estimate before visiting the supplier makes the difference between a smooth project and a frustrating one.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
@@ -71,13 +71,13 @@ const schema = graphSchema(
         Contact
       </h2>
       <p>
-        Have questions about a calculation, found an error, or want to suggest a new tool or material? Contact us at <a href="mailto:support@homeprojecthub.com" class="underline underline-offset-2 hover:no-underline">support@homeprojecthub.com</a>.
+        Have questions about a calculation, found an error, or want to suggest a new tool or material? Contact us at <a href="mailto:support@homeplanninghub.com" class="underline underline-offset-2 hover:no-underline">support@homeplanninghub.com</a>.
       </p>
 
       <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 mt-2">
         <h3 class="text-sm font-semibold mb-1">Limitations and disclaimer</h3>
         <p class="text-xs leading-relaxed">
-          HomeProjectHub calculators are planning tools, not design or engineering instruments. Volume and area estimates use standard geometry. Package counts use stated coverage and yield assumptions. Cost references, when shown, are broad US planning ranges and do not constitute a quote. If your project involves structural loads, foundation design, frost depth considerations, electrical wiring, plumbing, or anything that could affect the safety or habitability of a structure, consult a qualified licensed professional in your jurisdiction. Read the <a href="/disclaimer/" class="underline">full disclaimer</a>.
+          HomePlanningHub calculators are planning tools, not design or engineering instruments. Volume and area estimates use standard geometry. Package counts use stated coverage and yield assumptions. Cost references, when shown, are broad US planning ranges and do not constitute a quote. If your project involves structural loads, foundation design, frost depth considerations, electrical wiring, plumbing, or anything that could affect the safety or habitability of a structure, consult a qualified licensed professional in your jurisdiction. Read the <a href="/disclaimer/" class="underline">full disclaimer</a>.
         </p>
         <p class="text-xs text-[var(--fg-muted)] mt-2">Last updated: July 2026</p>
       </div>

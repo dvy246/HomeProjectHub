@@ -4,12 +4,12 @@ import ConcreteWallCalc from "../../../components/calculators/ConcreteWallCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/wall/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/wall/";
 
 const title = "Concrete Wall Calculator";
 const description = "Calculate concrete volume for retaining walls, foundation walls, and basement walls. Automatically subtracts door and window openings.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -27,19 +27,19 @@ const schema = graphSchema(
     "Find the volume of concrete needed for a wall with opening deductions.",
     [
       {
-        heading: "Calculate gross face area",
+        name: "Calculate gross face area",
         text: "Multiply the wall length by the wall height. All measurements in feet.",
       },
       {
-        heading: "Subtract openings",
+        name: "Subtract openings",
         text: "Subtract the area of each door (≈21 sq ft for 3×7) and each window (≈12 sq ft for 3×4).",
       },
       {
-        heading: "Multiply by thickness",
+        name: "Multiply by thickness",
         text: "Net area × wall thickness (in feet). Convert inches to feet by dividing by 12.",
       },
       {
-        heading: "Add waste factor",
+        name: "Add waste factor",
         text: "Multiply by 1.05 to 1.10 (5-10% waste) and convert to cubic yards (÷27).",
       },
     ]

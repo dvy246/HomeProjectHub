@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const BLOCK_SIZES: Record<string, { face: number; mortar: number }> = {
   "4x8x16": { face: 0.89, mortar: 0.004 },
@@ -18,6 +22,8 @@ export default function BlockFillCalc() {
   const [_mortarJoint, _setMortarJoint] = useState<string>("⅜");
   const [coreFill, setCoreFill] = useState<"none" | "partial" | "full">("none");
   const [wasteFactor, setWasteFactor] = useState<string>("5");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("block-fill", "Concrete Block Fill Calculator");
 
   const len = parseNumber(length);
   const hgt = parseNumber(height);
@@ -39,6 +45,13 @@ export default function BlockFillCalc() {
   const fillVolume = coreFill === "none" ? 0 : coreFill === "partial" ? wallArea * coreFillFactor * 0.5 : wallArea * coreFillFactor;
   const fillBags = coreFill === "none" ? 0 : Math.ceil(fillVolume / 0.6);
 
+  const projectInputs = { length: len, height: hgt, wastePct: waste * 100 };
+  const projectResults = { blocks, mortarBags, fillBags, fillVolume, wallArea };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix (80lb bags)", quantity: blocks * 0.5 + mortarBags, unit: "bags", category: "concrete" },
+    { name: "Grout", quantity: fillVolume, unit: "cu ft", category: "concrete" },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
@@ -56,21 +69,9 @@ export default function BlockFillCalc() {
           <div className="border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Block Configuration</h3>
           </div>
-          <div className="mb-4">
-            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Block Size</p>
-            <div className="grid grid-cols-5 gap-1.5">
-              {Object.keys(BLOCK_SIZES).map((s) => (
-                <button key={s} type="button" onClick={() => setBlockSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${blockSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
-              ))}
-            </div>
-          </div>
-          <div className="mb-4">
-            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Core Fill</p>
-            <div className="grid grid-cols-3 gap-2">
-              {(["none", "partial", "full"] as const).map((opt) => (
-                <button key={opt} type="button" onClick={() => setCoreFill(opt)} className={`border rounded-lg py-2 text-xs font-semibold transition-all active:scale-[0.97] ${coreFill === opt ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{opt === "none" ? "None" : opt === "partial" ? "Partial" : "Full"}</button>
-              ))}
-            </div>
+          <Select label="Block Size" value={blockSize} onChange={setBlockSize} options={Object.keys(BLOCK_SIZES).map((s) => ({ value: s, label: s }))} />
+          <div className="mt-4">
+            <Select label="Core Fill" value={coreFill} onChange={(v) => setCoreFill(v as "none" | "partial" | "full")} options={[{ value: "none", label: "None" }, { value: "partial", label: "Partial" }, { value: "full", label: "Full" }]} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 5" helperText="Allow for cuts and breakage" />
@@ -109,6 +110,15 @@ export default function BlockFillCalc() {
             )}
           </div>
         </div>
+
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
 
         <Card>
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Block Size Reference</h3>

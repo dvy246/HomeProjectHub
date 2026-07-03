@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function SealantCalc() {
   const [jointLength, setJointLength] = useState("100");
@@ -9,14 +12,20 @@ export default function SealantCalc() {
   const [jointDepth, setJointDepth] = useState("0.5");
   const [tubeSize, setTubeSize] = useState("10");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("sealant", "Sealant Calculator");
+
   const jl = parseNumber(jointLength);
   const jw = parseNumber(jointWidth);
   const jd = parseNumber(jointDepth);
   const ts = parseNumber(tubeSize);
   const volPerFtCuIn = jw * jd * 12;
-  const tubesPerFt = volPerFtCuIn > 0 ? volPerFtCuIn / (ts * 29.574) : 0;
+  const tubesPerFt = volPerFtCuIn > 0 && ts > 0 ? volPerFtCuIn / (ts * 29.574) : 0;
   const totalTubes = Math.ceil(jl * tubesPerFt);
   const linearFtPerTube = tubesPerFt > 0 ? 1 / tubesPerFt : 0;
+
+  const projectInputs = { jointLength: jl, jointWidth: jw, jointDepth: jd, tubeSizeOz: ts };
+  const projectResults = { totalTubes, linearFtPerTube };
+  const projectMaterials: MaterialItem[] = [{ name: "Sealant", quantity: totalTubes, unit: "tubes", category: "sealant" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -44,6 +53,14 @@ export default function SealantCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

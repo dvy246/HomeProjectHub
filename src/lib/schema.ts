@@ -16,7 +16,7 @@ interface CalculatorInfo {
   url: string;
 }
 
-const SITE_URL = "https://homeprojecthub.com";
+const SITE_URL = "https://homeplanninghub.com";
 
 export function webSiteSchema(name: string, description: string) {
   return {
@@ -40,7 +40,7 @@ export function aboutPageSchema() {
   return {
     "@type": "AboutPage",
     "@id": `${SITE_URL}/about/#about-page`,
-    name: "About HomeProjectHub",
+    name: "About HomePlanningHub",
     description: "Free home improvement planning calculators and project estimating guides for homeowners and DIY builders.",
     url: `${SITE_URL}/about/`,
   };
@@ -143,14 +143,15 @@ export function articleSchema(opts: {
   datePublished: string;
   dateModified?: string;
   imageUrl?: string;
+  url?: string;
 }) {
   return {
     "@type": "Article",
-    "@id": `${SITE_URL}/article/#article`,
+    "@id": opts.url ? `${opts.url}#article` : `${SITE_URL}/article/#article`,
     headline: opts.headline,
     description: opts.description,
     author: { "@type": "Person", name: opts.author },
-    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "HomeProjectHub" },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "HomePlanningHub" },
     datePublished: opts.datePublished,
     ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
     ...(opts.imageUrl ? { image: { "@type": "ImageObject", url: opts.imageUrl } } : {}),
@@ -161,8 +162,8 @@ export function contactPageSchema() {
   return {
     "@type": "ContactPage",
     "@id": `${SITE_URL}/contact/#contact-page`,
-    name: "Contact HomeProjectHub",
-    description: "Get in touch with the HomeProjectHub team for questions, feedback, or business inquiries.",
+    name: "Contact HomePlanningHub",
+    description: "Get in touch with the HomePlanningHub team for questions, feedback, or business inquiries.",
     url: `${SITE_URL}/contact/`,
   };
 }

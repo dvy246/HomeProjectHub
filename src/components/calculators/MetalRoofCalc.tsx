@@ -3,9 +3,13 @@ import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
+import MetalRoofDiagram from "../diagrams/MetalRoofDiagram";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 
 const METAL_PANEL_WIDTH = 36;
@@ -21,6 +25,8 @@ export default function MetalRoofCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("metal-roof", "Metal Roof Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -44,6 +50,27 @@ export default function MetalRoofCalc() {
   const panels = calculatePackaging(areaWithWaste, panelCoverageSqFt);
   const screws = Math.ceil(roofArea * 1.5);
   const closureStrips = Math.ceil((lenNum * pitchFactor) / (pWidth / 12)) * 2;
+
+  const projectInputs: Record<string, number> = {
+    length: lenNum,
+    width: widNum,
+    pitch: pitchNum,
+    panelWidth: pWidth,
+    panelLength: pLength,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    roofArea,
+    areaWithWaste,
+    panels,
+    screws,
+    closureStrips,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Metal Panels", quantity: panels, unit: "panels", category: "roofing" },
+    { name: "Screws", quantity: screws, unit: "screws", category: "hardware" },
+    { name: "Closure Strips", quantity: closureStrips, unit: "pairs", category: "roofing" },
+  ];
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +113,7 @@ export default function MetalRoofCalc() {
           </div>
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -97,9 +125,21 @@ export default function MetalRoofCalc() {
           placeholder="e.g. Garage Metal Roof"
           projectsLabel="Saved Projects:"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <MetalRoofDiagram length={lenNum} width={widNum} pitch={pitchNum} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Metal Panel Output</h3>
           <div className="flex flex-col gap-5">

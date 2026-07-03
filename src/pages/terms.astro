@@ -1,11 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema } from "../lib/schema";
 
+const canonical = "https://homeplanninghub.com/terms/";
 const title = "Terms of Service";
-const description = "Terms of service and usage conditions for HomeProjectHub.";
+const description = "Terms of service and usage conditions for HomePlanningHub — the rules and guidelines for using our free construction calculators and project planning tools.";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Terms of Service", path: "/terms/" }]),
+  webPageSchema({ url: canonical, topicName: "Terms of Service" }),
+);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
@@ -22,16 +29,16 @@ const description = "Terms of service and usage conditions for HomeProjectHub.";
       </p>
     </header>
 
-    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed">
+    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed break-words">
       <p>
-        Welcome to HomeProjectHub. By accessing our website at https://homeprojecthub.com, you agree to bound by these Terms of Service and all applicable laws and regulations.
+        Welcome to HomePlanningHub. By accessing our website at https://homeplanninghub.com, you agree to bound by these Terms of Service and all applicable laws and regulations.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         1. License to Use
       </h2>
       <p>
-        Permission is granted to temporarily use the interactive calculators and materials planning utilities on HomeProjectHub for personal, non-commercial structural planning. This is the grant of a license, not a transfer of title, and under this license you may not:
+        Permission is granted to temporarily use the interactive calculators and materials planning utilities on HomePlanningHub for personal, non-commercial structural planning. This is the grant of a license, not a transfer of title, and under this license you may not:
       </p>
       <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
         <li>Modify or copy the source code or formula structures.</li>
@@ -44,17 +51,17 @@ const description = "Terms of service and usage conditions for HomeProjectHub.";
         2. Disclaimer
       </h2>
       <p>
-        The materials and calculator outputs on HomeProjectHub are provided on an 'as is' basis. HomeProjectHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property.
+        The materials and calculator outputs on HomePlanningHub are provided on an 'as is' basis. HomePlanningHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property.
       </p>
       <p>
-        Furthermore, HomeProjectHub does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site. Always consult a certified structural engineer before ordering structural materials.
+        Furthermore, HomePlanningHub does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site. Always consult a certified structural engineer before ordering structural materials.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         3. Limitations of Liability
       </h2>
       <p>
-        In no event shall HomeProjectHub or its suppliers be liable for any damages (including, without limitation, damages for loss of materials, structural failure, project delays, or cost overruns) arising out of the use or inability to use the calculators on HomeProjectHub.
+        In no event shall HomePlanningHub or its suppliers be liable for any damages (including, without limitation, damages for loss of materials, structural failure, project delays, or cost overruns) arising out of the use or inability to use the calculators on HomePlanningHub.
       </p>
     </div>
   </article>

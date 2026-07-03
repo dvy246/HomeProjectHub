@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 interface AggregateOption {
   id: string;
@@ -22,6 +25,8 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
   const [depth, setDepth] = useState("4");
   const [waste, setWaste] = useState("10");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("aggregate", "Aggregate Calculator");
+
   const agg = aggregates.find((a) => a.id === aggId) || aggregates[0];
 
   if (!agg) {
@@ -40,6 +45,10 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
   const tonsWaste = tons * (1 + ws);
   const lbs = tons * 2000;
   const cuFt = cuYd * 27;
+
+  const projectInputs = { sqft: sf, depth: d, wastePct: ws * 100 };
+  const projectResults = { cuYd, tons, tonsWaste, lbs, cuFt };
+  const projectMaterials: MaterialItem[] = [{ name: agg?.label || "Aggregate", quantity: tonsWaste, unit: "tons", category: "aggregate" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -76,6 +85,14 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

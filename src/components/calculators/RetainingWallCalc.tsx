@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
 import RetainingWallDiagram from "../diagrams/RetainingWallDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function RetainingWallCalc() {
   const [wallLength, setWallLength] = useState("20");
@@ -10,18 +13,29 @@ export default function RetainingWallCalc() {
   const [blockHeight, setBlockHeight] = useState("8");
   const [waste, setWaste] = useState("10");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("retaining-wall", "Retaining Wall Calculator");
+
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);
   const bh = parseNumber(blockHeight);
   const ws = parseNumber(waste) / 100;
 
   const blocksPerRow = Math.ceil((wl * 12) / 16);
-  const rows = Math.ceil((wh * 12) / bh);
+  const rows = bh > 0 ? Math.ceil((wh * 12) / bh) : 0;
   const blockCount = blocksPerRow * rows;
   const blockWithWaste = Math.ceil(blockCount * (1 + ws));
   const capBlocks = blocksPerRow;
   const baseCuYd = (wl * 2 * 0.5) / 27;
   const drainCuYd = (wl * 1 * 0.5) / 27;
+
+  const projectInputs = { wallLength: wl, wallHeight: wh, blockHeight: bh, waste: ws };
+  const projectResults = { blockCount, blockWithWaste, capBlocks, baseCuYd, drainCuYd };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Wall Blocks", quantity: blockCount, unit: "blocks", category: "retaining-wall" },
+    { name: "Cap Blocks", quantity: capBlocks, unit: "blocks", category: "retaining-wall" },
+    { name: "Base Gravel", quantity: baseCuYd, unit: "cu yd", category: "retaining-wall" },
+    { name: "Drainage Gravel", quantity: drainCuYd, unit: "cu yd", category: "retaining-wall" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -36,6 +50,14 @@ export default function RetainingWallCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <RetainingWallDiagram length={wl} height={wh} baseWidth={2} unitSystem="imperial" />
         </div>

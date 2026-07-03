@@ -4,12 +4,12 @@ import ConcreteStepsCalc from "../../../components/calculators/ConcreteStepsCalc
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/steps/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/steps/";
 
 const title = "Concrete Steps Calculator";
 const description = "Calculate the volume of concrete needed for stairs and steps. Computes required cubic yards, cubic feet, and bag counts for steps with optional landing.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -27,19 +27,19 @@ const schema = graphSchema(
     "Find the concrete volume needed for a staircase with optional landing.",
     [
       {
-        heading: "Measure step dimensions",
+        name: "Measure step dimensions",
         text: "Measure rise (height), run (depth), and total width of the staircase in inches. Standard residential: 7×11 inches.",
       },
       {
-        heading: "Calculate each step as a block",
+        name: "Calculate each step as a block",
         text: "Each step volume = (rise × run × width) in inches, then convert to cubic feet (÷1728).",
       },
       {
-        heading: "Add landing volume",
+        name: "Add landing volume",
         text: "For the top step with landing: multiply the rise by (run + landing depth) by the width.",
       },
       {
-        heading: "Sum and convert",
+        name: "Sum and convert",
         text: "Add all step volumes. Convert to cubic yards (÷27). Add 5-10% waste.",
       },
     ]

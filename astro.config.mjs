@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://homeprojecthub.com',
+  site: 'https://homeplanninghub.com',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es', 'de', 'pt', 'pl', 'it'],
@@ -35,14 +35,12 @@ export default defineConfig({
         },
       },
       filter: (page) =>
-        !page.includes('/privacy/') &&
-        !page.includes('/terms/') &&
-        !page.includes('/disclaimer/') &&
         !page.includes('/saved/') &&
         !page.includes('/planner/') &&
-        !page.includes('/projects/'),
+        !page.includes('/projects/') &&
+        !page.includes('/zz-test/'),
       serialize(item) {
-        const path = item.url.replace('https://homeprojecthub.com', '');
+        const path = item.url.replace('https://homeplanninghub.com', '');
         if (path === '/' || path === '') {
           item.priority = 1.0;
           item.changefreq = 'weekly';

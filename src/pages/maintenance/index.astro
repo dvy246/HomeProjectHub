@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/maintenance/";
+const canonical = "https://homeplanninghub.com/maintenance/";
 const title = "Home Maintenance Planner";
 const description = "Plan and track your home maintenance with interactive checklists, cost estimates, and seasonal guides. Protect your home and avoid expensive repairs.";
 const PAGE_PATH = "/maintenance/";
@@ -11,9 +11,9 @@ const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "Home Maintenance" }),
   howToSchema("Plan annual home maintenance", "Follow a structured maintenance plan covering monthly, seasonal, and yearly tasks to protect your home investment.", [
-    { heading: "Review monthly tasks", text: "Start with monthly essentials like HVAC filter changes and smoke detector tests." },
-    { heading: "Schedule seasonal maintenance", text: "Plan gutter cleaning, roof inspections, and HVAC tune-ups for spring and fall." },
-    { heading: "Budget for yearly costs", text: "Use the cost estimator to understand your annual maintenance budget." },
+    { name: "Review monthly tasks", text: "Start with monthly essentials like HVAC filter changes and smoke detector tests." },
+    { name: "Schedule seasonal maintenance", text: "Plan gutter cleaning, roof inspections, and HVAC tune-ups for spring and fall." },
+    { name: "Budget for yearly costs", text: "Use the cost estimator to understand your annual maintenance budget." },
   ]),
   faqPageSchema([
     { q: "How much should I budget for home maintenance?", a: "The industry standard is 1% of your home's value per year. For a $300,000 home, that's $3,000 annually. Actual costs vary by age, region, and property type." },

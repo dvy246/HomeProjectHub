@@ -4,6 +4,9 @@ import { Card } from "../ui/Card";
 import { calculateStudCount } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
 import FramingDiagram from "../diagrams/FramingDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function FramingCalc() {
   const [wallLength, setWallLength] = useState("20");
@@ -11,15 +14,25 @@ export default function FramingCalc() {
   const [studSpacing, setStudSpacing] = useState("16");
   const [waste, setWaste] = useState("5");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("framing", "Framing Calculator");
+
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);
   const sp = parseNumber(studSpacing) || 1;
   const ws = parseNumber(waste) / 100;
 
-  const studs = calculateStudCount(wl, sp);
+  const studs = calculateStudCount(wl, sp as 16 | 24);
   const platesTotal = (wl * 3) / 12;
   const studsTotal = studs + Math.ceil(platesTotal);
   const studsWithWaste = Math.ceil(studsTotal * (1 + ws));
+
+  const projectInputs = { wallLength: wl, wallHeight: wh, studSpacing: sp, waste: ws };
+  const projectResults = { studs, plates: Math.ceil(platesTotal), studsTotal, studsWithWaste };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Studs", quantity: studs, unit: "pieces", category: "framing" },
+    { name: "Plates", quantity: Math.ceil(platesTotal), unit: "pieces", category: "framing" },
+    { name: "Nails (approx)", quantity: Math.ceil(studsTotal * 6), unit: "nails", category: "framing" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -34,6 +47,14 @@ export default function FramingCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <FramingDiagram length={wl} height={wh} studSpacing={sp} unitSystem="imperial" />
         </div>

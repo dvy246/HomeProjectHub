@@ -4,12 +4,12 @@ import ConcreteFootingCalc from "../../../components/calculators/ConcreteFooting
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/footing/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/footing/";
 
 const title = "Concrete Footing Calculator";
 const description = "Calculate concrete requirements for post hole foundations, deck footings, or fence posts. Computes total volume in yards and bag counts for square and cylinder holes.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -27,15 +27,15 @@ const schema = graphSchema(
     "Determine the volume of concrete needed for deck footings or pier holes.",
     [
       {
-        heading: "Determine the footing shape",
+        name: "Determine the footing shape",
         text: "Identify whether your footing is cylindrical (round post hole) or rectangular (block footing).",
       },
       {
-        heading: "Measure the dimensions",
+        name: "Measure the dimensions",
         text: "For cylindrical: measure the diameter and depth. For rectangular: measure length, width, and depth.",
       },
       {
-        heading: "Calculate volume per footing",
+        name: "Calculate volume per footing",
         text: "For cylinders: V = π × r² × depth. For rectangles: V = length × width × depth. Multiply by the number of footings.",
       },
     ]

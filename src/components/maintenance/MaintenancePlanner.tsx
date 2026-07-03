@@ -1,66 +1,59 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { MAINTENANCE_TASKS, CATEGORIES, FREQUENCY_LABELS, SEASON_MONTHS, type MaintenanceTask } from "../../data/maintenance/tasks";
-
-const STORAGE_KEY = "hph_maintenance_planner";
-
-function loadCompleted(): Set<string> {
-  if (typeof window === "undefined") return new Set();
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? new Set(JSON.parse(raw)) : new Set();
-  } catch {
-    return new Set();
-  }
-}
-
-function saveCompleted(ids: Set<string>) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
-  } catch {}
-}
+import { MAINTENANCE_TASKS, CATEGORIES, FREQUENCY_LABELS, SEASON_MONTHS, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
+import { getCompletedIds, toggleTask, migrateOldStorage, getNextDue, isOverdue } from "../../lib/maintenanceStorage";
 
 type TabView = "monthly" | "seasonal" | "yearly";
 
 const TAB_PANEL_ID = "planner-tab-panel";
+const SEASONS = ["spring", "summer", "fall", "winter"] as const;
+const DIFFICULTIES = ["easy", "moderate", "professional"] as const;
 
 export default function MaintenancePlanner() {
-  const [completed, setCompleted] = useState<Set<string>>(loadCompleted);
+  const [tick, setTick] = useState(0);
   const [activeTab, setActiveTab] = useState<TabView>("monthly");
+  const [seasonFilter, setSeasonFilter] = useState<string>("auto");
+  const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
+  const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+
+  const refresh = useCallback(() => setTick((t) => t + 1), []);
+
+  useEffect(() => { migrateOldStorage(); refresh(); }, []);
+
+  const completed = useMemo(() => getCompletedIds(), [tick]);
 
   useEffect(() => {
-    saveCompleted(completed);
-  }, [completed]);
-
-  useEffect(() => {
-    const handler = () => setCompleted(loadCompleted());
+    const handler = () => refresh();
     window.addEventListener("storage", handler);
-    return () => window.removeEventListener("storage", handler);
-  }, []);
+    window.addEventListener("maintenance-update", handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+      window.removeEventListener("maintenance-update", handler);
+    };
+  }, [refresh]);
 
-  const toggle = useCallback((id: string) => {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+  const handleToggle = useCallback((id: string) => {
+    toggleTask(id);
+    window.dispatchEvent(new Event("maintenance-update"));
+    refresh();
+  }, [refresh]);
 
   const selectAll = useCallback((ids: string[]) => {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      ids.forEach((id) => next.add(id));
-      return next;
-    });
-  }, []);
+    ids.forEach((id) => toggleTask(id, true));
+    window.dispatchEvent(new Event("maintenance-update"));
+    refresh();
+  }, [refresh]);
 
   const deselectAll = useCallback((ids: string[]) => {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      ids.forEach((id) => next.delete(id));
-      return next;
-    });
-  }, []);
+    ids.forEach((id) => toggleTask(id, false));
+    window.dispatchEvent(new Event("maintenance-update"));
+    refresh();
+  }, [refresh]);
+
+  const currentMonth = new Date().getMonth();
+  const currentSeason = useMemo(
+    () => Object.entries(SEASON_MONTHS).find(([, months]) => months.includes(currentMonth))?.[0] || "spring",
+    []
+  );
 
   const tabs: { key: TabView; label: string }[] = [
     { key: "monthly", label: "Monthly & Quarterly" },
@@ -69,20 +62,22 @@ export default function MaintenancePlanner() {
   ];
 
   const filtered = useMemo(() => {
-    const currentMonth = new Date().getMonth();
-    const currentSeason = Object.entries(SEASON_MONTHS).find(([, months]) => months.includes(currentMonth))?.[0] || "spring";
-
+    const activeSeason = seasonFilter === "auto" ? currentSeason : seasonFilter;
+    let tasks: MaintenanceTask[];
     if (activeTab === "monthly") {
-      return MAINTENANCE_TASKS.filter((t) => t.frequency === "monthly" || t.frequency === "quarterly");
-    }
-    if (activeTab === "seasonal") {
-      return MAINTENANCE_TASKS.filter((t) =>
+      tasks = MAINTENANCE_TASKS.filter((t) => t.frequency === "monthly" || t.frequency === "quarterly");
+    } else if (activeTab === "seasonal") {
+      tasks = MAINTENANCE_TASKS.filter((t) =>
         (t.frequency === "seasonal" || t.frequency === "biannual") &&
-        (!t.seasons || t.seasons.includes(currentSeason as "spring" | "summer" | "fall" | "winter"))
+        (!t.seasons || t.seasons.includes(activeSeason as "spring" | "summer" | "fall" | "winter"))
       );
+    } else {
+      tasks = MAINTENANCE_TASKS.filter((t) => t.frequency === "yearly");
     }
-    return MAINTENANCE_TASKS.filter((t) => t.frequency === "yearly");
-  }, [activeTab]);
+    if (categoryFilter !== "all") tasks = tasks.filter((t) => t.category === categoryFilter);
+    if (difficultyFilter !== "all") tasks = tasks.filter((t) => t.difficulty === difficultyFilter);
+    return tasks;
+  }, [activeTab, seasonFilter, categoryFilter, difficultyFilter, currentSeason]);
 
   const completedCount = useMemo(
     () => filtered.filter((t) => completed.has(t.id)).length,
@@ -102,7 +97,7 @@ export default function MaintenancePlanner() {
   }, [filtered]);
 
   const allIds = useMemo(() => filtered.map((t) => t.id), [filtered]);
-  const allCompleted = allIds.every((id) => completed.has(id));
+  const allDone = allIds.every((id) => completed.has(id));
 
   return (
     <div className="flex flex-col gap-6">
@@ -133,7 +128,45 @@ export default function MaintenancePlanner() {
         ))}
       </div>
 
-      {!allCompleted && allIds.length > 0 && (
+      <div className="flex flex-wrap gap-2">
+        {activeTab === "seasonal" && (
+          <select
+            value={seasonFilter}
+            onChange={(e) => setSeasonFilter(e.target.value)}
+            className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+            aria-label="Filter by season"
+          >
+            <option value="auto">Current season</option>
+            {SEASONS.map((s) => (
+              <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+            ))}
+          </select>
+        )}
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          aria-label="Filter by category"
+        >
+          <option value="all">All categories</option>
+          {CATEGORIES.map((c) => (
+            <option key={c.key} value={c.key}>{c.label}</option>
+          ))}
+        </select>
+        <select
+          value={difficultyFilter}
+          onChange={(e) => setDifficultyFilter(e.target.value)}
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          aria-label="Filter by difficulty"
+        >
+          <option value="all">All difficulties</option>
+          {DIFFICULTIES.map((d) => (
+            <option key={d} value={d}>{d.charAt(0).toUpperCase() + d.slice(1)}</option>
+          ))}
+        </select>
+      </div>
+
+      {!allDone && allIds.length > 0 && (
         <button
           onClick={() => selectAll(allIds)}
           className="self-start text-xs font-semibold text-[var(--accent)] hover:opacity-80 transition-opacity"
@@ -141,7 +174,7 @@ export default function MaintenancePlanner() {
           Mark all as complete
         </button>
       )}
-      {allCompleted && allIds.length > 0 && (
+      {allDone && allIds.length > 0 && (
         <button
           onClick={() => deselectAll(allIds)}
           className="self-start text-xs font-semibold text-[var(--fg-muted)] hover:text-[var(--fg-secondary)] transition-colors"
@@ -166,19 +199,23 @@ export default function MaintenancePlanner() {
               <div className="flex flex-col gap-1.5">
                 {tasks.map((task) => {
                   const done = completed.has(task.id);
+                  const next = getNextDue(task.id, task.frequency);
+                  const overdue = isOverdue(task.id, task.frequency);
                   return (
                     <label
                       key={task.id}
                       className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
                         done
                           ? "border-green-500/30 bg-green-50/50 dark:bg-green-950/10"
-                          : "border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)]"
+                          : overdue
+                            ? "border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/10"
+                            : "border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)]"
                       }`}
                     >
                       <input
                         type="checkbox"
                         checked={done}
-                        onChange={() => toggle(task.id)}
+                        onChange={() => handleToggle(task.id)}
                         className="mt-0.5 w-4 h-4 rounded border-[var(--border-strong)] accent-[var(--accent)]"
                       />
                       <div className="flex-1 min-w-0">
@@ -195,8 +232,27 @@ export default function MaintenancePlanner() {
                           <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--fg-muted)]">
                             {task.difficulty}
                           </span>
+                          {next && !done && (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--fg-muted)]">
+                              Due {next.toLocaleDateString()}
+                            </span>
+                          )}
+                          {overdue && !done && (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                              Overdue
+                            </span>
+                          )}
                         </div>
-                        {done ? null : (
+                        {task.relatedCalculator && !done && (
+                          <a
+                            href={`/calculators/${task.relatedCalculator}/`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-block mt-1.5 text-[10px] font-medium text-[var(--accent)] hover:underline"
+                          >
+                            Use related calculator →
+                          </a>
+                        )}
+                        {!done && (
                           <details className="mt-2">
                             <summary className="text-[11px] text-[var(--fg-muted)] cursor-pointer hover:text-[var(--fg-secondary)]">Why this matters</summary>
                             <p className="text-[11px] text-[var(--fg-secondary)] mt-1 leading-relaxed">{task.consequence}</p>
@@ -212,7 +268,7 @@ export default function MaintenancePlanner() {
         })}
 
         {filtered.length === 0 && (
-          <p className="text-sm text-[var(--fg-muted)] text-center py-8">No tasks for this view.</p>
+          <p className="text-sm text-[var(--fg-muted)] text-center py-8">No tasks match the current filters.</p>
         )}
       </div>
     </div>

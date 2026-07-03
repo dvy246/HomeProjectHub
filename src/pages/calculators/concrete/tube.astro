@@ -4,12 +4,12 @@ import ConcreteTubeCalc from "../../../components/calculators/ConcreteTubeCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/tube/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/tube/";
 
 const title = "Concrete Tube Form Calculator";
 const description = "Calculate concrete volume for cardboard tube forms (Sonotubes). Enter diameter, depth, and quantity to get cubic yards and bag counts.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -27,15 +27,15 @@ const schema = graphSchema(
     "Determine the concrete needed for cylindrical tube forms (Sonotubes).",
     [
       {
-        heading: "Find the radius",
+        name: "Find the radius",
         text: "Tube diameter (in inches) ÷ 2, then convert to feet by dividing by 12.",
       },
       {
-        heading: "Calculate cross-section area",
+        name: "Calculate cross-section area",
         text: "Area = π × radius² in square feet.",
       },
       {
-        heading: "Multiply by depth and quantity",
+        name: "Multiply by depth and quantity",
         text: "Volume = area × depth (ft) × number of tubes. Convert to cu yd (÷27).",
       },
     ]

@@ -3,13 +3,22 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToSqYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function SquareYardsCalc() {
   const [sqft, setSqft] = useState("100");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("square-yards", "Square Yards Calculator");
+
   const sf = parseNumber(sqft);
   const sqYd = sqftToSqYd(sf);
   const sqM = sf * 0.092903;
+
+  const projectInputs = { sqft: sf };
+  const projectResults = { sqYd, sqMeters: sqM };
+  const projectMaterials: MaterialItem[] = [{ name: "Area", quantity: sqYd, unit: "sq yd", category: "area" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -32,6 +41,14 @@ export default function SquareYardsCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

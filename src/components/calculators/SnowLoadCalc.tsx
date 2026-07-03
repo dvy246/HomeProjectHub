@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
+import SnowLoadDiagram from "../diagrams/SnowLoadDiagram";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const SNOW_DENSITIES: Record<string, number> = {
   "Fresh": 5,
@@ -18,6 +23,8 @@ export default function SnowLoadCalc() {
   const [buildingLength, setBuildingLength] = useState<string>("40");
   const [buildingWidth, setBuildingWidth] = useState<string>("30");
   const [groundSnowLoad, setGroundSnowLoad] = useState<string>("30");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("snow-load", "Snow Load Calculator");
 
   const dep = parseNumber(depth) / 12;
   const pitchNum = parseNumber(pitch);
@@ -39,6 +46,12 @@ export default function SnowLoadCalc() {
   const isBalanced = depthSnowLoad <= calculatedSnowLoad * 1.1;
   const exceedsDanger = designLoad > 50;
 
+  const projectInputs = { depth: dep * 12, pitch: pitchNum, buildingLength: bLen, buildingWidth: bWid, groundSnowLoad: gsl };
+  const projectResults = { designLoad, totalLoad, depthSnowLoad, calculatedSnowLoad, roofArea };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Structural Materials (snow load)", quantity: 1, unit: "lot", category: "structural" },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
@@ -48,14 +61,7 @@ export default function SnowLoadCalc() {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label="Snow Depth (inches)" type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="e.g. 24" />
-            <div>
-              <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Snow Type</p>
-              <div className="grid grid-cols-1 gap-1">
-                {Object.entries(SNOW_DENSITIES).map(([label]) => (
-                  <button key={label} type="button" onClick={() => setSnowType(label)} className={`border rounded-lg py-1.5 text-xs font-semibold transition-all ${snowType === label ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{label}</button>
-                ))}
-              </div>
-            </div>
+            <Select label="Snow Type" value={snowType} onChange={setSnowType} options={Object.entries(SNOW_DENSITIES).map(([label]) => ({ value: label, label }))} />
           </div>
         </Card>
 
@@ -75,6 +81,9 @@ export default function SnowLoadCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <SnowLoadDiagram pitch={pitchNum} snowDepth={dep} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Snow Load Analysis</h3>
           <div className="flex flex-col gap-5">
@@ -123,6 +132,15 @@ export default function SnowLoadCalc() {
             </div>
           </div>
         </div>
+
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
 
         <Card>
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Snow Density Reference</h3>

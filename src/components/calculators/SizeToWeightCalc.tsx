@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const MATERIALS = [
   { key: "aluminum_6061", label: "Aluminum 6061" },
@@ -20,6 +23,8 @@ export default function SizeToWeightCalc() {
   const [width, setWidth] = useState("12");
   const [thickness, setThickness] = useState("0.25");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("size-to-weight", "Size to Weight Calculator");
+
   const l = parseNumber(length);
   const w = parseNumber(width);
   const t = parseNumber(thickness);
@@ -28,6 +33,10 @@ export default function SizeToWeightCalc() {
   const weightLbs = weight.lb;
   const weightKg = weight.kg;
   const weightTons = weightLbs / 2000;
+
+  const projectInputs = { length: l, width: w, thickness: t, volumeCuIn };
+  const projectResults = { weightLbs, weightKg, weightTons };
+  const projectMaterials: MaterialItem[] = [{ name: "Material", quantity: weightLbs, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -68,6 +77,14 @@ export default function SizeToWeightCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

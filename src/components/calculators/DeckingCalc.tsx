@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
 import DeckingDiagram from "../diagrams/DeckingDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const BOARD_WIDTHS = [
   { value: "5.5", label: "5.5\" (Actual 2x6)" },
@@ -19,6 +22,8 @@ export default function DeckingCalc() {
   const [gap, setGap] = useState("0.125");
   const [waste, setWaste] = useState("10");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("decking", "Decking Calculator");
+
   const dl = parseNumber(deckLength);
   const dw = parseNumber(deckWidth);
   const bw = parseNumber(boardWidth);
@@ -32,6 +37,13 @@ export default function DeckingCalc() {
   const deckSqFt = dl * dw;
   const boardsWithWaste = Math.ceil(totalBoards * (1 + ws));
   const fastenerCount = Math.ceil(linearFt * 2.5);
+
+  const projectInputs = { deckLength: dl, deckWidth: dw, boardWidth: bw, gap: g, waste: ws };
+  const projectResults = { boards: boardsAcross, linearFt, deckSqFt, boardsWithWaste, fastenerCount };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Deck Boards", quantity: boardsWithWaste, unit: "boards", category: "decking" },
+    { name: "Fasteners/Screws", quantity: fastenerCount, unit: "screws", category: "decking" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -54,6 +66,14 @@ export default function DeckingCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <DeckingDiagram length={dl} width={dw} joistSpacing={16} unitSystem="imperial" />
         </div>

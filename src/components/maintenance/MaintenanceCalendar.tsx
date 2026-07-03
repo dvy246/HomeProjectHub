@@ -1,5 +1,6 @@
-import { useState, useMemo, useId } from "react";
+import { useState, useMemo, useId, useEffect, useCallback } from "react";
 import { MAINTENANCE_TASKS, CATEGORIES, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
+import { getCompletedIds, toggleTask, migrateOldStorage, isOverdue } from "../../lib/maintenanceStorage";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const SEASON_MONTHS: Record<string, number[]> = { spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1] };
@@ -27,17 +28,38 @@ function getTaskMonths(task: MaintenanceTask): number[] {
   return [];
 }
 
+function getCategoryCounts(tasks: MaintenanceTask[]) {
+  const counts = new Map<TaskCategory, number>();
+  for (const t of tasks) {
+    counts.set(t.category, (counts.get(t.category) || 0) + 1);
+  }
+  return counts;
+}
+
 export default function MaintenanceCalendar() {
   const id = useId();
   const now = new Date();
   const currentMonth = now.getMonth();
   const [selectedMonth, setSelectedMonth] = useState<number | null>(currentMonth);
-  const [completedTasks, setCompletedTasks] = useState<Set<string>>(() => {
-    try {
-      const stored = localStorage.getItem("maint-calendar-completed");
-      return stored ? new Set(JSON.parse(stored)) : new Set();
-    } catch { return new Set(); }
-  });
+  const [completedTasks, setCompletedTasks] = useState<Set<string>>(getCompletedIds);
+  const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
+
+  useEffect(() => { migrateOldStorage(); }, []);
+  useEffect(() => {
+    const handler = () => setCompletedTasks(getCompletedIds());
+    window.addEventListener("storage", handler);
+    window.addEventListener("maintenance-update", handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+      window.removeEventListener("maintenance-update", handler);
+    };
+  }, []);
+
+  const handleToggle = useCallback((taskId: string) => {
+    toggleTask(taskId);
+    window.dispatchEvent(new Event("maintenance-update"));
+    setCompletedTasks(getCompletedIds());
+  }, []);
 
   const monthTasks = useMemo(() => {
     const map = new Map<number, MaintenanceTask[]>();
@@ -51,32 +73,35 @@ export default function MaintenanceCalendar() {
     return map;
   }, []);
 
-  const selectedTasks = selectedMonth !== null ? (monthTasks.get(selectedMonth) || []) : [];
-  const categoryCounts = useMemo(() => {
-    const counts = new Map<TaskCategory, number>();
-    for (const t of selectedTasks) {
-      counts.set(t.category, (counts.get(t.category) || 0) + 1);
-    }
-    return counts;
-  }, [selectedTasks]);
-
-  function toggleTask(taskId: string) {
-    setCompletedTasks(prev => {
-      const next = new Set(prev);
-      if (next.has(taskId)) next.delete(taskId);
-      else next.add(taskId);
-      localStorage.setItem("maint-calendar-completed", JSON.stringify([...next]));
-      return next;
-    });
-  }
+  const selectedTasks = useMemo(() => {
+    if (selectedMonth === null) return [];
+    let tasks = monthTasks.get(selectedMonth) || [];
+    if (categoryFilter !== "all") tasks = tasks.filter((t) => t.category === categoryFilter);
+    return tasks;
+  }, [selectedMonth, monthTasks, categoryFilter]);
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex gap-2">
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          aria-label="Filter by category"
+        >
+          <option value="all">All categories</option>
+          {CATEGORIES.map((c) => (
+            <option key={c.key} value={c.key}>{c.label}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
         {MONTHS.map((name, i) => {
           const tasks = monthTasks.get(i) || [];
-          const count = tasks.length;
-          const done = tasks.filter(t => completedTasks.has(t.id)).length;
+          const filtered = categoryFilter === "all" ? tasks : tasks.filter((t) => t.category === categoryFilter);
+          const count = filtered.length;
+          const done = filtered.filter(t => completedTasks.has(t.id)).length;
           const isCurrent = i === currentMonth;
           const isSelected = i === selectedMonth;
           return (
@@ -97,8 +122,8 @@ export default function MaintenanceCalendar() {
               <span className="text-lg font-bold tabular-nums">{count}</span>
               {count > 0 && (
                 <div className="flex gap-0.5">
-                  {[...categoryCounts.entries()].slice(0, 3).map(([cat]) => (
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[cat] }} />
+                  {[...getCategoryCounts(filtered).entries()].slice(0, 3).map(([cat]) => (
+                    <span key={cat} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[cat] }} />
                   ))}
                 </div>
               )}
@@ -114,28 +139,46 @@ export default function MaintenanceCalendar() {
             <p className="text-xs text-[var(--fg-muted)]">No scheduled tasks for this month.</p>
           ) : (
             <ul className="flex flex-col gap-2">
-              {selectedTasks.map(task => (
-                <li key={task.id} className="flex items-start gap-3 text-sm">
-                  <input
-                    type="checkbox"
-                    id={`${id}-${task.id}`}
-                    checked={completedTasks.has(task.id)}
-                    onChange={() => toggleTask(task.id)}
-                    className="mt-0.5 accent-[var(--accent)]"
-                  />
-                  <label
-                    htmlFor={`${id}-${task.id}`}
-                    className={`flex-1 cursor-pointer ${completedTasks.has(task.id) ? 'line-through text-[var(--fg-muted)]' : 'text-[var(--fg)]'}`}
-                  >
-                    <span className="font-medium">{task.title}</span>
-                    <span className="block text-xs text-[var(--fg-muted)]">{task.explanation}</span>
-                  </label>
-                  <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--fg-muted)]"
-                    style={{ backgroundColor: CATEGORY_COLORS[task.category] + '20', color: CATEGORY_COLORS[task.category] }}>
-                    {CATEGORIES.find(c => c.key === task.category)?.label || task.category}
-                  </span>
-                </li>
-              ))}
+              {selectedTasks.map(task => {
+                const done = completedTasks.has(task.id);
+                const overdue = isOverdue(task.id, task.frequency);
+                return (
+                  <li key={task.id} className={`flex items-start gap-3 text-sm p-2 rounded-lg ${overdue && !done ? 'bg-amber-50/50 dark:bg-amber-950/10' : ''}`}>
+                    <input
+                      type="checkbox"
+                      id={`${id}-${task.id}`}
+                      checked={done}
+                      onChange={() => handleToggle(task.id)}
+                      className="mt-0.5 accent-[var(--accent)]"
+                    />
+                    <label
+                      htmlFor={`${id}-${task.id}`}
+                      className={`flex-1 cursor-pointer ${done ? 'line-through text-[var(--fg-muted)]' : 'text-[var(--fg)]'}`}
+                    >
+                      <span className="font-medium">{task.title}</span>
+                      <span className="block text-xs text-[var(--fg-muted)]">{task.explanation}</span>
+                      {task.relatedCalculator && !done && (
+                        <a
+                          href={`/calculators/${task.relatedCalculator}/`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-block mt-1 text-[10px] font-medium text-[var(--accent)] hover:underline"
+                        >
+                          Use related calculator →
+                        </a>
+                      )}
+                      {overdue && !done && (
+                        <span className="inline-block mt-1 ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                          Overdue
+                        </span>
+                      )}
+                    </label>
+                    <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--fg-muted)]"
+                      style={{ backgroundColor: CATEGORY_COLORS[task.category] + '20', color: CATEGORY_COLORS[task.category] }}>
+                      {CATEGORIES.find(c => c.key === task.category)?.label || task.category}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>

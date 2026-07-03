@@ -4,12 +4,12 @@ import CurbGutterCalc from "../../../components/calculators/CurbGutterCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/curb-gutter/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/curb-gutter/";
 
 const title = "Curb & Gutter Calculator";
 const description = "Calculate concrete volume for curbs and gutters. Estimate cubic yards, cubic feet, and bag counts for street curbs, driveway transitions, and drainage channels.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -28,15 +28,15 @@ const schema = graphSchema(
     "Follow these steps to estimate concrete needed for a combined curb and gutter section.",
     [
       {
-        heading: "Measure the cross-section dimensions",
+        name: "Measure the cross-section dimensions",
         text: "The curb is typically 6 inches wide and 18 inches tall. The gutter pan extends behind the curb, usually 24-36 inches wide and 6 inches deep. Measure each in inches.",
       },
       {
-        heading: "Convert to feet and find volumes",
+        name: "Convert to feet and find volumes",
         text: "Convert all dimensions to feet (divide by 12). Curb volume = width × height × length. Gutter volume = width × depth × length. Add them for the total.",
       },
       {
-        heading: "Apply waste and convert to yards",
+        name: "Apply waste and convert to yards",
         text: "Add 5-10% for waste and form overflow. Divide cubic feet by 27 to get cubic yards for ordering ready-mix concrete.",
       },
     ]

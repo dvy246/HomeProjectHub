@@ -5,6 +5,9 @@ import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
 import TileDiagram from "../diagrams/TileDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function TileCalc() {
   const [length, setLength] = useState("10");
@@ -14,6 +17,8 @@ export default function TileCalc() {
   const [tilesPerBox, setTilesPerBox] = useState("10");
   const [wasteFactor, setWasteFactor] = useState("10");
   const [layout, setLayout] = useState<"grid" | "diagonal" | "herringbone">("grid");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("tile", "Tile Calculator");
 
   const lenNum = parseNumber(length);
   const widNum = parseNumber(width);
@@ -37,6 +42,15 @@ export default function TileCalc() {
 
   const boxesNeeded = canCompute && tilesPerBoxNum > 0 ? calculatePackaging(tilesWithWaste, tilesPerBoxNum) : 0;
   const tileSqFt = tileAreaSqIn / 144;
+
+  const projectInputs = { length: lenNum, width: widNum, tileWidth: tileWidthInches, tileLength: tileLengthInches, tilesPerBox: tilesPerBoxNum, waste: wastePercent };
+  const projectResults = { sqFtArea, sqFtWithWaste, tilesNeeded, tilesWithWaste, boxesNeeded };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Tiles", quantity: tilesWithWaste, unit: "tiles", category: "flooring" },
+    { name: "Boxes of Tiles", quantity: boxesNeeded, unit: "boxes", category: "flooring" },
+    { name: "Grout (est)", quantity: Math.ceil(sqFtArea * 0.02), unit: "lb", category: "flooring" },
+    { name: "Thinset (est)", quantity: Math.ceil(sqFtArea * 0.05), unit: "lb", category: "flooring" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -78,6 +92,14 @@ export default function TileCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <TileDiagram roomWidth={widNum} roomLength={lenNum} tileWidth={tileWidthInches} tileLength={tileLengthInches} pattern={layout} unitSystem="imperial" />
         </div>

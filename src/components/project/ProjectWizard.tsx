@@ -66,7 +66,7 @@ export default function ProjectWizard() {
             <p className="text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider mb-3">Recommended Calculators</p>
             <div className="flex flex-wrap gap-2 justify-center">
               {template.recommendedCalculators.map((calc) => (
-                <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-muted)] text-[var(--fg-secondary)]">
+                <span key={calc} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-muted)] text-[var(--fg-secondary)]">
                   {calc.replace(/-/g, " ")}
                 </span>
               ))}
@@ -83,8 +83,9 @@ export default function ProjectWizard() {
         <>
           <h2 className="text-lg font-bold mb-4">What are you building?</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            {PROJECT_TEMPLATES.map((t) => (
+              {PROJECT_TEMPLATES.map((t) => (
               <button
+                key={t.type}
                 type="button"
                 onClick={() => handleSelectType(t.type)}
                 className={`p-4 rounded-xl border text-left transition-all ${

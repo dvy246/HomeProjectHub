@@ -1,11 +1,16 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
+import RoofShinglesDiagram from "../diagrams/RoofShinglesDiagram";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 
 const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
@@ -19,6 +24,8 @@ export default function RoofShingleCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roofing-shingles", "Roof Shingle Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -49,6 +56,26 @@ export default function RoofShingleCalc() {
   const nails = Math.ceil(squares * 4);
   const underlayment = Math.ceil(areaWithWaste / 400);
 
+  const projectInputs: Record<string, number> = {
+    length: lenNum,
+    width: widNum,
+    pitch: pitchNum,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    roofArea,
+    areaWithWaste,
+    squares,
+    bundles,
+    nails,
+    underlayment,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Shingle Bundles", quantity: bundles, unit: "bundles", category: "roofing" },
+    { name: "Underlayment", quantity: underlayment, unit: "rolls", category: "roofing" },
+    { name: "Nails", quantity: nails, unit: "lb boxes", category: "hardware" },
+  ];
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -72,23 +99,7 @@ export default function RoofShingleCalc() {
             <h3 className="text-sm font-semibold tracking-tight">Roof Parameters</h3>
           </div>
 
-          <fieldset className="grid grid-cols-2 gap-2 mb-5">
-            <legend className="sr-only">Roof shape</legend>
-            <button
-              type="button"
-              onClick={() => setRoofShape("gable")}
-              className={`border rounded-lg py-2.5 text-xs font-semibold transition-all active:scale-[0.97] ${roofShape === "gable" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}
-            >
-              Gable Roof
-            </button>
-            <button
-              type="button"
-              onClick={() => setRoofShape("hip")}
-              className={`border rounded-lg py-2.5 text-xs font-semibold transition-all active:scale-[0.97] ${roofShape === "hip" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}
-            >
-              Hip Roof
-            </button>
-          </fieldset>
+          <Select label="Roof Shape" value={roofShape} onChange={(v) => setRoofShape(v as "gable" | "hip")} options={[{ value: "gable", label: "Gable Roof" }, { value: "hip", label: "Hip Roof" }]} />
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label="Building Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 40" />
@@ -100,6 +111,7 @@ export default function RoofShingleCalc() {
           </div>
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -111,9 +123,21 @@ export default function RoofShingleCalc() {
           placeholder="e.g. House Roof"
           projectsLabel="Saved Projects:"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <RoofShinglesDiagram shape={roofShape} length={lenNum} width={widNum} pitch={pitchNum} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Shingle Material Output</h3>
           <div className="flex flex-col gap-5">

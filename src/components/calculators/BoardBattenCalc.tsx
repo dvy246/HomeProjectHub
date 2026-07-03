@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function BoardBattenCalc() {
   const [wallWidth, setWallWidth] = useState("120");
@@ -9,6 +12,8 @@ export default function BoardBattenCalc() {
   const [boardWidth, setBoardWidth] = useState("5.5");
   const [battenWidth, setBattenWidth] = useState("1.5");
   const [waste, setWaste] = useState("10");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("board-batten", "Board and Batten Calculator");
 
   const ww = parseNumber(wallWidth);
   const wh = parseNumber(wallHeight);
@@ -22,6 +27,14 @@ export default function BoardBattenCalc() {
   const battenLf = (bayCount * wh) / 12;
   const boardLfWaste = boardLf * (1 + ws);
   const battenLfWaste = battenLf * (1 + ws);
+
+  const projectInputs = { wallWidth: ww, wallHeight: wh, boardWidth: bw, battenWidth: btw, waste: ws };
+  const projectResults = { boards, battens: bayCount, boardLf, battenLf, boardLfWaste, battenLfWaste };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Boards", quantity: boards, unit: "pieces", category: "siding" },
+    { name: "Batten Strips", quantity: bayCount, unit: "pieces", category: "siding" },
+    { name: "Nails (est)", quantity: Math.ceil((boards + bayCount) * 8), unit: "nails", category: "siding" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -37,6 +50,14 @@ export default function BoardBattenCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <Card>
           <h3 className="text-sm font-semibold mb-3">Materials Needed</h3>
           <div className="flex flex-col gap-3">

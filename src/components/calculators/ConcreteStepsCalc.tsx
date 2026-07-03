@@ -8,6 +8,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteStepsDiagram from "../diagrams/ConcreteStepsDiagram";
 
@@ -23,6 +26,8 @@ export default function ConcreteStepsCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-steps", "Concrete Steps Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -77,6 +82,26 @@ export default function ConcreteStepsCalc() {
   const selectedBags = calculateConcreteBags(totalVolumeWithWasteCuFt, bagSize);
   const estimatedWeightLbs = estimateConcreteWeightLbs(totalVolumeWithWasteCuFt);
 
+  const projectInputs: Record<string, number> = {
+    numSteps: stepsCount,
+    stepWidth: widthVal,
+    stepRise: riseVal,
+    stepRun: runVal,
+    landingDepth: landingVal,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    totalVolumeCuFt: totalVolumeWithWasteCuFt,
+    volumeCuYd: totalVolumeCuYd,
+    volumeCuM: totalVolumeCuM,
+    bagCount: selectedBags,
+    weightLbs: estimatedWeightLbs,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix", quantity: selectedBags, unit: `bags (${bagSize})`, category: "concrete" },
+    { name: "Ready-Mix Concrete", quantity: Number(totalVolumeCuYd.toFixed(2)), unit: "cu yd", category: "concrete" },
+  ];
+
   const handleSaveRoom = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -129,6 +154,7 @@ export default function ConcreteStepsCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -141,6 +167,15 @@ export default function ConcreteStepsCalc() {
           placeholder="e.g. Porch Stairs"
           projectsLabel="Apply Saved Dimensions:"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

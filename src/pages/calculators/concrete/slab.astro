@@ -5,12 +5,12 @@ import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/slab/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/slab/";
 
 const title = "Concrete Slab Calculator";
 const description = "Calculate concrete volume in cubic yards, cubic feet, and number of bags needed for your rectangular slab. Perfect for patios, driveways, and shed slabs.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -29,15 +29,15 @@ const schema = graphSchema(
     "Follow these three steps to calculate how much concrete you need for a rectangular slab.",
     [
       {
-        heading: "Find the surface area",
+        name: "Find the surface area",
         text: "Measure the length and width of the slab in feet. Multiply them: Area = Length × Width.",
       },
       {
-        heading: "Convert thickness to feet",
+        name: "Convert thickness to feet",
         text: "Divide your slab thickness in inches by 12. For a 4-inch slab: 4 ÷ 12 = 0.333 feet.",
       },
       {
-        heading: "Calculate cubic yards",
+        name: "Calculate cubic yards",
         text: "Multiply area by thickness in feet to get cubic feet. Divide by 27 for cubic yards: (Area × Thickness ft) ÷ 27.",
       },
     ]

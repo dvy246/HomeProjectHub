@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const RATIOS: Record<string, [number, number, number]> = {
   "1:2:3 (Standard)": [1, 2, 3],
@@ -16,6 +20,8 @@ export default function MixRatioCalc() {
   const [unit, setUnit] = useState<"cuyd" | "cuft">("cuyd");
   const [ratioLabel, setRatioLabel] = useState<string>("1:2:3 (Standard)");
   const [cementBagSize, setCementBagSize] = useState<string>("94");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("mix-ratio", "Concrete Mix Ratio Calculator");
 
   const vol = parseNumber(volume);
   const volCuFt = unit === "cuyd" ? vol * 27 : vol;
@@ -43,6 +49,15 @@ export default function MixRatioCalc() {
 
   const mixName = ratioLabel;
 
+  const projectInputs = { volume: vol, bagLbs };
+  const projectResults = { cementBags, sandCubicYards, gravelCubicYards, sandTons, gravelTons, waterGallons, cementVolume, sandVolume, gravelVolume, volCuFt };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Cement", quantity: cementBags, unit: "bags", category: "concrete" },
+    { name: "Sand", quantity: sandCubicYards, unit: "cu yd", category: "aggregate" },
+    { name: "Gravel", quantity: gravelCubicYards, unit: "cu yd", category: "aggregate" },
+    { name: "Water", quantity: waterGallons, unit: "gallons", category: "other" },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
@@ -52,13 +67,7 @@ export default function MixRatioCalc() {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label={`Volume (${unit === "cuyd" ? "cubic yards" : "cubic feet"})`} type="number" inputMode="decimal" value={volume} onChange={(e) => setVolume(e.target.value)} placeholder="e.g. 1" />
-            <div>
-              <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Unit</p>
-              <div className="grid grid-cols-2 gap-2">
-                <button type="button" onClick={() => setUnit("cuyd")} className={`border rounded-lg py-2 text-xs font-semibold transition-all ${unit === "cuyd" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Cubic Yards</button>
-                <button type="button" onClick={() => setUnit("cuft")} className={`border rounded-lg py-2 text-xs font-semibold transition-all ${unit === "cuft" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Cubic Feet</button>
-              </div>
-            </div>
+            <Select label="Unit" value={unit} onChange={(v) => setUnit(v as "cuyd" | "cuft")} options={[{ value: "cuyd", label: "Cubic Yards" }, { value: "cuft", label: "Cubic Feet" }]} />
           </div>
         </Card>
 
@@ -66,20 +75,7 @@ export default function MixRatioCalc() {
           <div className="border-b border-[var(--border)] pb-4 mb-5">
             <h3 className="text-sm font-semibold tracking-tight">Mix Design</h3>
           </div>
-          <div className="mb-4">
-            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Mix Ratio (Cement : Sand : Gravel)</p>
-            <div className="grid grid-cols-1 gap-1.5">
-              {Object.keys(RATIOS).map((label) => {
-                const [c, s, g] = RATIOS[label];
-                return (
-                  <button key={label} type="button" onClick={() => setRatioLabel(label)} className={`flex items-center justify-between px-3 py-2 border rounded-lg text-xs transition-all ${ratioLabel === label ? "border-[var(--accent)] bg-[var(--accent)]/5 text-[var(--fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>
-                    <span className="font-semibold font-mono">{c}:{s}:{g}</span>
-                    <span className="text-[10px] text-[var(--fg-muted)]">{label.replace(/^\d[\d.:]+\s*/, "")}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <Select label="Mix Ratio (Cement : Sand : Gravel)" value={ratioLabel} onChange={setRatioLabel} options={Object.keys(RATIOS).map((label) => ({ value: label, label: `${RATIOS[label][0]}:${RATIOS[label][1]}:${RATIOS[label][2]} — ${label.replace(/^\d[\d.:]+\s*/, "")}` }))} />
           <Input label="Cement Bag Weight (lbs)" type="number" inputMode="decimal" value={cementBagSize} onChange={(e) => setCementBagSize(e.target.value)} placeholder="e.g. 94" helperText="Standard bag is 94 lbs" />
         </Card>
       </div>
@@ -123,6 +119,15 @@ export default function MixRatioCalc() {
           </div>
         </div>
 
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+
         <Card>
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Volume Breakdown</h3>
           <div className="flex flex-col gap-1">
@@ -140,7 +145,7 @@ export default function MixRatioCalc() {
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
               <span className="text-sm font-medium">Gravel Volume</span>
-              <span className="text-sm font-bold tabular-nums">{gravelVolume.toFixed(2)} cu ft</span>
+              <span className="text-sm bold tabular-nums">{gravelVolume.toFixed(2)} cu ft</span>
             </div>
           </div>
         </Card>

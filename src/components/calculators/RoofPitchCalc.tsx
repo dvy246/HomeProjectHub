@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import RoofPitchDiagram from "../diagrams/RoofPitchDiagram";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function RoofPitchCalc() {
   const [rise, setRise] = useState<string>("6");
   const [run, setRun] = useState<string>("12");
   const [buildingLength, setBuildingLength] = useState<string>("40");
   const [buildingWidth, setBuildingWidth] = useState<string>("30");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roof-pitch", "Roof Pitch Calculator");
 
   const riseNum = parseNumber(rise) || 0.001;
   const runNum = parseNumber(run) || 0.001;
@@ -24,6 +30,12 @@ export default function RoofPitchCalc() {
   const rafterLength = (bWid / 2) * pitchFactor;
 
   const pitchCategory = slopePercent < 10 ? "Low Slope" : slopePercent < 25 ? "Conventional" : slopePercent < 50 ? "Steep" : "Very Steep";
+
+  const projectInputs = { rise: riseNum, run: runNum, buildingLength: bLen, buildingWidth: bWid };
+  const projectResults = { pitchDegrees, slopePercent, pitchFactor, roofArea, rafterLength };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Rafter Lumber", quantity: rafterLength * 2, unit: "linear ft", category: "lumber" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -47,24 +59,14 @@ export default function RoofPitchCalc() {
           </div>
         </Card>
 
-        <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Common Roof Pitches</h3>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            {[
-              { pitch: "2:12", use: "Low-slope / shed" },
-              { pitch: "4:12", use: "Standard residential" },
-              { pitch: "6:12", use: "Common gable" },
-              { pitch: "8:12", use: "Steep residential" },
-              { pitch: "10:12", use: "Very steep" },
-              { pitch: "12:12", use: "A-frame / cabin" },
-            ].map((p) => (
-              <button key={p.pitch} type="button" onClick={() => setRise(p.pitch.split(":")[0])} className="flex flex-col items-start p-2 border border-[var(--border)] rounded-lg hover:border-[var(--border-hover)] transition-colors text-left">
-                <span className="font-mono font-bold text-[var(--fg)]">{p.pitch}</span>
-                <span className="text-[10px] text-[var(--fg-muted)]">{p.use}</span>
-              </button>
-            ))}
-          </div>
-        </Card>
+        <Select label="Common Pitch Preset" value={rise} onChange={setRise} options={[
+          { value: "2", label: "2:12 — Low-slope / shed" },
+          { value: "4", label: "4:12 — Standard residential" },
+          { value: "6", label: "6:12 — Common gable" },
+          { value: "8", label: "8:12 — Steep residential" },
+          { value: "10", label: "10:12 — Very steep" },
+          { value: "12", label: "12:12 — A-frame / cabin" },
+        ]} />
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
@@ -107,6 +109,15 @@ export default function RoofPitchCalc() {
             </div>
           </div>
         </div>
+
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
 
         {bLen > 0 && bWid > 0 && (
           <Card>

@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const STONE_TYPES = [
   { key: "concrete", label: "Concrete" },
@@ -27,6 +30,8 @@ export default function StoneWeightCalc() {
   const [thickness, setThickness] = useState("2");
   const [quantity, setQuantity] = useState("1");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("stone-weight", "Stone Weight Calculator");
+
   const s = stone;
   const l = parseNumber(length);
   const w = parseNumber(width);
@@ -41,6 +46,10 @@ export default function StoneWeightCalc() {
   const weightTons = weightLbs / 2000;
   const weight = calculateWeight(s, totalVol);
   const displayName = weight.materialName || s.charAt(0).toUpperCase() + s.slice(1);
+
+  const projectInputs = { length: l, width: w, thickness: t, quantity: qty };
+  const projectResults = { totalVolCuIn: totalVol, cuFt, weightLbs, weightKg, weightTons };
+  const projectMaterials: MaterialItem[] = [{ name: "Stone", quantity: weightLbs, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -86,6 +95,14 @@ export default function StoneWeightCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

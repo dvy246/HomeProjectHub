@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import UnitToggle from "../ui/UnitToggle";
 import BagSizeSelector from "../ui/BagSizeSelector";
@@ -8,6 +9,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateCircleArea, calculateRectArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteColumnDiagram from "../diagrams/ConcreteColumnDiagram";
 
@@ -23,6 +27,8 @@ export default function ConcreteColumnCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-column", "Concrete Column Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -74,6 +80,24 @@ export default function ConcreteColumnCalc() {
   const selectedBags = calculateConcreteBags(volWithWaste, bagSize);
   const weight = estimateConcreteWeightLbs(volWithWaste);
 
+  const projectInputs: Record<string, number> = {
+    ...(columnShape === "round" ? { diameter: diaNum } : { sideLength: sideNum }),
+    height: hNum,
+    quantity: qtyNum,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    totalVolumeCuFt: volWithWaste,
+    volumeCuYd: volCuYd,
+    volumeCuM: volCuM,
+    bagCount: selectedBags,
+    weightLbs: weight,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix", quantity: selectedBags, unit: `bags (${bagSize})`, category: "concrete" },
+    { name: "Ready-Mix Concrete", quantity: Number(volCuYd.toFixed(2)), unit: "cu yd", category: "concrete" },
+  ];
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -101,10 +125,7 @@ export default function ConcreteColumnCalc() {
             <UnitToggle unitSystem={unitSystem} onChange={setUnitSystem} />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 mb-5">
-            <button type="button" onClick={() => setColumnShape("round")} className={`border rounded-lg py-2.5 text-xs font-semibold transition-colors motion-safe:active:scale-[0.97] ${columnShape === "round" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Round Column</button>
-            <button type="button" onClick={() => setColumnShape("square")} className={`border rounded-lg py-2.5 text-xs font-semibold transition-colors motion-safe:active:scale-[0.97] ${columnShape === "square" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Square Column</button>
-          </div>
+          <Select label="Column Shape" value={columnShape} onChange={(v) => setColumnShape(v as "round" | "square")} options={[{ value: "round", label: "Round Column" }, { value: "square", label: "Square Column" }]} />
 
           <div className="flex flex-col gap-4 mb-5">
             {columnShape === "round" ? (
@@ -122,6 +143,7 @@ export default function ConcreteColumnCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -131,6 +153,15 @@ export default function ConcreteColumnCalc() {
           onApplyRoom={applySavedRoom}
           placeholder="e.g. Porch Columns"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

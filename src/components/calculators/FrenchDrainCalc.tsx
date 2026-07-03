@@ -4,6 +4,9 @@ import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
 import FrenchDrainDiagram from "../diagrams/FrenchDrainDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const GRAVEL = { tonsPerCuYd: 1.4, label: "Drainage Gravel" };
 
@@ -11,6 +14,8 @@ export default function FrenchDrainCalc() {
   const [length, setLength] = useState("50");
   const [width, setWidth] = useState("12");
   const [depth, setDepth] = useState("18");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("french-drain", "French Drain Calculator");
 
   const l = parseNumber(length);
   const w = parseNumber(width);
@@ -21,6 +26,14 @@ export default function FrenchDrainCalc() {
   const tons = cuYd * GRAVEL.tonsPerCuYd;
   const pipeLength = l;
   const fabricSqFt = (l * (w / 12)) + (l * (d / 12) * 2);
+
+  const projectInputs = { length: l, width: w, depth: d };
+  const projectResults = { trenchVolCuFt: trenchVol, gravelCuYd: cuYd, gravelTons: tons, pipeLength, fabricSqFt };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Perforated Pipe", quantity: pipeLength, unit: "lf", category: "drainage" },
+    { name: "Drainage Gravel", quantity: cuYd, unit: "cu yd", category: "aggregate" },
+    { name: "Filter Fabric", quantity: fabricSqFt, unit: "sq ft", category: "drainage" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -58,6 +71,14 @@ export default function FrenchDrainCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

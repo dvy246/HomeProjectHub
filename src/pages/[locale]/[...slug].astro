@@ -4,7 +4,7 @@ import MaintenancePlanner from "../../components/maintenance/MaintenancePlanner"
 import CostEstimator from "../../components/maintenance/CostEstimator";
 import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type Locale } from "../../i18n";
 import { t } from "../../i18n";
-import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../lib/schema";
+import { graphSchema, webPageSchema } from "../../lib/schema";
 
 export function getStaticPaths() {
   const contentPaths = [
@@ -34,8 +34,8 @@ const locale = Astro.props.locale as Locale;
 const slugStr = Astro.props.slug;
 const tr = (key: string) => t(locale, key);
 const canonical = slugStr
-  ? `https://homeprojecthub.com/${locale}/${slugStr}/`
-  : `https://homeprojecthub.com/${locale}/`;
+  ? `https://homeplanninghub.com/${locale}/${slugStr}/`
+  : `https://homeplanninghub.com/${locale}/`;
 
 function webPage(s: string) {
   return { schema: graphSchema(webPageSchema({ url: canonical, topicName: s })) };
@@ -345,8 +345,39 @@ const lp = (p: string) => `/${locale}${p}`;
         </nav>
         <header class="pb-6 mb-2 border-b border-[var(--border)]">
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">{h1}</h1>
+          <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">{tr('contact.subtitle')}</p>
         </header>
-        <p class="text-sm text-[var(--fg-secondary)]">{tr('contact.subtitle')}</p>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 break-words">
+          <div class="md:col-span-8">
+            <form class="flex flex-col gap-4" action="https://formspree.io/f/meojvddk" method="POST">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1.5">
+                  <label for="contact-name" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">{tr('contact.name') || 'Name'}</label>
+                  <input id="contact-name" name="name" type="text" autocomplete="name" required placeholder="e.g. John Doe" class="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label for="contact-email" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">{tr('contact.email') || 'Email'}</label>
+                  <input id="contact-email" name="email" type="email" autocomplete="email" required spellcheck="false" placeholder="e.g. john@example.com" class="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors" />
+                </div>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="contact-message" class="text-xs font-medium text-[var(--fg-secondary)] cursor-pointer">{tr('contact.message') || 'Message'}</label>
+                <textarea id="contact-message" name="message" required rows={5} placeholder="Your inquiry details" class="w-full text-sm bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg p-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:bg-[var(--bg)] transition-colors"></textarea>
+              </div>
+              <button type="submit" class="w-full sm:w-auto self-start mt-2 inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-all active:scale-[0.98]">{tr('contact.send') || 'Send Message'}</button>
+            </form>
+          </div>
+          <div class="md:col-span-4 flex flex-col gap-6 text-sm text-[var(--fg-secondary)]">
+            <section>
+              <h2 class="font-bold text-[var(--fg)] mb-1 text-sm">{tr('contact.feedback') || 'Feedback & Inquiries'}</h2>
+              <p class="text-xs leading-relaxed text-pretty">{tr('contact.feedbackDesc') || 'We review suggestions for new calculator tools and mathematical corrections weekly.'}</p>
+            </section>
+            <section>
+              <h2 class="font-bold text-[var(--fg)] mb-1 text-sm">{tr('contact.email') || 'Email'}</h2>
+              <p class="text-xs font-mono">support@homeplanninghub.com</p>
+            </section>
+          </div>
+        </div>
       </>
     )}
 
@@ -384,10 +415,96 @@ const lp = (p: string) => `/${locale}${p}`;
       </>
     )}
 
-    {slugStr && ['privacy', 'terms', 'disclaimer'].includes(slugStr) && (
+    {slugStr === 'privacy' && (
       <>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{h1}</h1>
-        <p class="text-sm text-[var(--fg-muted)]">{description}</p>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')} class="hover:text-[var(--fg)] transition-colors">{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">Privacy Policy</span>
+        </nav>
+        <header class="pb-6 mb-2 border-b border-[var(--border)]">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">Privacy Policy</h1>
+          <p class="text-xs text-[var(--fg-muted)] font-mono">Last Updated: June 30, 2026</p>
+        </header>
+        <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed break-words">
+          <p>At HomePlanningHub, accessible from https://homeplanninghub.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by HomePlanningHub and how we use it.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Consent</h2>
+          <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Information We Collect</h2>
+          <p>The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information.</p>
+          <p>If you contact us directly, we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">How We Use Your Information</h2>
+          <p>We use the information we collect in various ways, including to:</p>
+          <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+            <li>Provide, operate, and maintain our website.</li>
+            <li>Improve, personalize, and expand our website.</li>
+            <li>Understand and analyze how you use our website.</li>
+            <li>Develop new products, services, features, and functionality.</li>
+          </ul>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Analytics</h2>
+          <p>HomePlanningHub does not load Google Analytics unless a valid analytics ID is configured for the production site. If analytics is enabled, it may collect standard usage data such as page views, device information, and approximate geography to help improve the website.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Local Browser Storage (LocalStorage)</h2>
+          <p>To provide project workspace features, HomePlanningHub stores dimensions locally in your browser's <code>localStorage</code>. This data never leaves your device and is not transmitted to our servers. You can clear this data at any time by clearing your browser cache.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Advertising Partners (Google AdSense)</h2>
+          <p>Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on HomePlanningHub, which are sent directly to users' browsers. They automatically receive your IP address when this occurs.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Affiliate Links</h2>
+          <p>Some outbound shopping links may be affiliate links. If you click one of those links and make a purchase, HomePlanningHub may earn a commission at no additional cost to you.</p>
+        </div>
+      </>
+    )}
+
+    {slugStr === 'terms' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')} class="hover:text-[var(--fg)] transition-colors">{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">Terms of Service</span>
+        </nav>
+        <header class="pb-6 mb-2 border-b border-[var(--border)]">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">Terms of Service</h1>
+          <p class="text-xs text-[var(--fg-muted)] font-mono">Last Updated: June 30, 2026</p>
+        </header>
+        <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed break-words">
+          <p>Welcome to HomePlanningHub. By accessing our website at https://homeplanninghub.com, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">1. License to Use</h2>
+          <p>Permission is granted to temporarily use the interactive calculators and materials planning utilities on HomePlanningHub for personal, non-commercial structural planning. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+          <ul class="list-disc pl-5 flex flex-col gap-2 text-sm text-[var(--fg-secondary)]">
+            <li>Modify or copy the source code or formula structures.</li>
+            <li>Use the materials for any commercial venture or public display without attribution.</li>
+            <li>Attempt to reverse engineer any calculations or layout scripts.</li>
+            <li>Remove any copyright or other proprietary notations from the materials.</li>
+          </ul>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">2. Disclaimer</h2>
+          <p>The materials and calculator outputs on HomePlanningHub are provided on an 'as is' basis. HomePlanningHub makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property.</p>
+          <p>Furthermore, HomePlanningHub does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site. Always consult a certified structural engineer before ordering structural materials.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">3. Limitations of Liability</h2>
+          <p>In no event shall HomePlanningHub or its suppliers be liable for any damages (including, without limitation, damages for loss of materials, structural failure, project delays, or cost overruns) arising out of the use or inability to use the calculators on HomePlanningHub.</p>
+        </div>
+      </>
+    )}
+
+    {slugStr === 'disclaimer' && (
+      <>
+        <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+          <a href={lp('/')} class="hover:text-[var(--fg)] transition-colors">{tr('nav.home')}</a>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)] font-medium">Disclaimer</span>
+        </nav>
+        <header class="pb-6 mb-2 border-b border-[var(--border)]">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">Disclaimer</h1>
+          <p class="text-xs text-[var(--fg-muted)] font-mono">Last Updated: June 30, 2026</p>
+        </header>
+        <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed break-words">
+          <p>HomePlanningHub provides material estimation calculators for informational and planning purposes only. The tools on this website are not engineering instruments, design tools, or substitutes for professional consultation.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Accuracy of Estimates</h2>
+          <p>While we strive for accuracy, all calculator outputs are estimates. Actual material requirements may vary based on product specifications, site conditions, installation methods, waste factors, and other variables. Always verify estimates against manufacturer specifications and consult a qualified professional.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Professional Advice</h2>
+          <p>Nothing on this website constitutes professional engineering, architectural, or construction advice. If your project involves structural loads, foundation design, electrical wiring, plumbing, or any work that could affect the safety or habitability of a structure, consult a licensed professional in your jurisdiction before proceeding.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Affiliate Disclosure</h2>
+          <p>Some outbound shopping links on HomePlanningHub may be affiliate links. If you click an affiliate link and make a purchase, HomePlanningHub may earn a commission at no additional cost to you. This does not affect the estimates shown by our calculators.</p>
+          <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">Changes</h2>
+          <p>We may update this disclaimer from time to time. Changes are effective immediately upon posting. Continued use of the site after any changes constitutes acceptance of the new terms.</p>
+        </div>
       </>
     )}
 

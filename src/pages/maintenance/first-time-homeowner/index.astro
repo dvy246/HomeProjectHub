@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/maintenance/first-time-homeowner/";
+const canonical = "https://homeplanninghub.com/maintenance/first-time-homeowner/";
 const title = "First-Time Homeowner Maintenance Checklist";
 const description = "Essential first-year home maintenance checklist for new homeowners. Learn what to inspect, maintain, and budget for in your first 12 months.";
 const PAGE_PATH = "/maintenance/first-time-homeowner/";
@@ -31,10 +31,10 @@ const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "First-Time Homeowner", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "First-Time Homeowner Maintenance" }),
   howToSchema("Complete first-year home maintenance", "A structured guide for new homeowners covering essential monthly, seasonal, and one-time tasks.", [
-    { heading: "Learn home systems", text: "Locate shutoff valves, electrical panel, and key system components on day one." },
-    { heading: "Set monthly routines", text: "Build habits around filter changes, detector tests, and property walks." },
-    { heading: "Budget for maintenance", text: "Set aside 1% of home value annually for preventive maintenance." },
-    { heading: "Build a tool kit", text: "Essential tools every homeowner needs for basic repairs and maintenance." },
+    { name: "Learn home systems", text: "Locate shutoff valves, electrical panel, and key system components on day one." },
+    { name: "Set monthly routines", text: "Build habits around filter changes, detector tests, and property walks." },
+    { name: "Budget for maintenance", text: "Set aside 1% of home value annually for preventive maintenance." },
+    { name: "Build a tool kit", text: "Essential tools every homeowner needs for basic repairs and maintenance." },
   ]),
   faqPageSchema([
     { q: "What should I do immediately after buying a home?", a: "Locate the main water shutoff, change all locks, test all smoke/CO detectors, clean gutters, change HVAC filter, and create a home file for all documents and warranties." },

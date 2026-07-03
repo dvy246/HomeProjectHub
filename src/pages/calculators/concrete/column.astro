@@ -4,12 +4,12 @@ import ConcreteColumnCalc from "../../../components/calculators/ConcreteColumnCa
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/column/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/column/";
 
 const title = "Concrete Column Calculator";
 const description = "Calculate concrete volume for round and square columns. Computes cubic yards, bag counts, and weight for any number of structural columns.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -27,15 +27,15 @@ const schema = graphSchema(
     "Determine the volume of concrete needed for round or square structural columns.",
     [
       {
-        heading: "Choose the column shape",
+        name: "Choose the column shape",
         text: "Select round or square. For round columns, measure the diameter. For square, measure the side length.",
       },
       {
-        heading: "Measure height and calculate area",
+        name: "Measure height and calculate area",
         text: "For round: area = π × (diameter/2)². For square: area = side × side. All in feet.",
       },
       {
-        heading: "Multiply by height and quantity",
+        name: "Multiply by height and quantity",
         text: "Volume = area × height (ft) × number of columns. Convert cubic feet to cubic yards by dividing by 27.",
       },
     ]

@@ -126,6 +126,23 @@
   }
 
   #mobile-nav { overscroll-behavior: contain; }
+
+  svg.diagram-svg { overflow: visible; }
+  svg.diagram-svg .diagram-part { cursor: pointer; transition: fill-opacity 0.25s ease, stroke-opacity 0.25s ease, filter 0.25s ease; }
+  svg.diagram-svg .diagram-part:hover { fill-opacity: 0.25; stroke-opacity: 1; filter: brightness(1.1); }
+  svg.diagram-svg .diagram-part--active { fill-opacity: 0.35; stroke-width: 2.5; filter: brightness(1.2) drop-shadow(0 0 4px rgb(0 0 0 / 0.15)); }
+  svg.diagram-svg .diagram-dim { transition: stroke 0.2s ease, opacity 0.2s ease; cursor: pointer; }
+  svg.diagram-svg .diagram-dim:hover { stroke: var(--accent); opacity: 1; }
+  svg.diagram-svg .diagram-label { transition: fill 0.2s ease; }
+  svg.diagram-svg .diagram-label:hover { fill: var(--accent); }
+  svg.diagram-svg .diagram-annotate { transition: opacity 0.2s ease; cursor: help; }
+  svg.diagram-svg .diagram-annotate:hover { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    svg.diagram-svg .diagram-part, svg.diagram-svg .diagram-dim, svg.diagram-svg .diagram-label, svg.diagram-svg .diagram-annotate {
+      transition-duration: 0.2s;
+      transition-property: fill-opacity, stroke-opacity, filter, stroke, opacity, fill;
+    }
+  }
 }
 
 @utility card-elevated {
@@ -155,4 +172,13 @@
   transition: grid-template-rows 0.2s ease;
   &[data-open="true"] { grid-template-rows: 1fr; }
   & > div { overflow: hidden; }
+}
+
+@media print {
+  header, footer, nav, #theme-toggle, #mobile-nav-toggle, .no-print { display: none !important; }
+  body { background: white !important; color: black !important; }
+  main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  :root { --bg: white; --fg: black; --fg-secondary: #333; --fg-muted: #666; --border: #ccc; --card-bg: white; --bg-inset: #f5f5f5; --bg-muted: #eee; --accent: #000; }
+  .diagram-part, .diagram-dim, .diagram-label { transition: none !important; }
+  input[type="checkbox"] { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }

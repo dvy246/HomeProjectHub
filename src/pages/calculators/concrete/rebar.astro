@@ -4,12 +4,12 @@ import RebarCalc from "../../../components/calculators/RebarCalc";
 import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
-const canonical = "https://homeprojecthub.com/calculators/concrete/rebar/";
+const canonical = "https://homeplanninghub.com/calculators/concrete/rebar/";
 
 const title = "Rebar Calculator";
 const description = "Calculate rebar length, weight, and quantity for concrete slabs. Estimate number of bars, ties, and total tonnage for any rebar size and spacing pattern.";
 
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 const schema = graphSchema(
   breadcrumbListSchema([
     { name: "Home", path: "/" },
@@ -28,15 +28,15 @@ const schema = graphSchema(
     "Follow these steps to estimate rebar needed for a rectangular slab.",
     [
       {
-        heading: "Determine bar spacing",
+        name: "Determine bar spacing",
         text: "Standard residential slabs use #4 rebar at 18–24 inches on-center. Driveways and heavy-load slabs use 12–18 inch spacing. Closer spacing means more bars and higher load capacity.",
       },
       {
-        heading: "Count bars in each direction",
+        name: "Count bars in each direction",
         text: "Divide the slab length (in inches) by the spacing, then add 1 for the starting bar. Do the same for the width. This gives the number of long-direction and short-direction bars.",
       },
       {
-        heading: "Calculate total length and weight",
+        name: "Calculate total length and weight",
         text: "Multiply each bar count by its respective dimension, sum both directions, and multiply by the number of layers. Apply waste factor (5–10%) for lap splices. Multiply by the bar weight per foot and divide by 2000 for tons.",
       },
     ]

@@ -1,8 +1,8 @@
-# HomeProjectHub
+# HomePlanningHub
 
 Free construction and home improvement planning calculators built with Astro.js.
 
-**Live:** https://homeprojecthub.com
+**Live:** https://homeplanninghub.com
 
 ## Calculators
 

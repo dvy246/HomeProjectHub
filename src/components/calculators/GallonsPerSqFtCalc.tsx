@@ -2,11 +2,16 @@ import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function GallonsPerSqFtCalc() {
   const [area, setArea] = useState("400");
   const [gallons, setGallons] = useState("1");
   const [coatings, setCoatings] = useState("1");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("gallons-per-sq-ft", "Gallons Per Sq Ft Calculator");
 
   const a = parseNumber(area);
   const gal = parseNumber(gallons);
@@ -14,6 +19,10 @@ export default function GallonsPerSqFtCalc() {
   const gpsf = a > 0 ? gal / a : 0;
   const coveragePerGal = gal > 0 ? a / gal : 0;
   const totalNeeded = a > 0 ? (a / (coveragePerGal || 1)) * coats : 0;
+
+  const projectInputs = { area: a, gallons: gal, coats };
+  const projectResults = { gallonsPerSqFt: gpsf, coveragePerGalSqFt: coveragePerGal, totalGallonsNeeded: totalNeeded };
+  const projectMaterials: MaterialItem[] = [{ name: "Paint/Coating", quantity: totalNeeded, unit: "gal", category: "coating" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -44,6 +53,14 @@ export default function GallonsPerSqFtCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

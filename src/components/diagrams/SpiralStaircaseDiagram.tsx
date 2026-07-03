@@ -1,4 +1,5 @@
 import { useId } from "react";
+import DiagramPart from "./DiagramPart";
 
 interface Props {
   diameter: number;
@@ -23,29 +24,38 @@ export default function SpiralStaircaseDiagram({ diameter, numSteps, unitSystem 
   const r = sd / 2;
 
   return (
-    <svg viewBox={`0 0 ${viewSize} ${viewSize}`} className="w-full h-auto" role="img" aria-label={`Spiral staircase: ${d} diameter, ${n} steps`}>
+    <svg viewBox={`0 0 ${viewSize} ${viewSize}`} className="w-full h-auto diagram-svg" role="img" aria-label={`Spiral staircase: ${d} diameter, ${n} steps`}>
       <defs>
         <marker id={`arr-${id}`} markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
           <polygon points="0 0, 7 2.5, 0 5" fill="var(--fg-muted)" />
         </marker>
       </defs>
 
-      <circle cx={cx} cy={cy} r={r} fill="var(--accent)" fillOpacity="0.03" stroke="var(--border-strong)" strokeWidth="1.5" />
-      <circle cx={cx} cy={cy} r={r * 0.15} fill="none" stroke="var(--border-strong)" strokeWidth="0.75" />
+      <DiagramPart title="Staircase outer diameter">
+        <circle cx={cx} cy={cy} r={r} fill="var(--accent)" fillOpacity="0.03" stroke="var(--border-strong)" strokeWidth="1.5" />
+      </DiagramPart>
+      <g role="button" tabIndex={0} aria-label="Center pole" aria-pressed={false}>
+        <title>Center pole</title>
+        <circle cx={cx} cy={cy} r={r * 0.15} fill="none" stroke="var(--border-strong)" strokeWidth="0.75" className="diagram-part" />
+      </g>
 
       {Array.from({ length: n }, (_, i) => {
         const angle = (i * 360) / n - 90;
         const rad = (angle * Math.PI) / 180;
         const x = cx + r * Math.cos(rad);
         const y = cy + r * Math.sin(rad);
-        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--accent)" strokeWidth="0.75" opacity="0.4" />;
+        return (
+          <DiagramPart key={i} title={`Step ${i + 1}`}>
+            <line x1={cx} y1={cy} x2={x} y2={y} stroke="var(--accent)" strokeWidth="0.75" opacity="0.4" />
+          </DiagramPart>
+        );
       })}
 
-      <line x1={cx - r} y1={cy + r + 12} x2={cx + r} y2={cy + r + 12} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={cx} y={cy + r + 26} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600">{d.toFixed(0)}</text>
-      <text x={cx} y={cy + r + 40} textAnchor="middle" fill="var(--fg-muted)" fontSize="10">Diameter ({unit})</text>
+      <line x1={cx - r} y1={cy + r + 12} x2={cx + r} y2={cy + r + 12} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={cx} y={cy + r + 26} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{d.toFixed(0)}</text>
+      <text x={cx} y={cy + r + 40} textAnchor="middle" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Diameter ({unit})</text>
 
-      <text x={cx} y={cy + 4} textAnchor="middle" fill="var(--fg-muted)" fontSize="9">{n} steps</text>
+      <text x={cx} y={cy + 4} textAnchor="middle" fill="var(--fg-muted)" fontSize="9" className="diagram-annotate">{n} steps</text>
     </svg>
   );
 }

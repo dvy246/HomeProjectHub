@@ -10,6 +10,9 @@ import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../../lib/g
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -31,6 +34,7 @@ export default function ConcreteSlabCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-slab", "Concrete Slab Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -79,6 +83,13 @@ export default function ConcreteSlabCalc() {
   const bags50 = calculateConcreteBags(totalVolumeCuFt, "50lb");
   const bags40 = calculateConcreteBags(totalVolumeCuFt, "40lb");
 
+  const projectInputs = { length: lenNum, width: widNum, thickness: thickNum, wasteFactor: parseNumber(wasteFactor) };
+  const projectResults = { volumeCuYd: totalVolumeCuYd, volumeCuM: totalVolumeCuM, bags80, bags60, bags50, bags40, weightLbs: estimatedWeightLbs };
+  const projectMaterials: MaterialItem[] = [
+    { name: `${bagSize} Concrete Mix`, quantity: selectedBags, unit: "bags", category: "Concrete" },
+    { name: "Concrete (ready-mix)", quantity: totalVolumeCuYd, unit: "cu yd", category: "Concrete" },
+  ];
+
   const handleSaveRoom = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -116,17 +127,27 @@ export default function ConcreteSlabCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
-        <SaveMeasurementCard
-          roomName={roomName}
-          onRoomNameChange={setRoomName}
-          onSave={handleSaveRoom}
-          successMessage={successMessage}
-          savedRooms={savedRooms}
-          onApplyRoom={applySavedRoom}
-          placeholder="e.g. Backyard Patio"
-          projectsLabel="Apply Saved Dimensions:"
-          showDimensions
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <SaveMeasurementCard
+            roomName={roomName}
+            onRoomNameChange={setRoomName}
+            onSave={handleSaveRoom}
+            successMessage={successMessage}
+            savedRooms={savedRooms}
+            onApplyRoom={applySavedRoom}
+            placeholder="e.g. Backyard Patio"
+            projectsLabel="Apply Saved Dimensions:"
+            showDimensions
+          />
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
+        </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

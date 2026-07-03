@@ -13,7 +13,7 @@ interface Props {
 
 const { title, description, canonical, schema, noindex, articlePubDate, articleUpdatedDate } = Astro.props;
 
-const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeprojecthub.com").toString();
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeplanninghub.com").toString();
 
 const SUPPORTED_LOCALES = ['en', 'es', 'de', 'pt', 'pl', 'it'] as const;
 const LOCALE_NAMES: Record<string, string> = { en: 'English', es: 'Español', de: 'Deutsch', pt: 'Português', pl: 'Polski', it: 'Italiano' };
@@ -25,16 +25,16 @@ const currentPath = Astro.url.pathname;
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://homeprojecthub.com/#organization",
-  name: "HomeProjectHub",
-  url: "https://homeprojecthub.com",
-  logo: "https://homeprojecthub.com/og-image.png",
+  "@id": "https://homeplanninghub.com/#organization",
+  name: "HomePlanningHub",
+  url: "https://homeplanninghub.com",
+  logo: "https://homeplanninghub.com/og-image.png",
   description: "Free home improvement planning calculators and project estimating guides for homeowners and DIY builders.",
   foundingDate: "2026",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer support",
-    email: "support@homeprojecthub.com",
+    email: "support@homeplanninghub.com",
     areaServed: "US",
     availableLanguage: "English",
   },
@@ -42,45 +42,49 @@ const organizationSchema = {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth" style="color-scheme: light dark;">
+<html lang={currentLocale} class="scroll-smooth" style="color-scheme: light dark;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="apple-mobile-web-app-title" content="HomeProjectHub" />
-    <meta name="application-name" content="HomeProjectHub" />
-    <meta name="author" content="HomeProjectHub Team" />
+    <meta name="apple-mobile-web-app-title" content="HomePlanningHub" />
+    <meta name="application-name" content="HomePlanningHub" />
+    <meta name="author" content="HomePlanningHub Team" />
     <meta name="language" content="English" />
     <meta name="country" content="US" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests" />
 
-    <title>{title} | HomeProjectHub</title>
+    <title>{title} | HomePlanningHub</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content={articlePubDate ? "article" : "website"} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} | HomeProjectHub`} />
+    <meta property="og:title" content={`${title} | HomePlanningHub`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="HomeProjectHub — free home improvement calculators and project planning tools" />
-    <meta property="og:site_name" content="HomeProjectHub" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:image:alt" content="HomePlanningHub — free home improvement calculators and project planning tools" />
+    <meta property="og:site_name" content="HomePlanningHub" />
+    <meta property="og:locale" content={currentLocale === 'en' ? 'en_US' : currentLocale === 'es' ? 'es_ES' : currentLocale === 'de' ? 'de_DE' : currentLocale === 'pt' ? 'pt_PT' : currentLocale === 'pl' ? 'pl_PL' : currentLocale === 'it' ? 'it_IT' : 'en_US'} />
     {articlePubDate && <meta property="article:published_time" content={articlePubDate.toISOString()} />}
     {articleUpdatedDate && <meta property="article:modified_time" content={articleUpdatedDate.toISOString()} />}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={`${title} | HomeProjectHub`} />
+    <meta name="twitter:title" content={`${title} | HomePlanningHub`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="HomeProjectHub — free home improvement calculators and project planning tools" />
+    <meta name="twitter:image:alt" content="HomePlanningHub — free home improvement calculators and project planning tools" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -127,16 +131,16 @@ const organizationSchema = {
     <!-- Header -->
     <header class="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-xl">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2.5 group" aria-label="HomeProjectHub home">
+        <a href="/" class="flex items-center gap-2.5 group" aria-label="HomePlanningHub home">
           <svg class="w-7 h-7 text-[var(--fg)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path d="M3 12L12 3l9 9M5 10v10h14V10" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span class="font-bold text-[15px] tracking-tight">HomeProjectHub</span>
+          <span class="font-bold text-[15px] tracking-tight">HomePlanningHub</span>
         </a>
 
         <!-- Desktop Nav -->
-        <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+        <nav class="hidden lg:flex items-center gap-1" aria-label="Main navigation">
           <a href="/calculators/concrete/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/concrete") ? "page" : undefined}>Concrete</a>
           <a href="/calculators/roofing/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/roofing") ? "page" : undefined}>Roofing</a>
           <a href="/calculators/paint/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/paint") ? "page" : undefined}>Paint</a>
@@ -144,8 +148,10 @@ const organizationSchema = {
           <a href="/maintenance/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/maintenance") ? "page" : undefined}>Maintenance</a>
           <a href="/compare/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>Compare</a>
           <a href="/guides/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/guides") ? "page" : undefined}>Guides</a>
-          <a href="/planner/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/planner") ? "page" : undefined}>Planner</a>
+          <a href="/projects/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>My Projects</a>
           <a href="/saved/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/saved/" ? "page" : undefined}>Saved</a>
+          <a href="/about/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/about/" ? "page" : undefined}>About</a>
+          <a href="/contact/" class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/contact/" ? "page" : undefined}>Contact</a>
         </nav>
 
         <div class="flex items-center gap-1">
@@ -204,7 +210,7 @@ const organizationSchema = {
           <button
             type="button"
             id="mobile-nav-toggle"
-            class="md:hidden flex items-center justify-center w-9 h-9 rounded-md border border-[var(--border)] hover:bg-[var(--bg-muted)] transition-colors"
+            class="lg:hidden flex items-center justify-center w-9 h-9 rounded-md border border-[var(--border)] hover:bg-[var(--bg-muted)] transition-colors"
             aria-label="Open menu"
             aria-expanded="false"
             aria-controls="mobile-nav"
@@ -217,7 +223,7 @@ const organizationSchema = {
       </div>
 
       <!-- Mobile Nav -->
-      <nav id="mobile-nav" class="hidden md:hidden border-t border-[var(--border)] bg-[var(--bg)]" aria-label="Mobile navigation">
+      <nav id="mobile-nav" class="hidden lg:hidden border-t border-[var(--border)] bg-[var(--bg)]" aria-label="Mobile navigation">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-0.5">
           <a href="/calculators/concrete/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/calculators/concrete") ? "page" : undefined}>Concrete</a>
           <a href="/calculators/roofing/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/calculators/roofing") ? "page" : undefined}>Roofing</a>
@@ -226,11 +232,11 @@ const organizationSchema = {
           <a href="/maintenance/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/maintenance") ? "page" : undefined}>Maintenance</a>
           <a href="/compare/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>Compare</a>
           <a href="/guides/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/guides") ? "page" : undefined}>Guides</a>
-          <a href="/planner/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/planner") ? "page" : undefined}>Planner</a>
+          <a href="/projects/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>My Projects</a>
           <a href="/saved/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath === "/saved/" ? "page" : undefined}>Saved</a>
+          <a href="/about/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath === "/about/" ? "page" : undefined}>About</a>
+          <a href="/contact/" class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]" aria-current={currentPath === "/contact/" ? "page" : undefined}>Contact</a>
           <div class="border-t border-[var(--border)] mt-2 pt-2 flex gap-4 px-3">
-            <a href="/about/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">About</a>
-            <a href="/contact/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
             <a href="/privacy/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Privacy</a>
             <a href="/terms/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Terms</a>
           </div>
@@ -252,7 +258,7 @@ const organizationSchema = {
                 <path d="M3 12L12 3l9 9M5 10v10h14V10" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <span class="font-bold text-sm tracking-tight">HomeProjectHub</span>
+              <span class="font-bold text-sm tracking-tight">HomePlanningHub</span>
             </a>
             <p class="text-xs text-[var(--fg-muted)] leading-relaxed max-w-xs text-pretty">
               Free, precise construction calculators for homeowners and DIY builders. No sign-up, no tracking, no nonsense.
@@ -272,7 +278,7 @@ const organizationSchema = {
             <h4 class="text-xs font-semibold text-[var(--fg)] mb-3">Planning</h4>
             <ul class="flex flex-col gap-2">
               <li><a href="/strategy/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Strategy Guide</a></li>
-              <li><a href="/planner/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Project Planner</a></li>
+              <li><a href="/projects/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">My Projects</a></li>
               <li><a href="/guides/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Planning Guides</a></li>
               <li><a href="/compare/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Compare Materials</a></li>
               <li><a href="/saved/" class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">Saved Measurements</a></li>
@@ -298,7 +304,7 @@ const organizationSchema = {
           </div>
         </div>
         <div class="border-t border-[var(--border)] mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p class="text-xs text-[var(--fg-muted)]">&copy; {new Date().getFullYear()} HomeProjectHub</p>
+          <p class="text-xs text-[var(--fg-muted)]">&copy; {new Date().getFullYear()} HomePlanningHub</p>
           <p class="text-xs text-[var(--fg-muted)]">Estimates are for planning only. Some outbound shopping links may be affiliate links.</p>
         </div>
       </div>
@@ -309,7 +315,7 @@ const organizationSchema = {
       if (toggle) {
         toggle.addEventListener('click', () => {
           const isDark = document.documentElement.classList.toggle('dark');
-          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
         });
       }
 

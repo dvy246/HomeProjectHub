@@ -1,11 +1,16 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
+import PlywoodDeckDiagram from "../diagrams/PlywoodDeckDiagram";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 
 const _PLYWOOD_SHEET_AREA = 32;
@@ -19,6 +24,8 @@ export default function PlywoodDeckCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roofing-plywood", "Roof Plywood Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -41,6 +48,26 @@ export default function PlywoodDeckCalc() {
   const sheets = calculatePackaging(areaWithWaste, sheetArea);
   const screws = Math.ceil(roofArea / 4);
   const hClips = Math.ceil((lenNum * pitchFactor) / 2);
+
+  const projectInputs: Record<string, number> = {
+    length: lenNum,
+    width: widNum,
+    pitch: pitchNum,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    roofArea,
+    areaWithWaste,
+    sheets,
+    screws,
+    hClips,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Plywood/OSB Sheets", quantity: sheets, unit: `sheets (${sheetSize})`, category: "lumber" },
+    { name: "Fasteners", quantity: screws, unit: "screws", category: "hardware" },
+    { name: "H-Clips", quantity: hClips, unit: "clips", category: "hardware" },
+    { name: "Underlayment", quantity: Math.ceil(roofArea / 100), unit: "squares", category: "roofing" },
+  ];
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,17 +102,11 @@ export default function PlywoodDeckCalc() {
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <fieldset>
-              <legend className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Sheet Size</legend>
-              <div className="grid grid-cols-3 gap-2">
-                {(["4x8", "4x10", "4x12"] as const).map((s) => (
-                  <button key={s} type="button" onClick={() => setSheetSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${sheetSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
-                ))}
-              </div>
-            </fieldset>
+            <Select label="Sheet Size" value={sheetSize} onChange={(v) => setSheetSize(v as "4x8" | "4x10" | "4x12")} options={[{ value: "4x8", label: "4x8 (32 sq ft)" }, { value: "4x10", label: "4x10 (40 sq ft)" }, { value: "4x12", label: "4x12 (48 sq ft)" }]} />
           </div>
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -97,9 +118,21 @@ export default function PlywoodDeckCalc() {
           placeholder="e.g. Roof Sheathing"
           projectsLabel="Saved Projects:"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <PlywoodDeckDiagram length={lenNum} width={widNum} pitch={pitchNum} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Plywood / OSB Output</h3>
           <div className="flex flex-col gap-5">

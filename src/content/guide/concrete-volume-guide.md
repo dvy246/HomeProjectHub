@@ -2,7 +2,7 @@
 title: "How to Calculate Concrete Volume: The Complete Guide"
 description: "Learn how to calculate concrete volume for slabs, footings, columns, and steps. Includes formulas, examples, and common mistakes to avoid."
 category: "concrete"
-author: "HomeProjectHub Team"
+author: "HomePlanningHub Team"
 pubDate: 2026-06-15
 updatedDate: 2026-07-01
 tags: ["concrete", "volume", "slab", "footing", "foundation"]

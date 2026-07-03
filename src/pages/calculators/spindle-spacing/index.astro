@@ -5,11 +5,11 @@ import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
-const canonical = "https://homeprojecthub.com/calculators/spindle-spacing/";
+const canonical = "https://homeplanninghub.com/calculators/spindle-spacing/";
 const title = "Spindle Spacing Calculator";
 const description = "Calculate the number of spindles for stair railings and deck railings. Enter rail length, spindle size, and spacing for code-compliant layout.";
 const formula = "Number = Rail Length / (Spacing + Spindle Thickness)";
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 
 const schema = graphSchema(
   breadcrumbListSchema([
@@ -65,7 +65,7 @@ const schema = graphSchema(
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Spindle Spacing Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate the number of spindles for stair railings and deck railings. Enter rail length, spindle size, and spacing for code-compliant layout.</p>
     <AdSlot slotId="ad-top-leaderboard" />
-    <section><SpacingCalc client:visible labelSingular="spindle" labelPlural="spindles" defaultSpacing="4" defaultThickness="1.5" /></section>
+    <section><SpacingCalc client:visible labelSingular="spindle" labelPlural="spindles" defaultSpacing="4" defaultThickness="1.5" calculatorSlug="spindle-spacing" calculatorName="Spindle Spacing Calculator" /></section>
     <EstimateMethodology
       formula={formula}
       assumptions={[

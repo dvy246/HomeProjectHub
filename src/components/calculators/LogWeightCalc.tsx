@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const WOOD_TYPES = [
   { key: "lumber_douglas_fir", label: "Douglas Fir" },
@@ -19,6 +22,8 @@ export default function LogWeightCalc() {
   const [length, setLength] = useState("96");
   const [quantity, setQuantity] = useState("1");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("log-weight", "Log Weight Calculator");
+
   const d = parseNumber(diameter);
   const len = parseNumber(length);
   const qty = Math.max(1, parseNumber(quantity) || 1);
@@ -27,6 +32,10 @@ export default function LogWeightCalc() {
   const totalVol = volPerLog * qty;
   const weight = calculateWeight(wood, totalVol);
   const weightEach = volPerLog > 0 ? calculateWeight(wood, volPerLog) : { lb: 0, kg: 0, materialName: "" };
+
+  const projectInputs = { diameter: d, length: len, quantity: qty };
+  const projectResults = { totalWeightLbs: weight.lb, totalWeightKg: weight.kg, volPerLog };
+  const projectMaterials: MaterialItem[] = [{ name: weight.materialName || "Logs", quantity: weight.lb, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -73,6 +82,14 @@ export default function LogWeightCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

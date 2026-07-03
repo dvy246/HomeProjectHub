@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSavedProjects, deleteProject, getProjectProgress, type SavedProject } from "../../lib/projectEngine";
+import { getSavedProjects, deleteProject, updateProject, getProjectProgress, type SavedProject } from "../../lib/projectEngine";
 import ProjectDetail from "./ProjectDetail";
 
 function hashToId(hash: string): string | null {
@@ -47,6 +47,13 @@ export default function ProjectDashboard() {
     return <ProjectDetail projectId={detailId} onBack={closeDetail} />;
   }
 
+  const handleClearAll = () => {
+    if (projects.length === 0) return;
+    if (confirm(`Delete all ${projects.length} projects? This cannot be undone.`)) {
+      projects.forEach((p) => deleteProject(p.id));
+    }
+  };
+
   if (projects.length === 0) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-12 text-center">
@@ -78,11 +85,19 @@ export default function ProjectDashboard() {
   };
 
   return (
+    <div className="flex flex-col gap-6">
+      {projects.length > 1 && (
+        <div className="flex justify-end">
+          <button type="button" onClick={handleClearAll} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg-muted)] hover:text-[var(--error)] hover:border-[var(--error)] transition-colors">
+            Clear All Projects
+          </button>
+        </div>
+      )}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {projects.map((project) => {
         const progress = getProjectProgress(project);
         return (
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 card-elevated">
+          <div key={project.id} className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 card-elevated">
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h2 className="text-sm font-semibold">{project.name}</h2>
@@ -120,6 +135,7 @@ export default function ProjectDashboard() {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 # project_plan.md
-# HomeProjectHub: Comprehensive Engineering & SEO Blueprint v3.0
+# HomePlanningHub: Comprehensive Engineering & SEO Blueprint v3.0
 
 ## 1. Executive Vision
-**HomeProjectHub** is a homeowner planning platform powered by calculators. 
+**HomePlanningHub** is a homeowner planning platform powered by calculators. 
 
 The objective is to capture high-intent search traffic in a highly contested niche with entrenched incumbents (such as Inch Calculator, Calculator.net, and Omni Calculator). We will differentiate not by hoping they are weak, but by focusing on under-built user experience moats: the **Compare Materials** matrix and a robust **saved-rooms/projects retention system**. Retention is achieved initially through browser-based saved measurements, with potential monetization through SaaS or premium features treated as a contingent long-term option only after establishing a massive, loyal user base.
 

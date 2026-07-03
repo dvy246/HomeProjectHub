@@ -61,10 +61,10 @@ const projectTypes = [
 
 const schema = graphSchema(
   webPageSchema({
-    url: "https://homeprojecthub.com/strategy/",
+    url: "https://homeplanninghub.com/strategy/",
     topicName: "Home Improvement Planning",
   }),
-  faqPageSchema(faqs, "https://homeprojecthub.com/strategy/"),
+  faqPageSchema(faqs, "https://homeplanninghub.com/strategy/"),
   breadcrumbListSchema([
     { name: "Home", path: "/" },
     { name: "Planning Strategy", path: "/strategy/" },
@@ -72,7 +72,7 @@ const schema = graphSchema(
 );
 ---
 
-<Layout title={title} description={description} canonical="https://homeprojecthub.com/strategy/" schema={schema}>
+<Layout title={title} description={description} canonical="https://homeplanninghub.com/strategy/" schema={schema}>
   <article class="max-w-4xl mx-auto flex flex-col gap-8">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)]" aria-label="Breadcrumb">
       <a href="/" class="hover:underline">home</a>

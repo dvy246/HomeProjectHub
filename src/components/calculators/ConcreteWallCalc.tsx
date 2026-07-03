@@ -8,6 +8,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea, subtractOpenings, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteWallDiagram from "../diagrams/ConcreteWallDiagram";
 
@@ -23,6 +26,8 @@ export default function ConcreteWallCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-wall", "Concrete Wall Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -60,6 +65,28 @@ export default function ConcreteWallCalc() {
   const bags40 = calculateConcreteBags(volWithWaste, "40lb");
   const selectedBags = calculateConcreteBags(volWithWaste, bagSize);
   const weight = estimateConcreteWeightLbs(volWithWaste);
+
+  const projectInputs: Record<string, number> = {
+    length: lenNum,
+    height: hNum,
+    thickness: thickNum,
+    doorCount: doors,
+    windowCount: windows,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    grossArea,
+    netArea,
+    totalVolumeCuFt: volWithWaste,
+    volumeCuYd: volCuYd,
+    volumeCuM: volCuM,
+    bagCount: selectedBags,
+    weightLbs: weight,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix", quantity: selectedBags, unit: `bags (${bagSize})`, category: "concrete" },
+    { name: "Ready-Mix Concrete", quantity: Number(volCuYd.toFixed(2)), unit: "cu yd", category: "concrete" },
+  ];
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,6 +129,7 @@ export default function ConcreteWallCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -111,6 +139,15 @@ export default function ConcreteWallCalc() {
           onApplyRoom={applySavedRoom}
           placeholder="e.g. Basement Wall"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

@@ -14,4 +14,4 @@ Disallow: /saved/
 Disallow: /planner/
 Disallow: /projects/
 
-Sitemap: https://homeprojecthub.com/sitemap-index.xml
+Sitemap: https://homeplanninghub.com/sitemap-index.xml

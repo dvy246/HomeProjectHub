@@ -5,6 +5,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea, subtractOpenings } from "../../lib/geometry";
 import { applyWasteFactor } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import PaintDiagram from "../diagrams/PaintDiagram";
 
@@ -23,6 +26,8 @@ export default function PaintCalc() {
   const [roomName, setRoomName] = useState("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("paint", "Paint Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -53,6 +58,28 @@ export default function PaintCalc() {
 
   const doorsSubtotal = doorCount * 21;
   const windowsSubtotal = windowCount * 12;
+
+  const projectInputs: Record<string, number> = {
+    length: lenNum,
+    width: widNum,
+    height: htNum,
+    doors: doorCount,
+    windows: windowCount,
+    coats: coatCount,
+    includeCeiling: includeCeiling ? 1 : 0,
+  };
+  const projectResults: Record<string, number> = {
+    wallArea,
+    ceilingArea,
+    totalArea,
+    totalWithCoats,
+    gallonsNeeded,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Paint", quantity: gallonsNeeded, unit: "gallons", category: "paint" },
+    { name: "Primer", quantity: Math.ceil(gallonsNeeded * 0.5), unit: "gallons", category: "paint" },
+    { name: "Painter's Tape", quantity: Math.ceil(roomPerimeter / 60), unit: "rolls", category: "supplies" },
+  ];
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,6 +134,7 @@ export default function PaintCalc() {
           </label>
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -118,6 +146,15 @@ export default function PaintCalc() {
           placeholder="e.g. Living Room"
           projectsLabel="Load Saved Room:"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

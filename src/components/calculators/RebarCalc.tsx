@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import ConcreteRebarDiagram from "../diagrams/ConcreteRebarDiagram";
 
 const REBAR_WEIGHTS: Record<string, number> = { "#3": 0.376, "#4": 0.668, "#5": 1.043, "#6": 1.502, "#7": 2.044, "#8": 2.67 };
@@ -14,6 +18,8 @@ export default function RebarCalc() {
   const [rebarSize, setRebarSize] = useState<string>("#4");
   const [layers, setLayers] = useState<string>("1");
   const [wasteFactor, setWasteFactor] = useState<string>("5");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("rebar", "Rebar Calculator");
 
   const len = parseNumber(length);
   const wid = parseNumber(width);
@@ -34,6 +40,13 @@ export default function RebarCalc() {
   const lengthWithWaste = totalLength * (1 + waste);
   const totalWeight = lengthWithWaste * weightPerFt / 2000;
   const ties = Math.ceil(longBars * shortBars * layersNum * 1.1);
+
+  const projectInputs = { length: len, width: wid, spacing: sp, layers: layersNum, wastePct: waste * 100 };
+  const projectResults = { totalLength, lengthWithWaste, totalWeight, ties, longBars, shortBars };
+  const projectMaterials: MaterialItem[] = [
+    { name: `Rebar ${rebarSize}`, quantity: lengthWithWaste, unit: "linear ft", category: "reinforcement" },
+    { name: "Rebar Ties", quantity: ties, unit: "ties", category: "reinforcement" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -56,14 +69,7 @@ export default function RebarCalc() {
             <Input label="Rebar Spacing (inches)" type="number" inputMode="decimal" value={spacing} onChange={(e) => setSpacing(e.target.value)} placeholder="e.g. 18" helperText="Center-to-center spacing" />
             <Input label="Layers" type="number" inputMode="numeric" value={layers} onChange={(e) => setLayers(e.target.value)} placeholder="e.g. 1" helperText="1 for slab, 2 for double mat" />
           </div>
-          <div className="mb-4">
-            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Rebar Size</p>
-            <div className="grid grid-cols-6 gap-1.5">
-              {REBAR_SIZES.map((s) => (
-                <button key={s} type="button" onClick={() => setRebarSize(s)} className={`border rounded-lg py-2 text-xs font-semibold font-mono transition-all active:scale-[0.97] ${rebarSize === s ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>{s}</button>
-              ))}
-            </div>
-          </div>
+          <Select label="Rebar Size" value={rebarSize} onChange={setRebarSize} options={REBAR_SIZES.map((s) => ({ value: s, label: s }))} />
           <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 5" helperText="5-10% for lap splices and cuts" />
         </Card>
       </div>
@@ -115,6 +121,15 @@ export default function RebarCalc() {
             </div>
           </div>
         </div>
+
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
 
         <Card>
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Rebar Size Reference</h3>

@@ -2,7 +2,7 @@
 title: "Concrete Slab Preparation: Subgrade, Forms, and Reinforcement Guide"
 description: "Learn how to prepare the ground, build forms, and install reinforcement for a concrete slab. Proper subgrade prep prevents cracking, settling, and drainage problems."
 category: "concrete"
-author: "HomeProjectHub Team"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-01
 tags: ["concrete", "slab", "subgrade", "forms", "reinforcement", "preparation"]
 ---

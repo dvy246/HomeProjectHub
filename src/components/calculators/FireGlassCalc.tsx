@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import { calculateCircleArea, calculateRectArea } from "../../lib/geometry";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function FireGlassCalc() {
   const [shape, setShape] = useState<"round" | "square">("round");
@@ -11,6 +15,8 @@ export default function FireGlassCalc() {
   const [length, setLength] = useState("24");
   const [width, setWidth] = useState("24");
   const [depth, setDepth] = useState("2");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("fire-glass", "Fire Glass Calculator");
 
   const d = parseNumber(diameter);
   const l = parseNumber(length);
@@ -24,14 +30,15 @@ export default function FireGlassCalc() {
   const lbs = weight.lb;
   const bags5lb = Math.ceil(lbs / 5);
 
+  const projectInputs: Record<string, number> = { area: area, depth: dep };
+  const projectResults = { cuFt, cuIn, lbs, bags5lb };
+  const projectMaterials: MaterialItem[] = [{ name: "Fire Glass", quantity: lbs, unit: "lbs", category: "fire-pit" }];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <div className="flex gap-2 mb-4">
-            <button type="button" onClick={() => setShape("round")} className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors ${shape === "round" ? "bg-[var(--accent)] text-[var(--accent-fg)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>Round Fire Pit</button>
-            <button type="button" onClick={() => setShape("square")} className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors ${shape === "square" ? "bg-[var(--accent)] text-[var(--accent-fg)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>Square Fire Pit</button>
-          </div>
+          <Select label="Shape" value={shape} onChange={(v) => setShape(v as "round" | "square")} options={[{ value: "round", label: "Round Fire Pit" }, { value: "square", label: "Square Fire Pit" }]} />
           <div className="grid grid-cols-2 gap-4">
             {shape === "round" ? (
               <Input label="Diameter (in)" type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="24" className="col-span-2" />
@@ -64,6 +71,14 @@ export default function FireGlassCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

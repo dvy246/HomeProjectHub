@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import IceWaterShieldDiagram from "../diagrams/IceWaterShieldDiagram";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const ROLL_COVERAGE_SQFT = 200;
 
@@ -12,6 +16,8 @@ export default function IceWaterShieldCalc() {
   const [valleyWidth, setValleyWidth] = useState<string>("24");
   const [pitch, setPitch] = useState<string>("6");
   const [wasteFactor, setWasteFactor] = useState<string>("8");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("ice-water-shield", "Ice and Water Shield Calculator");
 
   const eLen = parseNumber(eaveLength);
   const eWid = parseNumber(eaveWidth) / 12;
@@ -27,6 +33,12 @@ export default function IceWaterShieldCalc() {
   const totalArea = eaveArea + valleyArea;
   const areaWithWaste = totalArea * (1 + waste);
   const rolls = Math.ceil(areaWithWaste / ROLL_COVERAGE_SQFT);
+
+  const projectInputs = { eaveLength: eLen, eaveWidth: eWid, valleyLength: vLen, valleyWidth: vWid, pitch: pitchNum, wastePct: waste * 100 };
+  const projectResults = { totalArea, areaWithWaste, rolls, eaveArea, valleyArea };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Ice & Water Shield", quantity: rolls, unit: "rolls", category: "roofing" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -63,6 +75,9 @@ export default function IceWaterShieldCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
+          <IceWaterShieldDiagram pitch={pitchNum} />
+        </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Ice & Water Shield Output</h3>
           <div className="flex flex-col gap-5">
@@ -102,6 +117,15 @@ export default function IceWaterShieldCalc() {
             </div>
           </div>
         </div>
+
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
 
         <Card>
           <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Installation Notes</h3>

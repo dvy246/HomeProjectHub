@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import UnitToggle from "../ui/UnitToggle";
 import BagSizeSelector from "../ui/BagSizeSelector";
@@ -8,6 +9,9 @@ import SaveMeasurementCard from "../ui/SaveMeasurementCard";
 import { calculateRectArea, calculateCircleArea, calculateVolume, cuFeetToCuYards } from "../../lib/geometry";
 import { applyWasteFactor, calculateConcreteBags, estimateConcreteWeightLbs } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteFootingDiagram from "../diagrams/ConcreteFootingDiagram";
 
@@ -24,6 +28,8 @@ export default function ConcreteFootingCalc() {
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-footing", "Concrete Footing Calculator");
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -79,6 +85,24 @@ export default function ConcreteFootingCalc() {
   const selectedBags = calculateConcreteBags(totalVolumeWithWasteCuFt, bagSize);
   const estimatedWeightLbs = estimateConcreteWeightLbs(totalVolumeWithWasteCuFt);
 
+  const projectInputs: Record<string, number> = {
+    ...(footingShape === "cylinder" ? { diameter: diaNum } : { length: lenNum, width: widNum }),
+    depth: depNum,
+    quantity: qtyNum,
+    wasteFactor: parseNumber(wasteFactor),
+  };
+  const projectResults: Record<string, number> = {
+    totalVolumeCuYd,
+    totalVolumeCuM,
+    totalVolumeCuFt: totalVolumeWithWasteCuFt,
+    bagCount: selectedBags,
+    weightLbs: estimatedWeightLbs,
+  };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Concrete Mix", quantity: selectedBags, unit: `bags (${bagSize})`, category: "concrete" },
+    { name: "Ready-Mix Concrete", quantity: Number(totalVolumeCuYd.toFixed(2)), unit: "cu yd", category: "concrete" },
+  ];
+
   const handleSaveRoom = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
@@ -113,10 +137,7 @@ export default function ConcreteFootingCalc() {
             <UnitToggle unitSystem={unitSystem} onChange={(u) => setUnitSystem(u)} />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 mb-5">
-            <button type="button" onClick={() => setFootingShape("cylinder")} className={`border rounded-lg py-2.5 text-xs font-semibold transition-colors motion-safe:active:scale-[0.97] ${footingShape === "cylinder" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Cylindrical (Pier / Hole)</button>
-            <button type="button" onClick={() => setFootingShape("block")} className={`border rounded-lg py-2.5 text-xs font-semibold transition-colors motion-safe:active:scale-[0.97] ${footingShape === "block" ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-fg)]" : "border-[var(--border)] text-[var(--fg-secondary)] hover:border-[var(--border-hover)]"}`}>Square / Rectangular</button>
-          </div>
+          <Select label="Footing Shape" value={footingShape} onChange={(v) => setFootingShape(v as "cylinder" | "block")} options={[{ value: "cylinder", label: "Cylindrical (Pier / Hole)" }, { value: "block", label: "Square / Rectangular" }]} />
 
           <div className="flex flex-col gap-4 mb-5">
             {footingShape === "cylinder" ? (
@@ -137,6 +158,7 @@ export default function ConcreteFootingCalc() {
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
         </Card>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SaveMeasurementCard
           roomName={roomName}
           onRoomNameChange={setRoomName}
@@ -146,6 +168,15 @@ export default function ConcreteFootingCalc() {
           onApplyRoom={applySavedRoom}
           placeholder="e.g. Deck Post Holes"
         />
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
+      </div>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">

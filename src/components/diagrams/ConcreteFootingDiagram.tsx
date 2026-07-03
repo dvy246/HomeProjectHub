@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { computeBox } from "../../lib/isometric";
+import DiagramPart from "./DiagramPart";
 
 interface Props {
   width: number;
@@ -35,7 +36,7 @@ export default function ConcreteFootingDiagram({ width, depth, height, unitSyste
   const thickMidY = (box.corners[2].y + box.corners[1].y) / 2;
 
   return (
-    <svg viewBox="0 0 320 260" className="w-full h-auto" role="img" aria-label={`Footing diagram: ${w}×${d}×${h}`}>
+    <svg viewBox="0 0 320 260" className="w-full h-auto diagram-svg" role="img" aria-label={`Footing diagram: ${w}×${d}×${h}`}>
       <defs>
         <marker id={`arr-${id}`} markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
           <polygon points="0 0, 7 2.5, 0 5" fill="var(--fg-muted)" />
@@ -45,21 +46,27 @@ export default function ConcreteFootingDiagram({ width, depth, height, unitSyste
         </marker>
       </defs>
 
-      <polygon points={box.topFace} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
-      <polygon points={box.rightFace} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
-      <polygon points={box.frontFace} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      <DiagramPart title="Top surface">
+        <polygon points={box.topFace} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
+      <DiagramPart title="Side face">
+        <polygon points={box.rightFace} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
+      <DiagramPart title="Front face">
+        <polygon points={box.frontFace} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" strokeLinejoin="round" />
+      </DiagramPart>
 
-      <line x1={box.corners[0].x - 6} y1={box.corners[0].y} x2={box.corners[4].x - 6} y2={box.corners[4].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-rev-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={widMidX - 8} y={widMidY + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600">{w.toFixed(0)}</text>
-      <text x={widMidX - 8} y={widMidY + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10">Width ({unit})</text>
+      <line x1={box.corners[0].x - 6} y1={box.corners[0].y} x2={box.corners[4].x - 6} y2={box.corners[4].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-rev-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={widMidX - 8} y={widMidY + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{w.toFixed(0)}</text>
+      <text x={widMidX - 8} y={widMidY + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Width ({unit})</text>
 
-      <line x1={box.corners[1].x} y1={box.corners[1].y + 6} x2={box.corners[5].x} y2={box.corners[5].y + 6} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={lenMidX} y={lenMidY + 20} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600">{d.toFixed(0)}</text>
-      <text x={lenMidX} y={lenMidY + 34} textAnchor="middle" fill="var(--fg-muted)" fontSize="10">Depth ({unit})</text>
+      <line x1={box.corners[1].x} y1={box.corners[1].y + 6} x2={box.corners[5].x} y2={box.corners[5].y + 6} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={lenMidX} y={lenMidY + 20} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{d.toFixed(0)}</text>
+      <text x={lenMidX} y={lenMidY + 34} textAnchor="middle" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Depth ({unit})</text>
 
-      <line x1={thickMidX} y1={box.corners[2].y} x2={thickMidX} y2={box.corners[1].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={thickMidX + 4} y={thickMidY + 4} textAnchor="start" fill="var(--fg)" fontSize="13" fontWeight="600">{h.toFixed(0)}</text>
-      <text x={thickMidX + 4} y={thickMidY + 18} textAnchor="start" fill="var(--fg-muted)" fontSize="10">Height ({unit})</text>
+      <line x1={thickMidX} y1={box.corners[2].y} x2={thickMidX} y2={box.corners[1].y} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={thickMidX + 4} y={thickMidY + 4} textAnchor="start" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{h.toFixed(0)}</text>
+      <text x={thickMidX + 4} y={thickMidY + 18} textAnchor="start" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Height ({unit})</text>
     </svg>
   );
 }

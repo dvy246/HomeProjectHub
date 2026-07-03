@@ -2,7 +2,7 @@
 title: "Concrete vs. Pavers vs. Gravel: Which Patio Material Is Best?"
 description: "Compare poured concrete, interlocking pavers, and pea gravel for patios, driveways, and walkways. Cost, durability, maintenance, and DIY difficulty."
 category: "concrete"
-author: "HomeProjectHub Team"
+author: "HomePlanningHub Team"
 pubDate: 2026-06-25
 updatedDate: 2026-07-01
 tags: ["concrete", "pavers", "gravel", "patio", "driveway", "comparison"]

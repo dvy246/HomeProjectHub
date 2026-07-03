@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const PIPE_MATERIALS = [
   { key: "steel_a36", label: "Steel (A36)" },
@@ -19,6 +22,8 @@ export default function PipeWeightCalc() {
   const [length, setLength] = useState("12");
   const [quantity, setQuantity] = useState("1");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("pipe-weight", "Pipe Weight Calculator");
+
   const outerD = parseNumber(od);
   const wallT = parseNumber(wall);
   const len = parseNumber(length);
@@ -29,6 +34,10 @@ export default function PipeWeightCalc() {
   const volPerLen = Math.PI * (outerR * outerR - innerR * innerR) * len;
   const totalVol = volPerLen * qty;
   const weight = calculateWeight(material, totalVol);
+
+  const projectInputs = { outerDiameter: outerD, wallThickness: wallT, length: len, quantity: qty };
+  const projectResults = { innerDiameter: innerD, weightLbs: weight.lb, weightKg: weight.kg, weightPerFt: len > 0 ? (weight.lb / len) * 12 : 0 };
+  const projectMaterials: MaterialItem[] = [{ name: weight.materialName || "Pipe", quantity: weight.lb, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -74,6 +83,14 @@ export default function PipeWeightCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

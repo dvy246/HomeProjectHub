@@ -1,11 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { graphSchema, webPageSchema, breadcrumbListSchema } from "../lib/schema";
 
+const canonical = "https://homeplanninghub.com/privacy/";
 const title = "Privacy Policy";
-const description = "Privacy policy and data protection guidelines for HomeProjectHub.";
+const description = "Privacy policy and data protection guidelines for HomePlanningHub — how we collect, use, and protect your information when using our free construction calculators.";
+
+const schema = graphSchema(
+  breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy/" }]),
+  webPageSchema({ url: canonical, topicName: "Privacy Policy" }),
+);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
   <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
     <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
@@ -22,9 +29,9 @@ const description = "Privacy policy and data protection guidelines for HomeProje
       </p>
     </header>
 
-    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed">
+    <div class="flex flex-col gap-6 text-sm text-[var(--fg-secondary)] leading-relaxed break-words">
       <p>
-        At HomeProjectHub, accessible from https://homeprojecthub.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by HomeProjectHub and how we use it.
+        At HomePlanningHub, accessible from https://homeplanninghub.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by HomePlanningHub and how we use it.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
@@ -59,31 +66,31 @@ const description = "Privacy policy and data protection guidelines for HomeProje
         Analytics
       </h2>
       <p>
-        HomeProjectHub does not load Google Analytics unless a valid analytics ID is configured for the production site. If analytics is enabled, it may collect standard usage data such as page views, device information, and approximate geography to help improve the website.
+        HomePlanningHub does not load Google Analytics unless a valid analytics ID is configured for the production site. If analytics is enabled, it may collect standard usage data such as page views, device information, and approximate geography to help improve the website.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Local Browser Storage (LocalStorage)
       </h2>
       <p>
-        To provide room workspace features, HomeProjectHub stores dimensions locally in your browser's <code>localStorage</code>. This data never leaves your device and is not transmitted to our servers. You can clear this data at any time by clearing your browser cache or deleting individual items in the Saved Rooms dashboard.
+        To provide room workspace features, HomePlanningHub stores dimensions locally in your browser's <code>localStorage</code>. This data never leaves your device and is not transmitted to our servers. You can clear this data at any time by clearing your browser cache or deleting individual items in the Saved Rooms dashboard.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Advertising Partners (Google AdSense)
       </h2>
       <p>
-        Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on HomeProjectHub, which are sent directly to users' browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+        Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on HomePlanningHub, which are sent directly to users' browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
       </p>
       <p>
-        Note that HomeProjectHub has no access to or control over these cookies that are used by third-party advertisers.
+        Note that HomePlanningHub has no access to or control over these cookies that are used by third-party advertisers.
       </p>
 
       <h2 class="text-lg font-bold tracking-tight mb-3 text-[var(--fg)]">
         Affiliate Links
       </h2>
       <p>
-        Some outbound shopping links may be affiliate links. If you click one of those links and make a purchase, HomeProjectHub may earn a commission at no additional cost to you. Affiliate links do not change the estimates shown by our calculators.
+        Some outbound shopping links may be affiliate links. If you click one of those links and make a purchase, HomePlanningHub may earn a commission at no additional cost to you. Affiliate links do not change the estimates shown by our calculators.
       </p>
     </div>
   </article>

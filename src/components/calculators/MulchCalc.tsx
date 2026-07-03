@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 const MULCH_TYPES = [
   { key: "bark", label: "Bark Mulch", lbsPerCuFt: 25, bagsPerCuYd: 13.5 },
@@ -16,6 +19,8 @@ export default function MulchCalc() {
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("3");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("mulch", "Mulch Calculator");
+
   const mt = MULCH_TYPES.find((m) => m.key === type) || MULCH_TYPES[0];
   const sf = parseNumber(sqft);
   const d = parseNumber(depth);
@@ -23,6 +28,10 @@ export default function MulchCalc() {
   const cuFt = cuYd * 27;
   const bags = Math.ceil(cuYd * mt.bagsPerCuYd);
   const lbs = cuFt * mt.lbsPerCuFt;
+
+  const projectInputs = { sqft: sf, depth: d };
+  const projectResults = { cuYd, cuFt, bags, lbs };
+  const projectMaterials: MaterialItem[] = [{ name: `${mt.label} Mulch`, quantity: cuYd, unit: "cu yd", category: "mulch" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -58,6 +67,14 @@ export default function MulchCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 interface MaterialOption {
   id: string;
@@ -32,6 +35,8 @@ export default function WeightCalc({
   const [thickness, setThickness] = useState(defaultThickness);
   const [quantity, setQuantity] = useState("1");
 
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("weight", "Weight Calculator");
+
   const l = parseNumber(length);
   const w = parseNumber(width);
   const t = parseNumber(thickness);
@@ -41,6 +46,10 @@ export default function WeightCalc({
   const weight = calculateWeight(material, totalVol);
   const weightEach = volPerUnit > 0 ? calculateWeight(material, volPerUnit) : { lb: 0, kg: 0, materialName: "" };
   const weightTons = weight.lb / 2000;
+
+  const projectInputs = { length: l, width: w, thickness: t, quantity: qty };
+  const projectResults = { weightLbs: weight.lb, weightKg: weight.kg, weightTons };
+  const projectMaterials: MaterialItem[] = [{ name: weight.materialName || "Material", quantity: weight.lb, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -96,6 +105,14 @@ export default function WeightCalc({
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

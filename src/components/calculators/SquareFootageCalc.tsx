@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
 import { calculateRectArea, calculateLShapeArea, calculateTriangleArea, calculateCircleAreaFromDiameter, sqftToSqYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 type Shape = "rectangle" | "lshape" | "triangle" | "circle";
 
@@ -17,6 +21,8 @@ export default function SquareFootageCalc() {
   const [base, setBase] = useState("10");
   const [height, setHeight] = useState("8");
   const [diameter, setDiameter] = useState("10");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("square-footage", "Square Footage Calculator");
 
   let area = 0;
   switch (shape) {
@@ -37,17 +43,25 @@ export default function SquareFootageCalc() {
   const sqMeters = area * 0.092903;
   const sqYards = sqftToSqYd(area);
 
+  const projectInputs: Record<string, number> = {
+    length: shape === "rectangle" ? parseNumber(length) : 0,
+    width: shape === "rectangle" ? parseNumber(width) : 0,
+    lenA: shape === "lshape" ? parseNumber(lenA) : 0,
+    widA: shape === "lshape" ? parseNumber(widA) : 0,
+    lenB: shape === "lshape" ? parseNumber(lenB) : 0,
+    widB: shape === "lshape" ? parseNumber(widB) : 0,
+    base: shape === "triangle" ? parseNumber(base) : 0,
+    height: shape === "triangle" ? parseNumber(height) : 0,
+    diameter: shape === "circle" ? parseNumber(diameter) : 0,
+  };
+  const projectResults = { sqft: area, sqYards, sqMeters };
+  const projectMaterials: MaterialItem[] = [{ name: "Area", quantity: area, unit: "sq ft", category: "area" }];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {(["rectangle", "lshape", "triangle", "circle"] as const).map((s) => (
-              <button key={s} type="button" onClick={() => setShape(s)} className={`px-3 py-2 text-xs font-medium rounded-lg transition-colors ${shape === s ? "bg-[var(--accent)] text-[var(--accent-fg)]" : "bg-[var(--bg-muted)] text-[var(--fg-secondary)]"}`}>
-                {s === "rectangle" ? "Rectangle" : s === "lshape" ? "L-Shape" : s === "triangle" ? "Triangle" : "Circle"}
-              </button>
-            ))}
-          </div>
+          <Select label="Shape" value={shape} onChange={(v) => setShape(v as "rectangle" | "lshape" | "triangle" | "circle")} options={[{ value: "rectangle", label: "Rectangle" }, { value: "lshape", label: "L-Shape" }, { value: "triangle", label: "Triangle" }, { value: "circle", label: "Circle" }]} />
           <div className="grid grid-cols-2 gap-4">
             {shape === "rectangle" && (
               <><Input label="Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} /><Input label="Width (ft)" type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} /></>
@@ -82,6 +96,14 @@ export default function SquareFootageCalc() {
             </div>
           </div>
         </Card>
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
       </div>
     </div>
   );

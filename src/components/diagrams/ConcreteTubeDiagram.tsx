@@ -1,4 +1,5 @@
 import { useId } from "react";
+import DiagramPart from "./DiagramPart";
 
 interface Props {
   diameter: number;
@@ -21,7 +22,7 @@ export default function ConcreteTubeDiagram({ diameter, height, unitSystem }: Pr
   const cy = 60;
 
   return (
-    <svg viewBox="0 0 360 260" className="w-full h-auto" role="img" aria-label={`Sonotube: ${d} diameter × ${h}`}>
+    <svg viewBox="0 0 360 260" className="w-full h-auto diagram-svg" role="img" aria-label={`Sonotube: ${d} diameter × ${h}`}>
       <defs>
         <marker id={`arr-${id}`} markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
           <polygon points="0 0, 7 2.5, 0 5" fill="var(--fg-muted)" />
@@ -31,19 +32,25 @@ export default function ConcreteTubeDiagram({ diameter, height, unitSystem }: Pr
         </marker>
       </defs>
 
-      <ellipse cx={cx} cy={cy} rx={sd / 2} ry={sd / 5} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" />
-      <rect x={cx - sd / 2} y={cy} width={sd} height={sh} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" />
-      <ellipse cx={cx} cy={cy + sh} rx={sd / 2} ry={sd / 5} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" />
+      <DiagramPart title="Top opening">
+        <ellipse cx={cx} cy={cy} rx={sd / 2} ry={sd / 5} fill="var(--accent)" fillOpacity="0.08" stroke="var(--border-strong)" strokeWidth="1.5" />
+      </DiagramPart>
+      <DiagramPart title="Tube body">
+        <rect x={cx - sd / 2} y={cy} width={sd} height={sh} fill="var(--accent)" fillOpacity="0.05" stroke="var(--border-strong)" strokeWidth="1.5" />
+      </DiagramPart>
+      <DiagramPart title="Tube base">
+        <ellipse cx={cx} cy={cy + sh} rx={sd / 2} ry={sd / 5} fill="var(--accent)" fillOpacity="0.12" stroke="var(--border-strong)" strokeWidth="1.5" />
+      </DiagramPart>
 
       <line x1={cx} y1={cy} x2={cx} y2={cy + sh} stroke="var(--border-strong)" strokeWidth="0.5" strokeDasharray="4 3" opacity="0.3" />
 
-      <line x1={cx - sd / 2 - 10} y1={cy} x2={cx - sd / 2 - 10} y2={cy + sh} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-rev-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={cx - sd / 2 - 12} y={cy + sh / 2 + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600">{h.toFixed(0)}</text>
-      <text x={cx - sd / 2 - 12} y={cy + sh / 2 + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10">Height ({unit})</text>
+      <line x1={cx - sd / 2 - 10} y1={cy} x2={cx - sd / 2 - 10} y2={cy + sh} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-rev-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={cx - sd / 2 - 12} y={cy + sh / 2 + 4} textAnchor="end" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{h.toFixed(0)}</text>
+      <text x={cx - sd / 2 - 12} y={cy + sh / 2 + 18} textAnchor="end" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Height ({unit})</text>
 
-      <line x1={cx - sd / 2} y1={cy + sh + 12} x2={cx + sd / 2} y2={cy + sh + 12} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} />
-      <text x={cx} y={cy + sh + 26} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600">{d.toFixed(0)}</text>
-      <text x={cx} y={cy + sh + 40} textAnchor="middle" fill="var(--fg-muted)" fontSize="10">Diameter ({unit})</text>
+      <line x1={cx - sd / 2} y1={cy + sh + 12} x2={cx + sd / 2} y2={cy + sh + 12} stroke="var(--fg-muted)" strokeWidth="1" markerStart={`url(#arr-${id})`} markerEnd={`url(#arr-${id})`} className="diagram-dim" />
+      <text x={cx} y={cy + sh + 26} textAnchor="middle" fill="var(--fg)" fontSize="13" fontWeight="600" className="diagram-label">{d.toFixed(0)}</text>
+      <text x={cx} y={cy + sh + 40} textAnchor="middle" fill="var(--fg-muted)" fontSize="10" className="diagram-label">Diameter ({unit})</text>
     </svg>
   );
 }

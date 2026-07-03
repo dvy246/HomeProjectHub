@@ -5,11 +5,11 @@ import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
-const canonical = "https://homeprojecthub.com/calculators/retaining-wall/";
+const canonical = "https://homeplanninghub.com/calculators/retaining-wall/";
 const title = "Retaining Wall Calculator";
 const description = "Calculate how many blocks and how much gravel base you need for a retaining wall project. Enter wall length, height, and block size for accurate estimates.";
 const formula = "Blocks = (Wall Length × 12 / 16) × Rows";
-const PAGE_PATH = canonical.replace("https://homeprojecthub.com", "");
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
 
 const schema = graphSchema(
   breadcrumbListSchema([
@@ -66,28 +66,85 @@ const schema = graphSchema(
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how many blocks and how much gravel base you need for a retaining wall project. Enter wall length, height, and block size for accurate estimates.</p>
     <AdSlot slotId="ad-top-leaderboard" />
 
-    <section><RetainingWallCalc client:visible /></section>
-    <EstimateMethodology
-      formula={formula}
-      assumptions={[
-        "Standard block: 16\" long × 8\" high.",
-        "Base gravel: 6\" depth × 2 ft width × wall length.",
-        "Drainage gravel: 12\" behind wall × wall length."
-      ]}
-    />
-    <AdSlot slotId="ad-in-content-mid" />
-    <section>
-      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
-      <div class="flex flex-col gap-3">
-        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many blocks for a 20x4 ft wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 20 ft long × 4 ft high wall needs about 90 blocks (60 in wall + 30 cap blocks) plus 10% waste = 99 blocks.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need drainage gravel?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes. Drainage gravel behind the wall prevents hydrostatic pressure buildup. Use 3/4" clean gravel wrapped in landscape fabric.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How deep should the base be for a retaining wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Base gravel should be 6" deep and extend 2 ft in front of the wall. Compact in 2" lifts.</p></details>
+  <section><RetainingWallCalc client:visible /></section>
+  <EstimateMethodology
+    formula={formula}
+    assumptions={[
+      "Standard block: 16\" long × 8\" high.",
+      "Base gravel: 6\" depth × 2 ft width × wall length.",
+      "Drainage gravel: 12\" behind wall × wall length."
+    ]}
+  />
+
+  <section>
+    <h2 id="how-to-calculate" class="text-xl font-bold tracking-tight mb-4">How to Calculate Retaining Wall Materials</h2>
+    <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+      A retaining wall requires three main material categories: blocks or stones for the wall face, base gravel for the foundation, and drainage gravel behind the wall. The wall height and length determine the quantity of each.
+    </p>
+    <ol class="list-decimal pl-5 flex flex-col gap-3 text-sm text-[var(--fg-secondary)]">
+      <li><strong>Calculate blocks per row:</strong> Divide the wall length in inches by the block length in inches (typically 16 inches).
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Blocks/Row = &lceil;Wall Length (in) &divide; Block Length (in)&lceil;</div>
+      </li>
+      <li><strong>Calculate number of rows:</strong> Divide the wall height in inches by the block height in inches (typically 8 inches).
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Rows = &lceil;Wall Height (in) &divide; Block Height (in)&lceil;</div>
+      </li>
+      <li><strong>Total blocks:</strong> Multiply blocks per row by the number of rows. The top row uses cap blocks, which may be a different size.
+        <div class="my-2 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">Total Blocks = Blocks/Row &times; Rows</div>
+      </li>
+      <li><strong>Base gravel:</strong> Calculate cubic feet as wall length times base width (typically 2 ft) times base depth (0.5 ft).</li>
+      <li><strong>Drainage gravel:</strong> Calculate as wall length times drainage width (typically 1 ft) times wall height in feet.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 id="example" class="text-xl font-bold tracking-tight mb-4">Example Retaining Wall Calculation</h2>
+    <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+      <p class="text-sm font-semibold text-[var(--fg)] mb-2">20 ft long &times; 4 ft high retaining wall with 16-inch standard blocks</p>
+      <ul class="flex flex-col gap-1.5 text-xs text-[var(--fg-secondary)]">
+        <li><strong>Wall length:</strong> 20 ft = <strong>240 inches</strong></li>
+        <li><strong>Blocks per row:</strong> 240 &divide; 16 = <strong>15 blocks/row</strong></li>
+        <li><strong>Number of rows:</strong> 48 in &divide; 8 in = <strong>6 rows</strong></li>
+        <li><strong>Wall blocks:</strong> 15 &times; 5 = <strong>75 blocks</strong> (cap blocks: 15 &times; 1 = 15 blocks)</li>
+        <li><strong>With 10% waste:</strong> (75 + 15) &times; 1.10 = <strong>99 blocks</strong></li>
+        <li><strong>Base gravel:</strong> 20 ft &times; 2 ft &times; 0.5 ft = <strong>20 cubic ft (0.74 cu yd)</strong></li>
+        <li><strong>Drainage gravel:</strong> 20 ft &times; 1 ft &times; 4 ft = <strong>80 cubic ft (2.96 cu yd)</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot slotId="ad-in-content-mid" />
+
+  <section>
+    <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Retaining Wall Estimation</h2>
+    <div class="flex flex-col gap-3">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Skipping the drainage system</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">The most common retaining wall failure is hydrostatic pressure from water buildup behind the wall. Always include drainage gravel, a perforated pipe at the base, and landscape fabric to separate gravel from soil. Skipping this can cause the wall to bulge or collapse within the first year.</p>
       </div>
-    </section>
-    <footer class="pt-8 mt-6 border-t border-[var(--border)]">
-      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a href="/calculators/concrete/wall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Concrete Wall</span></a>
-      <a href="/calculators/gravel/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Gravel</span></a>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Inadequate base preparation</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">A retaining wall is only as strong as its foundation. Base gravel must be 6 inches minimum, compacted in 2-inch lifts with a plate compactor. On clay soils, increase base depth to 8-12 inches. Skimping on the base leads to settling and uneven walls.</p>
       </div>
-    </footer>
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h3 class="text-sm font-semibold text-[var(--fg)] mb-1">Not accounting for wall height restrictions</h3>
+        <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">Many jurisdictions limit retaining walls to 4 ft without an engineer's stamp. Walls over 4 ft need structural design for lateral earth pressure. A 6-ft wall can require 50% more material due to reinforcement requirements.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-3">
+      <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many blocks for a 20x4 ft wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 20 ft long × 4 ft high wall needs about 90 blocks (60 in wall + 30 cap blocks) plus 10% waste = 99 blocks.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need drainage gravel?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes. Drainage gravel behind the wall prevents hydrostatic pressure buildup. Use 3/4" clean gravel wrapped in landscape fabric.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How deep should the base be for a retaining wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Base gravel should be 6" deep and extend 2 ft in front of the wall. Compact in 2" lifts.</p></details>
+    </div>
+  </section>
+  <footer class="pt-8 mt-6 border-t border-[var(--border)]">
+    <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <a href="/calculators/concrete/wall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Concrete Wall</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Pour-in-place wall materials</span></a>
+    <a href="/calculators/gravel/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Gravel Calculator</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Base and drainage gravel volume</span></a>
+    <a href="/calculators/french-drain/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">French Drain</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Drainage pipe and gravel</span></a>
+    </div>
+  </footer>
   </article>
 </Layout>

@@ -3,6 +3,9 @@ import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
 import VinylFenceDiagram from "../diagrams/VinylFenceDiagram";
+import { useProjects } from "../../lib/useProjects";
+import type { MaterialItem } from "../../lib/projectEngine";
+import AddToProjectCard from "../ui/AddToProjectCard";
 
 export default function VinylFenceCalc() {
   const [fenceLength, setFenceLength] = useState("100");
@@ -10,6 +13,8 @@ export default function VinylFenceCalc() {
   const [panelWidth, setPanelWidth] = useState("8");
   const [gateCount, setGateCount] = useState("1");
   const [gateWidth, setGateWidth] = useState("4");
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("vinyl-fence", "Vinyl Fence Calculator");
 
   const fl = parseNumber(fenceLength);
   const fh = parseNumber(fenceHeight);
@@ -23,6 +28,16 @@ export default function VinylFenceCalc() {
   const gatePosts = gc * 2;
   const totalPosts = posts + gatePosts;
   const rails = panels * 2;
+
+  const projectInputs = { fenceLength: fl, fenceHeight: fh, panelWidth: pw, gateCount: gc, gateWidth: gw };
+  const projectResults = { panels, linePosts: posts, gatePosts, totalPosts, rails, gates: gc };
+  const projectMaterials: MaterialItem[] = [
+    { name: "Fence Panels", quantity: panels, unit: "panels", category: "fence" },
+    { name: "Line Posts", quantity: posts, unit: "posts", category: "fence" },
+    { name: "Gate Posts", quantity: gatePosts, unit: "posts", category: "fence" },
+    { name: "Rails", quantity: rails, unit: "sections", category: "fence" },
+    { name: "Gates", quantity: gc, unit: "gates", category: "fence" },
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -38,6 +53,14 @@ export default function VinylFenceCalc() {
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
+        <AddToProjectCard
+          projects={projects}
+          onAdd={(pid) => {
+            clearSuccess();
+            addToProject(pid, projectInputs, projectResults, projectMaterials);
+          }}
+          successMessage={projectSuccess}
+        />
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <VinylFenceDiagram length={fl} height={fh} numSections={panels} unitSystem="imperial" />
         </div>

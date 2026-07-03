@@ -3,7 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema, howToSchema } from "../../../lib/schema";
 import { MAINTENANCE_TASKS, CATEGORIES } from "../../../data/maintenance/tasks";
 
-const canonical = "https://homeprojecthub.com/maintenance/spring/";
+const canonical = "https://homeplanninghub.com/maintenance/spring/";
 const title = "Spring Home Maintenance Checklist";
 const description = "Complete spring home maintenance checklist. Prepare your home for warmer weather with roof inspections, gutter cleaning, AC tune-ups, and exterior repairs.";
 const PAGE_PATH = "/maintenance/spring/";
@@ -14,7 +14,7 @@ const categories = [...new Set(springTasks.map((t) => t.category))];
 const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Home Maintenance", path: "/maintenance/" }, { name: "Spring Maintenance", path: PAGE_PATH }]),
   webPageSchema({ url: canonical, topicName: "Spring Home Maintenance" }),
-  howToSchema("Complete spring home maintenance", "Prepare your home for warmer weather with this seasonal checklist covering exterior, HVAC, and safety tasks.", springTasks.slice(0, 5).map((t) => ({ heading: t.title, text: t.explanation }))),
+  howToSchema("Complete spring home maintenance", "Prepare your home for warmer weather with this seasonal checklist covering exterior, HVAC, and safety tasks.", springTasks.slice(0, 5).map((t) => ({ name: t.title, text: t.explanation }))),
   faqPageSchema([
     { q: "What spring home maintenance is most important?", a: "Roof inspection for winter damage, gutter cleaning after leaf debris, and AC tune-up before cooling season are the highest priority spring tasks." },
     { q: "When should I start spring maintenance?", a: "Start spring maintenance in March or when temperatures consistently stay above freezing. Complete all tasks by May before peak cooling season." },

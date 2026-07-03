@@ -8,7 +8,7 @@ const guide = defineCollection({
     title: z.string(),
     description: z.string(),
     category: z.enum(["concrete", "roofing", "paint", "tile", "flooring", "general"]),
-    author: z.string().default("HomeProjectHub Team"),
+    author: z.string().default("HomePlanningHub Team"),
     pubDate: z.date(),
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
