@@ -4,6 +4,7 @@ import FramingCalc from "../../../components/calculators/FramingCalc"
 import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
 
 const canonical = "https://homeplanninghub.com/calculators/framing/";
 const title = "Framing Calculator";
@@ -134,13 +135,6 @@ const schema = graphSchema(
       <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many studs in a 20 ft wall?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">With 16" OC spacing: (240"/16") + 1 = 16 studs. Add plates: 3 × 20 ft = 60 LF / 8 = 8 more studs. Total: 24 studs + 5% waste = 26.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I use 16" or 24" spacing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">16" OC is standard for load-bearing walls. 24" OC is allowed for non-load-bearing walls and some engineered systems. Check local codes.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What size lumber for wall framing?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2×4 for non-load-bearing (interior) walls. 2×6 for exterior walls with insulation. Always use kiln-dried lumber.</p></details>
     </div>
   </section>
-  <footer class="pt-8 mt-6 border-t border-[var(--border)]">
-    <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Lumber volume and cost</span></a>
-    <a href="/calculators/drywall/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Drywall</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Sheets, tape, and compound</span></a>
-    <a href="/calculators/decking/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Decking</span><span class="block text-[10px] text-[var(--fg-muted)] mt-0.5">Boards, fasteners, and layout</span></a>
-    </div>
-  </footer>
+  <RelatedCalculators slug="framing" />
   </article>
 </Layout>

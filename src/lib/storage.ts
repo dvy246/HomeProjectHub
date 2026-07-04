@@ -13,6 +13,7 @@ const ROOMS_KEY = "home_project_hub_saved_rooms";
 
 export function getSavedRooms(): SavedRoom[] {
   if (typeof window === "undefined") return [];
+  migrateOldRooms();
   try {
     const data = localStorage.getItem(ROOMS_KEY);
     return data ? JSON.parse(data) : [];
@@ -56,8 +57,9 @@ export function deleteRoom(id: string): SavedRoom[] {
   return rooms;
 }
 
+let migrated = false;
 function migrateOldRooms(): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || migrated) return;
   const oldKey = "home_project_hub_rooms";
   try {
     const oldData = localStorage.getItem(oldKey);
@@ -68,9 +70,8 @@ function migrateOldRooms(): void {
       }
       localStorage.removeItem(oldKey);
     }
+    migrated = true;
   } catch {}
 }
-
-migrateOldRooms();
 
 export type { SavedProject };

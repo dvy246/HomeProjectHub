@@ -49,12 +49,12 @@ function pageFor(slug: string): { title: string; description: string; h1: string
   if (slug === 'compare') return { title: tr('compare.title'), description: tr('compare.description'), h1: tr('compare.h1') };
   if (slug === 'quizzes') return { title: tr('quizzes.title'), description: tr('quizzes.description'), h1: tr('quizzes.h1'), subtitle: tr('quizzes.subtitle') };
   if (slug === 'calculators') return { title: tr('calculators.title'), description: tr('calculators.description'), h1: tr('calculators.h1'), subtitle: tr('calculators.subtitle') };
-  if (slug === 'privacy') return { title: 'Privacy Policy', description: 'Privacy Policy', h1: 'Privacy Policy' };
-  if (slug === 'terms') return { title: 'Terms of Service', description: 'Terms of Service', h1: 'Terms of Service' };
-  if (slug === 'disclaimer') return { title: 'Disclaimer', description: 'Disclaimer', h1: 'Disclaimer' };
+  if (slug === 'privacy') return { title: tr('legal.privacy.title'), description: tr('legal.privacy.description'), h1: tr('legal.privacy.h1') };
+  if (slug === 'terms') return { title: tr('legal.terms.title'), description: tr('legal.terms.description'), h1: tr('legal.terms.h1') };
+  if (slug === 'disclaimer') return { title: tr('legal.disclaimer.title'), description: tr('legal.disclaimer.description'), h1: tr('legal.disclaimer.h1') };
   if (slug === 'maintenance') return { title: tr('maintenance.hub.title'), description: tr('maintenance.hub.description'), h1: tr('maintenance.hub.h1'), subtitle: tr('maintenance.hub.subtitle') };
   if (slug === 'maintenance/planner') return { title: tr('maintenance.planner.title'), description: tr('maintenance.planner.description'), h1: tr('maintenance.planner.h1') };
-  if (slug === 'maintenance/calendar') return { title: 'Home Maintenance Calendar', description: 'Monthly maintenance task schedule and tracking.', h1: 'Maintenance Calendar' };
+  if (slug === 'maintenance/calendar') return { title: tr('maintenance.calendar.title'), description: tr('maintenance.calendar.description'), h1: tr('maintenance.calendar.h1') };
   if (slug === 'maintenance/cost-estimator') return { title: tr('maintenance.costEstimator.title'), description: tr('maintenance.costEstimator.description'), h1: tr('maintenance.costEstimator.h1') };
   if (slug === 'maintenance/first-time-homeowner') return { title: tr('maintenance.firstTime.title'), description: tr('maintenance.firstTime.description'), h1: tr('maintenance.firstTime.h1') };
   if (slug === 'maintenance/spring') return { title: tr('maintenance.spring.title'), description: tr('maintenance.spring.description'), h1: tr('maintenance.spring.h1') };

@@ -1,0 +1,79 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import KitchenRenovationCalc from "../../../components/calculators/renovation/KitchenRenovationCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Kitchen Renovation Cost Calculator | Cabinets & Countertops";
+const description = "Free online kitchen remodel cost calculator. Estimate stone countertops, wood cabinets, islands, sink plumbing, and local contractor installation labor.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/kitchen/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does a typical kitchen renovation cost?",
+    a: "An average kitchen remodel costs between $15,000 and $40,000. Minor cosmetic updates start as low as $8,000, while high-end luxury kitchen remodels featuring custom cabinetry and premium marble slabs can exceed $60,000 to $100,000."
+  },
+  {
+    q: "How are kitchen cabinet costs calculated?",
+    a: "Kitchen cabinets are priced by the linear foot. Stock cabinets range from $150 to $300 per linear foot, semi-custom cabinets cost $300 to $500, and fully custom solid wood cabinets cost $500 to $900+ per linear foot."
+  },
+  {
+    q: "What is the kitchen work triangle?",
+    a: "The kitchen work triangle is a standard layout design principle. It dictates that the paths between the three primary work areas—the sink, the refrigerator, and the stove—should form a comfortable triangle, with each leg between 4 and 9 feet to optimize cooking efficiency."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <a href="/calculators/renovation/" class="hover:underline">Renovation</a>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Remodeling your kitchen layout? Input your cabinetry lengths, countertop square footage, island specs, and appliance budgets below to instantly calculate material subtotals, builder labor fees, and contingency cushions.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <KitchenRenovationCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">How to Plan and Estimate Kitchen Remodeling Expenses</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        A kitchen renovation represents the largest home improvement investment most homeowners make. Planning a successful build requires breaking down the budget into material quality tiers and labor parameters.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Cabinetry & Cabinet Runs</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Cabinetry typically represents 30% to 40% of a kitchen remodel budget. Standard base cabinets are 24 inches deep and 34.5 inches high. Upper wall cabinets are 12 inches deep. Linear foot estimation is the most accurate way to establish a baseline before ordering custom configurations.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">2. Stone Countertop Slab Selection</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Solid surface stone countertops are estimated by the square foot. Standard kitchen countertops are 25.5 inches deep. For granite or quartz slabs, expect to pay between $65 and $120 per square foot, including edge profile routing and sink cutout fabrications.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Electrical & Appliance Rough-Ins</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Modern kitchens require multiple dedicated 20-amp circuits for countertop outlets, refrigerator, and microwave units to satisfy the National Electrical Code (NEC). Ensure you allocate a 15% contingency buffer in your planner to cover potential panel upgrades.
+      </p>
+    </section>
+  </div>
+</Layout>

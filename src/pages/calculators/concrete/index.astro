@@ -1,6 +1,7 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
-import { breadcrumbListSchema } from "../../../lib/schema";
+import { breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
 
 const title = "Concrete Calculators";
 const description = "Free concrete calculators for slabs, footings, columns, walls, tube forms, and steps. Get cubic yards, bag counts, and weight estimates for any concrete pour.";
@@ -10,7 +11,7 @@ const calculators = [
   { href: "/calculators/concrete/footing/", title: "Footing", desc: "Pier holes, deck footings, fence post foundations", tags: ["Cylinder", "Block", "Post"] },
   { href: "/calculators/concrete/rebar/", title: "Rebar", desc: "Rebar quantity, spacing, weight, and ties for slabs", tags: ["#3-#8", "Grid", "Tonnage"] },
   { href: "/calculators/concrete/block-fill/", title: "Block Fill", desc: "CMU blocks, mortar, and grout fill for walls", tags: ["4-12 in", "Core Fill", "Mortar"] },
-  { href: "/calculators/concrete/mix-ratio/", title: "Mix Ratio", desc: "Cement, sand, and gravel quantities by mix ratio", tags: ["1: 2:3", "Parts", "Water"] },
+  { href: "/calculators/concrete/mix-ratio/", title: "Mix Ratio", desc: "Cement, sand, and gravel quantities by mix ratio", tags: ["1:2:3", "Parts", "Water"] },
   { href: "/calculators/concrete/steps/", title: "Steps", desc: "Staircases with optional landing extensions", tags: ["Multi-Step", "Landing"] },
   { href: "/calculators/concrete/column/", title: "Column", desc: "Round and square structural columns", tags: ["Round", "Square", "Multi"] },
   { href: "/calculators/concrete/wall/", title: "Wall", desc: "Walls with door and window opening deductions", tags: ["Openings", "Retaining"] },
@@ -18,10 +19,30 @@ const calculators = [
   { href: "/calculators/concrete/curb-gutter/", title: "Curb & Gutter", desc: "Concrete volume for curbs, gutters, and drainage channels", tags: ["Street", "Drainage", "Forms"] },
 ];
 
-const schema = breadcrumbListSchema([
+const guides = await getCollection("guide");
+const concreteGuides = guides
+  .filter(g => g.data.category === "concrete")
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const faqs = [
+  { q: "How many 80lb bags of concrete are in a cubic yard?", a: "There are exactly 45 bags of 80lb pre-mixed concrete in one cubic yard. If you are using 60lb bags, you will need 60 bags to make one cubic yard." },
+  { q: "What is the standard concrete thickness for a driveway?", a: "For standard residential driveways supporting light vehicles, a slab thickness of 4 inches is typical. For heavier trucks, RVs, or poor soil conditions, 6 inches is recommended for safety." },
+  { q: "How much concrete waste should I assume?", a: "A standard waste factor of 10% is recommended for most residential concrete slab pours to account for uneven grade excavations, formwork flexing, and minor spillage." },
+];
+
+const breadcrumbSchema = breadcrumbListSchema([
   { name: "Home", path: "/" },
   { name: "Concrete Calculators", path: "/calculators/concrete/" },
 ]);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    breadcrumbSchema,
+    faqPageSchema(faqs, "https://homeplanninghub.com/calculators/concrete/"),
+  ],
+};
 ---
 
 <Layout title={title} description={description} schema={schema}>
@@ -34,8 +55,11 @@ const schema = breadcrumbListSchema([
 
   <header class="mb-10">
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Concrete Calculators</h1>
-    <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty max-w-2xl">
-      Professional concrete estimation tools for residential and commercial pours. Calculate volume in cubic yards and cubic meters, bag counts for all standard sizes, and total weight for delivery planning.
+    <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty max-w-3xl mb-4">
+      Estimate material requirements for footings, slabs, structural columns, block walls, and steps. Whether you are ordering ready-mix truck delivery or buying pre-mixed bags from the hardware store, our professional estimators calculate total volume in cubic yards and standard bags instantly.
+    </p>
+    <p class="text-sm text-[var(--fg-muted)] leading-relaxed text-pretty max-w-2xl">
+      <strong>Pro tip:</strong> Ready-mix concrete companies usually require a 1-yard minimum order. For smaller projects under 1 cubic yard (such as post holes, small footings, or minor patio slabs), buying pre-mixed 80lb or 60lb bags is more cost-effective.
     </p>
   </header>
 
@@ -56,6 +80,35 @@ const schema = breadcrumbListSchema([
     ))}
   </div>
 
+  {concreteGuides.length > 0 && (
+    <section class="border-t border-[var(--border)] pt-8 mb-12">
+      <h2 class="text-xl font-bold tracking-tight mb-6">Featured Concrete Guides</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {concreteGuides.map((guide) => (
+          <a href={`/guides/${guide.id}/`} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+            <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--fg-muted)] uppercase block self-start w-max mb-3">
+              {guide.data.category}
+            </span>
+            <h3 class="text-sm font-semibold mb-2 group-hover:text-[var(--fg)] transition-colors">{guide.data.title}</h3>
+            <p class="text-xs text-[var(--fg-secondary)] leading-relaxed line-clamp-3">{guide.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="border-t border-[var(--border)] pt-8 mb-12">
+    <h2 class="text-xl font-bold tracking-tight mb-6">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-4 max-w-3xl">
+      {faqs.map((faq) => (
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+          <h3 class="text-sm font-semibold mb-2 text-[var(--fg)]">{faq.q}</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <section class="border-t border-[var(--border)] pt-8">
     <h2 class="text-lg font-bold tracking-tight mb-4">Why trust our calculators</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -70,3 +123,4 @@ const schema = breadcrumbListSchema([
     </div>
   </section>
 </Layout>
+

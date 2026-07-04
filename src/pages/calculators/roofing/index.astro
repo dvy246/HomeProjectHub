@@ -1,6 +1,7 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
-import { breadcrumbListSchema } from "../../../lib/schema";
+import { breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
 
 const title = "Roofing Calculators";
 const description = "Free roofing calculators for shingles, metal panels, plywood sheathing, and roof pitch. Estimate materials, screws, underlayment, and accessories for any roofing project.";
@@ -14,10 +15,30 @@ const calculators = [
   { href: "/calculators/roofing/snow-load/", title: "Snow Load", desc: "Roof snow load analysis based on depth, density, and building code values", tags: ["psf", "Safety", "Code"] },
 ];
 
-const schema = breadcrumbListSchema([
+const guides = await getCollection("guide");
+const roofingGuides = guides
+  .filter(g => g.data.category === "roofing")
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const faqs = [
+  { q: "What is a roofing square?", a: "A roofing square is a standard unit of area measurement in the construction trade equal to 100 square feet of roof surface. For example, a 1,500 square foot roof is 15 squares." },
+  { q: "How many bundles of shingles do I need per square?", a: "Standard 3-tab and architectural asphalt shingles are packaged such that 3 bundles cover exactly 1 roofing square (100 square feet) of roof surface area." },
+  { q: "What waste factor should I calculate for a new roof?", a: "For a simple gable roof with few valleys or dormers, add a 10% waste factor. For a complex hip roof or a roof with multiple valleys, add a 15% to 20% waste factor to account for shingle cuts." },
+];
+
+const breadcrumbSchema = breadcrumbListSchema([
   { name: "Home", path: "/" },
   { name: "Roofing Calculators", path: "/calculators/roofing/" },
 ]);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    breadcrumbSchema,
+    faqPageSchema(faqs, "https://homeplanninghub.com/calculators/roofing/"),
+  ],
+};
 ---
 
 <Layout title={title} description={description} schema={schema}>
@@ -29,8 +50,11 @@ const schema = breadcrumbListSchema([
 
   <header class="mb-10">
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Roofing Calculators</h1>
-    <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty max-w-2xl">
-      Professional roofing estimation tools for shingle, metal, and plywood deck projects. Calculate material quantities, fasteners, underlayment, and accessories with pitch-corrected surface area formulas.
+    <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty max-w-3xl mb-4">
+      Estimate material quantities, fasteners, underlayment, and roof deck spacing. All roofing estimators apply pitch-corrected surface area multipliers to convert your building footprint into the actual sloped roof area.
+    </p>
+    <p class="text-sm text-[var(--fg-muted)] leading-relaxed text-pretty max-w-2xl">
+      <strong>Pro tip:</strong> Roofing materials are sold by the square or by the bundle. Always verify local pitch using a pitch gauge or slope multiplier before purchasing underlayment, shingles, or metal panels.
     </p>
   </header>
 
@@ -51,6 +75,35 @@ const schema = breadcrumbListSchema([
     ))}
   </div>
 
+  {roofingGuides.length > 0 && (
+    <section class="border-t border-[var(--border)] pt-8 mb-12">
+      <h2 class="text-xl font-bold tracking-tight mb-6">Featured Roofing Guides</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {roofingGuides.map((guide) => (
+          <a href={`/guides/${guide.id}/`} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+            <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--fg-muted)] uppercase block self-start w-max mb-3">
+              {guide.data.category}
+            </span>
+            <h3 class="text-sm font-semibold mb-2 group-hover:text-[var(--fg)] transition-colors">{guide.data.title}</h3>
+            <p class="text-xs text-[var(--fg-secondary)] leading-relaxed line-clamp-3">{guide.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="border-t border-[var(--border)] pt-8 mb-12">
+    <h2 class="text-xl font-bold tracking-tight mb-6">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-4 max-w-3xl">
+      {faqs.map((faq) => (
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+          <h3 class="text-sm font-semibold mb-2 text-[var(--fg)]">{faq.q}</h3>
+          <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <section class="border-t border-[var(--border)] pt-8">
     <h2 class="text-lg font-bold tracking-tight mb-4">Pitch-corrected estimates</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -65,3 +118,4 @@ const schema = breadcrumbListSchema([
     </div>
   </section>
 </Layout>
+

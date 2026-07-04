@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface CalcEntry {
   slug: string;
@@ -88,13 +88,34 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "spiral-staircase", name: "Spiral Staircase", category: "Specialty", icon: "stairs" },
   { slug: "paint", name: "Paint", category: "Paint", icon: "paint" },
   { slug: "tile", name: "Tile", category: "Tile", icon: "grid" },
+  { slug: "renovation/bathroom", name: "Bathroom Renovation", category: "Renovation", icon: "paint" },
+  { slug: "renovation/kitchen", name: "Kitchen Renovation", category: "Renovation", icon: "grid" },
+  { slug: "renovation/basement", name: "Basement Finishing", category: "Renovation", icon: "drywall" },
+  { slug: "renovation/garage", name: "Garage Remodel", category: "Renovation", icon: "home" },
+  { slug: "renovation/patio", name: "Patio Cost", category: "Renovation", icon: "box" },
+  { slug: "renovation/deck", name: "Deck Cost", category: "Renovation", icon: "lumber" },
+  { slug: "renovation/flooring", name: "Flooring Cost", category: "Renovation", icon: "grid" },
+  { slug: "renovation/fence", name: "Fence Cost", category: "Renovation", icon: "fence" },
 ];
 
-const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile"];
+const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile", "Renovation"];
 
 export default function CalculatorHub() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get("category");
+      if (cat) {
+        const matched = CATEGORIES.find((c) => c.toLowerCase() === cat.toLowerCase());
+        if (matched) {
+          setCategory(matched);
+        }
+      }
+    }
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
@@ -109,7 +130,7 @@ export default function CalculatorHub() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--fg-muted)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--fg-muted)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search calculators..." className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 pl-10 pr-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors" />
         </div>
         <select value={category} onChange={(e) => setCategory(e.target.value)} className="text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors min-w-[140px]">
@@ -123,7 +144,7 @@ export default function CalculatorHub() {
         {filtered.map((calc) => (
           <a key={calc.slug} href={`/calculators/${calc.slug}/`} className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] transition-colors">
             <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="w-4 h-4 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d={ICONS[calc.icon] || ICONS.ruler} />
               </svg>
             </div>

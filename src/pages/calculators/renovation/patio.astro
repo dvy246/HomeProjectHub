@@ -1,0 +1,85 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PatioCostCalc from "../../../components/calculators/renovation/PatioCostCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Patio Cost Calculator | Paver Base Estimator";
+const description = "Free online patio construction cost calculator. Estimate pavers, crushed stone gravel base, bedding sand tonnage, landscape fabric, and contractor labor rates.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/patio/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much gravel do I need for a patio base?",
+    a: "A stable patio requires a minimum of 4 inches of compacted crushed stone aggregate (gravel) base. For a 15x15 foot patio, you will need approximately 2.8 cubic yards or 3.8 tons of gravel subgrade base."
+  },
+  {
+    q: "How deep should the sand bedding layer be under pavers?",
+    a: "The bedding sand layer should be exactly 1 inch deep. Piling sand thicker than 1 inch will lead to uneven settling and paver shifts over time."
+  },
+  {
+    q: "Do I need landscape fabric under a paver patio?",
+    a: "Yes, laying geotextile landscape fabric between the subgrade soil and the compacted gravel base prevents dirt from mixing into the aggregate base, preserving the structural integrity and preventing shifting."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <span class="text-[var(--fg)]">Renovation</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Planning a backyard paver layout? Input your patio area parameters below to instantly estimate the interlocking pavers, gravel subgrade tonnage, bedding sand tons, barrier fabric roll size, and contractor installation labor fees.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <PatioCostCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">Step-by-Step Patio Paver Base Estimation Guide</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Building a professional, long-lasting paver patio or walkway requires meticulous excavation and base compaction. 90% of paver failures (sagging, spacing weeds, shifting) are caused by inadequate gravel bases.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Excavation Depth Calculation</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        To calculate your total excavation depth, combine the thickness of the structural layers:
+      </p>
+      <ul class="list-disc list-inside text-sm text-[var(--fg-secondary)] flex flex-col gap-2 mb-6">
+        <li><strong>Gravel Base</strong>: 4 inches minimum for pedestrian traffic (patios, walkways).</li>
+        <li><strong>Bedding Sand</strong>: Exactly 1 inch of coarse concrete sand.</li>
+        <li><strong>Pavers</strong>: Typically 2-3/8 inches (60mm) for standard concrete interlocking blocks.</li>
+        <li><strong>Total Excavation</strong>: ~7-3/8 inches deep from the desired finish grade line.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold mb-3">2. Base Compaction & Fabric Guidelines</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Compact the soil subgrade first, then roll out geotextile fabric. Add the crushed stone gravel in 2-inch lifts, running a plate compactor over each lift to ensure absolute density before screeding the sand layer.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Paver Spacing and Polymeric Joint Sand</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Lay pavers in your desired pattern (Herringbone, Running Bond, basketweave). Secure the borders using heavy-duty plastic edge restraints spiked into the gravel base. Once laid, sweep polymeric joint sand into the gaps, sweep away excess, and mist with water to activate the binding polymers.
+      </p>
+    </section>
+  </div>
+</Layout>

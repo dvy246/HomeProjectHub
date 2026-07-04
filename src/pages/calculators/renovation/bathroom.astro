@@ -1,0 +1,79 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BathroomRenovationCalc from "../../../components/calculators/renovation/BathroomRenovationCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Bathroom Renovation Cost Calculator | Remodel Estimator";
+const description = "Free online bathroom remodel construction cost calculator. Estimate porcelain or marble floor tiles, vanity sink units, toilets, showers, paint, and plumber labor rates.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/bathroom/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does a bathroom remodel cost on average?",
+    a: "A standard guest bathroom remodel costs between $6,000 and $15,000. Large master bathroom renovations with custom tiled walk-in showers, double vanities, and premium materials typically range from $18,000 to $35,000+."
+  },
+  {
+    q: "Do I need mold-resistant drywall in bathrooms?",
+    a: "Yes, you must use greenboard (moisture-resistant drywall) on all bathroom walls, and cement board (such as Durock) behind any tile surrounds in showers or tubs to prevent rot and mold."
+  },
+  {
+    q: "How much tile waste should I buy for a bathroom floor?",
+    a: "A 10% safety waste factor is standard. For diagonal or complex herringbone tile patterns, purchase a 15% safety waste margin to account for cutting offsets."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <span class="text-[var(--fg)]">Renovation</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Remodeling or building a new guest or master bathroom? Input your layout dimensions below to instantly estimate premium porcelain tiles, vanity sink sizing, toilet tiers, custom shower basins, paint, and licensed builder labor fees.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <BathroomRenovationCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">How to Plan and Estimate Bathroom Remodeling Costs</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        A bathroom remodel is one of the highest ROI home improvements you can make, but it is also the most complex per square foot due to tight plumbing, waterproofing, and electrical requirements.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Fixtures and Vanity Sizing</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Replacing vanity cabinets and sinks is the focal point of the remodel. Double vanities (60 inches or larger) add substantial resale value but require double plumbing supply lines and drains, which can increase labor allowances if relocating existing plumbing lines.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">2. Wet Area Waterproofing Guidelines</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Whether installing a pre-fabricated acrylic shower stall or building a custom tiled walk-in shower with a sloped mortar bed, waterproofing is critical. Always apply a liquid waterproofing membrane (like RedGard) over cement board seams before tiling.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Ventilation and Lighting Codes</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Bathrooms require an exhaust fan vented directly outdoors (not into the attic) capable of moving at least 1 CFM (cubic foot per minute) per square foot of room area. Lighting fixtures placed inside shower stalls must be wet-rated and protected by a GFCI circuit breaker.
+      </p>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,28 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BudgetPlanNew from "../../../components/budget/BudgetPlanNew";
+
+const title = "New Budget Plan";
+const description = "Create a renovation budget plan to track your home improvement project costs.";
+---
+
+<Layout title={title} description={description} noindex={true}>
+  <article class="max-w-3xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/renovate/" class="hover:text-[var(--fg)] transition-colors">Renovate</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/renovate/plans/" class="hover:text-[var(--fg)] transition-colors">Budget Plans</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">New Plan</span>
+    </nav>
+
+    <header class="pb-4 border-b border-[var(--border)]">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance">New Budget Plan</h1>
+      <p class="text-sm text-[var(--fg-muted)] mt-1">Create a budget plan to track renovation costs with your own material and labor prices.</p>
+    </header>
+
+    <BudgetPlanNew client:load />
+  </article>
+</Layout>

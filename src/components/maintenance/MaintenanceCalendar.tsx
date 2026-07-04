@@ -38,13 +38,19 @@ function getCategoryCounts(tasks: MaintenanceTask[]) {
 
 export default function MaintenanceCalendar() {
   const id = useId();
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(currentMonth);
-  const [completedTasks, setCompletedTasks] = useState<Set<string>>(getCompletedIds);
+  const [currentMonth, setCurrentMonth] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [completedTasks, setCompletedTasks] = useState<Set<string>>(() => new Set());
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
 
-  useEffect(() => { migrateOldStorage(); }, []);
+  useEffect(() => {
+    migrateOldStorage();
+    const m = new Date().getMonth();
+    setCurrentMonth(m);
+    setSelectedMonth(m);
+    setCompletedTasks(getCompletedIds());
+  }, []);
+
   useEffect(() => {
     const handler = () => setCompletedTasks(getCompletedIds());
     window.addEventListener("storage", handler);

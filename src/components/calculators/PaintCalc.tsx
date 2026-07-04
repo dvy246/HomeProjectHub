@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
+import { PRESETS } from "../../lib/presets";
 import { calculateRectArea, subtractOpenings } from "../../lib/geometry";
 import { applyWasteFactor } from "../../lib/materialEngine";
 import { saveRoom, getSavedRooms, type SavedRoom } from "../../lib/storage";
@@ -101,7 +103,7 @@ export default function PaintCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Room Dimensions</h3>
+            <h2 className="text-sm font-semibold tracking-tight">Room Dimensions</h2>
             <button
               type="button"
               onClick={() => setUnitSystem(unitSystem === "imperial" ? "metric" : "imperial")}
@@ -109,6 +111,32 @@ export default function PaintCalc() {
             >
               {unitSystem === "imperial" ? "Switch to Metric" : "Switch to Imperial"}
             </button>
+          </div>
+
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Standard Room Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.rooms[idx];
+                  if (unitSystem === "imperial") {
+                    setLength(p.length);
+                    setWidth(p.width);
+                    setHeight(p.height || "8");
+                  } else {
+                    setLength((parseFloat(p.length) * 0.3048).toFixed(2));
+                    setWidth((parseFloat(p.width) * 0.3048).toFixed(2));
+                    setHeight((parseFloat(p.height || "8") * 0.3048).toFixed(2));
+                  }
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.rooms.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
           </div>
 
           <div className="grid grid-cols-3 gap-4 mb-4">
@@ -164,7 +192,7 @@ export default function PaintCalc() {
           <PaintDiagram width={Math.max(lenNum, widNum)} height={htNum} numDoors={doorCount} numWindows={windowCount} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Paint Estimate</h3>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Paint Estimate</h2>
           <div className="flex flex-col gap-5">
             <div>
               <span className="text-xs text-[var(--fg-muted)] block mb-1">Paintable Wall Area</span>
@@ -225,7 +253,7 @@ export default function PaintCalc() {
         </div>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Shopping List</h3>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Shopping List</h2>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
               <span className="text-sm font-medium">Paint ({coatCount} coats)</span>

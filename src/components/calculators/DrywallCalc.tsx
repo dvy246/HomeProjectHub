@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import { PRESETS } from "../../lib/presets";
 import { calculateDrywallSheets } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
@@ -38,6 +39,27 @@ export default function DrywallCalc() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Standard Room Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.rooms[idx];
+                  const l = parseFloat(p.length);
+                  const w = parseFloat(p.width);
+                  setWallLengths(((l + w) * 2).toString());
+                  setWallHeight(p.height || "8");
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.rooms.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <Input label="Total Wall Length (ft)" type="number" inputMode="decimal" value={wallLengths} onChange={(e) => setWallLengths(e.target.value)} placeholder="40" helperText="Sum of all wall lengths" />
             <Input label="Wall Height (ft)" type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="8" />

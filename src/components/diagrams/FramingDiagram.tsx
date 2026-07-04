@@ -33,12 +33,8 @@ export default function FramingDiagram({ length, height, studSpacing, unitSystem
         </marker>
       </defs>
 
-      <rect x={pad} y={pad} width={sl} height={4} fill="var(--border-strong)" rx="2" className="diagram-part">
-        <title>Top plate</title>
-      </rect>
-      <rect x={pad} y={pad + sh - 4} width={sl} height={4} fill="var(--border-strong)" rx="2" className="diagram-part">
-        <title>Bottom plate</title>
-      </rect>
+      <rect x={pad} y={pad} width={sl} height={4} fill="var(--border-strong)" rx="2" className="diagram-part" />
+      <rect x={pad} y={pad + sh - 4} width={sl} height={4} fill="var(--border-strong)" rx="2" className="diagram-part" />
 
       {Array.from({ length: numStuds }, (_, i) => {
         const x = pad + (i * sl) / (numStuds - 1);

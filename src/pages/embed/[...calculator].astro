@@ -1,0 +1,100 @@
+---
+export async function getStaticPaths() {
+  const calculators = [
+    { slug: "concrete-slab", name: "Concrete Slab Calculator", path: "/calculators/concrete/slab/" },
+    { slug: "concrete-footing", name: "Concrete Footing Calculator", path: "/calculators/concrete/footing/" },
+    { slug: "concrete-column", name: "Concrete Column Calculator", path: "/calculators/concrete/column/" },
+    { slug: "concrete-wall", name: "Concrete Wall Calculator", path: "/calculators/concrete/wall/" },
+    { slug: "concrete-steps", name: "Concrete Steps Calculator", path: "/calculators/concrete/steps/" },
+    { slug: "concrete-block-fill", name: "Concrete Block Fill Calculator", path: "/calculators/concrete/block-fill/" },
+    { slug: "concrete-curb-gutter", name: "Concrete Curb & Gutter Calculator", path: "/calculators/concrete/curb-gutter/" },
+    { slug: "concrete-rebar", name: "Concrete Rebar Calculator", path: "/calculators/concrete/rebar/" },
+    { slug: "concrete-mix-ratio", name: "Concrete Mix Ratio Calculator", path: "/calculators/concrete/mix-ratio/" },
+    { slug: "roofing-shingles", name: "Roof Shingle Calculator", path: "/calculators/roofing/shingles/" },
+    { slug: "roofing-metal", name: "Metal Roofing Calculator", path: "/calculators/roofing/metal/" },
+    { slug: "roofing-plywood", name: "Plywood Deck Calculator", path: "/calculators/roofing/plywood/" },
+    { slug: "roofing-pitch", name: "Roof Pitch Calculator", path: "/calculators/roofing/pitch/" },
+    { slug: "roofing-snow-load", name: "Snow Load Calculator", path: "/calculators/roofing/snow-load/" },
+    { slug: "roofing-ice-water-shield", name: "Ice & Water Shield Calculator", path: "/calculators/roofing/ice-water-shield/" },
+    { slug: "paint", name: "Paint Calculator", path: "/calculators/paint/" },
+    { slug: "tile", name: "Tile Calculator", path: "/calculators/tile/" },
+    { slug: "drywall", name: "Drywall Calculator", path: "/calculators/drywall/" },
+    { slug: "framing", name: "Framing Calculator", path: "/calculators/framing/" },
+    { slug: "brick", name: "Brick Calculator", path: "/calculators/brick/" },
+    { slug: "decking", name: "Decking Calculator", path: "/calculators/decking/" },
+    { slug: "lumber", name: "Lumber Calculator", path: "/calculators/lumber/" },
+    { slug: "mulch", name: "Mulch Calculator", path: "/calculators/mulch/" },
+    { slug: "gravel", name: "Gravel Calculator", path: "/calculators/gravel/" },
+    { slug: "square-footage", name: "Square Footage Calculator", path: "/calculators/square-footage/" },
+    { slug: "cubic-yard", name: "Cubic Yard Calculator", path: "/calculators/cubic-yard/" },
+    { slug: "retaining-wall", name: "Retaining Wall Calculator", path: "/calculators/retaining-wall/" },
+    { slug: "french-drain", name: "French Drain Calculator", path: "/calculators/french-drain/" },
+    { slug: "vinyl-siding", name: "Vinyl Siding Calculator", path: "/calculators/vinyl-siding/" },
+    { slug: "vinyl-fence", name: "Vinyl Fence Calculator", path: "/calculators/vinyl-fence/" },
+    { slug: "board-batten", name: "Board & Batten Calculator", path: "/calculators/board-batten/" },
+  ];
+  return calculators.map((c) => ({
+    params: { calculator: c.slug },
+    props: c,
+  }));
+}
+
+interface Props {
+  slug: string;
+  name: string;
+  path: string;
+}
+
+const { slug, name, path } = Astro.props;
+const SITE_URL = "https://homeplanninghub.com";
+const calcUrl = `${SITE_URL}${path}`;
+const iframeCode = `<iframe src="${calcUrl}" frameborder="0" width="100%" height="700" style="max-width: 800px; border: 1px solid #e0e0e0; border-radius: 8px;"></iframe>`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embed {name} | HomePlanningHub</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f9f9f9; color: #333; line-height: 1.6; }
+      .container { max-width: 720px; margin: 40px auto; padding: 0 24px; }
+      h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+      p { font-size: 14px; color: #666; margin-bottom: 24px; }
+      .code-block { background: #1a1a2e; color: #e0e0e0; padding: 16px; border-radius: 8px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin-bottom: 24px; }
+      .copy-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; margin-bottom: 32px; }
+      .copy-btn:hover { background: #1d4ed8; }
+      .preview { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+      .preview iframe { width: 100%; height: 700px; border: none; }
+      .note { font-size: 12px; color: #999; margin-top: 16px; }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Embed {name}</h1>
+      <p>Copy the code below to embed this calculator on your website. It works in any HTML page or blog post.</p>
+
+      <div class="code-block" id="embed-code">{iframeCode}</div>
+
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('embed-code').textContent).then(() => { this.textContent = 'Copied!'; setTimeout(() => { this.textContent = 'Copy Embed Code'; }, 2000); })">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Embed Code
+      </button>
+
+      <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Preview</h2>
+      <div class="preview">
+        <iframe src={calcUrl} title={name} loading="lazy" />
+      </div>
+
+      <p class="note">
+        <a href={calcUrl} target="_blank" rel="noopener">Open {name} in full page</a>
+        &middot; Made by <a href={SITE_URL}>HomePlanningHub</a>
+      </p>
+    </div>
+  </body>
+</html>

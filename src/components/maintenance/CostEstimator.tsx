@@ -21,12 +21,24 @@ function saveSaved(data: any) {
 }
 
 export default function CostEstimator() {
-  const saved = loadSaved();
-  const [homeSize, setHomeSize] = useState(saved?.homeSize ?? "2000");
-  const [age, setAge] = useState<AgeRange>(saved?.age ?? "15-30");
-  const [region, setRegion] = useState<ClimateRegion>(saved?.region ?? "temperate");
-  const [propertyType, setPropertyType] = useState<PropertyType>(saved?.propertyType ?? "single-family");
-  const [remember, setRemember] = useState(saved !== null);
+  const [homeSize, setHomeSize] = useState("2000");
+  const [age, setAge] = useState<AgeRange>("15-30");
+  const [region, setRegion] = useState<ClimateRegion>("temperate");
+  const [propertyType, setPropertyType] = useState<PropertyType>("single-family");
+  const [remember, setRemember] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const saved = loadSaved();
+    if (saved) {
+      setHomeSize(saved.homeSize ?? "2000");
+      setAge(saved.age ?? "15-30");
+      setRegion(saved.region ?? "temperate");
+      setPropertyType(saved.propertyType ?? "single-family");
+      setRemember(true);
+    }
+    setIsLoaded(true);
+  }, []);
 
   const size = parseInt(homeSize, 10) || 0;
 
@@ -36,10 +48,14 @@ export default function CostEstimator() {
   }, [size, age, region, propertyType]);
 
   const persist = useCallback(() => {
-    if (remember) {
+    if (isLoaded && remember) {
       saveSaved({ homeSize, age, region, propertyType });
+    } else if (isLoaded && !remember) {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {}
     }
-  }, [remember, homeSize, age, region, propertyType]);
+  }, [isLoaded, remember, homeSize, age, region, propertyType]);
 
   useEffect(() => {
     persist();

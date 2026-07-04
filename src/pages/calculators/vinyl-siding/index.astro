@@ -4,6 +4,7 @@ import VinylSidingCalc from "../../../components/calculators/VinylSidingCalc"
 import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
 
 const canonical = "https://homeplanninghub.com/calculators/vinyl-siding/";
 const title = "Vinyl Siding Calculator";
@@ -55,10 +56,6 @@ const schema = graphSchema(
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Do I need starter strip for vinyl siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes, starter strip is required at the bottom of each wall. It locks the first course of siding in place and provides the angle for proper water drainage.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What trim pieces are needed for vinyl siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Outside corners, inside corners, J-channel around windows/doors, undersill trim, and drip edge at the top of walls are the standard trim pieces.</p></details>
   </div></section>
-  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <a href="/calculators/vinyl-fence/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Vinyl Fence</span></a>
-    <a href="/calculators/square-footage/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Square Footage</span></a>
-    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Framing</span></a>
-  </div></footer>
+  <RelatedCalculators slug="vinyl-siding" />
 </article>
 </Layout>

@@ -1,0 +1,339 @@
+import { useState, useRef } from "react";
+import { Input } from "../../ui/Input";
+import { Card } from "../../ui/Card";
+import AddToProjectCard from "../../ui/AddToProjectCard";
+import { useProjects } from "../../../lib/useProjects";
+import FlooringDiagram from "../../diagrams/renovation/FlooringDiagram";
+import { parseNumber } from "../../../lib/helpers";
+import { PRESETS } from "../../../lib/presets";
+
+export default function FlooringCostCalc() {
+  const [length, setLength] = useState("15");
+  const [width, setWidth] = useState("12");
+  
+  // Custom unit costs mapping (user editable)
+  const [flooringType, setFlooringType] = useState("lvp");
+  const [flooringPrice, setFlooringPrice] = useState("4.50"); // $/sq ft
+  const [underlaymentPrice, setUnderlaymentPrice] = useState("0.65"); // $/sq ft
+  
+  const [hasSubfloorRepair, setHasSubfloorRepair] = useState(false);
+  const [subfloorPrice, setSubfloorPrice] = useState("2.50"); // $/sq ft OSB board
+  const [waste, setWaste] = useState("10"); // % waste factor
+
+  // Labor & Contingency sliders
+  const [laborPercent, setLaborPercent] = useState(35);
+  const [contingencyPercent, setContingencyPercent] = useState(15);
+
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
+  const lengthInputRef = useRef<HTMLInputElement>(null);
+  const finishInputRef = useRef<HTMLInputElement>(null);
+  const subfloorInputRef = useRef<HTMLInputElement>(null);
+
+  const { projects, addToProject, projectSuccess, clearSuccess } = useProjects();
+
+  const lenNum = parseNumber(length) || 0;
+  const widNum = parseNumber(width) || 0;
+  const wasteVal = parseNumber(waste) || 0;
+  const flooringPriceVal = parseNumber(flooringPrice) || 0;
+  const paddingPriceVal = parseNumber(underlaymentPrice) || 0;
+  const subPriceVal = parseNumber(subfloorPrice) || 0;
+
+  // Presets mapping for flooring materials
+  const FLOOR_PRESET_PRICES: Record<string, number> = {
+    lvp: 4.50,
+    hardwood: 9.50,
+    laminate: 2.80,
+    carpet: 3.80,
+    tile: 7.50,
+  };
+
+  const handleFlooringPresetChange = (key: string) => {
+    setFlooringType(key);
+    if (FLOOR_PRESET_PRICES[key]) {
+      setFlooringPrice(FLOOR_PRESET_PRICES[key].toString());
+    }
+  };
+
+  // Dimensions
+  const floorArea = lenNum * widNum;
+  const floorAreaWithWaste = floorArea * (1 + wasteVal / 100);
+
+  // Cost estimates (Transparent Planning Cost Model)
+  const flooringCost = floorAreaWithWaste * flooringPriceVal;
+  const underlaymentCost = floorAreaWithWaste * paddingPriceVal;
+  const subfloorCost = hasSubfloorRepair ? floorArea * subPriceVal : 0;
+
+  const totalMaterialCost = flooringCost + underlaymentCost + subfloorCost;
+  const totalLaborCost = totalMaterialCost * (laborPercent / 100);
+  const baseCost = totalMaterialCost + totalLaborCost;
+  const contingencyCost = baseCost * (contingencyPercent / 100);
+  const grandTotal = baseCost + contingencyCost;
+
+  const handleDiagramFocus = (part: "subfloor" | "underlayment" | "finish") => {
+    setFocusedField(part);
+    setTimeout(() => setFocusedField(null), 2500);
+
+    if (part === "finish" && lengthInputRef.current) {
+      lengthInputRef.current.focus();
+    } else if (part === "subfloor" && subfloorInputRef.current) {
+      subfloorInputRef.current.focus();
+    }
+  };
+
+  // Setup inputs for projects storage
+  const projectInputs = {
+    "Room Footprint": `${length}x${width} ft`,
+    "Flooring Type": flooringType.toUpperCase(),
+    "Flooring Price/SF": `$${flooringPriceVal}/sq ft`,
+    "Underlayment Price/SF": `$${paddingPriceVal}/sq ft`,
+    "Subfloor Repair": hasSubfloorRepair ? `$${subPriceVal}/sq ft` : "NONE",
+    "Waste Margin": `${waste}%`,
+    "Labor": `${laborPercent}%`,
+    "Contingency": `${contingencyPercent}%`,
+  };
+
+  const projectResults = {
+    "Flooring Area": `${Math.round(floorArea)} sq ft`,
+    "Material Subtotal": `$${Math.round(totalMaterialCost).toLocaleString()}`,
+    "Labor Subtotal": `$${Math.round(totalLaborCost).toLocaleString()}`,
+    "Grand Total": `$${Math.round(grandTotal).toLocaleString()}`,
+  };
+
+  const projectMaterials = [
+    { name: `${flooringType.toUpperCase()} flooring planks/tiles`, qty: Math.round(floorAreaWithWaste), unit: "sq ft", cost: flooringCost },
+    { name: "Underlayment foam/vapor rolls", qty: Math.round(floorAreaWithWaste), unit: "sq ft", cost: underlaymentCost },
+    ...(hasSubfloorRepair ? [{ name: "OSB plywood subfloor sheeting", qty: Math.round(floorArea), unit: "sq ft", cost: subfloorCost }] : []),
+  ];
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="lg:col-span-7 flex flex-col gap-4">
+        {/* Parameters Panel */}
+        <Card className={focusedField ? "ring-2 ring-[var(--accent)] transition-all duration-300" : ""}>
+          <div className="border-b border-[var(--border)] pb-4 mb-5 flex justify-between items-center">
+            <h2 className="text-sm font-semibold tracking-tight">Flooring Area Parameters</h2>
+            
+            {/* Dimension Presets */}
+            <div className="w-1/2">
+              <select
+                onChange={(e) => {
+                  const idx = parseInt(e.target.value);
+                  if (idx > 0) {
+                    const p = PRESETS.rooms[idx];
+                    setLength(p.length);
+                    setWidth(p.width);
+                  }
+                }}
+                className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+              >
+                {PRESETS.rooms.map((p, i) => (
+                  <option key={i} value={i}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <Input
+              ref={lengthInputRef}
+              label="Room Length (ft)"
+              type="number"
+              inputMode="decimal"
+              value={length}
+              onChange={(e) => setLength(e.target.value)}
+              placeholder="e.g. 15"
+            />
+            <Input
+              label="Room Width (ft)"
+              type="number"
+              inputMode="decimal"
+              value={width}
+              onChange={(e) => setWidth(e.target.value)}
+              placeholder="e.g. 12"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4 border-t border-[var(--border)] pt-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-[var(--fg-secondary)]">Flooring Style Presets</label>
+              <select
+                onChange={(e) => handleFlooringPresetChange(e.target.value)}
+                className="text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none w-full"
+              >
+                <option value="lvp">Luxury Vinyl Plank ($4.50/SF)</option>
+                <option value="hardwood">Solid Hardwood ($9.50/SF)</option>
+                <option value="laminate">Engineered Laminate ($2.80/SF)</option>
+                <option value="carpet">Plush Pile Carpet ($3.80/SF)</option>
+                <option value="tile">Porcelain floor tiles ($7.50/SF)</option>
+              </select>
+            </div>
+            
+            <Input
+              ref={finishInputRef}
+              label="Flooring Material Cost ($/sq ft)"
+              type="number"
+              inputMode="decimal"
+              value={flooringPrice}
+              onChange={(e) => setFlooringPrice(e.target.value)}
+              className={focusedField === "finish" ? "bg-[var(--accent)]/5 border-[var(--accent)]" : ""}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4 border-t border-[var(--border)] pt-4">
+            <Input
+              label="Underlayment Padding Cost ($/sq ft)"
+              type="number"
+              inputMode="decimal"
+              value={underlaymentPrice}
+              onChange={(e) => setUnderlaymentPrice(e.target.value)}
+            />
+            <Input
+              label="Waste Factor (%)"
+              type="number"
+              inputMode="decimal"
+              value={waste}
+              onChange={(e) => setWaste(e.target.value)}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4 border-t border-[var(--border)] pt-4">
+            <div className="flex items-center gap-4 h-10 mt-6">
+              <label className="inline-flex items-center gap-2 text-sm text-[var(--fg)] cursor-pointer">
+                <input type="checkbox" checked={hasSubfloorRepair} onChange={(e) => setHasSubfloorRepair(e.target.checked)} className="accent-[var(--accent)]" />
+                Include Subfloor OSB Repair
+              </label>
+            </div>
+            {hasSubfloorRepair && (
+              <Input
+                ref={subfloorInputRef}
+                label="Plywood OSB Cost ($/sq ft)"
+                type="number"
+                inputMode="decimal"
+                value={subfloorPrice}
+                onChange={(e) => setSubfloorPrice(e.target.value)}
+                className={focusedField === "subfloor" ? "bg-[var(--accent)]/5 border-[var(--accent)]" : ""}
+              />
+            )}
+          </div>
+        </Card>
+
+        {/* Labor & Contingency Adjustments */}
+        <Card>
+          <div className="border-b border-[var(--border)] pb-4 mb-5">
+            <h2 className="text-sm font-semibold tracking-tight">Labor & Contingency Adjustments</h2>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-medium text-[var(--fg-secondary)]">Installation Labor Fees</span>
+                <span className="font-bold text-[var(--accent)]">{laborPercent}% of Materials</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="150"
+                step="5"
+                value={laborPercent}
+                onChange={(e) => setLaborPercent(parseInt(e.target.value))}
+                className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
+                <span>0% (DIY)</span>
+                <span>35% (Average Contractor)</span>
+                <span>80%+ (Specialty Floor Masons)</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 border-t border-[var(--border)] pt-4">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-medium text-[var(--fg-secondary)]">Contingency Buffer</span>
+                <span className="font-bold text-[var(--accent)]">{contingencyPercent}% of Base Cost</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="50"
+                step="5"
+                value={contingencyPercent}
+                onChange={(e) => setContingencyPercent(parseInt(e.target.value))}
+                className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
+                <span>0% (Perfect Plan)</span>
+                <span>15% (Recommended)</span>
+                <span>30%+ (Subfloor joist rot / floor leveling needs)</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Project Save Card */}
+        <div id="add-to-project-section">
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
+        </div>
+      </div>
+
+      {/* SVG Diagram and Results */}
+      <div className="lg:col-span-5 flex flex-col gap-4">
+        {/* Render Interactive SVG Diagram */}
+        <FlooringDiagram
+          length={lenNum}
+          width={widNum}
+          flooringType={flooringType.toUpperCase()}
+          onFocusElement={handleDiagramFocus}
+        />
+
+        {/* Results Panel */}
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Cost Receipt Summary</h2>
+
+          <div className="flex flex-col gap-5">
+            <div>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">Grand Estimated Expense</span>
+              <div className="flex items-baseline gap-2 tabular-nums">
+                <span className="text-4xl font-extrabold tracking-tight">${Math.round(grandTotal).toLocaleString()}</span>
+                <span className="text-sm font-semibold text-[var(--fg-muted)]">USD</span>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[var(--border)] flex flex-col gap-2.5 text-xs">
+              <div className="flex justify-between items-center">
+                <span className="text-[var(--fg-muted)]">Finished Floorboards ({Math.round(floorAreaWithWaste)} SF)</span>
+                <span className="font-semibold tabular-nums">${Math.round(flooringCost).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[var(--fg-muted)]">Underlayment padding ({Math.round(floorAreaWithWaste)} SF)</span>
+                <span className="font-semibold tabular-nums">${Math.round(underlaymentCost).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[var(--fg-muted)]">OSB Subfloor boards ({hasSubfloorRepair ? Math.round(floorArea) + " SF" : "None"})</span>
+                <span className="font-semibold tabular-nums">${Math.round(subfloorCost).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-[var(--border)]">
+                <span className="text-[var(--fg-muted)]">Material Subtotal</span>
+                <span className="font-semibold tabular-nums">${Math.round(totalMaterialCost).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center text-xs text-[var(--fg-secondary)]">
+                <span>Labor Fees ({laborPercent}%)</span>
+                <span className="font-semibold tabular-nums">${Math.round(totalLaborCost).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-[var(--border)] text-[var(--accent)] font-semibold">
+                <span>Contingency Buffer ({contingencyPercent}%)</span>
+                <span className="tabular-nums">${Math.round(contingencyCost).toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,84 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import DeckCostCalc from "../../../components/calculators/renovation/DeckCostCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Deck Cost Calculator | Materials & Labor Estimator";
+const description = "Free online deck construction cost calculator. Estimate decking boards, framing, railings, footings, and standard contractor labor costs in seconds.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/deck/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does it cost to build a deck per square foot?",
+    a: "On average, deck construction costs between $25 and $65 per square foot. DIY projects with pressure-treated wood start as low as $15 to $22 per square foot, while premium cedar, redwood, or composite decks built by professional contractors range from $45 to $75+ per square foot."
+  },
+  {
+    q: "How many support posts do I need for a deck?",
+    a: "Standard deck support posts (typically 4x4 or 6x6 lumber) should be spaced no more than 8 feet apart, and often closer depending on the size of the beam and joists. A standard 12x16 foot deck attached to a house ledger typically requires 3 to 4 concrete footings and support posts."
+  },
+  {
+    q: "What is the safety waste factor for decking boards?",
+    a: "A 10% safety waste factor is recommended when purchasing decking boards. This covers diagonal trim cuts, board defects, and board length spacing adjustments."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <span class="text-[var(--fg)]">Renovation</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Remodeling or building a new outdoor deck? Input your backyard specifications below to instantly estimate premium composite or treated wood boards, railings, framing support posts, concrete footings, and builder labor rates.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <DeckCostCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">How to Estimate Your Deck Build Cost</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Estimating deck framing and decking materials requires breaking down the build into structural component layers. A standard deck consists of ledger attachments, support posts, joists, decking surface boards, and safety railings.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Decking Surface Materials</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        The surface board selection is the largest variable in material expenses:
+      </p>
+      <ul class="list-disc list-inside text-sm text-[var(--fg-secondary)] flex flex-col gap-2 mb-6">
+        <li><strong>Pressure-Treated Wood</strong>: Most affordable, durable, but requires regular staining/painting.</li>
+        <li><strong>Cedar & Redwood</strong>: Natural rot resistance, beautiful wood grain, mid-range pricing.</li>
+        <li><strong>Composite Decking</strong>: Maintenance-free, long warranty lifespan, highest upfront cost.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold mb-3">2. Structural Framing & Support Joists</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Deck joists are spaced 12 inches or 16 inches on center (OC) depending on the strength requirements of the decking material (composite decking often requires 12\" OC joists to prevent sagging). Beams and support posts distribute the dead load down to concrete footings poured below the frost line.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Railings and Staircase Guidelines</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Safety codes dictate that any deck raised 30 inches or more off the ground must have guard railings at least 36 inches high, with baluster spindle spacing narrow enough that a 4-inch sphere cannot pass between them.
+      </p>
+    </section>
+  </div>
+</Layout>

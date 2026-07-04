@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import { PRESETS } from "../../lib/presets";
 import { parseNumber } from "../../lib/helpers";
 import DeckingDiagram from "../diagrams/DeckingDiagram";
 import { useProjects } from "../../lib/useProjects";
@@ -49,6 +50,25 @@ export default function DeckingCalc() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Deck Size Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.deck[idx];
+                  setDeckLength(p.length);
+                  setDeckWidth(p.width);
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.deck.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <Input label="Deck Length (ft)" type="number" inputMode="decimal" value={deckLength} onChange={(e) => setDeckLength(e.target.value)} placeholder="12" />
             <Input label="Deck Width (ft)" type="number" inputMode="decimal" value={deckWidth} onChange={(e) => setDeckWidth(e.target.value)} placeholder="10" />

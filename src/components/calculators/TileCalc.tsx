@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import { PRESETS } from "../../lib/presets";
 import { calculateRectArea } from "../../lib/geometry";
 import { applyWasteFactor, calculatePackaging } from "../../lib/materialEngine";
 import { parseNumber } from "../../lib/helpers";
@@ -56,7 +57,28 @@ export default function TileCalc() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold tracking-tight mb-5">Floor Dimensions</h3>
+          <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
+            <h2 className="text-sm font-semibold tracking-tight">Floor Dimensions</h2>
+          </div>
+
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Standard Room Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.rooms[idx];
+                  setLength(p.length);
+                  setWidth(p.width);
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.rooms.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
+          </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input label="Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 10" />

@@ -11,7 +11,10 @@
     "compare": "Compare",
     "quizzes": "Quizzes",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "plan_budget": "Plan & Budget",
+    "projects": "My Projects",
+    "all_calculators": "All Calculators"
   },
   "footer": {
     "description": "Your trusted source for home improvement calculators, project planning tools, and maintenance guides.",
@@ -21,7 +24,15 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "disclaimer": "Disclaimer",
-    "allRightsReserved": "All rights reserved."
+    "allRightsReserved": "All rights reserved.",
+    "planning": "Planning",
+    "interior": "Interior",
+    "estimates_note": "Estimates are for planning only. Some outbound shopping links may be affiliate links.",
+    "saved_measurements": "Saved Measurements",
+    "maintenance_planner": "Maintenance Planner",
+    "budget_plans": "Budget Plans",
+    "paint_calculator": "Paint Calculator",
+    "tile_calculator": "Tile Calculator"
   },
   "home": {
     "title": "Home Project Hub — Smart Home Improvement Calculators & Project Planning",
@@ -99,6 +110,11 @@
       "clearAll": "Clear All",
       "progress": "Progress",
       "whyMatters": "Why This Matters"
+    },
+    "calendar": {
+      "title": "Home Maintenance Calendar — Monthly Task Schedule & Tracking",
+      "description": "Monthly maintenance task schedule and tracking for every season.",
+      "h1": "Maintenance Calendar"
     },
     "costEstimator": {
       "title": "Home Maintenance Cost Estimator — Annual Budget Calculator",
@@ -246,5 +262,25 @@
     "summer": "Summer",
     "fall": "Fall",
     "winter": "Winter"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "Privacy Policy for Home Project Hub — how we collect, use, and protect your information.",
+      "h1": "Privacy Policy"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "description": "Terms of Service for Home Project Hub — rules and guidelines for using our website and tools.",
+      "h1": "Terms of Service"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "description": "Disclaimer for Home Project Hub — important information about the limitations of our calculators and tools.",
+      "h1": "Disclaimer"
+    }
+  },
+  "meta": {
+    "language": "English"
   }
 }

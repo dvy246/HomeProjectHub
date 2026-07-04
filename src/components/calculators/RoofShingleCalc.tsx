@@ -96,7 +96,7 @@ export default function RoofShingleCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Roof Parameters</h3>
+            <h2 className="text-sm font-semibold tracking-tight">Roof Parameters</h2>
           </div>
 
           <Select label="Roof Shape" value={roofShape} onChange={(v) => setRoofShape(v as "gable" | "hip")} options={[{ value: "gable", label: "Gable Roof" }, { value: "hip", label: "Hip Roof" }]} />
@@ -141,7 +141,7 @@ export default function RoofShingleCalc() {
           <RoofShinglesDiagram shape={roofShape} length={lenNum} width={widNum} pitch={pitchNum} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Shingle Material Output</h3>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Shingle Material Output</h2>
           <div className="flex flex-col gap-5">
             <div>
               <span className="text-xs text-[var(--fg-muted)] block mb-1">Total Roof Area</span>
@@ -186,7 +186,7 @@ export default function RoofShingleCalc() {
         </div>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h2>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
               <span className="text-sm font-medium">Underlayment Rolls</span>

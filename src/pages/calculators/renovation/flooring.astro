@@ -1,0 +1,79 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import FlooringCostCalc from "../../../components/calculators/renovation/FlooringCostCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Flooring Cost Calculator | Wood, Tile & LVP Estimator";
+const description = "Free online flooring installation cost calculator. Estimate hardwood, luxury vinyl plank LVP, tile, carpet materials, underlayment rolls, and contractor labor.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/flooring/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does it cost to install flooring per square foot?",
+    a: "On average, flooring installation costs between $5 and $15 per square foot. DIY laminate or LVP costs $2 to $4 per square foot in materials, while premium solid hardwood or porcelain tile installed by contractors ranges from $8 to $22+ per square foot."
+  },
+  {
+    q: "Do I need underlayment padding under vinyl flooring?",
+    a: "Yes. Underlayment padding provides sound dampening, adds thermal comfort, acts as a vapor barrier on concrete subgrades, and covers minor subfloor height imperfections to prevent plank shifts."
+  },
+  {
+    q: "What is a standard waste margin for flooring boards?",
+    a: "A 10% safety waste factor is recommended. For rooms with diagonal tile runs, narrow stair treads, or odd bay windows, purchase a 15% safety waste margin to cover trim cuts."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <a href="/calculators/renovation/" class="hover:underline">Renovation</a>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Remodeling or building new room floors? Input your room dimensions below to instantly estimate premium solid hardwood, luxury vinyl plank LVP, ceramic tiles, underlayment padding, subfloor sheeting, and builder labor rates.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <FlooringCostCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">How to Calculate and Plan Flooring Costs</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Upgrading your finished floorboards is one of the quickest ways to elevate a home. Successful planning requires calculating subfloor requirements and material waste margins.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Subfloor Stability & Plywood OSB</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Finished floorboards are only as good as the subfloor underneath. If your floors squeak or sag, inspect the subfloor for moisture rot or loose panels. Replacing squeaky subfloor OSB panels (usually 3/4-inch sheets) adds structural strength and prevents tile grout lines from cracking.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">2. Underlayments & Concrete Vapor Barriers</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        When laying laminate, engineered wood, or vinyl flooring on subgrade concrete (like basement slabs), a vapor barrier membrane is critical. It prevents rising dampness from swelling wood boards or breaking adhesive bonds.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Acclimation and expansion joints</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Wood and laminate floorboards must acclimate to the home's relative humidity for 48 to 72 hours before installation. During installation, leave a 1/4-inch expansion gap along the walls. Cover this gap using shoe moldings or baseboards to allow the floor to expand and contract naturally without buckling.
+      </p>
+    </section>
+  </div>
+</Layout>

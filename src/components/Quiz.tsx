@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card } from "./ui/Card";
 import { Button } from "./ui/Button";
 
@@ -24,12 +24,16 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function Quiz({ title, questions }: QuizProps) {
-  const [shuffled] = useState(() => shuffleArray(questions));
+  const [shuffled, setShuffled] = useState<QuizQuestion[]>(questions);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    setShuffled(shuffleArray(questions));
+  }, [questions]);
 
   const total = shuffled.length;
   const q = shuffled[current];

@@ -1,0 +1,79 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import GarageRemodelCalc from "../../../components/calculators/renovation/GarageRemodelCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Garage Remodel Cost Calculator | Epoxy & Doors Estimator";
+const description = "Free online garage renovation cost calculator. Estimate industrial epoxy floor coatings, insulated steel overhead doors, shelving racks, and contractor labor.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/garage/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does it cost to remodel a garage?",
+    a: "An average garage remodel costs between $5,000 and $18,000. Basic cosmetic updates like concrete paint and basic shelving cost under $2,000, while full garage conversions with wall insulation, multi-car insulated carriage doors, and professional epoxy floors can exceed $25,000."
+  },
+  {
+    q: "Is epoxy flooring worth it for garages?",
+    a: "Yes, industrial epoxy floor flakes coating (typically $4.50 to $8.00 per sq ft installed) protects concrete from oil stains, roadway salts, and moisture. It increases slip resistance and dramatically boosts garage storage aesthetics."
+  },
+  {
+    q: "Should I buy insulated or non-insulated garage doors?",
+    a: "Insulated garage doors (usually R-9 to R-18 values) are highly recommended. They buffer cold drafts from entering the house, quieten street noises, and increase panel durability against door dings."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <a href="/calculators/renovation/" class="hover:underline">Renovation</a>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Remodeling your garage storage or workshop layout? Input your footprint size, overhead door replacement count, wall shelving lengths, and panel types below to instantly calculate material costs, contractor labor, and contingency allowances.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <GarageRemodelCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">How to Estimate Garage Remodeling Budgets</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        A garage is often the most underutilized space in a house. Remodeling it into an organized workshop, home gym, or clean storage area requires itemizing your floor coatings and wall-mounted storage assets.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Epoxy Coating Preparation Steps</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Laying a long-lasting epoxy floor requires detailed surface prep. Before mixing resins, the concrete floor must be acid-etched or ground using a diamond concrete grinder to open up pores. If concrete moisture rates are high, apply an epoxy moisture barrier primer coat first to prevent bubbling.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">2. Insulated Overhead Door Grades</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Replacing old, single-layer steel doors with modern insulated garage doors increases thermal comfort. R-12 doors are standard for attached garages, while R-16 or R-18 polyurethane cores are recommended for heated workshops or home offices.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Heavy-Duty Wall Shelving & Storage Racks</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Wall storage keeps floor space clear. Heavy-duty wire shelving racks anchored directly to wall studs can support up to 600 lbs per 4-foot run. Alternatively, installing slatted wall panels (Slatwall) allows modular hooks, bins, and basket hangers.
+      </p>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,79 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BasementFinishingCalc from "../../../components/calculators/renovation/BasementFinishingCalc";
+import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Basement Finishing Cost Calculator | Framing & Drywall";
+const description = "Free online basement remodeling cost calculator. Estimate wall framing lumber, drywall sheets, ceiling grids, LVP flooring, door packs, and contractor labor.";
+const canonical = "https://homeplanninghub.com/calculators/renovation/basement/";
+
+// SEO FAQ Structured Data
+const faqItems = [
+  {
+    q: "How much does it cost to finish a basement per square foot?",
+    a: "On average, finishing a basement costs between $30 and $75 per square foot. DIY projects using basic laminate floors and standard drywall can start around $15 per square foot, while high-end professionally finished basements featuring wet bars and bathrooms can exceed $90 per square foot."
+  },
+  {
+    q: "What R-value insulation is required for basement walls?",
+    a: "For basement masonry walls, building codes typically require continuous rigid foam insulation of at least R-10, or framed wall cavities insulated to R-13 or R-15 using fiberglass batts or rockwool."
+  },
+  {
+    q: "Should I install a suspended ceiling or drywall ceiling in basements?",
+    a: "A suspended grid ceiling (drop ceiling) costs slightly more ($4.50/sq ft vs $2.50/sq ft for drywall) but is highly recommended. It preserves instant access to plumbing shut-offs, ductwork damper valves, and electrical junction boxes running underneath the subfloor joists."
+  }
+];
+
+const schema = graphSchema([
+  webPageSchema({
+    url: canonical,
+    topicName: title,
+    description,
+  }),
+  faqPageSchema(faqItems)
+]);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 max-w-3xl">
+      <nav class="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-3" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">Home</a>
+        <span>&bull;</span>
+        <a href="/calculators/" class="hover:underline">Calculators</a>
+        <span>&bull;</span>
+        <a href="/calculators/renovation/" class="hover:underline">Renovation</a>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--fg)] mb-3">{title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        Planning to remodel or finish your raw basement space? Input your room dimensions below to instantly calculate required wall framing timber, drywall sheet quantities, ceiling assemblies, flooring, and builder labor rates.
+      </p>
+    </header>
+
+    <main id="main-content" class="mb-12">
+      <BasementFinishingCalc client:load />
+    </main>
+
+    {/* SEO Rich Editorial Guide Content */}
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-2xl font-bold tracking-tight mb-4">Planning and Estimating Basement Finishing Projects</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Finishing a basement adds significant heated living space and increases property value. However, working underground introduces critical dampness protection, ventilation, and emergency egress safety codes.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">1. Vapor Barriers & Subgrade Moisture</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        Basement concrete walls are porous and constantly draw dampness from surrounding soil. Before framing, apply a masonry water sealer, or install continuous rigid foam boards taped at the seams. This serves as a vapor barrier and isolates the wooden framing studs from direct contact with cold masonry.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">2. Egress Windows & Emergency Codes</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        If finishing a basement to include a bedroom, building codes mandate an emergency escape and egress window. The window must have a net clear opening area of at least 5.7 square feet, a sill height no more than 44 inches off the floor, and an outside window well with built-in ladder steps.
+      </p>
+
+      <h3 class="text-lg font-semibold mb-3">3. Suspended Ceilings vs Drywall</h3>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
+        While a drywall ceiling looks identical to upstairs rooms, finishing with a suspended drop ceiling tiles saves immense repair costs down the line if plumbing drains leak, or if you need to run new cabling to the floor above.
+      </p>
+    </section>
+  </div>
+</Layout>

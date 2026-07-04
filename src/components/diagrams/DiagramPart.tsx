@@ -19,7 +19,6 @@ export default function DiagramPart({ title, children, defaultActive }: DiagramP
       aria-label={title}
       aria-pressed={active}
     >
-      <title>{title}</title>
       {cloneElement(children, {
         className: `${existingClass} diagram-part${active ? ' diagram-part--active' : ''}`,
       })}

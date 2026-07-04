@@ -15,9 +15,19 @@ export default function MaintenancePlanner() {
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
 
+  const [currentMonth, setCurrentMonth] = useState<number>(0);
+  const [currentSeason, setCurrentSeason] = useState<string>("spring");
+
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
-  useEffect(() => { migrateOldStorage(); refresh(); }, []);
+  useEffect(() => {
+    migrateOldStorage();
+    const m = new Date().getMonth();
+    setCurrentMonth(m);
+    const season = Object.entries(SEASON_MONTHS).find(([, months]) => months.includes(m))?.[0] || "spring";
+    setCurrentSeason(season);
+    refresh();
+  }, []);
 
   const completed = useMemo(() => getCompletedIds(), [tick]);
 
@@ -49,11 +59,7 @@ export default function MaintenancePlanner() {
     refresh();
   }, [refresh]);
 
-  const currentMonth = new Date().getMonth();
-  const currentSeason = useMemo(
-    () => Object.entries(SEASON_MONTHS).find(([, months]) => months.includes(currentMonth))?.[0] || "spring",
-    []
-  );
+
 
   const tabs: { key: TabView; label: string }[] = [
     { key: "monthly", label: "Monthly & Quarterly" },

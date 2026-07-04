@@ -4,6 +4,7 @@ import VinylFenceCalc from "../../../components/calculators/VinylFenceCalc"
 import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
 
 const canonical = "https://homeplanninghub.com/calculators/vinyl-fence/";
 const title = "Vinyl Fence Calculator";
@@ -52,10 +53,6 @@ const schema = graphSchema(
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the standard vinyl fence panel width?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Standard vinyl fence panels are 6 ft or 8 ft wide. Custom widths may be available from some manufacturers.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How deep should vinyl fence posts be set?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Post holes should be 1/3 the post height above ground. For a 6 ft fence, dig 24-30 inches deep. Use concrete for all corner and gate posts.</p></details>
   </div></section>
-  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <a href="/calculators/vinyl-siding/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Vinyl Siding</span></a>
-    <a href="/calculators/decking/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Decking</span></a>
-    <a href="/calculators/framing/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Framing</span></a>
-  </div></footer>
+  <RelatedCalculators slug="vinyl-fence" />
 </article>
 </Layout>

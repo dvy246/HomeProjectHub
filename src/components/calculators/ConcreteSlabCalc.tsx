@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
@@ -16,6 +18,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { PRESETS } from "../../lib/presets";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -141,8 +144,34 @@ export default function ConcreteSlabCalc() {
         {/* Core Input Panel */}
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Slab Parameters</h3>
+            <h2 className="text-sm font-semibold tracking-tight">Slab Parameters</h2>
             <UnitToggle unitSystem={unitSystem} onChange={handleUnitChange} />
+          </div>
+
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Size Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.concrete[idx];
+                  if (unitSystem === "imperial") {
+                    setLength(p.length);
+                    setWidth(p.width);
+                    setThickness(p.thickness || "4");
+                  } else {
+                    setLength((parseFloat(p.length) * 0.3048).toFixed(2));
+                    setWidth((parseFloat(p.width) * 0.3048).toFixed(2));
+                    setThickness((parseFloat(p.thickness || "4") * 2.54).toFixed(0));
+                  }
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.concrete.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -194,6 +223,7 @@ export default function ConcreteSlabCalc() {
               </label>
               <input
                 type="range"
+                aria-label="Waste Factor percentage"
                 min="0"
                 max="30"
                 step="1"
@@ -406,7 +436,7 @@ export default function ConcreteSlabCalc() {
 
         {/* Results Card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h2>
           <div className="flex flex-col gap-5">
             <div>
               <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>

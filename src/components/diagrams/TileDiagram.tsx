@@ -39,9 +39,7 @@ export default function TileDiagram({ roomWidth, roomLength, tileWidth, tileLeng
         </marker>
       </defs>
 
-      <rect x={pad} y={pad} width={srl} height={srw} fill="var(--bg-subtle)" stroke="var(--border-strong)" strokeWidth="1.5" rx="2">
-        <title>Room boundary</title>
-      </rect>
+      <rect x={pad} y={pad} width={srl} height={srw} fill="var(--bg-subtle)" stroke="var(--border-strong)" strokeWidth="1.5" rx="2" />
 
       {Array.from({ length: Math.max(cols, 1) }, (_, ci) =>
         Array.from({ length: Math.max(rows, 1) }, (_, ri) => {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
+import { PRESETS } from "../../lib/presets";
 import { sqftToCuYd } from "../../lib/geometry";
 import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
@@ -54,6 +55,27 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
+          <div className="mb-4 flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">Area & Depth Presets</label>
+            <select
+              onChange={(e) => {
+                const idx = parseInt(e.target.value);
+                if (idx > 0) {
+                  const p = PRESETS.landscaping[idx];
+                  const l = parseFloat(p.length);
+                  const w = parseFloat(p.width);
+                  setSqft((l * w).toString());
+                  setDepth(p.depth || "4");
+                }
+              }}
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+            >
+              {PRESETS.landscaping.map((p, i) => (
+                <option key={i} value={i}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="mb-4">
             <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">{calculatorLabel} Type</label>
             <select value={aggId} onChange={(e) => setAggId(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">

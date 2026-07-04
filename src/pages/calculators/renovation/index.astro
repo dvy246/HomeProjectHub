@@ -1,0 +1,111 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import { breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
+
+const title = "Renovation Cost Calculators";
+const description = "Free home renovation cost calculators. Estimate materials, fixtures, and local contractor labor fees for bathroom, kitchen, basement, garage, deck, patio, flooring, and fence remodeling.";
+
+const calculators = [
+  { href: "/calculators/renovation/bathroom/", title: "Bathroom Renovation", desc: "Estimate tile flooring, vanity cabinets, toilets, shower/tub units, and labor fees.", tags: ["Tiling", "Fixtures", "Plumbing"] },
+  { href: "/calculators/renovation/kitchen/", title: "Kitchen Renovation", desc: "Calculate countertop slabs, backsplashes, cabinets, appliances, and labor rates.", tags: ["Cabinets", "Countertops", "Slabs"] },
+  { href: "/calculators/renovation/basement/", title: "Basement Finishing", desc: "Estimate drywall framing, ceiling grids, door packs, and insulating R-values.", tags: ["Framing", "Drywall", "Insulation"] },
+  { href: "/calculators/renovation/garage/", title: "Garage Remodel", desc: "Calculate epoxy coatings, garage door replacements, shelves, and panel insulation.", tags: ["Epoxy", "Storage", "Doors"] },
+  { href: "/calculators/renovation/patio/", title: "Patio Cost", desc: "Estimate concrete or brick pavers, aggregates, bedding sand, and geotextile fabric.", tags: ["Pavers", "Base Gravel", "Sand Bed"] },
+  { href: "/calculators/renovation/deck/", title: "Deck Cost", desc: "Estimate premium composite or pressure-treated boards, railings, stairs, and framing.", tags: ["Decking", "Post Footing", "Railing"] },
+  { href: "/calculators/renovation/flooring/", title: "Flooring Cost", desc: "Unified flooring sizer supporting tile, laminate, hardwood, carpet, and underlayments.", tags: ["Tile", "Hardwood", "Underlayment"] },
+  { href: "/calculators/renovation/fence/", title: "Fence Cost", desc: "Calculate line post counts, rails, picket spacing, and gate configurations.", tags: ["Pickets", "Posts", "Gates"] },
+];
+
+const guides = await getCollection("guide");
+const renovationGuides = guides
+  .filter(g => g.data.category === "renovation" || g.data.category === "general")
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const faqs = [
+  { q: "How do I calculate a home renovation budget?", a: "To estimate a renovation budget, break down the project into square footage materials (flooring, drywall, siding), fixture costs (cabinets, tub basins, toilets), and contractor labor fees. Always include a 15% safety contingency fund for unforeseen plumbing or framing adjustments." },
+  { q: "How much does a typical contractor labor fee run?", a: "For remodeling, contractor labor typically constitutes 40% to 60% of the total project invoice. Highly specialized work like licensed plumbing or electrical connections can run between $75 and $150 per hour." },
+  { q: "What permits are required for home remodels?", a: "Major structural modifications, new deck builds higher than 30 inches, basement finishing, and new plumbing run additions typically require municipal building permits. Replacing existing surface finishes like tile, paint, or cabinets generally does not require a permit." },
+];
+
+const breadcrumbSchema = breadcrumbListSchema([
+  { name: "Home", path: "/" },
+  { name: "Renovation Calculators", path: "/calculators/renovation/" },
+]);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    breadcrumbSchema,
+    faqPageSchema(faqs, "https://homeplanninghub.com/calculators/renovation/"),
+  ],
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+    <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+    <span class="text-[var(--fg-secondary)] font-medium">Renovation</span>
+  </nav>
+
+  <header class="mb-10">
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">Renovation Cost Calculators</h1>
+    <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty max-w-3xl mb-4">
+      Estimate materials, hardware fixtures, and local builder installation labor fees for guest bathrooms, custom kitchens, basement framing, exterior decks, and paver patios. Formulate precise project budgets using our interactive sizers.
+    </p>
+    <p class="text-sm text-[var(--fg-muted)] leading-relaxed text-pretty max-w-2xl">
+      <strong>Pro tip:</strong> When ordering materials, apply a standard 10% safety waste factor for straight layouts, or a 15% factor for custom diagonal tile patterns or composite decking configurations.
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-12">
+    {calculators.map((calc) => (
+      <a href={calc.href} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+        <div class="flex items-start justify-between mb-3">
+          <h2 class="text-base font-semibold tracking-tight group-hover:text-[var(--fg)] transition-colors">{calc.title}</h2>
+          <svg class="w-4 h-4 text-[var(--fg-muted)] group-hover:text-[var(--fg)] group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7-7 7m7-7H3" /></svg>
+        </div>
+        <p class="text-sm text-[var(--fg-secondary)] text-pretty mb-3">{calc.desc}</p>
+        <div class="flex flex-wrap gap-1.5">
+          {calc.tags.map((tag) => (
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[var(--bg-muted)] text-[var(--fg-muted)]">{tag}</span>
+          ))}
+        </div>
+      </a>
+    ))}
+  </div>
+
+  {renovationGuides.length > 0 && (
+    <section class="border-t border-[var(--border)] pt-8 mb-12">
+      <h2 class="text-xl font-bold tracking-tight mb-6">Featured Planning Guides</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {renovationGuides.map((guide) => (
+          <a href={`/guides/${guide.id}/`} class="group rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] card-elevated transition-all">
+            <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--fg-muted)] uppercase block self-start w-max mb-3">
+              {guide.data.category}
+            </span>
+            <h3 class="text-sm font-semibold mb-2 group-hover:text-[var(--fg)] transition-colors">{guide.data.title}</h3>
+            <p class="text-xs text-[var(--fg-secondary)] leading-relaxed line-clamp-3">{guide.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="border-t border-[var(--border)] pt-8 mb-12">
+    <h2 class="text-xl font-bold tracking-tight mb-6 font-sans">Frequently Asked Questions</h2>
+    <div class="flex flex-col gap-6 max-w-3xl">
+      {faqs.map((faq) => (
+        <div>
+          <h3 class="text-base font-semibold mb-2 text-[var(--fg)]">{faq.q}</h3>
+          <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

@@ -35,7 +35,6 @@ export default function SpiralStaircaseDiagram({ diameter, numSteps, unitSystem 
         <circle cx={cx} cy={cy} r={r} fill="var(--accent)" fillOpacity="0.03" stroke="var(--border-strong)" strokeWidth="1.5" />
       </DiagramPart>
       <g role="button" tabIndex={0} aria-label="Center pole" aria-pressed={false}>
-        <title>Center pole</title>
         <circle cx={cx} cy={cy} r={r * 0.15} fill="none" stroke="var(--border-strong)" strokeWidth="0.75" className="diagram-part" />
       </g>
 

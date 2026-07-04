@@ -664,7 +664,6 @@ export default function InteractiveHouseExplorer() {
                 onMouseEnter={() => handleLayerMouseEnter(sectionMap.get("exterior")!)}
                 onKeyDown={(e) => handleLayerKeyDown(e, sectionMap.get("exterior")!)}
               >
-                <title>Driveway, Patio & Garden</title>
                 {/* Exterior Grass Lawn / Concrete Patio area */}
                 <polygon points="50,290 190,225 225,260 80,335" fill="var(--bg-muted)" stroke="var(--border-strong)" strokeWidth="1.2" />
                 
@@ -685,7 +684,6 @@ export default function InteractiveHouseExplorer() {
                 onMouseEnter={() => handleLayerMouseEnter(sectionMap.get("foundation")!)}
                 onKeyDown={(e) => handleLayerKeyDown(e, sectionMap.get("foundation")!)}
               >
-                <title>Concrete Foundation & Slabs</title>
                 {/* Slab top face */}
                 <polygon points="84,226 220,279 356,226 220,173" fill="url(#slabPlatform)" stroke="#cccccc" strokeWidth="1.5" />
                 {/* Slab left vertical face */}
@@ -759,7 +757,6 @@ export default function InteractiveHouseExplorer() {
                 onMouseEnter={() => handleLayerMouseEnter(sectionMap.get("interior")!)}
                 onKeyDown={(e) => handleLayerKeyDown(e, sectionMap.get("interior")!)}
               >
-                <title>Paint & Flooring</title>
                 {/* Back interior wall panel (beige wall interior face) */}
                 <polygon points="220,279 356,226 356,131 220,184" fill="url(#wallBeige)" stroke="#d9c39e" strokeWidth="1.5" />
                 {/* Floor surface area interior overlay */}
@@ -784,7 +781,6 @@ export default function InteractiveHouseExplorer() {
                 onMouseEnter={() => handleLayerMouseEnter(sectionMap.get("walls")!)}
                 onKeyDown={(e) => handleLayerKeyDown(e, sectionMap.get("walls")!)}
               >
-                <title>Walls & Drywall</title>
                 {/* Front left beige wall body */}
                 <polygon points="84,226 220,279 220,184 84,131" fill="url(#wallBeige)" stroke="#d9c39e" strokeWidth="1.5" />
                 {/* Triangular gable wall above left wall */}
@@ -821,7 +817,6 @@ export default function InteractiveHouseExplorer() {
                 onMouseEnter={() => handleLayerMouseEnter(sectionMap.get("roof")!)}
                 onKeyDown={(e) => handleLayerKeyDown(e, sectionMap.get("roof")!)}
               >
-                <title>Roofing System</title>
                 {/* Main front-right blue slope - completely blue solid */}
                 <polygon points="152,90 288,37 372,141 236,194" fill="url(#roofBlue)" stroke="#326bb3" strokeWidth="1.2" />
                 

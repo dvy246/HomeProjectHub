@@ -42,7 +42,9 @@ export default defineConfig({
           !path.includes('/saved/') &&
           !path.includes('/planner/') &&
           !path.includes('/projects/') &&
-          !path.includes('/zz-test/')
+          !path.includes('/zz-test/') &&
+          !path.includes('/embed/') &&
+          !path.includes('/renovate/plans/')
         );
       },
       serialize(item) {

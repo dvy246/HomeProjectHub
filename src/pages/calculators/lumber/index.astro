@@ -4,6 +4,7 @@ import LumberCalc from "../../../components/calculators/LumberCalc"
 import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
 
 const canonical = "https://homeplanninghub.com/calculators/lumber/";
 const title = "Lumber Calculator";
@@ -55,10 +56,6 @@ const schema = graphSchema(
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Does lumber weight matter for projects?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Yes — heavier woods are stronger but harder to work. Weight affects shipping costs, fastener selection, and structural load calculations.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the difference between nominal and actual size?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 2x4 is nominally 2x4 inches but actually 1.5x3.5 inches. Board foot calculations typically use nominal dimensions for rough lumber and actual for dressed lumber.</p></details>
   </div></section>
-  <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <a href="/calculators/board-foot/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Board Foot</span></a>
-    <a href="/calculators/size-to-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Size to Weight</span></a>
-    <a href="/calculators/log-weight/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">Log Weight</span></a>
-  </div></footer>
+  <RelatedCalculators slug="lumber" />
 </article>
 </Layout>
