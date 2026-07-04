@@ -183,17 +183,16 @@ export default function InteractiveHouseExplorer() {
     category: string;
     toolsCount: number;
     tools: string[];
-    x: number;
-    y: number;
   }>({
     show: false,
     name: "",
     category: "",
     toolsCount: 0,
     tools: [],
-    x: 0,
-    y: 0,
   });
+
+  // Track tooltip position via ref to avoid re-renders on every mouse move
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(hover: hover)");
@@ -233,13 +232,10 @@ export default function InteractiveHouseExplorer() {
   };
 
   const handleContainerMouseMove = (e: React.MouseEvent) => {
-    if (containerRef.current) {
+    if (tooltipRef.current && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setTooltip(prev => ({
-        ...prev,
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      }));
+      tooltipRef.current.style.left = `${e.clientX - rect.left + 16}px`;
+      tooltipRef.current.style.top = `${e.clientY - rect.top + 16}px`;
     }
   };
 
@@ -494,10 +490,11 @@ export default function InteractiveHouseExplorer() {
           {/* Premium Floating Tooltip */}
           {hasHover && tooltip.show && activeSection && (
             <div
+              ref={tooltipRef}
               className="absolute pointer-events-none z-50 bg-[var(--card-bg)]/95 backdrop-blur-md border border-[var(--border)] rounded-xl shadow-xl px-4 py-3 text-left w-56 flex flex-col gap-2 animate-fade-in-up"
               style={{
-                left: `${tooltip.x + 16}px`,
-                top: `${tooltip.y + 16}px`,
+                left: 0,
+                top: 0,
               }}
             >
               <div className="flex items-center gap-1.5 border-b border-[var(--border)] pb-1.5">
@@ -525,42 +522,32 @@ export default function InteractiveHouseExplorer() {
           )}
 
           <div
-            className="w-full max-w-[420px] transition-transform duration-100 ease-out preserve-3d"
+            className="w-full max-w-[420px] transition-transform duration-100 ease-out"
             style={{
               transform: `rotateY(${rotation}deg) rotateX(${tilt}deg)`,
               transformStyle: "preserve-3d"
             }}
           >
+            {/* Fixed-size container prevents SVG overflow from affecting page layout */}
+            <div style={{ position: 'relative', width: '100%', paddingBottom: '84.44%', overflow: 'hidden' }}>
             <svg
               viewBox="0 0 450 380"
-              className="w-full h-auto overflow-visible"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
               role="img"
               aria-label="Interactive house map showing roofing, walls, interior paint, foundation slabs, and driveway gardens. Drag to rotate structure."
               onMouseLeave={() => {
-                setActiveSection(null);
                 handleLayerMouseLeave();
               }}
             >
               <style>{`
                 .house-layer {
-                  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+                  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
                   cursor: pointer;
-                  transform-box: fill-box;
-                  transform-origin: center;
+                  will-change: transform;
                 }
                 .house-layer:hover, .house-layer:focus-visible {
-                  filter: brightness(1.08) drop-shadow(0 0 20px color-mix(in srgb, var(--accent) 25%, transparent));
+                  opacity: 0.85;
                   outline: none;
-                }
-                .house-layer:hover polygon, 
-                .house-layer:hover path, 
-                .house-layer:hover rect,
-                .house-layer:focus-visible polygon, 
-                .house-layer:focus-visible path, 
-                .house-layer:focus-visible rect {
-                  stroke: var(--accent);
-                  stroke-width: 2px;
-                  filter: drop-shadow(0 0 6px var(--accent));
                 }
                 .house-layer:focus-visible {
                   outline: 2px solid var(--accent);
@@ -587,12 +574,14 @@ export default function InteractiveHouseExplorer() {
                 .layer-exterior {
                   transform: ${isExploded ? "translateY(65px)" : "translateY(0)"};
                 }
+                .active-layer {
+                  opacity: 1 !important;
+                }
                 .active-layer polygon, 
                 .active-layer path, 
                 .active-layer rect {
                   stroke: var(--accent) !important;
-                  stroke-width: 2.5px !important;
-                  filter: drop-shadow(0 0 8px var(--accent)) !important;
+                  stroke-width: 2px !important;
                 }
 
                 
@@ -656,16 +645,12 @@ export default function InteractiveHouseExplorer() {
                 </linearGradient>
               </defs>
 
-              {/* Invisible background to capture empty space hovers and clear active state */}
+              {/* Invisible background to capture empty space clicks */}
               <rect
                 width="450"
                 height="380"
                 fill="none"
                 pointerEvents="all"
-                onMouseEnter={() => {
-                  setActiveSection(null);
-                  handleLayerMouseLeave();
-                }}
               />
 
               {/* SECTION 5: EXTERIOR (Driveway steps & patio lawn) */}
@@ -850,6 +835,7 @@ export default function InteractiveHouseExplorer() {
                 <polygon points="255,25 270,20 282,24 267,29" fill="#2d130e" stroke="#4a2218" strokeWidth="0.75" />
               </g>
             </svg>
+            </div>
           </div>
         </div>
 
