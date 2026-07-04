@@ -12,7 +12,7 @@
     "check": "astro check",
     "lint": "biome check src",
     "test": "vitest run",
-    "deploy": "astro build && npx wrangler pages deploy dist --project-name=homeproject --branch=main",
+    "deploy": "astro build && npx wrangler pages deploy dist --project-name=homeproject --branch=main --commit-dirty=true",
     "astro": "astro"
   },
   "dependencies": {

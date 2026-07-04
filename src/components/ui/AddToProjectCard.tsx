@@ -44,7 +44,10 @@ export default function AddToProjectCard({ projects, onAdd, successMessage }: Pr
 
   return (
     <Card>
-      <h3 className="text-sm font-semibold tracking-tight mb-4">Add to Project</h3>
+      <h3 className="text-sm font-semibold tracking-tight mb-2">Add to Project</h3>
+      <p className="text-[11px] text-[var(--fg-muted)] leading-relaxed mb-4 bg-[var(--bg-subtle)] p-2.5 rounded-lg border border-[var(--border)]">
+        💡 <strong>Did you know?</strong> Saving this calculation connects it to our <strong>Project Planner</strong>, allowing you to bundle multiple estimates (concrete, paint, tile, etc.) into a unified shopping list with shared measurements.
+      </p>
       {projects.length > 0 ? (
         <div className="flex gap-2 items-end">
           <div className="flex-grow">

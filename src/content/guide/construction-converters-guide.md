@@ -2,7 +2,7 @@
 title: "The Complete Guide to Construction Unit Conversions"
 description: "Master construction unit conversions including square footage, cubic yards, board feet, and material weight. Includes formulas, reference tables, and practical examples for DIYers and pros."
 category: "general"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-03
 tags: ["conversion", "square footage", "cubic yards", "board feet", "measurement", "square yards", "cubic feet", "construction math"]
 ---

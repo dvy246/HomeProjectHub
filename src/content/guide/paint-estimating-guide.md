@@ -2,7 +2,7 @@
 title: "How to Estimate Paint Coverage for Any Room"
 description: "Learn how to calculate paint quantities for walls, ceilings, trim, and exterior surfaces. Coverage rates, formulas, and pro tips."
 category: "paint"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-01
 tags: ["paint", "coverage", "interior", "exterior", "DIY"]
 ---

@@ -42,6 +42,9 @@ export default function SaveMeasurementCard({
       {successMessage && (
         <p className="text-xs text-[var(--success)] font-medium mt-2 animate-fade-in-up" role="status">{successMessage}</p>
       )}
+      <p className="text-[10px] text-[var(--fg-muted)] mt-2.5 leading-relaxed">
+        ℹ️ Measurements are stored locally on this device. Using Private/Incognito browsing or clearing browser cache will delete saved items.
+      </p>
       {savedRooms.length > 0 && (
         <div className="border-t border-[var(--border)] pt-4 mt-4">
           <span className="text-xs font-medium text-[var(--fg-muted)] block mb-2">{projectsLabel}</span>

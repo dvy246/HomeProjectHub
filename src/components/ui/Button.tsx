@@ -26,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
     ghost:
       "bg-transparent text-[var(--fg-secondary)] hover:bg-[var(--bg-muted)] hover:text-[var(--fg)] border border-transparent",
     danger:
-      "bg-[var(--error)] text-white hover:opacity-90 border border-[var(--error)] shadow-sm",
+      "bg-[var(--error)] text-[var(--error-fg)] hover:opacity-90 border border-[var(--error)] shadow-sm",
   };
 
   const sizes = {

@@ -123,14 +123,16 @@ export default function RoofShingleCalc() {
           placeholder="e.g. House Roof"
           projectsLabel="Saved Projects:"
         />
-        <AddToProjectCard
-          projects={projects}
-          onAdd={(pid) => {
-            clearSuccess();
-            addToProject(pid, projectInputs, projectResults, projectMaterials);
-          }}
-          successMessage={projectSuccess}
-        />
+        <div id="add-to-project-section" className="flex-1">
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
+        </div>
       </div>
       </div>
 
@@ -168,6 +170,17 @@ export default function RoofShingleCalc() {
                 <span className="text-base text-[var(--fg-muted)] font-medium">bundles</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1">3 bundles = 1 square</span>
+            </div>
+            <div className="pt-4 border-t border-[var(--border)] mt-1">
+              <a
+                href="#add-to-project-section"
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Save to Project Planner
+              </a>
             </div>
           </div>
         </div>

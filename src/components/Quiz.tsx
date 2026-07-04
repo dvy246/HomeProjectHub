@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { Card } from "./ui/Card";
+import { Button } from "./ui/Button";
 
 export interface QuizQuestion {
   question: string;
@@ -76,9 +77,9 @@ export default function Quiz({ title, questions }: QuizProps) {
              pct >= 60 ? "Good effort! Review the explanations to improve." :
              "Keep studying! Review the material and try again."}
           </p>
-          <button onClick={handleRestart} className="mt-2 text-sm font-semibold px-5 py-2 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity">
+          <Button onClick={handleRestart} variant="primary" size="sm" className="mt-2">
             Restart Quiz
-          </button>
+          </Button>
         </div>
       </Card>
     );
@@ -101,9 +102,9 @@ export default function Quiz({ title, questions }: QuizProps) {
             if (!answered) {
               cls += "border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)]";
             } else if (idx === q.correctIndex) {
-              cls += "border-green-500 bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-200";
+              cls += "border-[var(--success)] bg-[var(--success)]/10 text-[var(--success-fg)]";
             } else if (idx === selected) {
-              cls += "border-red-500 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-200";
+              cls += "border-[var(--error)] bg-[var(--error)]/10 text-[var(--error-fg)]";
             } else {
               cls += "border-[var(--border)] opacity-50";
             }
@@ -122,9 +123,9 @@ export default function Quiz({ title, questions }: QuizProps) {
         )}
       </Card>
       {answered && (
-        <button onClick={handleNext} className="self-end text-sm font-semibold px-5 py-2 rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-opacity">
+        <Button onClick={handleNext} variant="primary" size="sm" className="self-end">
           {current + 1 < total ? "Next Question" : "See Results"}
-        </button>
+        </Button>
       )}
     </div>
   );

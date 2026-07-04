@@ -86,7 +86,7 @@ export default function MaintenanceCalendar() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
-          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
           aria-label="Filter by category"
         >
           <option value="all">All categories</option>
@@ -143,7 +143,7 @@ export default function MaintenanceCalendar() {
                 const done = completedTasks.has(task.id);
                 const overdue = isOverdue(task.id, task.frequency);
                 return (
-                  <li key={task.id} className={`flex items-start gap-3 text-sm p-2 rounded-lg ${overdue && !done ? 'bg-amber-50/50 dark:bg-amber-950/10' : ''}`}>
+                  <li key={task.id} className={`flex items-start gap-3 text-sm p-2 rounded-lg ${overdue && !done ? 'bg-[var(--warning)]/10' : ''}`}>
                     <input
                       type="checkbox"
                       id={`${id}-${task.id}`}
@@ -167,7 +167,7 @@ export default function MaintenanceCalendar() {
                         </a>
                       )}
                       {overdue && !done && (
-                        <span className="inline-block mt-1 ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                        <span className="inline-block mt-1 ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--warning)]/20 text-[var(--warning)]">
                           Overdue
                         </span>
                       )}

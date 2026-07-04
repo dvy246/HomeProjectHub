@@ -69,7 +69,7 @@ const { title, description, h1, subtitle } = pg;
 const lp = (p: string) => `/${locale}${p}`;
 ---
 
-<Layout title={title} description={description} canonical={canonical}>
+<Layout title={title} description={description} canonical={canonical} noindex={true}>
   <article class="max-w-4xl mx-auto flex flex-col gap-6 py-4">
 
     {!slugStr && (

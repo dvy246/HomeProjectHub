@@ -66,7 +66,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
 
   return (
     <div className="flex flex-col gap-6">
-      <button type="button" onClick={onBack} className="self-start inline-flex items-center gap-1 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">
+      <button type="button" onClick={onBack} className="self-start inline-flex items-center gap-1 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors print:hidden">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7-7l-7 7 7 7" /></svg>
         Back to all projects
       </button>
@@ -89,7 +89,7 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
             ) : (
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-bold tracking-tight">{project.name}</h2>
-                <button type="button" onClick={startEditing} className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label="Rename project">
+                <button type="button" onClick={startEditing} className="inline-flex items-center justify-center w-7 h-7 rounded-md text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors print:hidden" aria-label="Rename project">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
                 </button>
               </div>
@@ -97,10 +97,13 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
             <div className="flex items-center gap-2 mt-0.5">
               <p className="text-sm text-[var(--fg-muted)] capitalize">{project.projectType} project</p>
               <span className="text-[var(--border-strong)]">|</span>
+              <span className="text-xs font-semibold text-[var(--fg-muted)] hidden print:inline-block capitalize">
+                Status: {project.status}
+              </span>
               <select
                 value={project.status}
                 onChange={(e) => handleStatusChange(e.target.value as SavedProject["status"])}
-                className="text-xs bg-transparent border-none text-[var(--fg-muted)] font-medium cursor-pointer focus:outline-none focus:text-[var(--fg)] appearance-none"
+                className="text-xs bg-transparent border-none text-[var(--fg-muted)] font-medium cursor-pointer focus:outline-none focus:text-[var(--fg)] appearance-none print:hidden"
                 aria-label="Project status"
               >
                 <option value="planning">Planning</option>
@@ -109,9 +112,22 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
               </select>
             </div>
           </div>
-          <button type="button" onClick={handleDelete} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label="Delete project">
-            Delete
-          </button>
+          <div className="flex items-center gap-2 print:hidden">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border-strong)] bg-[var(--bg)] text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors gap-1.5 cursor-pointer"
+              aria-label="Export project to PDF"
+            >
+              <svg className="w-3.5 h-3.5 text-[var(--fg-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 19.164c.224-1.124.992-2.103 2.002-2.613l1.17-.591a.75.75 0 0 1 .66 0l1.17.591c1.01.51 1.778 1.49 2.002 2.613L15 21H9l-.28-1.836ZM12 12a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Zm0 0v3.75m0 0H8.25m3.75 0h3.75" />
+              </svg>
+              <span>Export PDF</span>
+            </button>
+            <button type="button" onClick={handleDelete} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors cursor-pointer" aria-label="Delete project">
+              Delete
+            </button>
+          </div>
         </div>
 
         {project.sharedDimensions.length && (

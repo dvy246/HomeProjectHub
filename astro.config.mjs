@@ -34,11 +34,17 @@ export default defineConfig({
           it: 'it-IT',
         },
       },
-      filter: (page) =>
-        !page.includes('/saved/') &&
-        !page.includes('/planner/') &&
-        !page.includes('/projects/') &&
-        !page.includes('/zz-test/'),
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        const isLocale = /^\/(es|de|pt|pl|it)(\/|$)/.test(path);
+        return (
+          !isLocale &&
+          !path.includes('/saved/') &&
+          !path.includes('/planner/') &&
+          !path.includes('/projects/') &&
+          !path.includes('/zz-test/')
+        );
+      },
       serialize(item) {
         const path = item.url.replace('https://homeplanninghub.com', '');
         if (path === '/' || path === '') {

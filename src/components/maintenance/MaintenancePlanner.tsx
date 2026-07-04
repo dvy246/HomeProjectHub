@@ -133,7 +133,7 @@ export default function MaintenancePlanner() {
           <select
             value={seasonFilter}
             onChange={(e) => setSeasonFilter(e.target.value)}
-            className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+            className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
             aria-label="Filter by season"
           >
             <option value="auto">Current season</option>
@@ -145,7 +145,7 @@ export default function MaintenancePlanner() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
-          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
           aria-label="Filter by category"
         >
           <option value="all">All categories</option>
@@ -156,7 +156,7 @@ export default function MaintenancePlanner() {
         <select
           value={difficultyFilter}
           onChange={(e) => setDifficultyFilter(e.target.value)}
-          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-3 text-[var(--fg)]"
+          className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
           aria-label="Filter by difficulty"
         >
           <option value="all">All difficulties</option>
@@ -206,9 +206,9 @@ export default function MaintenancePlanner() {
                       key={task.id}
                       className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
                         done
-                          ? "border-green-500/30 bg-green-50/50 dark:bg-green-950/10"
+                          ? "border-[var(--success)]/30 bg-[var(--success)]/10"
                           : overdue
-                            ? "border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/10"
+                            ? "border-[var(--warning)]/30 bg-[var(--warning)]/10"
                             : "border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)]"
                       }`}
                     >
@@ -238,7 +238,7 @@ export default function MaintenancePlanner() {
                             </span>
                           )}
                           {overdue && !done && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--warning)]/20 text-[var(--warning)]">
                               Overdue
                             </span>
                           )}

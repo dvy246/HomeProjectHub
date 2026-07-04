@@ -92,14 +92,7 @@ export default function TileCalc() {
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
-        <AddToProjectCard
-          projects={projects}
-          onAdd={(pid) => {
-            clearSuccess();
-            addToProject(pid, projectInputs, projectResults, projectMaterials);
-          }}
-          successMessage={projectSuccess}
-        />
+
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-3 overflow-hidden">
           <TileDiagram roomWidth={widNum} roomLength={lenNum} tileWidth={tileWidthInches} tileLength={tileLengthInches} pattern={layout} unitSystem="imperial" />
         </div>
@@ -140,7 +133,28 @@ export default function TileCalc() {
                 If the store lists box coverage in square feet instead of tile count, divide {sqFtWithWaste.toFixed(1)} sq ft by the box coverage and round up.
               </p>
             </div>
+            <div className="pt-4 border-t border-[var(--border)] mt-1">
+              <a
+                href="#add-to-project-section"
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Save to Project Planner
+              </a>
+            </div>
           </div>
+        </div>
+        <div id="add-to-project-section" className="mt-4">
+          <AddToProjectCard
+            projects={projects}
+            onAdd={(pid) => {
+              clearSuccess();
+              addToProject(pid, projectInputs, projectResults, projectMaterials);
+            }}
+            successMessage={projectSuccess}
+          />
         </div>
       </div>
     </div>

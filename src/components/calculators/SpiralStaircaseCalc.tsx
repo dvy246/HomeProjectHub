@@ -95,7 +95,7 @@ export default function SpiralStaircaseCalc() {
             </div>
             <div className="flex justify-between items-center py-1.5">
               <span className="text-xs text-[var(--fg-secondary)]">IRC Compliance</span>
-              <span className={`text-sm font-bold tabular-nums ${ircRiserOk && ircTreadOk ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+              <span className={`text-sm font-bold tabular-nums ${ircRiserOk && ircTreadOk ? "text-[var(--success)]" : "text-[var(--error)]"}`}>
                 {ircRiserOk && ircTreadOk ? "Pass" : "Check"}
               </span>
             </div>

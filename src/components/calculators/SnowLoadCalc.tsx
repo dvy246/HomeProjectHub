@@ -109,7 +109,7 @@ export default function SnowLoadCalc() {
 
             {exceedsDanger && (
               <div className="pt-4 border-t border-[var(--border)]">
-                <span className="text-xs font-semibold text-red-500">EXCEEDS SAFE LIMIT</span>
+                <span className="text-xs font-semibold text-[var(--error)]">EXCEEDS SAFE LIMIT</span>
                 <p className="text-xs text-[var(--fg-muted)] mt-1">Consider removing snow from the roof immediately. This load may exceed standard residential design capacity.</p>
               </div>
             )}

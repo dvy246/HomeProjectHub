@@ -39,9 +39,9 @@ export default function HeroQuickCalc() {
   ];
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 md:p-6">
+    <div className="rounded-2xl p-5 md:p-6 glass-panel card-elevated">
       <div className="flex items-center gap-2 mb-4">
-        <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)]" />
         <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
           Quick Estimate — Live Preview
         </span>
@@ -93,7 +93,7 @@ export default function HeroQuickCalc() {
         <button
           type="button"
           onClick={() => setCoats(1)}
-          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-all ${
+          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
             coats === 1
               ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-sm"
               : "bg-[var(--bg-inset)] text-[var(--fg-secondary)] hover:bg-[var(--border)]"
@@ -104,7 +104,7 @@ export default function HeroQuickCalc() {
         <button
           type="button"
           onClick={() => setCoats(2)}
-          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-all ${
+          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
             coats === 2
               ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-sm"
               : "bg-[var(--bg-inset)] text-[var(--fg-secondary)] hover:bg-[var(--border)]"

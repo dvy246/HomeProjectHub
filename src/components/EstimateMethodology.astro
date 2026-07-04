@@ -6,10 +6,68 @@ interface Props {
 }
 
 const { formula, assumptions, reviewed = "Reviewed for calculation accuracy on July 2, 2026" } = Astro.props;
+
+const pathname = Astro.url.pathname;
+let category = "general";
+if (pathname.includes("/concrete/") || pathname.includes("/sonotube")) {
+  category = "concrete";
+} else if (pathname.includes("/roofing/")) {
+  category = "roofing";
+} else if (pathname.includes("/paint/")) {
+  category = "paint";
+} else if (pathname.includes("/tile/")) {
+  category = "tile";
+} else if (pathname.includes("/drywall/")) {
+  category = "drywall";
+} else if (pathname.includes("/mulch/") || pathname.includes("/gravel/") || pathname.includes("/sand/") || pathname.includes("/river-rock/") || pathname.includes("/limestone/") || pathname.includes("/rip-rap/")) {
+  category = "landscaping";
+}
+
+const productsMap: Record<string, { name: string; desc: string; store: string; url: string }[]> = {
+  concrete: [
+    { name: "Quikrete 80 lb. Concrete Mix", desc: "Standard high-compressive strength dry mix for pouring slabs and footings.", store: "Home Depot", url: "https://www.homedepot.com/s/quikrete%252080lb?NCNI-5" },
+    { name: "Marshalltown 14 x 4 in. Finishing Trowel", desc: "Professional carbon steel trowel for a flat, smooth concrete surface finish.", store: "Amazon", url: "https://www.amazon.com/s?k=marshalltown+trowel" },
+    { name: "Marshalltown 16 in. Cast Magnesium Float", desc: "Essential for opening the surface of fresh concrete before troweling.", store: "Amazon", url: "https://www.amazon.com/s?k=concrete+float" },
+    { name: "Heavy Duty 6 cu. ft. Steel Wheelbarrow", desc: "Dual-wheel barrow for stable, heavy concrete mixing and transport.", store: "Home Depot", url: "https://www.homedepot.com/s/wheelbarrow?NCNI-5" },
+  ],
+  roofing: [
+    { name: "Owens Corning Duration Architectural Shingles", desc: "Premium laminated asphalt shingles with high-wind resistance rating.", store: "Home Depot", url: "https://www.homedepot.com/s/owens%2520corning%2520shingles?NCNI-5" },
+    { name: "Synthetic Roof Underlayment Roll (1000 sq ft)", desc: "Water-resistant, slip-resistant synthetic underlayment barrier.", store: "Home Depot", url: "https://www.homedepot.com/s/roof%2520underlayment?NCNI-5" },
+    { name: "Bostitch Coil Roofing Nailer", desc: "Heavy-duty pneumatic roofing gun for rapid shingle installation.", store: "Amazon", url: "https://www.amazon.com/s?k=roofing+nailer" },
+    { name: "Guardian Fall Protection Safety Harness", desc: "Essential safety bucket kit for residential roof work compliance.", store: "Amazon", url: "https://www.amazon.com/s?k=roofing+safety+harness" },
+  ],
+  paint: [
+    { name: "Purdy XL Series Premium Paint Brushes (3-Pack)", desc: "Best-in-class angular brushes for clean wall cutting and trim work.", store: "Amazon", url: "https://www.amazon.com/s?k=purdy+paint+brush" },
+    { name: "ScotchBlue Original Multi-Surface Painter's Tape", desc: "Medium adhesion tape that removes cleanly without adhesive transfer.", store: "Amazon", url: "https://www.amazon.com/s?k=scotchblue+painters+tape" },
+    { name: "Wooster Brush Sherlock Roller Frame & Cover Kit", desc: "Smooth-rolling 9-inch frame with high-capacity nap covers.", store: "Amazon", url: "https://www.amazon.com/s?k=paint+roller+kit" },
+  ],
+  tile: [
+    { name: "QEP 24 in. Professional Manual Tile Cutter", desc: "For clean straight and diagonal cuts on ceramic and porcelain tile.", store: "Amazon", url: "https://www.amazon.com/s?k=tile+cutter" },
+    { name: "Custom Building Products Mortar Thinset (50 lb)", desc: "Standard polymer-modified thinset mortar for wall and floor tiles.", store: "Home Depot", url: "https://www.homedepot.com/s/thinset%2520mortar?NCNI-5" },
+    { name: "Rubber Grout Float (9-1/2 x 4 in.)", desc: "Non-stick gum rubber pad ensures smooth grout application in joints.", store: "Amazon", url: "https://www.amazon.com/s?k=grout+float" },
+  ],
+  drywall: [
+    { name: "Sheetrock Brand 1-1/4 in. Drywall Screws (1 lb)", desc: "Coarse-thread screws for securing plasterboard sheets to wood studs.", store: "Home Depot", url: "https://www.homedepot.com/s/drywall%2520screws?NCNI-5" },
+    { name: "FibaTape 300 ft. Fiberglass Mesh Joint Tape", desc: "Self-adhesive, high-strength fiberglass mesh for seamless drywall joints.", store: "Amazon", url: "https://www.amazon.com/s?k=drywall+tape" },
+    { name: "Hyde Tools 3-Pack Drywall Joint Knife Set", desc: "Contains 3 in., 4 in., and 6 in. flexible carbon steel joint knives.", store: "Amazon", url: "https://www.amazon.com/s?k=drywall+joint+knife" },
+  ],
+  landscaping: [
+    { name: "Vigoro 2 cu. ft. Premium Wood Mulch", desc: "Premium shredded bark mulch for moisture retention and weed control.", store: "Home Depot", url: "https://www.homedepot.com/s/wood%2520mulch?NCNI-5" },
+    { name: "Heavy Duty Landscape Fabric Weed Barrier (3x100 ft)", desc: "Permeable dual-layer fabric to keep garden beds and paths weed-free.", store: "Amazon", url: "https://www.amazon.com/s?k=landscape+fabric" },
+    { name: "Bully Tools 16 in. Steel Garden Bow Rake", desc: "Commercial-grade steel rake for grading soil, sand, and gravel.", store: "Amazon", url: "https://www.amazon.com/s?k=garden+rake" },
+  ],
+  general: [
+    { name: "Stanley FatMax 25 ft. Tape Measure", desc: "Extra durability and 14-foot standout length for easy solo measuring.", store: "Amazon", url: "https://www.amazon.com/s?k=stanley+fatmax+25" },
+    { name: "DEWALT Anti-Fog Protective Safety Goggles", desc: "High-impact protection with breathable ventilation seals.", store: "Amazon", url: "https://www.amazon.com/s?k=safety+goggles" },
+    { name: "Ironclad General Construction Work Gloves", desc: "Synthetic leather reinforcement with high dexterity performance.", store: "Amazon", url: "https://www.amazon.com/s?k=work+gloves" },
+  ],
+};
+
+const products = productsMap[category] || productsMap.general;
 ---
 
-<aside class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 my-6">
-  <h2 class="text-sm font-semibold tracking-tight mb-3">How this estimate works</h2>
+<aside class="rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] p-5 my-6 flex flex-col gap-6">
+  <!-- Top Methodology Section -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
     <div>
       <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">Formula</h3>
@@ -24,7 +82,43 @@ const { formula, assumptions, reviewed = "Reviewed for calculation accuracy on J
       </ul>
     </div>
   </div>
-  <p class="text-[10px] text-[var(--fg-muted)] leading-relaxed mt-4">
-    {reviewed}. Estimates are for planning and purchasing checks only. Structural projects, code requirements, soil conditions, and load-bearing designs should be verified by a qualified local professional.
-  </p>
+
+  <!-- Divider -->
+  <div class="h-px bg-[var(--border)]"></div>
+
+  <!-- Recommended Materials & Tools (P1-3 Affiliate Implementation) -->
+  <div>
+    <div class="flex items-baseline justify-between mb-3">
+      <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)]">Recommended Materials &amp; Tools</h3>
+      <span class="text-[10px] text-[var(--fg-muted)] italic">Affiliate Disclosure Below</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {products.map((prod) => (
+        <div class="rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-3 flex flex-col justify-between hover:border-[var(--border-strong)] transition-colors">
+          <div>
+            <span class="text-xs font-bold text-[var(--fg)] block line-clamp-1">{prod.name}</span>
+            <span class="text-[10px] text-[var(--fg-muted)] mt-1 block line-clamp-2 leading-relaxed">{prod.desc}</span>
+          </div>
+          <a
+            href={prod.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2.5 inline-flex items-center justify-center px-2.5 py-1 text-[10px] font-semibold rounded bg-[var(--bg-muted)] text-[var(--fg-secondary)] hover:bg-[var(--accent)] hover:text-[var(--accent-fg)] transition-all text-center"
+          >
+            Shop on {prod.store} &rarr;
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Reviewed and Disclaimer Footer -->
+  <div class="flex flex-col gap-1.5 pt-1">
+    <p class="text-[10px] text-[var(--fg-muted)] leading-relaxed">
+      {reviewed}. Estimates are for planning and purchasing checks only. Structural projects, code requirements, soil conditions, and load-bearing designs should be verified by a qualified local professional.
+    </p>
+    <p class="text-[9px] text-[var(--fg-muted)] leading-relaxed italic border-t border-[var(--border)] pt-2.5">
+      Disclaimer: HomePlanningHub is a participant in the Amazon Services LLC Associates Program and the Home Depot Affiliate Network. We earn referral commissions on qualifying purchases made through these links at no additional cost to you.
+    </p>
+  </div>
 </aside>
