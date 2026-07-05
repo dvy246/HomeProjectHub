@@ -2,7 +2,7 @@
 title: "The Complete Guide to Estimating Landscaping Materials"
 description: "Learn how to estimate gravel, mulch, sand, river rock, and drainage materials for your landscaping project. Includes volume calculations, depth guidelines, and pro tips."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-03
 tags: ["landscaping", "gravel", "mulch", "sand", "drainage", "river rock", "erosion control", "limestone", "rip rap", "french drain"]
 ---

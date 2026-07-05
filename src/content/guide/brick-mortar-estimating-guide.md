@@ -2,7 +2,7 @@
 title: "Brick & Mortar Estimating Guide: How to Calculate Masonry Materials"
 description: "Learn how to calculate the number of bricks and bags of mortar needed for brick walls, including standard and utility brick sizes."
 category: "concrete"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["brick", "mortar", "masonry", "retaining-wall", "estimation"]
 ---

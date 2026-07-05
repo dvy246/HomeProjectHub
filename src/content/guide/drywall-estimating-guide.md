@@ -2,7 +2,7 @@
 title: "The Ultimate Guide to Drywall Estimation: Sheets, Tape, & Fasteners"
 description: "Learn how to estimate drywall sheets, joint compound, joint tape, and screws for any room. Includes calculations for 4x8 and 4x12 sheets."
 category: "paint"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["drywall", "drywall-calculator", "sheets", "estimation", "remodeling"]
 ---

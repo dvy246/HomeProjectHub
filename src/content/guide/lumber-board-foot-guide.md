@@ -2,7 +2,7 @@
 title: "How to Calculate Board Feet: The Complete Lumber Math Guide"
 description: "Master lumber estimation with our guide on calculating board feet, linear feet, and square feet for woodworking and construction."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["lumber", "board-feet", "woodworking", "carpentry", "estimation"]
 ---

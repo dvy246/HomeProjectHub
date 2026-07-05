@@ -96,10 +96,14 @@ const organizationSchema = {
     <title>{title.includes("HomePlanningHub") ? title : `${title} | HomePlanningHub`}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="x-default" href={`https://homeplanninghub.com${pathWithoutLocale}`} />
-    {SUPPORTED_LOCALES.map(l => (
-      <link rel="alternate" hreflang={l} href={`https://homeplanninghub.com${l === 'en' ? pathWithoutLocale : `/${l}${pathWithoutLocale}`}`} />
-    ))}
+    {!noindex && (
+      <>
+        <link rel="alternate" hreflang="x-default" href={`https://homeplanninghub.com${pathWithoutLocale}`} />
+        {SUPPORTED_LOCALES.map(l => (
+          <link rel="alternate" hreflang={l} href={`https://homeplanninghub.com${l === 'en' ? pathWithoutLocale : `/${l}${pathWithoutLocale}`}`} />
+        ))}
+      </>
+    )}
     {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content={articlePubDate ? "article" : "website"} />

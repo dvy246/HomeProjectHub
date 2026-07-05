@@ -316,6 +316,7 @@ export default function BasementFinishingCalc() {
                 value={laborPercent}
                 onChange={(e) => setLaborPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Installation Labor Fees Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (DIY)</span>
@@ -337,6 +338,7 @@ export default function BasementFinishingCalc() {
                 value={contingencyPercent}
                 onChange={(e) => setContingencyPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Contingency Buffer Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (Perfect Plan)</span>

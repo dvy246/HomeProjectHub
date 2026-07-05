@@ -2,7 +2,7 @@
 title: "How Much Paint Do I Need for a 12x12 Room? (Gallon Calculations)"
 description: "Find out exactly how many gallons of paint to buy for a standard 12x12 foot room. Step-by-step wall and ceiling estimates, coat rules, and opening deductions."
 category: "paint"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["paint", "interior", "walls", "coverage", "DIY"]
 ---

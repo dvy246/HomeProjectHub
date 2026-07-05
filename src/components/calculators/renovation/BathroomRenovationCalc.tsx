@@ -293,15 +293,15 @@ export default function BathroomRenovationCalc() {
             />
             <div className="flex items-center gap-4 h-10 mt-6">
               <label className="inline-flex items-center gap-2 text-sm text-[var(--fg)] cursor-pointer">
-                <input type="checkbox" checked={hasVanity} onChange={(e) => setHasVanity(e.target.checked)} className="accent-[var(--accent)]" />
+                <input type="checkbox" checked={hasVanity} onChange={(e) => setHasVanity(e.target.checked)} className="accent-[var(--accent)]" aria-label="Include Vanity Cabinet" />
                 Vanity
               </label>
               <label className="inline-flex items-center gap-2 text-sm text-[var(--fg)] cursor-pointer">
-                <input type="checkbox" checked={hasShower} onChange={(e) => setHasShower(e.target.checked)} className="accent-[var(--accent)]" />
+                <input type="checkbox" checked={hasShower} onChange={(e) => setHasShower(e.target.checked)} className="accent-[var(--accent)]" aria-label="Include Shower Unit" />
                 Shower
               </label>
               <label className="inline-flex items-center gap-2 text-sm text-[var(--fg)] cursor-pointer">
-                <input type="checkbox" checked={hasToilet} onChange={(e) => setHasToilet(e.target.checked)} className="accent-[var(--accent)]" />
+                <input type="checkbox" checked={hasToilet} onChange={(e) => setHasToilet(e.target.checked)} className="accent-[var(--accent)]" aria-label="Include Toilet Bowl" />
                 Toilet
               </label>
             </div>
@@ -343,6 +343,7 @@ export default function BathroomRenovationCalc() {
                 value={laborPercent}
                 onChange={(e) => setLaborPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Installation Labor Fees Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (DIY)</span>
@@ -364,6 +365,7 @@ export default function BathroomRenovationCalc() {
                 value={contingencyPercent}
                 onChange={(e) => setContingencyPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Contingency Buffer Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (Perfect Plan)</span>

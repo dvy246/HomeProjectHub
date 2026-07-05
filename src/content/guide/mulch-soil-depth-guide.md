@@ -2,7 +2,7 @@
 title: "How to Estimate Mulch and Soil: Landscape Volume Calculations"
 description: "Learn how to calculate how many cubic yards or bags of mulch, soil, and gravel you need for garden beds and pathways."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["mulch", "soil", "landscaping", "gardening", "gravel", "estimation"]
 ---

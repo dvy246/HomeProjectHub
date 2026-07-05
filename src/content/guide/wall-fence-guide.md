@@ -2,7 +2,7 @@
 title: "The Complete Guide to Estimating Wall and Fence Materials"
 description: "Learn how to estimate materials for walls, fences, and railing projects. Covers framing, brick, siding, fencing, and retaining wall calculations with pro tips."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-03
 tags: ["fence", "wall", "framing", "brick", "siding", "retaining wall", "baluster", "railing"]
 ---

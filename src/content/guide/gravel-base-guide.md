@@ -2,7 +2,7 @@
 title: "Gravel and Base Materials Guide: Crushed Stone, Pea Gravel, and Road Base"
 description: "Learn how to calculate gravel quantities for driveways, patios, and drainage projects. Compare crushed stone, pea gravel, road base, and recycled aggregates."
 category: "concrete"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-01
 tags: ["gravel", "base", "crushed stone", "drainage", "driveway", "subbase"]
 ---

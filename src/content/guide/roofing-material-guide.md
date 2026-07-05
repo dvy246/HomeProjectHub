@@ -2,7 +2,7 @@
 title: "How to Estimate Roofing Materials: Shingles, Metal, and More"
 description: "A complete guide to estimating roofing materials including asphalt shingles, metal panels, underlayment, and accessories."
 category: "roofing"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-06-20
 updatedDate: 2026-07-01
 tags: ["roofing", "shingles", "metal roof", "underlayment", "pitch"]

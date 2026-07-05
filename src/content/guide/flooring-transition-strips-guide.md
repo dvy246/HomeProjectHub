@@ -2,7 +2,7 @@
 title: "Understanding Flooring Transition Strips and Thresholds"
 description: "A complete guide on selecting transition moldings between different flooring types. T-moldings, reducers, end caps, and carpet grippers."
 category: "flooring"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-05
 tags: ["flooring", "transition", "moldings", "LVP", "carpet", "tile"]
 ---

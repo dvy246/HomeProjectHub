@@ -218,6 +218,7 @@ export default function DeckCostCalc() {
                     checked={hasRailing}
                     onChange={(e) => setHasRailing(e.target.checked)}
                     className="accent-[var(--accent)] w-4 h-4 rounded"
+                    aria-label="Include Safety Railings"
                   />
                   Include Safety Railings
                 </label>
@@ -295,6 +296,7 @@ export default function DeckCostCalc() {
                 value={laborPercent}
                 onChange={(e) => setLaborPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Installation Labor Fees Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (DIY)</span>
@@ -316,6 +318,7 @@ export default function DeckCostCalc() {
                 value={contingencyPercent}
                 onChange={(e) => setContingencyPercent(parseInt(e.target.value))}
                 className="accent-[var(--accent)] w-full h-1.5 rounded-lg bg-[var(--border)] cursor-pointer"
+                aria-label="Contingency Buffer Percentage"
               />
               <div className="flex justify-between text-[10px] text-[var(--fg-muted)]">
                 <span>0% (Perfect Plan)</span>

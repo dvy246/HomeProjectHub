@@ -2,7 +2,7 @@
 title: "How to Estimate Tile for Any Floor or Wall Project"
 description: "Learn how to calculate tile quantities for floors, walls, and backsplashes. Coverage formulas, pattern waste factors, grout estimation, and pro tips."
 category: "tile"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-01
 tags: ["tile", "flooring", "backsplash", "grout", "layout", "DIY"]
 ---

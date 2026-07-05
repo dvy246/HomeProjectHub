@@ -2,7 +2,7 @@
 title: "The Complete Guide to Calculating Material Weights for Construction"
 description: "Learn how to calculate the weight of steel, aluminum, stone, glass, and other construction materials. Includes density reference tables, formulas, and pro estimating tips."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-03
 tags: ["weight", "steel", "aluminum", "metal", "stone", "glass", "construction materials", "material density"]
 ---

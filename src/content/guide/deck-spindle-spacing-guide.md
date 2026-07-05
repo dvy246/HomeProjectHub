@@ -2,7 +2,7 @@
 title: "Deck Baluster Spacing Guide: How to Calculate Spindle Spacing"
 description: "Learn how to calculate deck spindle and baluster spacing to meet building codes. Includes formulas, layout math, and spacing rules."
 category: "general"
-author: "Marcus Vance (DIY Construction Specialist)"
+author: "HomePlanningHub Team"
 pubDate: 2026-07-04
 tags: ["decking", "baluster", "spindle", "railing", "woodworking", "code"]
 ---
