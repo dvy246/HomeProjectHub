@@ -14,8 +14,10 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteFootingDiagram from "../diagrams/ConcreteFootingDiagram";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function ConcreteFootingCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [footingShape, setFootingShape] = useState<"cylinder" | "block">("cylinder");
   const [diameter, setDiameter] = useState<string>("12");
@@ -133,26 +135,26 @@ export default function ConcreteFootingCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Footing Parameters</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.footing.parameters') ?? 'Footing Parameters'}</h3>
             <UnitToggle unitSystem={unitSystem} onChange={(u) => setUnitSystem(u)} />
           </div>
 
-          <Select label="Footing Shape" value={footingShape} onChange={(v) => setFootingShape(v as "cylinder" | "block")} options={[{ value: "cylinder", label: "Cylindrical (Pier / Hole)" }, { value: "block", label: "Square / Rectangular" }]} />
+          <Select label={t('calculators.detail.concrete.footing.footing_shape') ?? 'Footing Shape'} value={footingShape} onChange={(v) => setFootingShape(v as "cylinder" | "block")} options={[{ value: "cylinder", label: t('calculators.detail.concrete.footing.shape_cylinder') ?? 'Cylindrical (Pier / Hole)' }, { value: "block", label: t('calculators.detail.concrete.footing.shape_block') ?? 'Square / Rectangular' }]} />
 
           <div className="flex flex-col gap-4 mb-5">
             {footingShape === "cylinder" ? (
-              <Input label={unitSystem === "imperial" ? "Hole Diameter (inches)" : "Hole Diameter (cm)"} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="e.g. 12" />
+              <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.footing.diameter_in') ?? 'Hole Diameter (inches)') : (t('calculators.detail.concrete.footing.diameter_cm') ?? 'Hole Diameter (cm)')} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 12'} />
             ) : (
               <div className="grid grid-cols-2 gap-4">
-                <Input label={unitSystem === "imperial" ? "Length (inches)" : "Length (cm)"} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 12" />
-                <Input label={unitSystem === "imperial" ? "Width (inches)" : "Width (cm)"} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="e.g. 12" />
+                <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.footing.length_in') ?? 'Length (inches)') : (t('calculators.detail.concrete.footing.length_cm') ?? 'Length (cm)')} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 12'} />
+                <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.footing.width_in') ?? 'Width (inches)') : (t('calculators.detail.concrete.footing.width_cm') ?? 'Width (cm)')} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 12'} />
               </div>
             )}
             <div className="grid grid-cols-2 gap-4">
-              <Input label={unitSystem === "imperial" ? "Hole Depth (inches)" : "Hole Depth (cm)"} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="e.g. 36" />
-              <Input label="Number of Footings" type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="e.g. 4" />
+              <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.footing.depth_in') ?? 'Hole Depth (inches)') : (t('calculators.detail.concrete.footing.depth_cm') ?? 'Hole Depth (cm)')} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 36'} />
+              <Input label={t('calculators.detail.concrete.footing.num_footings') ?? 'Number of Footings'} type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 4'} />
             </div>
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 10" />
+            <Input label={t('calculators.detail.concrete.footing.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
           </div>
 
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
@@ -166,7 +168,7 @@ export default function ConcreteFootingCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          placeholder="e.g. Deck Post Holes"
+          placeholder={t('calculators.common.placeholder') ?? 'e.g. Deck Post Holes'}
         />
         <AddToProjectCard
           projects={projects}
@@ -184,29 +186,29 @@ export default function ConcreteFootingCalc() {
           <ConcreteFootingDiagram width={footingShape === "cylinder" ? diaNum : lenNum} depth={depNum} height={footingShape === "cylinder" ? diaNum : widNum} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.common.results') ?? 'Results'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.volume') ?? 'Required Volume'} (incl. {wasteFactor}% waste)</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{unitSystem === "imperial" ? totalVolumeCuYd.toFixed(2) : totalVolumeCuM.toFixed(2)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? "cu yd" : "cu m"}</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{totalVolumeWithWasteCuFt.toFixed(1)} cu ft total</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{totalVolumeWithWasteCuFt.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'} {t('calculators.common.total') ?? 'total'}</span>
             </div>
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags ({bagSize})</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.bags') ?? 'Bags'} ({bagSize})</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{selectedBags}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">bags</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.bags') ?? 'bags'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Dry Weight</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.dry_weight') ?? 'Dry Weight'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{Math.round(estimatedWeightLbs).toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">lbs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.lbs') ?? 'lbs'}</span>
                 </div>
               </div>
             </div>

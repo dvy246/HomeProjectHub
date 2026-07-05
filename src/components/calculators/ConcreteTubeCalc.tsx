@@ -13,8 +13,10 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteTubeDiagram from "../diagrams/ConcreteTubeDiagram";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function ConcreteTubeCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [diameter, setDiameter] = useState<string>("8");
   const [depth, setDepth] = useState<string>("48");
@@ -99,17 +101,17 @@ export default function ConcreteTubeCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Tube Form Parameters</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.tube.parameters') ?? 'Tube Form Parameters'}</h3>
             <UnitToggle unitSystem={unitSystem} onChange={setUnitSystem} />
           </div>
 
           <div className="flex flex-col gap-4 mb-5">
-            <Input label={unitSystem === "imperial" ? "Tube Diameter (inches)" : "Tube Diameter (cm)"} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="e.g. 8" helperText="Common sizes: 6, 8, 10, 12 inches" />
+            <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.tube.diameter_in') ?? 'Tube Diameter (inches)') : (t('calculators.detail.concrete.tube.diameter_cm') ?? 'Tube Diameter (cm)')} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 8'} helperText={t('calculators.detail.concrete.tube.common_sizes') ?? 'Common sizes: 6, 8, 10, 12 inches'} />
             <div className="grid grid-cols-2 gap-4">
-              <Input label={unitSystem === "imperial" ? "Tube Depth (inches)" : "Tube Depth (cm)"} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="e.g. 48" />
-              <Input label="Number of Tubes" type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="e.g. 6" />
+              <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.tube.depth_in') ?? 'Tube Depth (inches)') : (t('calculators.detail.concrete.tube.depth_cm') ?? 'Tube Depth (cm)')} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 48'} />
+              <Input label={t('calculators.detail.concrete.tube.num_tubes') ?? 'Number of Tubes'} type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 6'} />
             </div>
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 10" />
+            <Input label={t('calculators.detail.concrete.tube.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
           </div>
 
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
@@ -123,7 +125,7 @@ export default function ConcreteTubeCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          placeholder="e.g. Deck Post Tubes"
+          placeholder={t('calculators.common.placeholder') ?? 'e.g. Deck Post Tubes'}
         />
         <AddToProjectCard
           projects={projects}
@@ -141,29 +143,29 @@ export default function ConcreteTubeCalc() {
           <ConcreteTubeDiagram diameter={diaNum} height={depNum} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.common.results') ?? 'Results'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.volume') ?? 'Required Volume'} (incl. {wasteFactor}% waste)</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{unitSystem === "imperial" ? volCuYd.toFixed(2) : volCuM.toFixed(2)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? "cu yd" : "cu m"}</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{volWithWaste.toFixed(1)} cu ft total</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{volWithWaste.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'} {t('calculators.common.total') ?? 'total'}</span>
             </div>
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags ({bagSize})</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.bags') ?? 'Bags'} ({bagSize})</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{selectedBags}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">bags</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.bags') ?? 'bags'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Dry Weight</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.dry_weight') ?? 'Dry Weight'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{Math.round(weight).toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">lbs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.lbs') ?? 'lbs'}</span>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Card } from "./ui/Card";
 import { Button } from "./ui/Button";
+import { useI18n } from "./i18n/I18nProvider";
 
 export interface QuizQuestion {
   question: string;
@@ -24,6 +25,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function Quiz({ title, questions }: QuizProps) {
+  const { t } = useI18n();
   const [shuffled, setShuffled] = useState<QuizQuestion[]>(questions);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -69,20 +71,20 @@ export default function Quiz({ title, questions }: QuizProps) {
     return (
       <Card>
         <div className="flex flex-col items-center gap-4 py-6 text-center">
-          <h3 className="text-xl font-bold">{title} — Complete!</h3>
+          <h3 className="text-xl font-bold">{title} — {t('quiz.complete') ?? 'Complete!'}</h3>
           <div className="text-5xl font-black tabular-nums">{score}/{total}</div>
-          <p className="text-sm text-[var(--fg-secondary)]">{pct}% correct</p>
+          <p className="text-sm text-[var(--fg-secondary)]">{t('quiz.percent_correct')?.replace('{pct}', String(pct)) ?? `${pct}% correct`}</p>
           <div className="w-full max-w-xs h-2 bg-[var(--border)] rounded-full overflow-hidden">
             <div className="h-full bg-[var(--accent)] rounded-full transition-all" style={{ width: `${pct}%` }} />
           </div>
           <p className="text-sm text-[var(--fg-secondary)] text-pretty max-w-sm">
-            {pct === 100 ? "Perfect score! You know your materials." :
-             pct >= 80 ? "Great job! You have a solid understanding." :
-             pct >= 60 ? "Good effort! Review the explanations to improve." :
-             "Keep studying! Review the material and try again."}
+            {pct === 100 ? (t('quiz.perfect_score') ?? "Perfect score! You know your materials.") :
+             pct >= 80 ? (t('quiz.great_job') ?? "Great job! You have a solid understanding.") :
+             pct >= 60 ? (t('quiz.good_effort') ?? "Good effort! Review the explanations to improve.") :
+             (t('quiz.keep_studying') ?? "Keep studying! Review the material and try again.")}
           </p>
           <Button onClick={handleRestart} variant="primary" size="sm" className="mt-2">
-            Restart Quiz
+            {t('quiz.restart') ?? 'Restart Quiz'}
           </Button>
         </div>
       </Card>
@@ -93,7 +95,7 @@ export default function Quiz({ title, questions }: QuizProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between text-xs text-[var(--fg-muted)]">
         <span>{title}</span>
-        <span>Question {current + 1} of {total}</span>
+        <span>{t('quiz.question_of')?.replace('{n}', String(current + 1)).replace('{total}', String(total)) ?? `Question ${current + 1} of ${total}`}</span>
       </div>
       <div className="w-full h-1.5 bg-[var(--border)] rounded-full overflow-hidden">
         <div className="h-full bg-[var(--accent)] rounded-full transition-all" style={{ width: `${((current + 1) / total) * 100}%` }} />
@@ -128,7 +130,7 @@ export default function Quiz({ title, questions }: QuizProps) {
       </Card>
       {answered && (
         <Button onClick={handleNext} variant="primary" size="sm" className="self-end">
-          {current + 1 < total ? "Next Question" : "See Results"}
+          {current + 1 < total ? (t('quiz.next_question') ?? "Next Question") : (t('quiz.see_results') ?? "See Results")}
         </Button>
       )}
     </div>

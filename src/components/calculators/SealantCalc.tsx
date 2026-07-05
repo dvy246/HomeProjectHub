@@ -5,8 +5,10 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function SealantCalc() {
+  const { t } = useI18n();
   const [jointLength, setJointLength] = useState("100");
   const [jointWidth, setJointWidth] = useState("0.5");
   const [jointDepth, setJointDepth] = useState("0.5");
@@ -32,24 +34,24 @@ export default function SealantCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Joint Length (ft)" type="number" inputMode="decimal" value={jointLength} onChange={(e) => setJointLength(e.target.value)} placeholder="100" />
-            <Input label="Joint Width (in)" type="number" inputMode="decimal" value={jointWidth} onChange={(e) => setJointWidth(e.target.value)} placeholder="0.5" />
-            <Input label="Joint Depth (in)" type="number" inputMode="decimal" value={jointDepth} onChange={(e) => setJointDepth(e.target.value)} placeholder="0.5" />
-            <Input label="Tube Size (oz)" type="number" inputMode="decimal" value={tubeSize} onChange={(e) => setTubeSize(e.target.value)} placeholder="10" />
+            <Input label={t('calculators.detail.specialty.sealant.joint_length') ?? 'Joint Length (ft)'} type="number" inputMode="decimal" value={jointLength} onChange={(e) => setJointLength(e.target.value)} placeholder="100" />
+            <Input label={t('calculators.detail.specialty.sealant.joint_width') ?? 'Joint Width (in)'} type="number" inputMode="decimal" value={jointWidth} onChange={(e) => setJointWidth(e.target.value)} placeholder="0.5" />
+            <Input label={t('calculators.detail.specialty.sealant.joint_depth') ?? 'Joint Depth (in)'} type="number" inputMode="decimal" value={jointDepth} onChange={(e) => setJointDepth(e.target.value)} placeholder="0.5" />
+            <Input label={t('calculators.detail.specialty.sealant.tube_size') ?? 'Tube Size (oz)'} type="number" inputMode="decimal" value={tubeSize} onChange={(e) => setTubeSize(e.target.value)} placeholder="10" />
           </div>
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Sealant Estimate</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.specialty.sealant.sealant_estimate') ?? 'Sealant Estimate'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Sealant Needed ({ts} oz tubes)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.specialty.sealant.sealant_needed', { tubeSize: ts }) ?? `Sealant Needed (${ts} oz tubes)`}</span>
               <span className="text-sm font-bold tabular-nums">{totalTubes}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Coverage per Tube</span>
-              <span className="text-sm font-semibold tabular-nums">{linearFtPerTube.toFixed(1)} ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.specialty.sealant.coverage_per_tube') ?? 'Coverage per Tube'}</span>
+              <span className="text-sm font-semibold tabular-nums">{linearFtPerTube.toFixed(1)} {t('units.ft') ?? 'ft'}</span>
             </div>
           </div>
         </Card>

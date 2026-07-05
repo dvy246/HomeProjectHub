@@ -3,8 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import FlooringCostCalc from "../../../components/calculators/renovation/FlooringCostCalc";
 import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
 
-const title = "Flooring Cost Calculator | Wood, Tile & LVP Estimator";
-const description = "Free online flooring installation cost calculator. Estimate hardwood, luxury vinyl plank LVP, tile, carpet materials, underlayment rolls, and contractor labor.";
+const title = "Flooring Cost Calculator";
+const description = "Free flooring cost calculator. Estimate hardwood, luxury vinyl plank LVP, tile, and carpet materials, underlayment rolls, and contractor labor.";
 const canonical = "https://homeplanninghub.com/calculators/renovation/flooring/";
 
 // SEO FAQ Structured Data
@@ -20,6 +20,10 @@ const faqItems = [
   {
     q: "What is a standard waste margin for flooring boards?",
     a: "A 10% safety waste factor is recommended. For rooms with diagonal tile runs, narrow stair treads, or odd bay windows, purchase a 15% safety waste margin to cover trim cuts."
+  },
+  {
+    q: "What is LVP flooring?",
+    a: "LVP stands for Luxury Vinyl Plank flooring. It is a highly durable, multi-layered synthetic flooring product designed to mimic the texture, color, and grain of natural solid wood planks. It typically consists of a waterproof vinyl core, a high-resolution decorative print layer, and a clear protective wear layer that resists scratches, dents, and stains. Many LVP options also feature a pre-attached foam or cork underlayment pad. Use our Flooring Cost Calculator to estimate LVP boards, vapor barrier pads, and contractor installation labor fees for your next remodel."
   }
 ];
 
@@ -74,6 +78,18 @@ const schema = graphSchema([
       <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
         Wood and laminate floorboards must acclimate to the home's relative humidity for 48 to 72 hours before installation. During installation, leave a 1/4-inch expansion gap along the walls. Cover this gap using shoe moldings or baseboards to allow the floor to expand and contract naturally without buckling.
       </p>
+    </section>
+
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-xl font-bold tracking-tight mb-6">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqItems.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
     </section>
   </div>
 </Layout>

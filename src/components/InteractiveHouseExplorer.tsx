@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
+import { useI18n } from "./i18n/I18nProvider";
 
 const renderSectionIcon = (id: string, className = "w-4 h-4 text-[var(--accent)] shrink-0") => {
   switch (id) {
@@ -135,6 +136,7 @@ const HOUSE_SECTIONS: HouseSection[] = [
 ];
 
 export default function InteractiveHouseExplorer() {
+  const { t } = useI18n();
   const [isExploded, setIsExploded] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<HouseSection | null>(null);
   
@@ -419,15 +421,15 @@ export default function InteractiveHouseExplorer() {
       <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 z-10">
         <div className="flex flex-col gap-2">
           <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--fg-muted)]">
-            Visual Navigation Hub
+            {t('house_explorer.visual_nav') ?? 'Visual Navigation Hub'}
           </span>
           <h2 className="text-2xl font-extrabold tracking-tight text-gradient text-wrap-balance">
-            Interactive Home Explorer
+            {t('house_explorer.title') ?? 'Interactive Home Explorer'}
           </h2>
           <p className="text-xs text-[var(--fg-secondary)] max-w-xl text-pretty leading-relaxed">
             {hasHover
-              ? "Drag to rotate, click to select a part, click again to open — or use arrow keys to navigate."
-              : "Tap to select a house part, tap again to open its tools."}
+              ? (t('house_explorer.drag_hint') ?? "Drag to rotate, click to select a part, click again to open — or use arrow keys to navigate.")
+              : (t('house_explorer.tap_hint') ?? "Tap to select a house part, tap again to open its tools.")}
           </p>
         </div>
 
@@ -438,7 +440,7 @@ export default function InteractiveHouseExplorer() {
               onClick={resetAngle}
               className="text-[10px] font-mono text-[var(--fg-muted)] hover:text-[var(--fg)] border border-dashed border-[var(--border)] px-2 py-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50"
             >
-              Reset Angle
+              {t('house_explorer.reset_angle') ?? 'Reset Angle'}
             </button>
           )}
           
@@ -452,7 +454,7 @@ export default function InteractiveHouseExplorer() {
               }`}
               onClick={() => setIsExploded(false)}
             >
-              Assembled View
+              {t('house_explorer.assembled_view') ?? 'Assembled View'}
             </button>
             <button
               type="button"
@@ -463,7 +465,7 @@ export default function InteractiveHouseExplorer() {
               }`}
               onClick={() => setIsExploded(true)}
             >
-              Exploded View
+              {t('house_explorer.exploded_view') ?? 'Exploded View'}
             </button>
           </div>
         </div>
@@ -479,7 +481,7 @@ export default function InteractiveHouseExplorer() {
           onKeyDown={handleContainerKeyDown}
           tabIndex={0}
           role="region"
-          aria-label="Interactive house map showing roofing, walls, interior paint, foundation slabs, and driveway gardens. Use arrow keys to select layers, space/enter to view."
+          aria-label={t('house_explorer.aria_map') ?? "Interactive house map showing roofing, walls, interior paint, foundation slabs, and driveway gardens. Use arrow keys to select layers, space/enter to view."}
           className={`lg:col-span-7 flex justify-center items-center relative min-h-[360px] preserve-3d perspective-[1000px] select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)] rounded-xl ${
             isDragging ? "cursor-grabbing" : "cursor-grab"
           }`}
@@ -499,7 +501,7 @@ export default function InteractiveHouseExplorer() {
             >
               <div className="flex items-center gap-1.5 border-b border-[var(--border)] pb-1.5">
                 {renderSectionIcon(activeSection.id)}
-                <span className="text-xs font-bold tracking-tight text-[var(--fg)]">{tooltip.name}</span>
+                  <span className="text-xs font-bold tracking-tight text-[var(--fg)]">{activeSection ? (t(`house_explorer.section_name_${activeSection.id}`) ?? activeSection.name) : tooltip.name}</span>
               </div>
               <div className="flex flex-col gap-1">
                 {tooltip.tools.slice(0, 3).map((t, idx) => (
@@ -510,12 +512,12 @@ export default function InteractiveHouseExplorer() {
                 ))}
                 {tooltip.tools.length > 3 && (
                   <span className="text-[9px] text-[var(--fg-muted)] italic pl-2">
-                    + {tooltip.tools.length - 3} more tools
+                    {t('house_explorer.more_tools')?.replace('{count}', String(tooltip.tools.length - 3)) ?? `+ ${tooltip.tools.length - 3} more tools`}
                   </span>
                 )}
               </div>
               <div className="flex items-center justify-between text-[8px] text-[var(--accent)] font-semibold border-t border-[var(--border)] pt-1.5 mt-0.5">
-                <span>Click to select, click again to open</span>
+                <span>{t('house_explorer.tooltip_click') ?? 'Click to select, click again to open'}</span>
                 <span>→</span>
               </div>
             </div>
@@ -534,7 +536,7 @@ export default function InteractiveHouseExplorer() {
               viewBox="0 0 450 380"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
               role="img"
-              aria-label="Interactive house map showing roofing, walls, interior paint, foundation slabs, and driveway gardens. Drag to rotate structure."
+              aria-label={t('house_explorer.aria_svg') ?? "Interactive house map showing roofing, walls, interior paint, foundation slabs, and driveway gardens. Drag to rotate structure."}
               onMouseLeave={() => {
                 handleLayerMouseLeave();
               }}
@@ -657,7 +659,7 @@ export default function InteractiveHouseExplorer() {
               <g
                 tabIndex={0}
                 role="button"
-                aria-label="Yard and patio layer. Click to explore landscaping, gravel, sand, and base material tools."
+                aria-label={t('house_explorer.aria_exterior') ?? "Yard and patio layer. Click to explore landscaping, gravel, sand, and base material tools."}
                 aria-current={activeSection?.id === "exterior" ? "true" : undefined}
                 className={`house-layer layer-exterior ${activeSection?.id === "exterior" ? "active-layer" : ""}`}
                 onClick={() => handlePartClick(sectionMap.get("exterior")!)}
@@ -677,7 +679,7 @@ export default function InteractiveHouseExplorer() {
               <g
                 tabIndex={0}
                 role="button"
-                aria-label="Foundation and concrete slab layer. Click to explore concrete, footings, and masonry calculator."
+                aria-label={t('house_explorer.aria_foundation') ?? "Foundation and concrete slab layer. Click to explore concrete, footings, and masonry calculator."}
                 aria-current={activeSection?.id === "foundation" ? "true" : undefined}
                 className={`house-layer layer-foundation ${activeSection?.id === "foundation" ? "active-layer" : ""}`}
                 onClick={() => handlePartClick(sectionMap.get("foundation")!)}
@@ -750,7 +752,7 @@ export default function InteractiveHouseExplorer() {
               <g
                 tabIndex={0}
                 role="button"
-                aria-label="Interior paint and tile flooring layer. Click to explore interior paint, floor tiles, and tiling grids."
+                aria-label={t('house_explorer.aria_interior') ?? "Interior paint and tile flooring layer. Click to explore interior paint, floor tiles, and tiling grids."}
                 aria-current={activeSection?.id === "interior" ? "true" : undefined}
                 className={`house-layer layer-interior ${activeSection?.id === "interior" ? "active-layer" : ""}`}
                 onClick={() => handlePartClick(sectionMap.get("interior")!)}
@@ -774,7 +776,7 @@ export default function InteractiveHouseExplorer() {
               <g
                 tabIndex={0}
                 role="button"
-                aria-label="Exterior wall and drywall structure layer. Click to explore drywall sheets, studs, framing, and masonry blocks."
+                aria-label={t('house_explorer.aria_walls') ?? "Exterior wall and drywall structure layer. Click to explore drywall sheets, studs, framing, and masonry blocks."}
                 aria-current={activeSection?.id === "walls" ? "true" : undefined}
                 className={`house-layer layer-walls ${activeSection?.id === "walls" ? "active-layer" : ""}`}
                 onClick={() => handlePartClick(sectionMap.get("walls")!)}
@@ -810,7 +812,7 @@ export default function InteractiveHouseExplorer() {
               <g
                 tabIndex={0}
                 role="button"
-                aria-label="Roofing layer. Click to explore roof shingles, metal roof, r-value insulation, and deck plans."
+                aria-label={t('house_explorer.aria_roof') ?? "Roofing layer. Click to explore roof shingles, metal roof, r-value insulation, and deck plans."}
                 aria-current={activeSection?.id === "roof" ? "true" : undefined}
                 className={`house-layer layer-roof ${activeSection?.id === "roof" ? "active-layer" : ""}`}
                 onClick={() => handlePartClick(sectionMap.get("roof")!)}
@@ -838,27 +840,27 @@ export default function InteractiveHouseExplorer() {
         <div className="lg:col-span-5 flex flex-col justify-center min-h-[360px]">
           <div aria-live="polite" aria-atomic="true" className="sr-only">
             {activeSection
-              ? `Selected: ${activeSection.name}. ${activeSection.toolsCount} tools available. Use arrow keys to navigate sections.`
-              : "No section selected. Tab into the house map and use arrow keys to navigate."}
+              ? (t('house_explorer.sr_selected')?.replace('{name}', activeSection.name).replace('{count}', String(activeSection.toolsCount)) ?? `Selected: ${activeSection.name}. ${activeSection.toolsCount} tools available. Use arrow keys to navigate sections.`)
+              : (t('house_explorer.sr_no_selection') ?? "No section selected. Tab into the house map and use arrow keys to navigate.")}
           </div>
           {activeSection ? (
             <div key={activeSection.id} className="flex flex-col gap-5 animate-fade-in-up">
               <div>
                 <span className="text-[10px] font-mono text-[var(--fg-muted)] bg-[var(--bg-muted)] px-2 py-0.5 rounded border border-[var(--border)]">
-                  {activeSection.category}
+                  {t(`house_explorer.section_cat_${activeSection.id}`) ?? activeSection.category}
                 </span>
                 <h3 className="text-xl font-bold tracking-tight text-[var(--fg)] mt-2">
-                  {activeSection.name}
+                  {t(`house_explorer.section_name_${activeSection.id}`) ?? activeSection.name}
                 </h3>
               </div>
               <p className="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty">
-                {activeSection.description}
+                {t(`house_explorer.section_desc_${activeSection.id}`) ?? activeSection.description}
               </p>
               
               <div className="grid grid-cols-2 gap-4 border-t border-[var(--border)] pt-4">
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                    Calculators ({activeSection.calculators.length})
+                    {t('house_explorer.calculators_label')?.replace('{count}', String(activeSection.calculators.length)) ?? `Calculators (${activeSection.calculators.length})`}
                   </span>
                   <ul className="flex flex-col gap-1">
                     {activeSection.calculators.map((c, idx) => (
@@ -871,7 +873,7 @@ export default function InteractiveHouseExplorer() {
                 </div>
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                    Planners ({activeSection.planners.length})
+                    {t('house_explorer.planners_label')?.replace('{count}', String(activeSection.planners.length)) ?? `Planners (${activeSection.planners.length})`}
                   </span>
                   <ul className="flex flex-col gap-1">
                     {activeSection.planners.map((p, idx) => (
@@ -887,7 +889,7 @@ export default function InteractiveHouseExplorer() {
               <div className="grid grid-cols-2 gap-4 border-t border-[var(--border)] pt-4">
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                    Maintenance
+                    {t('house_explorer.maintenance_label') ?? 'Maintenance'}
                   </span>
                   <ul className="flex flex-col gap-1">
                     {activeSection.maintenance.map((m, idx) => (
@@ -900,7 +902,7 @@ export default function InteractiveHouseExplorer() {
                 </div>
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--fg-muted)] block mb-1.5">
-                    Guides & Reading
+                    {t('house_explorer.guides_label') ?? 'Guides & Reading'}
                   </span>
                   <ul className="flex flex-col gap-1">
                     {activeSection.guides.length > 0 ? activeSection.guides.map((g, idx) => (
@@ -916,7 +918,7 @@ export default function InteractiveHouseExplorer() {
                         </a>
                       </li>
                     )) : (
-                      <li className="text-[10px] text-[var(--fg-muted)] italic">No guides yet</li>
+                      <li className="text-[10px] text-[var(--fg-muted)] italic">{t('house_explorer.no_guides') ?? 'No guides yet'}</li>
                     )}
                   </ul>
                 </div>
@@ -927,19 +929,19 @@ export default function InteractiveHouseExplorer() {
                   href={activeSection.link}
                   className="inline-flex items-center justify-center h-10 px-5 rounded-xl bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50 shadow-sm hover:shadow"
                 >
-                  Open Section →
+                  {t('house_explorer.open_section') ?? 'Open Section'} →
                 </a>
                 <a
                   href={activeSection.guides[0]?.link || activeSection.link}
                   className="inline-flex items-center justify-center h-10 px-5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50"
                 >
-                  Learn More
+                  {t('common.learnMore') ?? 'Learn More'}
                 </a>
                 <div className="flex items-center gap-1 text-[10px] text-[var(--fg-muted)] font-mono ml-auto">
                   <svg className="w-3.5 h-3.5 text-[var(--warning)]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0 1 12 2v6.5h4.5a1 1 0 0 1 .82 1.573l-7 10A1 1 0 0 1 8.5 19v-6.5H4a1 1 0 0 1-.82-1.573l7-10a1 1 0 0 1 1.12-.38z" clip-rule="evenodd" />
                   </svg>
-                  <span>{activeSection.toolsCount} Tools</span>
+                  <span>{t('house_explorer.tools_count')?.replace('{count}', String(activeSection.toolsCount)) ?? `${activeSection.toolsCount} Tools`}</span>
                 </div>
               </div>
             </div>
@@ -949,10 +951,10 @@ export default function InteractiveHouseExplorer() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.303.197-1.591 1.591M21.75 12h-2.25m-.197 5.303-1.591-1.591M12 19.5v2.25m-5.303-.197 1.591-1.591M2.25 12h2.25m.197-5.303 1.591 1.591" />
               </svg>
               <h4 className="text-xs font-semibold text-[var(--fg)] mb-1">
-                Structure Exploded
+                {t('house_explorer.structure_exploded') ?? 'Structure Exploded'}
               </h4>
               <p className="text-[11px] text-[var(--fg-muted)] max-w-[200px] leading-normal text-pretty">
-                {hasHover ? "Hover any floating layer, click to open" : "Tap any floating layer to open"} calculators, planners, maintenance, and guides for Roofing, Walls, Foundation, Interior, or Exterior.
+                {hasHover ? (t('house_explorer.exploded_hover') ?? "Hover any floating layer, click to open") : (t('house_explorer.exploded_tap') ?? "Tap any floating layer to open")} {t('house_explorer.exploded_desc') ?? 'calculators, planners, maintenance, and guides for Roofing, Walls, Foundation, Interior, or Exterior.'}
               </p>
             </div>
           ) : (
@@ -961,17 +963,17 @@ export default function InteractiveHouseExplorer() {
                 type="button"
                 className="w-12 h-12 rounded-full bg-[var(--bg-muted)] flex items-center justify-center mx-auto mb-4 hover:bg-[var(--accent)] hover:text-[var(--accent-fg)] transition-all scale-100 hover:scale-105 active:scale-95 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
                 onClick={() => setIsExploded(true)}
-                aria-label="Explode house structure"
+                aria-label={t('house_explorer.explode_aria') ?? "Explode house structure"}
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v-4.5m0 4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
                 </svg>
               </button>
               <h4 className="text-xs font-semibold text-[var(--fg)] mb-1">
-                House Assembled
+                {t('house_explorer.house_assembled') ?? 'House Assembled'}
               </h4>
               <p className="text-[11px] text-[var(--fg-muted)] max-w-[200px] leading-normal text-pretty">
-                {hasHover ? "Click a house part to expand it, then click again to open its tools." : "Tap a house part to expand it, then tap again to open its tools."}
+                {hasHover ? (t('house_explorer.assembled_hover') ?? "Click a house part to expand it, then click again to open its tools.") : (t('house_explorer.assembled_tap') ?? "Tap a house part to expand it, then tap again to open its tools.")}
               </p>
             </div>
           )}

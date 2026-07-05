@@ -6,8 +6,10 @@ import ConcreteCurbGutterDiagram from "../diagrams/ConcreteCurbGutterDiagram";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function CurbGutterCalc() {
+  const { t } = useI18n();
   const [length, setLength] = useState<string>("50");
   const [curbWidth, setCurbWidth] = useState<string>("6");
   const [curbHeight, setCurbHeight] = useState<string>("18");
@@ -45,25 +47,25 @@ export default function CurbGutterCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Curb Dimensions</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.curb_gutter.curb_dimensions') ?? 'Curb Dimensions'}</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Curb Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 50" />
-            <Input label="Curb Width (in)" type="number" inputMode="decimal" value={curbWidth} onChange={(e) => setCurbWidth(e.target.value)} placeholder="e.g. 6" helperText="Typically 6 inches" />
+            <Input label={t('calculators.detail.concrete.curb_gutter.curb_length_ft') ?? 'Curb Length (ft)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 50'} />
+            <Input label={t('calculators.detail.concrete.curb_gutter.curb_width_in') ?? 'Curb Width (in)'} type="number" inputMode="decimal" value={curbWidth} onChange={(e) => setCurbWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 6'} helperText={t('calculators.detail.concrete.curb_gutter.typical_6in') ?? 'Typically 6 inches'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Curb Height (in)" type="number" inputMode="decimal" value={curbHeight} onChange={(e) => setCurbHeight(e.target.value)} placeholder="e.g. 18" helperText="From base to top" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 5" />
+            <Input label={t('calculators.detail.concrete.curb_gutter.curb_height_in') ?? 'Curb Height (in)'} type="number" inputMode="decimal" value={curbHeight} onChange={(e) => setCurbHeight(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 18'} helperText={t('calculators.detail.concrete.curb_gutter.from_base_to_top') ?? 'From base to top'} />
+            <Input label={t('calculators.detail.concrete.curb_gutter.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 5'} />
           </div>
         </Card>
 
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Gutter Dimensions</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.curb_gutter.gutter_dimensions') ?? 'Gutter Dimensions'}</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Gutter Width (in)" type="number" inputMode="decimal" value={gutterWidth} onChange={(e) => setGutterWidth(e.target.value)} placeholder="e.g. 24" helperText="Width of the gutter pan" />
-            <Input label="Gutter Depth (in)" type="number" inputMode="decimal" value={gutterDepth} onChange={(e) => setGutterDepth(e.target.value)} placeholder="e.g. 6" helperText="Thickness of gutter slab" />
+            <Input label={t('calculators.detail.concrete.curb_gutter.gutter_width_in') ?? 'Gutter Width (in)'} type="number" inputMode="decimal" value={gutterWidth} onChange={(e) => setGutterWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 24'} helperText={t('calculators.detail.concrete.curb_gutter.width_gutter_pan') ?? 'Width of the gutter pan'} />
+            <Input label={t('calculators.detail.concrete.curb_gutter.gutter_depth_in') ?? 'Gutter Depth (in)'} type="number" inputMode="decimal" value={gutterDepth} onChange={(e) => setGutterDepth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 6'} helperText={t('calculators.detail.concrete.curb_gutter.thickness_gutter_slab') ?? 'Thickness of gutter slab'} />
           </div>
         </Card>
       </div>
@@ -73,30 +75,30 @@ export default function CurbGutterCalc() {
           <ConcreteCurbGutterDiagram curbWidth={parseNumber(curbWidth)} gutterWidth={parseNumber(gutterWidth)} height={parseNumber(curbHeight)} length={len} unitSystem="imperial" />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Concrete Output</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.concrete.curb_gutter.concrete_output') ?? 'Concrete Output'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Total Concrete Volume</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.curb_gutter.total_concrete_volume') ?? 'Total Concrete Volume'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{yardsWithWaste.toFixed(2)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">cu yd</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.cu_yd') ?? 'cu yd'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1">With waste: {volumeWithWaste.toFixed(0)} cu ft</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1">{t('calculators.detail.concrete.curb_gutter.with_waste') ?? 'With waste'}: {volumeWithWaste.toFixed(0)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Curb Volume</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.curb_gutter.curb_volume') ?? 'Curb Volume'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold">{curbVolume.toFixed(1)}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">cu ft</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.cu_ft') ?? 'cu ft'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Gutter Volume</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.curb_gutter.gutter_volume') ?? 'Gutter Volume'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold">{gutterVolume.toFixed(1)}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">cu ft</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.cu_ft') ?? 'cu ft'}</span>
                 </div>
               </div>
             </div>
@@ -104,29 +106,29 @@ export default function CurbGutterCalc() {
         </div>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Bag Counts</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.concrete.curb_gutter.bag_counts') ?? 'Bag Counts'}</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">80lb Bags</span>
+              <span className="text-sm font-medium">{t('calculators.detail.concrete.curb_gutter.bags_80lb') ?? '80lb Bags'}</span>
               <span className="text-sm font-bold tabular-nums">{bags80}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">60lb Bags</span>
+              <span className="text-sm font-medium">{t('calculators.detail.concrete.curb_gutter.bags_60lb') ?? '60lb Bags'}</span>
               <span className="text-sm font-bold tabular-nums">{bags60}</span>
             </div>
           </div>
         </Card>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Volume Breakdown</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.concrete.curb_gutter.volume_breakdown') ?? 'Volume Breakdown'}</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Curb ({curbWidth}"×{curbHeight}")</span>
-              <span className="text-sm font-bold tabular-nums">{curbVolume.toFixed(1)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.concrete.curb_gutter.curb_label') ?? 'Curb'} ({curbWidth}"×{curbHeight}")</span>
+              <span className="text-sm font-bold tabular-nums">{curbVolume.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">Gutter ({gutterWidth}"×{gutterDepth}")</span>
-              <span className="text-sm font-bold tabular-nums">{gutterVolume.toFixed(1)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.concrete.curb_gutter.gutter_label') ?? 'Gutter'} ({gutterWidth}"×{gutterDepth}")</span>
+              <span className="text-sm font-bold tabular-nums">{gutterVolume.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
           </div>
         </Card>

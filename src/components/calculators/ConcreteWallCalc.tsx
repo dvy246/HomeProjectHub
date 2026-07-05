@@ -13,8 +13,10 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteWallDiagram from "../diagrams/ConcreteWallDiagram";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function ConcreteWallCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState<string>("10");
   const [height, setHeight] = useState<string>("8");
@@ -108,22 +110,22 @@ export default function ConcreteWallCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Wall Parameters</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.wall.parameters') ?? 'Wall Parameters'}</h3>
             <UnitToggle unitSystem={unitSystem} onChange={setUnitSystem} />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label={unitSystem === "imperial" ? "Wall Length (ft)" : "Wall Length (m)"} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 10" />
-            <Input label={unitSystem === "imperial" ? "Wall Height (ft)" : "Wall Height (m)"} type="number" inputMode="decimal" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="e.g. 8" />
+            <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.wall.length_ft') ?? 'Wall Length (ft)') : (t('calculators.detail.concrete.wall.length_m') ?? 'Wall Length (m)')} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
+            <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.wall.height_ft') ?? 'Wall Height (ft)') : (t('calculators.detail.concrete.wall.height_m') ?? 'Wall Height (m)')} type="number" inputMode="decimal" value={height} onChange={(e) => setHeight(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 8'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label={unitSystem === "imperial" ? "Thickness (inches)" : "Thickness (cm)"} type="number" inputMode="decimal" value={thickness} onChange={(e) => setThickness(e.target.value)} placeholder="e.g. 8" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 10" />
+            <Input label={unitSystem === "imperial" ? (t('fields.thickness_in') ?? 'Thickness (inches)') : (t('fields.thickness_cm') ?? 'Thickness (cm)')} type="number" inputMode="decimal" value={thickness} onChange={(e) => setThickness(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 8'} />
+            <Input label={t('calculators.detail.concrete.wall.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-5">
-            <Input label="Standard Doors (21 sq ft each)" type="number" inputMode="numeric" value={doorCount} onChange={(e) => setDoorCount(e.target.value)} placeholder="0" helperText="Subtracted from wall area" />
-            <Input label="Standard Windows (12 sq ft each)" type="number" inputMode="numeric" value={windowCount} onChange={(e) => setWindowCount(e.target.value)} placeholder="0" helperText="Subtracted from wall area" />
+            <Input label={t('calculators.detail.concrete.wall.std_doors') ?? 'Standard Doors (21 sq ft each)'} type="number" inputMode="numeric" value={doorCount} onChange={(e) => setDoorCount(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '0'} helperText={t('calculators.detail.concrete.wall.subtracted_from_wall') ?? 'Subtracted from wall area'} />
+            <Input label={t('calculators.detail.concrete.wall.std_windows') ?? 'Standard Windows (12 sq ft each)'} type="number" inputMode="numeric" value={windowCount} onChange={(e) => setWindowCount(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '0'} helperText={t('calculators.detail.concrete.wall.subtracted_from_wall') ?? 'Subtracted from wall area'} />
           </div>
 
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
@@ -137,7 +139,7 @@ export default function ConcreteWallCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          placeholder="e.g. Basement Wall"
+          placeholder={t('calculators.common.placeholder') ?? 'e.g. Basement Wall'}
         />
         <AddToProjectCard
           projects={projects}
@@ -155,39 +157,39 @@ export default function ConcreteWallCalc() {
           <ConcreteWallDiagram length={lenNum} width={thickNum} height={hNum} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.common.results') ?? 'Results'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Gross Wall Area</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.wall.gross_wall_area') ?? 'Gross Wall Area'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-2xl font-bold tracking-tight">{grossArea.toFixed(1)}</span>
-                <span className="text-sm text-[var(--fg-muted)]">{unitSystem === "imperial" ? "sq ft" : "sq m"}</span>
+                <span className="text-sm text-[var(--fg-muted)]">{unitSystem === "imperial" ? (t('units.sq_ft') ?? 'sq ft') : (t('units.sq_m') ?? 'sq m')}</span>
               </div>
               {(doors > 0 || windows > 0) && (
-                <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">Net after openings: {netArea.toFixed(1)} {unitSystem === "imperial" ? "sq ft" : "sq m"}</span>
+                <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{t('calculators.detail.concrete.wall.net_after_openings') ?? 'Net after openings'}: {netArea.toFixed(1)} {unitSystem === "imperial" ? (t('units.sq_ft') ?? 'sq ft') : (t('units.sq_m') ?? 'sq m')}</span>
               )}
             </div>
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.volume') ?? 'Required Volume'} (incl. {wasteFactor}% waste)</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{unitSystem === "imperial" ? volCuYd.toFixed(2) : volCuM.toFixed(2)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? "cu yd" : "cu m"}</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{volWithWaste.toFixed(1)} cu ft total</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{volWithWaste.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'} {t('calculators.common.total') ?? 'total'}</span>
             </div>
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags ({bagSize})</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.bags') ?? 'Bags'} ({bagSize})</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{selectedBags}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">bags</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.bags') ?? 'bags'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Dry Weight</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.dry_weight') ?? 'Dry Weight'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{Math.round(weight).toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">lbs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.lbs') ?? 'lbs'}</span>
                 </div>
               </div>
             </div>

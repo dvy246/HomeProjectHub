@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { t, type Locale } from "../i18n";
+import { LanguageSwitcher } from "../components/i18n/LanguageSwitcher";
 
 interface Props {
   title: string;
@@ -17,8 +18,6 @@ const { title, description, canonical, schema, noindex, articlePubDate, articleU
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeplanninghub.com").toString();
 
 const SUPPORTED_LOCALES = ['en', 'es', 'de', 'pt', 'pl', 'it'] as const;
-const LOCALE_NAMES: Record<string, string> = { en: '🇺🇸 English', es: '🇪🇸 Español', de: '🇩🇪 Deutsch', pt: '🇵🇹 Português', pl: '🇵🇱 Polski', it: '🇮🇹 Italiano' };
-const LOCALE_FLAGS: Record<string, string> = { en: '🇺🇸', es: '🇪🇸', de: '🇩🇪', pt: '🇵🇹', pl: '🇵🇱', it: '🇮🇹' };
 const currentPathRaw = Astro.url.pathname;
 const currentLocale = SUPPORTED_LOCALES.find(l => currentPathRaw.startsWith(`/${l}/`) || currentPathRaw === `/${l}`) || 'en';
 const locale = currentLocale as Locale;
@@ -26,9 +25,18 @@ const tr = (key: string) => t(locale, key);
 const pathWithoutLocale = currentLocale === 'en' ? currentPathRaw : currentPathRaw.replace(/^\/[a-z]{2}/, '') || '/';
 const ogImage = new URL("/og-image.png", canonicalURL).toString();
 const currentPath = Astro.url.pathname;
+const ENGLISH_ONLY_PATHS = new Set([
+  '/calculators/concrete/', '/calculators/roofing/', '/calculators/paint/', '/calculators/tile/',
+  '/calculators/renovation/',
+  '/projects/new/', '/saved/',
+  '/renovate/plans/', '/renovate/plans/new/', '/renovate/plans/view/',
+  '/planner/shopping-list/',
+]);
 const lUrl = (path: string) => {
   if (currentLocale === 'en') return path;
   if (path === '/') return `/${currentLocale}/`;
+  const normalized = path.endsWith('/') ? path : path + '/';
+  if (ENGLISH_ONLY_PATHS.has(normalized)) return path;
   return `/${currentLocale}${path}`;
 };
 const organizationSchema = {
@@ -57,7 +65,6 @@ const organizationSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="apple-mobile-web-app-title" content="HomePlanningHub" />
     <meta name="application-name" content="HomePlanningHub" />
     <meta name="author" content="HomePlanningHub Team" />
     <meta name="language" content={tr('meta.language')} />
@@ -66,6 +73,7 @@ const organizationSchema = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="homeplan" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     {import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
@@ -75,37 +83,17 @@ const organizationSchema = {
       <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests" />
     )}
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B3GRZPTM95" is:inline></script>
     <script is:inline>
-      (function() {
-        const supported = ['en', 'es', 'de', 'pt', 'pl', 'it'];
-        const currentPath = window.location.pathname;
-        let currentLocale = 'en';
-        for (const l of supported) {
-          if (currentPath.startsWith('/' + l + '/') || currentPath === '/' + l) {
-            currentLocale = l;
-            break;
-          }
-        }
-        const pathWithoutLocale = currentLocale === 'en' ? currentPath : currentPath.replace(/^\/[a-z]{2}/, '') || '/';
-        const supportedPaths = [
-          '/', '/about/', '/contact/', '/strategy/', '/guides/', '/compare/', '/quizzes/', 
-          '/privacy/', '/terms/', '/disclaimer/', '/maintenance/', '/maintenance/planner/', 
-          '/maintenance/calendar/', '/maintenance/cost-estimator/', '/maintenance/spring/', 
-          '/maintenance/summer/', '/maintenance/fall/', '/maintenance/winter/', 
-          '/maintenance/first-time-homeowner/', '/calculators/', '/renovate/'
-        ];
-        const isSupportedPage = supportedPaths.includes(pathWithoutLocale);
-        if (isSupportedPage) {
-          const preferred = localStorage.getItem('preferred-locale');
-          if (preferred && preferred !== currentLocale && supported.includes(preferred)) {
-            const targetUrl = preferred === 'en' ? (pathWithoutLocale === '' ? '/' : pathWithoutLocale) : '/' + preferred + (pathWithoutLocale === '/' ? '/' : pathWithoutLocale);
-            window.location.replace(targetUrl);
-          }
-        }
-      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-B3GRZPTM95');
     </script>
 
-    <title>{title} | HomePlanningHub</title>
+    <title>{title.includes("HomePlanningHub") ? title : `${title} | HomePlanningHub`}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="x-default" href={`https://homeplanninghub.com${pathWithoutLocale}`} />
@@ -116,7 +104,7 @@ const organizationSchema = {
 
     <meta property="og:type" content={articlePubDate ? "article" : "website"} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} | HomePlanningHub`} />
+    <meta property="og:title" content={title.includes("HomePlanningHub") ? title : `${title} | HomePlanningHub`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
@@ -129,7 +117,7 @@ const organizationSchema = {
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={`${title} | HomePlanningHub`} />
+    <meta name="twitter:title" content={title.includes("HomePlanningHub") ? title : `${title} | HomePlanningHub`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="HomePlanningHub — free home improvement calculators and project planning tools" />
@@ -222,42 +210,7 @@ const organizationSchema = {
         </nav>
 
         <div class="flex items-center gap-1">
-          <!-- Language switcher -->
-          <div class="relative group">
-            <button
-              type="button"
-              id="lang-dropdown-btn"
-              class="flex items-center gap-1 px-2 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors"
-              aria-label="Select language"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
-              </svg>
-              <span class="hidden sm:inline">{LOCALE_FLAGS[currentLocale]} {currentLocale.toUpperCase()}</span>
-            </button>
-            <div class="absolute right-0 top-full mt-1 w-36 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg opacity-0 invisible transition-all duration-150 z-50" role="menu">
-              <div class="py-1">
-                {SUPPORTED_LOCALES.map(locale => {
-                  const href = locale === 'en' ? pathWithoutLocale || '/' : `/${locale}${pathWithoutLocale}`;
-                  return (
-                    <a
-                      href={href}
-                      role="menuitem"
-                      class={`locale-link block px-3 py-2 text-xs font-medium transition-colors ${locale === currentLocale ? 'text-[var(--accent)] bg-[var(--bg-muted)]' : 'text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)]'}`}
-                      hreflang={locale}
-                      data-locale={locale}
-                    >
-                      {LOCALE_NAMES[locale]}
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <LanguageSwitcher initialLocale={currentLocale !== 'en' ? currentLocale : undefined} client:load />
 
           <!-- Dark mode toggle -->
           <button
@@ -423,15 +376,6 @@ const organizationSchema = {
         });
       }
 
-      document.querySelectorAll('.locale-link').forEach(link => {
-        link.addEventListener('click', () => {
-          const locale = link.getAttribute('data-locale');
-          if (locale) {
-            try { localStorage.setItem('preferred-locale', locale); } catch (e) {}
-          }
-        });
-      });
-
       // Dropdown accessibility logic
       const setupDropdown = (btnId) => {
         const btn = document.getElementById(btnId);
@@ -515,7 +459,6 @@ const organizationSchema = {
       };
 
       setupDropdown('calc-dropdown-btn');
-      setupDropdown('lang-dropdown-btn');
     </script>
   </body>
 </html>

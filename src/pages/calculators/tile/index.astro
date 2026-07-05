@@ -29,6 +29,14 @@ const schema = graphSchema(
       q: "Does tile layout pattern affect how many tiles I need?",
       a: "Yes. Diagonal and herringbone patterns create more cut waste than straight grid layouts. Diagonal uses about 5% more, herringbone about 10% more than a standard grid layout.",
     },
+    {
+      q: "How to fix chipped tile?",
+      a: "To fix a chipped ceramic or porcelain tile, clean the damaged area with rubbing alcohol to remove grease. For small chips, fill the void using a color-matched tile repair epoxy or paintable ceramic filler. Level the filler with a plastic putty knife and let it cure. Once cured, apply a thin coat of matching tile paint or glaze to blend it with the surrounding area. For large structural cracks or major chips, it is best to scrape out the grout, remove the damaged tile using a chisel, apply fresh thinset mortar, and set a replacement tile from your extra stock.",
+    },
+    {
+      q: "How to clean shower tiles?",
+      a: "To clean shower tiles effectively, spray the surface with a 1:1 mixture of warm water and white vinegar, let it sit for 5 to 10 minutes to dissolve soap scum and hard water deposits, then scrub gently with a soft nylon brush. For mold or mildew on grout lines, make a paste of baking soda and water (or use a mild hydrogen peroxide solution), scrub with a small toothbrush, and rinse thoroughly. Avoid using stiff metal brushes or harsh acid cleaners on natural stone tiles (like marble or travertine) as they can scratch and etch the stone.",
+    },
   ], canonical)
 );
 ---
@@ -137,6 +145,14 @@ const schema = graphSchema(
         <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
           <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Should I use the same tile for floor and shower walls?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">Yes, using the same tile creates a seamless look and simplifies ordering. However, floor tiles need a higher slip resistance rating (COF &ge; 0.6) than wall tiles. Large-format floor tiles may be too heavy for wall installation without additional backing.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How to fix chipped tile?</h3></summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">To fix a chipped ceramic or porcelain tile, clean the damaged area with rubbing alcohol to remove grease. For small chips, fill the void using a color-matched tile repair epoxy or paintable ceramic filler. Level the filler with a plastic putty knife and let it cure. Once cured, apply a thin coat of matching tile paint or glaze to blend it with the surrounding area. For large structural cracks or major chips, it is best to scrape out the grout, remove the damaged tile using a chisel, apply fresh thinset mortar, and set a replacement tile from your extra stock.</p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How to clean shower tiles?</h3></summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">To clean shower tiles effectively, spray the surface with a 1:1 mixture of warm water and white vinegar, let it sit for 5 to 10 minutes to dissolve soap scum and hard water deposits, then scrub gently with a soft nylon brush. For mold or mildew on grout lines, make a paste of baking soda and water (or use a mild hydrogen peroxide solution), scrub with a small toothbrush, and rinse thoroughly. Avoid using stiff metal brushes or harsh acid cleaners on natural stone tiles (like marble or travertine) as they can scratch and etch the stone.</p>
         </details>
       </div>
     </section>

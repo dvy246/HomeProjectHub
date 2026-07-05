@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useI18n } from "./i18n/I18nProvider";
 
 interface CalcEntry {
   slug: string;
@@ -101,6 +102,7 @@ const CALCULATORS: CalcEntry[] = [
 const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile", "Renovation"];
 
 export default function CalculatorHub() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
 
@@ -131,11 +133,11 @@ export default function CalculatorHub() {
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--fg-muted)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search calculators..." className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 pl-10 pr-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors" />
+          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('calculator_hub.search_placeholder') ?? 'Search calculators...'} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 pl-10 pr-3 text-[var(--fg)] placeholder:text-[var(--fg-muted)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors" />
         </div>
         <select value={category} onChange={(e) => setCategory(e.target.value)} className="text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors min-w-[140px]">
           {CATEGORIES.map((c) => (
-            <option key={c} value={c}>{c}</option>
+            <option key={c} value={c}>{c === 'All' ? (t('calculator_hub.all') ?? c) : (t(`calculator_hub.category_${c.toLowerCase().replace(/[ &]/g, '_')}`) ?? c)}</option>
           ))}
         </select>
       </div>
@@ -148,19 +150,19 @@ export default function CalculatorHub() {
                 <path d={ICONS[calc.icon] || ICONS.ruler} />
               </svg>
             </div>
-            <div className="min-w-0">
-              <div className="text-sm font-semibold truncate">{calc.name}</div>
-              <div className="text-[10px] text-[var(--fg-muted)]">{calc.category}</div>
-            </div>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold truncate">{t(`calculator_hub.calc_${calc.slug.replace(/\//g, '_')}`) ?? calc.name}</div>
+                <div className="text-[10px] text-[var(--fg-muted)]">{calc.category === 'All' ? (t('calculator_hub.all') ?? calc.category) : (t(`calculator_hub.category_${calc.category.toLowerCase().replace(/[ &]/g, '_')}`) ?? calc.category)}</div>
+              </div>
           </a>
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-sm text-[var(--fg-muted)] text-center py-8">No calculators found matching your search.</p>
+        <p className="text-sm text-[var(--fg-muted)] text-center py-8">{t('calculator_hub.no_results') ?? 'No calculators found matching your search.'}</p>
       )}
 
-      <p className="text-xs text-[var(--fg-muted)]">{filtered.length} calculator{filtered.length !== 1 ? "s" : ""} shown</p>
+      <p className="text-xs text-[var(--fg-muted)]">{t('calculator_hub.count_shown')?.replace('{count}', String(filtered.length)) ?? `${filtered.length} calculator${filtered.length !== 1 ? "s" : ""} shown`}</p>
     </div>
   );
 }

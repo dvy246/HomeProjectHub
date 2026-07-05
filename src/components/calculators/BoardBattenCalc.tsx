@@ -5,8 +5,10 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function BoardBattenCalc() {
+  const { t } = useI18n();
   const [wallWidth, setWallWidth] = useState("120");
   const [wallHeight, setWallHeight] = useState("96");
   const [boardWidth, setBoardWidth] = useState("5.5");
@@ -41,11 +43,11 @@ export default function BoardBattenCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Wall Width (in)" type="number" inputMode="decimal" value={wallWidth} onChange={(e) => setWallWidth(e.target.value)} placeholder="120" />
-            <Input label="Wall Height (in)" type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="96" />
-            <Input label="Board Width (in)" type="number" inputMode="decimal" value={boardWidth} onChange={(e) => setBoardWidth(e.target.value)} placeholder="5.5" />
-            <Input label="Batten Width (in)" type="number" inputMode="decimal" value={battenWidth} onChange={(e) => setBattenWidth(e.target.value)} placeholder="1.5" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={waste} onChange={(e) => setWaste(e.target.value)} placeholder="10" />
+            <Input label={t('calculators.detail.finishing.board_batten.wall_width') ?? 'Wall Width (in)'} type="number" inputMode="decimal" value={wallWidth} onChange={(e) => setWallWidth(e.target.value)} placeholder="120" />
+            <Input label={t('calculators.detail.finishing.board_batten.wall_height') ?? 'Wall Height (in)'} type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="96" />
+            <Input label={t('calculators.detail.finishing.board_batten.board_width') ?? 'Board Width (in)'} type="number" inputMode="decimal" value={boardWidth} onChange={(e) => setBoardWidth(e.target.value)} placeholder="5.5" />
+            <Input label={t('calculators.detail.finishing.board_batten.batten_width') ?? 'Batten Width (in)'} type="number" inputMode="decimal" value={battenWidth} onChange={(e) => setBattenWidth(e.target.value)} placeholder="1.5" />
+            <Input label={t('calculators.common.waste_factor') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={waste} onChange={(e) => setWaste(e.target.value)} placeholder="10" />
           </div>
         </Card>
       </div>
@@ -59,26 +61,26 @@ export default function BoardBattenCalc() {
           successMessage={projectSuccess}
         />
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Materials Needed</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.finishing.board_batten.materials_needed') ?? 'Materials Needed'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Number of Boards</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.board_batten.number_of_boards') ?? 'Number of Boards'}</span>
               <span className="text-sm font-bold tabular-nums">{boards}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Battens Needed</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.board_batten.battens_needed') ?? 'Battens Needed'}</span>
               <span className="text-sm font-bold tabular-nums">{bayCount}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Board Linear Feet</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.board_batten.board_linear_feet') ?? 'Board Linear Feet'}</span>
               <span className="text-sm font-semibold tabular-nums">{boardLf.toFixed(1)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Board LF (+{parseNumber(waste).toFixed(0)}% waste)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.board_batten.board_lf_waste', { waste: parseNumber(waste).toFixed(0) }) ?? `Board LF (+${parseNumber(waste).toFixed(0)}% waste)`}</span>
               <span className="text-sm font-semibold tabular-nums">{boardLfWaste.toFixed(1)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Batten LF (+{parseNumber(waste).toFixed(0)}% waste)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.board_batten.batten_lf_waste', { waste: parseNumber(waste).toFixed(0) }) ?? `Batten LF (+${parseNumber(waste).toFixed(0)}% waste)`}</span>
               <span className="text-sm font-semibold tabular-nums">{battenLfWaste.toFixed(1)}</span>
             </div>
           </div>

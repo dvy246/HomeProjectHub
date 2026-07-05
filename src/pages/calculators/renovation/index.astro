@@ -4,7 +4,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
 
 const title = "Renovation Cost Calculators";
-const description = "Free home renovation cost calculators. Estimate materials, fixtures, and local contractor labor fees for bathroom, kitchen, basement, garage, deck, patio, flooring, and fence remodeling.";
+const description = "Free home renovation calculators for kitchen, bathroom, basement, garage, deck, and patio. Estimate materials and contractor labor fees accurately.";
 
 const calculators = [
   { href: "/calculators/renovation/bathroom/", title: "Bathroom Renovation", desc: "Estimate tile flooring, vanity cabinets, toilets, shower/tub units, and labor fees.", tags: ["Tiling", "Fixtures", "Plumbing"] },
@@ -24,9 +24,11 @@ const renovationGuides = guides
   .slice(0, 3);
 
 const faqs = [
-  { q: "How do I calculate a home renovation budget?", a: "To estimate a renovation budget, break down the project into square footage materials (flooring, drywall, siding), fixture costs (cabinets, tub basins, toilets), and contractor labor fees. Always include a 15% safety contingency fund for unforeseen plumbing or framing adjustments." },
+  { q: "How to budget for a home renovation?", a: "To budget for a home renovation, calculate your total square footage materials, fixtures, and local contractor labor fees. Allocate 50% for material purchases, 35% for professional builder labor, and 15% as a contingency buffer for hidden costs like mold or faulty wiring. Map individual sections (like kitchens or decks) using our Renovation Cost Calculators to verify local materials and average labor packages. Always get at least three contractor bids and establish a strict project cap to prevent budget creep." },
   { q: "How much does a typical contractor labor fee run?", a: "For remodeling, contractor labor typically constitutes 40% to 60% of the total project invoice. Highly specialized work like licensed plumbing or electrical connections can run between $75 and $150 per hour." },
   { q: "What permits are required for home remodels?", a: "Major structural modifications, new deck builds higher than 30 inches, basement finishing, and new plumbing run additions typically require municipal building permits. Replacing existing surface finishes like tile, paint, or cabinets generally does not require a permit." },
+  { q: "What are the top outdoor renovation ideas?", a: "The top outdoor renovation ideas that maximize ROI and improve curb appeal include building a custom pressure-treated or composite wood deck, laying down a stone or brick paver patio, and erecting a privacy fence. Incorporating landscaping base gravels, decorative mulch flowerbeds, and low-maintenance native plants also increases property value. Using our Patio, Deck, and Fence Calculators helps you accurately outline base aggregates, board runs, or line post counts before sourcing contractor labor." },
+  { q: "How to plan a home renovation timeline?", a: "To plan a home renovation timeline, start with the planning phase (2-4 weeks) for design, budgeting, and obtaining municipal building permits. Next, schedule structural demolition (1 week), followed by mechanical rough-ins for plumbing, electrical, and HVAC (2-3 weeks). Proceed to framing, drywall installation, and paint (2-3 weeks), before finishing with cabinetry, tiling, flooring, and fixture connections (2-3 weeks). Always add a 20% scheduling buffer to account for material shipping delays or weather closures." },
 ];
 
 const breadcrumbSchema = breadcrumbListSchema([

@@ -6,6 +6,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 const RATIOS: Record<string, [number, number, number]> = {
   "1:2:3 (Standard)": [1, 2, 3],
@@ -16,6 +17,7 @@ const RATIOS: Record<string, [number, number, number]> = {
 };
 
 export default function MixRatioCalc() {
+  const { t } = useI18n();
   const [volume, setVolume] = useState<string>("1");
   const [unit, setUnit] = useState<"cuyd" | "cuft">("cuyd");
   const [ratioLabel, setRatioLabel] = useState<string>("1:2:3 (Standard)");
@@ -63,58 +65,58 @@ export default function MixRatioCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Concrete Volume</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.specialty.mix_ratio.concrete_volume') ?? 'Concrete Volume'}</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label={`Volume (${unit === "cuyd" ? "cubic yards" : "cubic feet"})`} type="number" inputMode="decimal" value={volume} onChange={(e) => setVolume(e.target.value)} placeholder="e.g. 1" />
-            <Select label="Unit" value={unit} onChange={(v) => setUnit(v as "cuyd" | "cuft")} options={[{ value: "cuyd", label: "Cubic Yards" }, { value: "cuft", label: "Cubic Feet" }]} />
+            <Input label={t('calculators.detail.specialty.mix_ratio.volume_label', { unit: unit === 'cuyd' ? t('units.cu_yd') ?? 'cubic yards' : t('units.cu_ft') ?? 'cubic feet' }) ?? `Volume (${unit === 'cuyd' ? 'cubic yards' : 'cubic feet'})`} type="number" inputMode="decimal" value={volume} onChange={(e) => setVolume(e.target.value)} placeholder="e.g. 1" />
+            <Select label={t('calculators.common.unit') ?? 'Unit'} value={unit} onChange={(v) => setUnit(v as "cuyd" | "cuft")} options={[{ value: "cuyd", label: t('units.cu_yd') ?? 'Cubic Yards' }, { value: "cuft", label: t('units.cu_ft') ?? 'Cubic Feet' }]} />
           </div>
         </Card>
 
         <Card>
           <div className="border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Mix Design</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.specialty.mix_ratio.mix_design') ?? 'Mix Design'}</h3>
           </div>
-          <Select label="Mix Ratio (Cement : Sand : Gravel)" value={ratioLabel} onChange={setRatioLabel} options={Object.keys(RATIOS).map((label) => ({ value: label, label: `${RATIOS[label][0]}:${RATIOS[label][1]}:${RATIOS[label][2]} — ${label.replace(/^\d[\d.:]+\s*/, "")}` }))} />
-          <Input label="Cement Bag Weight (lbs)" type="number" inputMode="decimal" value={cementBagSize} onChange={(e) => setCementBagSize(e.target.value)} placeholder="e.g. 94" helperText="Standard bag is 94 lbs" />
+          <Select label={t('calculators.detail.specialty.mix_ratio.mix_ratio_label') ?? 'Mix Ratio (Cement : Sand : Gravel)'} value={ratioLabel} onChange={setRatioLabel} options={Object.keys(RATIOS).map((label) => ({ value: label, label: `${RATIOS[label][0]}:${RATIOS[label][1]}:${RATIOS[label][2]} — ${label.replace(/^\d[\d.:]+\s*/, "")}` }))} />
+          <Input label={t('calculators.detail.specialty.mix_ratio.cement_bag_weight') ?? 'Cement Bag Weight (lbs)'} type="number" inputMode="decimal" value={cementBagSize} onChange={(e) => setCementBagSize(e.target.value)} placeholder="e.g. 94" helperText={t('calculators.detail.specialty.mix_ratio.standard_bag_hint') ?? 'Standard bag is 94 lbs'} />
         </Card>
       </div>
 
       <div className="lg:col-span-5 flex flex-col gap-4">
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Mix Results for {volCuFt.toFixed(1)} cu ft</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.specialty.mix_ratio.mix_results', { volume: volCuFt.toFixed(1) }) ?? `Mix Results for ${volCuFt.toFixed(1)} cu ft`}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Cement</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.specialty.mix_ratio.cement') ?? 'Cement'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-3xl font-extrabold tracking-tight animate-fade-in-up">{cementBags}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">{bagLbs}lb bags</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{bagLbs}{t('units.lbs') ?? 'lb'} {t('units.bags') ?? 'bags'}</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1">{mixName}</span>
             </div>
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Sand Needed</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.specialty.mix_ratio.sand_needed') ?? 'Sand Needed'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-2xl font-bold tracking-tight">{sandCubicYards.toFixed(2)}</span>
-                <span className="text-xs text-[var(--fg-muted)]">cu yd</span>
+                <span className="text-xs text-[var(--fg-muted)]">{t('units.cu_yd') ?? 'cu yd'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)]">~{sandTons.toFixed(1)} tons</span>
+              <span className="text-xs text-[var(--fg-muted)]">{t('calculators.detail.specialty.mix_ratio.approx_tons', { tons: sandTons.toFixed(1) }) ?? `~${sandTons.toFixed(1)} tons`}</span>
             </div>
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Gravel Needed</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.specialty.mix_ratio.gravel_needed') ?? 'Gravel Needed'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-2xl font-bold tracking-tight">{gravelCubicYards.toFixed(2)}</span>
-                <span className="text-xs text-[var(--fg-muted)]">cu yd</span>
+                <span className="text-xs text-[var(--fg-muted)]">{t('units.cu_yd') ?? 'cu yd'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)]">~{gravelTons.toFixed(1)} tons</span>
+              <span className="text-xs text-[var(--fg-muted)]">{t('calculators.detail.specialty.mix_ratio.approx_tons', { tons: gravelTons.toFixed(1) }) ?? `~${gravelTons.toFixed(1)} tons`}</span>
             </div>
             <div className="pt-4 border-t border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Estimated Water</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.specialty.mix_ratio.estimated_water') ?? 'Estimated Water'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-2xl font-bold">{waterGallons}</span>
-                <span className="text-xs text-[var(--fg-muted)]">gallons</span>
+                <span className="text-xs text-[var(--fg-muted)]">{t('units.gallons') ?? 'gallons'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1">~4.5 gal per bag of cement</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1">{t('calculators.detail.specialty.mix_ratio.water_per_bag_hint') ?? '~4.5 gal per bag of cement'}</span>
             </div>
           </div>
         </div>
@@ -129,23 +131,23 @@ export default function MixRatioCalc() {
         />
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Volume Breakdown</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.specialty.mix_ratio.volume_breakdown') ?? 'Volume Breakdown'}</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Total Wet Volume</span>
-              <span className="text-sm font-bold tabular-nums">{volCuFt.toFixed(1)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.specialty.mix_ratio.total_wet_volume') ?? 'Total Wet Volume'}</span>
+              <span className="text-sm font-bold tabular-nums">{volCuFt.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Cement Volume</span>
-              <span className="text-sm font-bold tabular-nums">{cementVolume.toFixed(2)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.specialty.mix_ratio.cement_volume') ?? 'Cement Volume'}</span>
+              <span className="text-sm font-bold tabular-nums">{cementVolume.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Sand Volume</span>
-              <span className="text-sm font-bold tabular-nums">{sandVolume.toFixed(2)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.specialty.mix_ratio.sand_volume') ?? 'Sand Volume'}</span>
+              <span className="text-sm font-bold tabular-nums">{sandVolume.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">Gravel Volume</span>
-              <span className="text-sm bold tabular-nums">{gravelVolume.toFixed(2)} cu ft</span>
+              <span className="text-sm font-medium">{t('calculators.detail.specialty.mix_ratio.gravel_volume') ?? 'Gravel Volume'}</span>
+              <span className="text-sm bold tabular-nums">{gravelVolume.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'}</span>
             </div>
           </div>
         </Card>

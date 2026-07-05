@@ -6,6 +6,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 const PIPE_MATERIALS = [
   { key: "steel_a36", label: "Steel (A36)" },
@@ -16,6 +17,7 @@ const PIPE_MATERIALS = [
 ];
 
 export default function PipeWeightCalc() {
+  const { t } = useI18n();
   const [material, setMaterial] = useState("steel_a36");
   const [od, setOd] = useState("4");
   const [wall, setWall] = useState("0.25");
@@ -37,48 +39,48 @@ export default function PipeWeightCalc() {
 
   const projectInputs = { outerDiameter: outerD, wallThickness: wallT, length: len, quantity: qty };
   const projectResults = { innerDiameter: innerD, weightLbs: weight.lb, weightKg: weight.kg, weightPerFt: len > 0 ? (weight.lb / len) * 12 : 0 };
-  const projectMaterials: MaterialItem[] = [{ name: weight.materialName || "Pipe", quantity: weight.lb, unit: "lbs", category: "weight" }];
+  const projectMaterials: MaterialItem[] = [{ name: weight.materialName || (t('calculators.detail.weight.pipe.name') ?? 'Pipe'), quantity: weight.lb, unit: "lbs", category: "weight" }];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">Material</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">{t('calculators.detail.weight.pipe.material') ?? 'Material'}</label>
             <select value={material} onChange={(e) => setMaterial(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
               {PIPE_MATERIALS.map((m) => <option key={m.key} value={m.key}>{m.label}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Outer Diameter (in)" type="number" inputMode="decimal" value={od} onChange={(e) => setOd(e.target.value)} placeholder="4" />
-            <Input label="Wall Thickness (in)" type="number" inputMode="decimal" value={wall} onChange={(e) => setWall(e.target.value)} placeholder="0.25" />
-            <Input label="Length (in)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="12" />
-            <Input label="Quantity" type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="1" />
+            <Input label={t('calculators.detail.weight.pipe.outer_diameter') ?? 'Outer Diameter (in)'} type="number" inputMode="decimal" value={od} onChange={(e) => setOd(e.target.value)} placeholder="4" />
+            <Input label={t('calculators.detail.weight.pipe.wall_thickness') ?? 'Wall Thickness (in)'} type="number" inputMode="decimal" value={wall} onChange={(e) => setWall(e.target.value)} placeholder="0.25" />
+            <Input label={t('calculators.detail.weight.pipe.length') ?? 'Length (in)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="12" />
+            <Input label={t('calculators.detail.weight.pipe.quantity') ?? 'Quantity'} type="number" inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="1" />
           </div>
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Pipe Weight Results</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.weight.pipe.results') ?? 'Pipe Weight Results'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Material</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.weight.pipe.material') ?? 'Material'}</span>
               <span className="text-sm font-semibold">{weight.materialName}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Inner Diameter</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.weight.pipe.inner_diameter') ?? 'Inner Diameter'}</span>
               <span className="text-sm font-semibold tabular-nums">{innerD.toFixed(3)} in</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">{qty > 1 ? "Total Weight (lbs)" : "Weight (lbs)"}</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{qty > 1 ? (t('calculators.detail.weight.pipe.total_weight_lbs') ?? 'Total Weight (lbs)') : (t('calculators.detail.weight.pipe.weight_lbs') ?? 'Weight (lbs)')}</span>
               <span className="text-sm font-bold tabular-nums">{weight.lb.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Weight (kg)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.weight.pipe.weight_kg') ?? 'Weight (kg)'}</span>
               <span className="text-sm font-semibold tabular-nums">{weight.kg.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Weight per ft (lbs)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.weight.pipe.weight_per_ft') ?? 'Weight per ft (lbs)'}</span>
               <span className="text-sm font-semibold tabular-nums">{len > 0 ? ((weight.lb / len) * 12).toFixed(2) : "0.00"}</span>
             </div>
           </div>

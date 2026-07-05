@@ -12,11 +12,13 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import PaintDiagram from "../diagrams/PaintDiagram";
+import { useI18n } from "../i18n/I18nProvider";
 
 const COVERAGE_PER_GALLON = 350;
 const _STANDARD_COATS = 2;
 
 export default function PaintCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState("12");
   const [width, setWidth] = useState("14");
@@ -103,18 +105,18 @@ export default function PaintCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-5">
-            <h2 className="text-sm font-semibold tracking-tight">Room Dimensions</h2>
+            <h2 className="text-sm font-semibold tracking-tight">{t('calculators.detail.finishing.paint.room_dimensions') ?? 'Room Dimensions'}</h2>
             <button
               type="button"
               onClick={() => setUnitSystem(unitSystem === "imperial" ? "metric" : "imperial")}
               className="text-xs px-2.5 py-1.5 rounded-md bg-[var(--bg-muted)] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors"
             >
-              {unitSystem === "imperial" ? "Switch to Metric" : "Switch to Imperial"}
+              {unitSystem === "imperial" ? t('calculators.detail.finishing.paint.switch_to_metric') ?? 'Switch to Metric' : t('calculators.detail.finishing.paint.switch_to_imperial') ?? 'Switch to Imperial'}
             </button>
           </div>
 
           <div className="mb-4 flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]">Standard Room Presets</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">{t('calculators.common.size_presets') ?? 'Standard Room Presets'}</label>
             <select
               onChange={(e) => {
                 const idx = parseInt(e.target.value);
@@ -140,15 +142,15 @@ export default function PaintCalc() {
           </div>
 
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <Input label={unitSystem === "imperial" ? "Length (ft)" : "Length (m)"} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 12" />
-            <Input label={unitSystem === "imperial" ? "Width (ft)" : "Width (m)"} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="e.g. 14" />
-            <Input label={unitSystem === "imperial" ? "Height (ft)" : "Height (m)"} type="number" inputMode="decimal" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="e.g. 8" />
+            <Input label={unitSystem === "imperial" ? (t('fields.length_ft') ?? 'Length (ft)') : (t('fields.length_m') ?? 'Length (m)')} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 12'} />
+            <Input label={unitSystem === "imperial" ? (t('fields.width_ft') ?? 'Width (ft)') : (t('fields.width_m') ?? 'Width (m)')} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 14'} />
+            <Input label={unitSystem === "imperial" ? (t('fields.height_ft') ?? 'Height (ft)') : (t('fields.height_m') ?? 'Height (m)')} type="number" inputMode="decimal" value={height} onChange={(e) => setHeight(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 8'} />
           </div>
 
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <Input label="Doors" type="number" inputMode="numeric" value={doors} onChange={(e) => setDoors(e.target.value)} placeholder="e.g. 2" min="0" />
-            <Input label="Windows" type="number" inputMode="numeric" value={windows} onChange={(e) => setWindows(e.target.value)} placeholder="e.g. 2" min="0" />
-            <Input label="Coats" type="number" inputMode="numeric" value={coats} onChange={(e) => setCoats(e.target.value)} placeholder="e.g. 2" min="1" />
+            <Input label={t('calculators.detail.finishing.paint.doors') ?? 'Doors'} type="number" inputMode="numeric" value={doors} onChange={(e) => setDoors(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 2'} min="0" />
+            <Input label={t('calculators.detail.finishing.paint.windows') ?? 'Windows'} type="number" inputMode="numeric" value={windows} onChange={(e) => setWindows(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 2'} min="0" />
+            <Input label={t('calculators.detail.finishing.paint.coats') ?? 'Coats'} type="number" inputMode="numeric" value={coats} onChange={(e) => setCoats(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 2'} min="1" />
           </div>
 
           <label className="flex items-center gap-2 text-sm text-[var(--fg-secondary)] cursor-pointer">
@@ -158,7 +160,7 @@ export default function PaintCalc() {
               onChange={(e) => setIncludeCeiling(e.target.checked)}
               className="w-4 h-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)]"
             />
-            Include ceiling
+            {t('calculators.detail.finishing.paint.include_ceiling') ?? 'Include ceiling'}
           </label>
         </Card>
 
@@ -170,9 +172,9 @@ export default function PaintCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          heading="Save Room"
-          placeholder="e.g. Living Room"
-          projectsLabel="Load Saved Room:"
+          heading={t('calculators.detail.finishing.paint.save_room') ?? 'Save Room'}
+          placeholder={t('calculators.common.placeholder') ?? 'e.g. Living Room'}
+          projectsLabel={t('calculators.detail.finishing.paint.load_saved_room') ?? 'Load Saved Room:'}
         />
         <div id="add-to-project-section" className="flex-1">
           <AddToProjectCard
@@ -192,50 +194,50 @@ export default function PaintCalc() {
           <PaintDiagram width={Math.max(lenNum, widNum)} height={htNum} numDoors={doorCount} numWindows={windowCount} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Paint Estimate</h2>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.finishing.paint.paint_estimate') ?? 'Paint Estimate'}</h2>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Paintable Wall Area</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.finishing.paint.paintable_wall_area') ?? 'Paintable Wall Area'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{Math.round(totalArea).toLocaleString()}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">sq ft</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Gallons Needed ({coatCount} coats)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.finishing.paint.gallons_needed', { coatCount }) ?? `Gallons Needed (${coatCount} coats)`}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{gallonsNeeded}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">gallons</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.finishing.paint.gallons') ?? 'gallons'}</span>
               </div>
             </div>
 
             <div className="pt-4 border-t border-[var(--border)] flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-[var(--fg-muted)]">Gross wall area</span>
-                <span className="font-medium tabular-nums">{(roomPerimeter * htNum).toLocaleString()} sq ft</span>
+                <span className="text-[var(--fg-muted)]">{t('calculators.detail.finishing.paint.gross_wall_area') ?? 'Gross wall area'}</span>
+                <span className="font-medium tabular-nums">{(roomPerimeter * htNum).toLocaleString()} {t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
               {doorsSubtotal > 0 && (
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[var(--fg-muted)]">Less doors ({doorCount})</span>
-                  <span className="font-medium tabular-nums text-[var(--error)]">-{doorsSubtotal} sq ft</span>
+                  <span className="text-[var(--fg-muted)]">{t('calculators.detail.finishing.paint.less_doors', { doorCount }) ?? `Less doors (${doorCount})`}</span>
+                  <span className="font-medium tabular-nums text-[var(--error)]">-{doorsSubtotal} {t('units.sq_ft') ?? 'sq ft'}</span>
                 </div>
               )}
               {windowsSubtotal > 0 && (
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[var(--fg-muted)]">Less windows ({windowCount})</span>
-                  <span className="font-medium tabular-nums text-[var(--error)]">-{windowsSubtotal} sq ft</span>
+                  <span className="text-[var(--fg-muted)]">{t('calculators.detail.finishing.paint.less_windows', { windowCount }) ?? `Less windows (${windowCount})`}</span>
+                  <span className="font-medium tabular-nums text-[var(--error)]">-{windowsSubtotal} {t('units.sq_ft') ?? 'sq ft'}</span>
                 </div>
               )}
               {includeCeiling && (
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[var(--fg-muted)]">Ceiling area</span>
-                  <span className="font-medium tabular-nums">+{ceilingArea.toLocaleString()} sq ft</span>
+                  <span className="text-[var(--fg-muted)]">{t('calculators.detail.finishing.paint.ceiling_area') ?? 'Ceiling area'}</span>
+                  <span className="font-medium tabular-nums">+{ceilingArea.toLocaleString()} {t('units.sq_ft') ?? 'sq ft'}</span>
                 </div>
               )}
               <div className="flex items-center justify-between text-xs pt-2 border-t border-[var(--border)]">
-                <span className="text-[var(--fg-muted)]">Total with waste</span>
-                <span className="font-medium tabular-nums">{Math.round(totalArea).toLocaleString()} sq ft</span>
+                <span className="text-[var(--fg-muted)]">{t('calculators.detail.finishing.paint.total_with_waste') ?? 'Total with waste'}</span>
+                <span className="font-medium tabular-nums">{Math.round(totalArea).toLocaleString()} {t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
             </div>
             <div className="pt-4 border-t border-[var(--border)] mt-1">
@@ -246,26 +248,26 @@ export default function PaintCalc() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Save to Project Planner
+                {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
             </div>
           </div>
         </div>
 
         <Card>
-          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Shopping List</h2>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.finishing.paint.shopping_list') ?? 'Shopping List'}</h2>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Paint ({coatCount} coats)</span>
-              <span className="text-sm font-bold tabular-nums">{gallonsNeeded} gallon{gallonsNeeded !== 1 ? "s" : ""}</span>
+              <span className="text-sm font-medium">{t('calculators.detail.finishing.paint.paint_coats', { coatCount }) ?? `Paint (${coatCount} coats)`}</span>
+              <span className="text-sm font-bold tabular-nums">{gallonsNeeded} {t('calculators.detail.finishing.paint.gallon', { count: gallonsNeeded }) ?? `gallon${gallonsNeeded !== 1 ? 's' : ''}`}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Primer (recommended)</span>
-              <span className="text-sm font-bold tabular-nums">{Math.ceil(gallonsNeeded * 0.5)} gallon{Math.ceil(gallonsNeeded * 0.5) !== 1 ? "s" : ""}</span>
+              <span className="text-sm font-medium">{t('calculators.detail.finishing.paint.primer_recommended') ?? 'Primer (recommended)'}</span>
+              <span className="text-sm font-bold tabular-nums">{Math.ceil(gallonsNeeded * 0.5)} {t('calculators.detail.finishing.paint.gallon', { count: Math.ceil(gallonsNeeded * 0.5) }) ?? `gallon${Math.ceil(gallonsNeeded * 0.5) !== 1 ? 's' : ''}`}</span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="text-sm font-medium">Painter's tape (rolls)</span>
-              <span className="text-sm font-bold tabular-nums">{Math.ceil(roomPerimeter / 60)} roll{Math.ceil(roomPerimeter / 60) !== 1 ? "s" : ""}</span>
+              <span className="text-sm font-medium">{t('calculators.detail.finishing.paint.painters_tape') ?? "Painter's tape (rolls)"}</span>
+              <span className="text-sm font-bold tabular-nums">{Math.ceil(roomPerimeter / 60)} {t('calculators.detail.finishing.paint.roll', { count: Math.ceil(roomPerimeter / 60) }) ?? `roll${Math.ceil(roomPerimeter / 60) !== 1 ? 's' : ''}`}</span>
             </div>
           </div>
         </Card>

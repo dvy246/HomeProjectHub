@@ -1,6 +1,7 @@
 import { useState, useMemo, useId, useEffect, useCallback } from "react";
 import { MAINTENANCE_TASKS, CATEGORIES, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
 import { getCompletedIds, toggleTask, migrateOldStorage, isOverdue } from "../../lib/maintenanceStorage";
+import { useI18n } from "../i18n/I18nProvider";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const SEASON_MONTHS: Record<string, number[]> = { spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1] };
@@ -37,6 +38,7 @@ function getCategoryCounts(tasks: MaintenanceTask[]) {
 }
 
 export default function MaintenanceCalendar() {
+  const { t } = useI18n();
   const id = useId();
   const [currentMonth, setCurrentMonth] = useState<number | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
@@ -93,9 +95,9 @@ export default function MaintenanceCalendar() {
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
           className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
-          aria-label="Filter by category"
+          aria-label={t('maintenance.calendar.filterByCategory') ?? 'Filter by category'}
         >
-          <option value="all">All categories</option>
+          <option value="all">{t('maintenance.calendar.allCategories') ?? 'All categories'}</option>
           {CATEGORIES.map((c) => (
             <option key={c.key} value={c.key}>{c.label}</option>
           ))}
@@ -121,7 +123,7 @@ export default function MaintenanceCalendar() {
                     ? "border-[var(--border-strong)] bg-[var(--card-bg)]"
                     : "border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)]"
               }`}
-              aria-label={`${name}: ${count} tasks, ${done} completed`}
+              aria-label={t('maintenance.calendar.monthAria')?.replace('{month}', name).replace('{count}', String(count)).replace('{done}', String(done)) ?? `${name}: ${count} tasks, ${done} completed`}
               aria-pressed={isSelected}
             >
               <span className="text-xs font-medium text-[var(--fg-muted)]">{name}</span>
@@ -140,9 +142,9 @@ export default function MaintenanceCalendar() {
 
       {selectedMonth !== null && (
         <section className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <h3 className="text-sm font-bold mb-3">{MONTHS[selectedMonth]} Tasks ({selectedTasks.length})</h3>
+          <h3 className="text-sm font-bold mb-3">{t('maintenance.calendar.monthTasks')?.replace('{month}', MONTHS[selectedMonth]).replace('{count}', String(selectedTasks.length)) ?? `${MONTHS[selectedMonth]} Tasks (${selectedTasks.length})`}</h3>
           {selectedTasks.length === 0 ? (
-            <p className="text-xs text-[var(--fg-muted)]">No scheduled tasks for this month.</p>
+            <p className="text-xs text-[var(--fg-muted)]">{t('maintenance.calendar.noTasks') ?? 'No scheduled tasks for this month.'}</p>
           ) : (
             <ul className="flex flex-col gap-2">
               {selectedTasks.map(task => {
@@ -169,12 +171,12 @@ export default function MaintenanceCalendar() {
                           onClick={(e) => e.stopPropagation()}
                           className="inline-block mt-1 text-[10px] font-medium text-[var(--accent)] hover:underline"
                         >
-                          Use related calculator →
+                          {t('maintenance.calendar.relatedCalculator') ?? 'Use related calculator →'}
                         </a>
                       )}
                       {overdue && !done && (
                         <span className="inline-block mt-1 ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--warning)]/20 text-[var(--warning)]">
-                          Overdue
+                          {t('maintenance.calendar.overdue') ?? 'Overdue'}
                         </span>
                       )}
                     </label>

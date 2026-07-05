@@ -6,6 +6,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 const MULCH_TYPES = [
   { key: "bark", label: "Bark Mulch", lbsPerCuFt: 25, bagsPerCuYd: 13.5 },
@@ -15,6 +16,7 @@ const MULCH_TYPES = [
 ];
 
 export default function MulchCalc() {
+  const { t } = useI18n();
   const [type, setType] = useState("bark");
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("3");
@@ -38,32 +40,32 @@ export default function MulchCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">Mulch Type</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">{t('calculators.detail.landscaping.mulch.type') ?? 'Mulch Type'}</label>
             <select value={type} onChange={(e) => setType(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
               {MULCH_TYPES.map((m) => <option key={m.key} value={m.key}>{m.label}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Area (sq ft)" type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
-            <Input label="Depth (in)" type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="3" />
+            <Input label={t('calculators.detail.landscaping.mulch.area_sqft') ?? 'Area (sq ft)'} type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
+            <Input label={t('calculators.detail.landscaping.mulch.depth_in') ?? 'Depth (in)'} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="3" />
           </div>
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Mulch Needed</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.landscaping.mulch.needed') ?? 'Mulch Needed'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Volume</span>
-              <span className="text-sm font-semibold tabular-nums">{cuYd.toFixed(2)} cu yd</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.common.volume') ?? 'Volume'}</span>
+              <span className="text-sm font-semibold tabular-nums">{cuYd.toFixed(2)} {t('units.cu_yd') ?? 'cu yd'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Bags Needed (2 cu ft)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.landscaping.mulch.bags_needed') ?? 'Bags Needed (2 cu ft)'}</span>
               <span className="text-sm font-bold tabular-nums">{bags}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Weight</span>
-              <span className="text-sm font-semibold tabular-nums">{lbs.toFixed(0)} lbs ({ (lbs / 2000).toFixed(2) } tons)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.landscaping.mulch.weight') ?? 'Weight'}</span>
+              <span className="text-sm font-semibold tabular-nums">{lbs.toFixed(0)} {t('units.lbs') ?? 'lbs'} ({ (lbs / 2000).toFixed(2) } tons)</span>
             </div>
           </div>
         </Card>

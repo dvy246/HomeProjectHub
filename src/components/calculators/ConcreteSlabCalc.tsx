@@ -19,6 +19,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { PRESETS } from "../../lib/presets";
+import { useI18n } from "../i18n/I18nProvider";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -31,6 +32,7 @@ function convertValue(value: number, from: UnitSystem, to: UnitSystem, field: "l
 }
 
 export default function ConcreteSlabCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("imperial");
   const [length, setLength] = useState<string>("10");
   const [width, setWidth] = useState<string>("10");
@@ -144,12 +146,12 @@ export default function ConcreteSlabCalc() {
         {/* Core Input Panel */}
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h2 className="text-sm font-semibold tracking-tight">Slab Parameters</h2>
+            <h2 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.slab.parameters') ?? 'Slab Parameters'}</h2>
             <UnitToggle unitSystem={unitSystem} onChange={handleUnitChange} />
           </div>
 
           <div className="mb-4 flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]">Size Presets</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]">{t('calculators.common.size_presets') ?? 'Size Presets'}</label>
             <select
               onChange={(e) => {
                 const idx = parseInt(e.target.value);
@@ -177,26 +179,26 @@ export default function ConcreteSlabCalc() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <Input
               ref={lengthInputRef}
-              label={unitSystem === "imperial" ? "Length (ft)" : "Length (m)"}
+              label={unitSystem === "imperial" ? (t('fields.length_ft') ?? 'Length (ft)') : (t('fields.length_m') ?? 'Length (m)')}
               name="length"
               type="number"
               inputMode="decimal"
               value={length}
               onChange={(e) => setLength(e.target.value)}
-              placeholder="e.g. 10"
+              placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'}
               min="0"
               step="any"
               className="focus-within:ring-2 focus-within:ring-[var(--ring)]/10"
             />
             <Input
               ref={widthInputRef}
-              label={unitSystem === "imperial" ? "Width (ft)" : "Width (m)"}
+              label={unitSystem === "imperial" ? (t('fields.width_ft') ?? 'Width (ft)') : (t('fields.width_m') ?? 'Width (m)')}
               name="width"
               type="number"
               inputMode="decimal"
               value={width}
               onChange={(e) => setWidth(e.target.value)}
-              placeholder="e.g. 10"
+              placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'}
               min="0"
               step="any"
               className="focus-within:ring-2 focus-within:ring-[var(--ring)]/10"
@@ -206,24 +208,24 @@ export default function ConcreteSlabCalc() {
           <div className="grid grid-cols-2 gap-4 mb-5">
             <Input
               ref={thicknessInputRef}
-              label={unitSystem === "imperial" ? "Thickness (inches)" : "Thickness (cm)"}
+              label={unitSystem === "imperial" ? (t('fields.thickness_in') ?? 'Thickness (inches)') : (t('fields.thickness_cm') ?? 'Thickness (cm)')}
               name="thickness"
               type="number"
               inputMode="decimal"
               value={thickness}
               onChange={(e) => setThickness(e.target.value)}
-              placeholder="e.g. 4"
+              placeholder={t('calculators.common.placeholder') ?? 'e.g. 4'}
               min="0"
               step="any"
               className="focus-within:ring-2 focus-within:ring-[var(--ring)]/10"
             />
             <div>
               <label className="text-xs font-medium text-[var(--fg-secondary)] mb-1.5 block cursor-pointer">
-                Waste Factor: {wasteFactor}%
+                {t('calculators.common.waste_factor') ?? 'Waste Factor'}: {wasteFactor}%
               </label>
               <input
                 type="range"
-                aria-label="Waste Factor percentage"
+                aria-label={t('calculators.common.waste_factor_percentage') ?? 'Waste Factor percentage'}
                 min="0"
                 max="30"
                 step="1"
@@ -232,9 +234,9 @@ export default function ConcreteSlabCalc() {
                 className="w-full h-1.5 bg-[var(--bg-muted)] rounded-lg appearance-none cursor-pointer accent-[var(--accent)]"
               />
               <div className="flex justify-between text-[9px] text-[var(--fg-muted)] mt-1 font-mono">
-                <span>0% (Tight)</span>
-                <span>10% (Std)</span>
-                <span>30% (High)</span>
+                <span>{t('calculators.common.waste_tight') ?? '0% (Tight)'}</span>
+                <span>{t('calculators.common.waste_std') ?? '10% (Std)'}</span>
+                <span>{t('calculators.common.waste_high') ?? '30% (High)'}</span>
               </div>
             </div>
           </div>
@@ -246,7 +248,7 @@ export default function ConcreteSlabCalc() {
         <Card>
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
-              Cost &amp; Labor Estimator
+              {t('calculators.common.cost_labor') ?? 'Cost & Labor Estimator'}
             </h4>
             <div className="flex bg-[var(--bg-muted)] p-0.5 rounded-lg text-xs">
               <button
@@ -258,7 +260,7 @@ export default function ConcreteSlabCalc() {
                 }`}
                 onClick={() => setLaborType("diy")}
               >
-                DIY Material Only
+                  {t('calculators.common.diy') ?? 'DIY Material Only'}
               </button>
               <button
                 type="button"
@@ -269,7 +271,7 @@ export default function ConcreteSlabCalc() {
                 }`}
                 onClick={() => setLaborType("contractor")}
               >
-                Hired Contractor
+                  {t('calculators.common.contractor') ?? 'Hired Contractor'}
               </button>
             </div>
           </div>
@@ -277,7 +279,7 @@ export default function ConcreteSlabCalc() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             {laborType === "diy" ? (
               <div className="flex flex-col gap-1">
-                <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider">Estimated DIY Expense</span>
+                <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider">{t('calculators.common.estimated_diy') ?? 'Estimated DIY Expense'}</span>
                 <span className="text-3xl font-extrabold text-[var(--fg)] tabular-nums">
                   ${Math.round(materialCost).toLocaleString()}
                 </span>
@@ -287,7 +289,7 @@ export default function ConcreteSlabCalc() {
               </div>
             ) : (
               <div className="flex flex-col gap-1">
-                <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider">Estimated Hired Labor + Materials</span>
+                <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider">{t('calculators.common.estimated_contractor') ?? 'Estimated Hired Labor + Materials'}</span>
                 <span className="text-3xl font-extrabold text-[var(--fg)] tabular-nums">
                   ${Math.round(materialCost + estimatedLaborCost).toLocaleString()}
                 </span>
@@ -299,11 +301,11 @@ export default function ConcreteSlabCalc() {
             <div className="bg-[var(--bg-inset)] p-3 border border-[var(--border)] rounded-lg text-xs text-[var(--fg-muted)] leading-relaxed">
               {laborType === "diy" ? (
                 <p>
-                  <strong>DIY note:</strong> You save on contractor fees but need tools (wheelbarrow, floats, screed, shovel) and helper hands. 1 cubic yard requires ~45 bags of 80lb mix.
+                  <strong>{t('calculators.common.diy_note') ?? 'DIY note'}:</strong> {t('calculators.common.diy_note_text') ?? 'You save on contractor fees but need tools (wheelbarrow, floats, screed, shovel) and helper hands. 1 cubic yard requires ~45 bags of 80lb mix.'}
                 </p>
               ) : (
                 <p>
-                  <strong>Contractor note:</strong> Includes subgrade preparation, setting wooden formwork, placing reinforcement mesh/rebar, pouring, and trowel finish.
+                  <strong>{t('calculators.common.contractor_note') ?? 'Contractor note'}:</strong> {t('calculators.common.contractor_note_text') ?? 'Includes subgrade preparation, setting wooden formwork, placing reinforcement mesh/rebar, pouring, and trowel finish.'}
                 </p>
               )}
             </div>
@@ -319,7 +321,7 @@ export default function ConcreteSlabCalc() {
             aria-expanded={showMathStepper}
           >
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)]">
-              Visual Step-by-Step Math Breakdown
+              {t('calculators.common.math_breakdown') ?? 'Visual Step-by-Step Math Breakdown'}
             </span>
             <svg
               className={`w-4 h-4 text-[var(--fg-muted)] transition-transform duration-200 ${
@@ -344,10 +346,10 @@ export default function ConcreteSlabCalc() {
                 <div className="flex items-start gap-3">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--bg-muted)] text-[var(--fg)] font-bold text-[10px] shrink-0">1</span>
                   <div>
-                    <strong className="text-[var(--fg)] block mb-0.5">Calculate Surface Area</strong>
-                    <span>Multiply Length ({lenNum} {unitSystem === "imperial" ? "ft" : "m"}) by Width ({widNum} {unitSystem === "imperial" ? "ft" : "m"}):</span>
+                    <strong className="text-[var(--fg)] block mb-0.5">{t('calculators.common.surface_area') ?? 'Calculate Surface Area'}</strong>
+                    <span>{t('calculators.common.multiply_length_by_width') ?? 'Multiply Length'} ({lenNum} {unitSystem === "imperial" ? (t('units.ft') ?? 'ft') : (t('units.m') ?? 'm')}) {t('calculators.common.by_width') ?? 'by Width'} ({widNum} {unitSystem === "imperial" ? (t('units.ft') ?? 'ft') : (t('units.m') ?? 'm')}):</span>
                     <div className="font-mono bg-[var(--bg-inset)] p-1.5 rounded mt-1 text-[var(--fg)] w-fit">
-                      Area = {lenNum} &times; {widNum} = {area.toFixed(2)} {unitSystem === "imperial" ? "sq ft" : "sq m"}
+                      {t('calculators.common.area_eq') ?? 'Area'} = {lenNum} &times; {widNum} = {area.toFixed(2)} {unitSystem === "imperial" ? (t('units.sq_ft') ?? 'sq ft') : (t('units.sq_m') ?? 'sq m')}
                     </div>
                   </div>
                 </div>
@@ -356,14 +358,14 @@ export default function ConcreteSlabCalc() {
                 <div className="flex items-start gap-3">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--bg-muted)] text-[var(--fg)] font-bold text-[10px] shrink-0">2</span>
                   <div>
-                    <strong className="text-[var(--fg)] block mb-0.5">Convert Thickness to Base Units</strong>
+                    <strong className="text-[var(--fg)] block mb-0.5">{t('calculators.common.convert_thickness') ?? 'Convert Thickness to Base Units'}</strong>
                     {unitSystem === "imperial" ? (
                       <span>Convert thickness ({thickNum} inches) to feet by dividing by 12:</span>
                     ) : (
                       <span>Convert thickness ({thickNum} cm) to meters by dividing by 100:</span>
                     )}
                     <div className="font-mono bg-[var(--bg-inset)] p-1.5 rounded mt-1 text-[var(--fg)] w-fit">
-                      Thickness = {thickNum} &divide; {unitSystem === "imperial" ? "12" : "100"} = {(unitSystem === "imperial" ? thickNum / 12 : thickNum / 100).toFixed(4)} {unitSystem === "imperial" ? "ft" : "m"}
+                      {t('calculators.common.thickness_eq') ?? 'Thickness'} = {thickNum} &divide; {unitSystem === "imperial" ? "12" : "100"} = {(unitSystem === "imperial" ? thickNum / 12 : thickNum / 100).toFixed(4)} {unitSystem === "imperial" ? (t('units.ft') ?? 'ft') : (t('units.m') ?? 'm')}
                     </div>
                   </div>
                 </div>
@@ -372,10 +374,10 @@ export default function ConcreteSlabCalc() {
                 <div className="flex items-start gap-3">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--bg-muted)] text-[var(--fg)] font-bold text-[10px] shrink-0">3</span>
                   <div>
-                    <strong className="text-[var(--fg)] block mb-0.5">Compute Volume with Waste</strong>
-                    <span>Multiply Area by converted Thickness, then apply the {wasteFactor}% safety margin:</span>
+                    <strong className="text-[var(--fg)] block mb-0.5">{t('calculators.common.compute_volume') ?? 'Compute Volume with Waste'}</strong>
+                    <span>{t('calculators.common.multiply_area_by_thickness') ?? 'Multiply Area by converted Thickness, then apply the'} {wasteFactor}% {t('calculators.common.safety_margin') ?? 'safety margin'}:</span>
                     <div className="font-mono bg-[var(--bg-inset)] p-1.5 rounded mt-1 text-[var(--fg)] w-fit">
-                      Volume = {volumeCuFt.toFixed(2)} cu ft + {wasteFactor}% = {totalVolumeCuFt.toFixed(2)} cu ft
+                      {t('calculators.common.volume_eq') ?? 'Volume'} = {volumeCuFt.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'} + {wasteFactor}% = {totalVolumeCuFt.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'}
                     </div>
                   </div>
                 </div>
@@ -384,10 +386,10 @@ export default function ConcreteSlabCalc() {
                 <div className="flex items-start gap-3">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--bg-muted)] text-[var(--fg)] font-bold text-[10px] shrink-0">4</span>
                   <div>
-                    <strong className="text-[var(--fg)] block mb-0.5">Convert to Output Units</strong>
-                    <span>Divide cubic feet by 27 to find cubic yards:</span>
+                    <strong className="text-[var(--fg)] block mb-0.5">{t('calculators.common.convert_output') ?? 'Convert to Output Units'}</strong>
+                    <span>{t('calculators.common.divide_cu_ft_by_27') ?? 'Divide cubic feet by 27 to find cubic yards'}:</span>
                     <div className="font-mono bg-[var(--bg-inset)] p-1.5 rounded mt-1 text-[var(--fg)] w-fit">
-                      Cubic Yards = {totalVolumeCuFt.toFixed(2)} &divide; 27 = {totalVolumeCuYd.toFixed(2)} cu yd
+                      {t('calculators.common.cubic_yards_eq') ?? 'Cubic Yards'} = {totalVolumeCuFt.toFixed(2)} &divide; 27 = {totalVolumeCuYd.toFixed(2)} {t('units.cu_yd') ?? 'cu yd'}
                     </div>
                   </div>
                 </div>
@@ -405,8 +407,8 @@ export default function ConcreteSlabCalc() {
             successMessage={successMessage}
             savedRooms={savedRooms}
             onApplyRoom={applySavedRoom}
-            placeholder="e.g. Backyard Patio"
-            projectsLabel="Apply Saved Dimensions:"
+            placeholder={t('calculators.common.placeholder') ?? 'e.g. Backyard Patio'}
+            projectsLabel={t('calculators.common.apply_saved_dimensions') ?? 'Apply Saved Dimensions:'}
             showDimensions
           />
           <div id="add-to-project-section">
@@ -436,36 +438,36 @@ export default function ConcreteSlabCalc() {
 
         {/* Results Card */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Results</h2>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.common.results') ?? 'Results'}</h2>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (incl. {wasteFactor}% waste)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.volume') ?? 'Required Volume'} (incl. {wasteFactor}% waste)</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight break-all">
                   {unitSystem === "imperial" ? totalVolumeCuYd.toFixed(2) : totalVolumeCuM.toFixed(2)}
                 </span>
                 <span className="text-base text-[var(--fg-muted)] font-medium">
-                  {unitSystem === "imperial" ? "cu yd" : "cu m"}
+                  {unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')}
                 </span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                Raw: {unitSystem === "imperial" ? volumeCuYd.toFixed(2) : volumeCuM.toFixed(2)} {unitSystem === "imperial" ? "cu yd" : "cu m"} ({totalVolumeCuFt.toFixed(1)} cu ft)
+                {t('calculators.common.raw') ?? 'Raw'}: {unitSystem === "imperial" ? volumeCuYd.toFixed(2) : volumeCuM.toFixed(2)} {unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')} ({totalVolumeCuFt.toFixed(1)} {t('units.cu_ft') ?? 'cu ft'})
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags ({bagSize})</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.bags') ?? 'Bags'} ({bagSize})</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight break-all">{selectedBags}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">bags</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.bags') ?? 'bags'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Dry Weight</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.dry_weight') ?? 'Dry Weight'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight break-all">{Math.round(estimatedWeightLbs).toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">lbs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.lbs') ?? 'lbs'}</span>
                 </div>
               </div>
             </div>
@@ -477,7 +479,7 @@ export default function ConcreteSlabCalc() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Save to Project Planner
+                {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
             </div>
           </div>

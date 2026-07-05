@@ -3,7 +3,7 @@ import { getSavedProjects, getProject, addCalculationToProject, type SavedProjec
 
 interface UseProjectsReturn {
   projects: SavedProject[];
-  addToProject: (projectId: string, inputs: Record<string, number>, results: Record<string, number>, materials: MaterialItem[]) => SavedProject | null;
+  addToProject: (projectId: string, inputs: Record<string, number | string>, results: Record<string, number | string>, materials: MaterialItem[]) => SavedProject | null;
   successMessage: string;
   clearSuccess: () => void;
 }
@@ -21,8 +21,8 @@ export function useProjects(calculatorSlug: string, calculatorName: string): Use
 
   const addToProject = (
     projectId: string,
-    inputs: Record<string, number>,
-    results: Record<string, number>,
+    inputs: Record<string, number | string>,
+    results: Record<string, number | string>,
     materials: MaterialItem[]
   ): SavedProject | null => {
     const existingProject = getProject(projectId);

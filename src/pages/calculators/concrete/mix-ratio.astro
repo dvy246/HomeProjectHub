@@ -55,6 +55,10 @@ const schema = graphSchema(
       q: "How much water do I add to concrete mix?",
       a: "Use approximately 4.5 gallons of water per 94lb bag of cement. The water-to-cement ratio should be 0.45 to 0.50 by weight for optimal strength. Too much water weakens the concrete.",
     },
+    {
+      q: "What is concrete made of?",
+      a: "Concrete is a composite material made of three essential ingredients: Portland cement, water, and aggregates (typically a mixture of clean sand and crushed gravel or stone). Portland cement acts as the binding agent, which triggers a chemical reaction called hydration when mixed with water, curing into a rock-hard paste. Aggregates make up 60% to 80% of the volume and provide structural bulk and compressive strength. In standard ratios like the 1:2:3 design on our Concrete Mix Ratio Calculator, the parts represent cement, sand, and gravel respectively.",
+    },
   ], canonical)
 );
 ---
@@ -165,6 +169,12 @@ const schema = graphSchema(
           <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much water do I add to concrete mix?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             Use about 4.5 gallons of clean water per 94lb bag of cement. The ideal water-to-cement ratio is 0.45-0.50 by weight. For hot weather, use cool water to slow the set time. Never exceed 0.60 water-to-cement ratio.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is concrete made of?</h3></summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Concrete is a composite material made of three essential ingredients: Portland cement, water, and aggregates (typically a mixture of clean sand and crushed gravel or stone). Portland cement acts as the binding agent, which triggers a chemical reaction called hydration when mixed with water, curing into a rock-hard paste. Aggregates make up 60% to 80% of the volume and provide structural bulk and compressive strength. In standard ratios like the 1:2:3 design on our Concrete Mix Ratio Calculator, the parts represent cement, sand, and gravel respectively.
           </p>
         </details>
       </div>

@@ -12,10 +12,12 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
+import { useI18n } from "../i18n/I18nProvider";
 
 const _PLYWOOD_SHEET_AREA = 32;
 
 export default function PlywoodDeckCalc() {
+  const { t } = useI18n();
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
   const [pitch, setPitch] = useState<string>("6");
@@ -89,20 +91,20 @@ export default function PlywoodDeckCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Deck / Sheathing Parameters</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.roofing.plywood_deck.parameters') ?? 'Deck / Sheathing Parameters'}</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Building Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 40" />
-            <Input label="Building Width (ft)" type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="e.g. 30" />
+            <Input label={t('calculators.detail.roofing.plywood_deck.building_length_ft') ?? 'Building Length (ft)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 40'} />
+            <Input label={t('calculators.detail.roofing.plywood_deck.building_width_ft') ?? 'Building Width (ft)'} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 30'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-5">
-            <Input label="Roof Pitch (rise per 12 in)" type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder="e.g. 6" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 10" />
+            <Input label={t('calculators.detail.roofing.plywood_deck.roof_pitch') ?? 'Roof Pitch (rise per 12 in)'} type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 6'} />
+            <Input label={t('calculators.detail.roofing.plywood_deck.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <Select label="Sheet Size" value={sheetSize} onChange={(v) => setSheetSize(v as "4x8" | "4x10" | "4x12")} options={[{ value: "4x8", label: "4x8 (32 sq ft)" }, { value: "4x10", label: "4x10 (40 sq ft)" }, { value: "4x12", label: "4x12 (48 sq ft)" }]} />
+            <Select label={t('calculators.detail.roofing.plywood_deck.sheet_size') ?? 'Sheet Size'} value={sheetSize} onChange={(v) => setSheetSize(v as "4x8" | "4x10" | "4x12")} options={[{ value: "4x8", label: t('calculators.detail.roofing.plywood_deck.sheet_4x8') ?? '4x8 (32 sq ft)' }, { value: "4x10", label: t('calculators.detail.roofing.plywood_deck.sheet_4x10') ?? '4x10 (40 sq ft)' }, { value: "4x12", label: t('calculators.detail.roofing.plywood_deck.sheet_4x12') ?? '4x12 (48 sq ft)' }]} />
           </div>
         </Card>
 
@@ -114,9 +116,9 @@ export default function PlywoodDeckCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          heading="Save Deck Project"
-          placeholder="e.g. Roof Sheathing"
-          projectsLabel="Saved Projects:"
+          heading={t('calculators.detail.roofing.plywood_deck.save_deck_project') ?? 'Save Deck Project'}
+          placeholder={t('calculators.detail.roofing.plywood_deck.save_placeholder') ?? 'e.g. Roof Sheathing'}
+          projectsLabel={t('calculators.detail.roofing.plywood_deck.saved_projects') ?? 'Saved Projects:'}
         />
         <AddToProjectCard
           projects={projects}
@@ -134,51 +136,51 @@ export default function PlywoodDeckCalc() {
           <PlywoodDeckDiagram length={lenNum} width={widNum} pitch={pitchNum} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Plywood / OSB Output</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.roofing.plywood_deck.output') ?? 'Plywood / OSB Output'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Total Roof Area</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.plywood_deck.total_roof_area') ?? 'Total Roof Area'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{roofArea.toFixed(0)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">sq ft</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                With {wasteFactor}% waste: {areaWithWaste.toFixed(0)} sq ft
+                {t('calculators.detail.roofing.plywood_deck.with_waste') ?? 'With waste'}: {areaWithWaste.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'}
               </span>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Sheets Needed ({sheetSize})</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.plywood_deck.sheets_needed') ?? 'Sheets Needed'} ({sheetSize})</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{sheets}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">sheets</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.roofing.plywood_deck.sheets_unit') ?? 'sheets'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{sheetArea} sq ft per sheet</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{sheetArea} {t('units.sq_ft') ?? 'sq ft'} {t('calculators.detail.roofing.plywood_deck.per_sheet') ?? 'per sheet'}</span>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Screws / Nails</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.plywood_deck.screws_nails') ?? 'Screws / Nails'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-3xl font-extrabold tracking-tight animate-fade-in-up">{screws.toLocaleString()}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">fasteners</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.roofing.plywood_deck.fasteners_unit') ?? 'fasteners'}</span>
               </div>
             </div>
           </div>
         </div>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.roofing.plywood_deck.additional_materials') ?? 'Additional Materials'}</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">H-Clips</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.plywood_deck.h_clips') ?? 'H-Clips'}</span>
               <span className="text-sm font-bold tabular-nums">{hClips}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Underlayment (squares)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.plywood_deck.underlayment_squares') ?? 'Underlayment (squares)'}</span>
               <span className="text-sm font-bold tabular-nums">{Math.ceil(roofArea / 100)}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">Drip Edge (linear ft)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.plywood_deck.drip_edge') ?? 'Drip Edge (linear ft)'}</span>
               <span className="text-sm font-bold tabular-nums">{Math.ceil((lenNum + widNum) * 2 * 1.1)}</span>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 interface Props {
   labelSingular: string;
@@ -25,6 +26,7 @@ export default function SpacingCalc({
   calculatorSlug = "baluster",
   calculatorName = "Baluster Spacing Calculator",
 }: Props) {
+  const { t } = useI18n();
   const [railLength, setRailLength] = useState(defaultRailLength);
   const [spacing, setSpacing] = useState(defaultSpacing);
   const [thickness, setThickness] = useState(defaultThickness);
@@ -49,9 +51,9 @@ export default function SpacingCalc({
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-3 gap-4">
-            <Input label={`Rail Length (in)`} type="number" inputMode="decimal" value={railLength} onChange={(e) => setRailLength(e.target.value)} placeholder={defaultRailLength} />
-            <Input label={`Max ${labelSingular} Spacing (in)`} type="number" inputMode="decimal" value={spacing} onChange={(e) => setSpacing(e.target.value)} placeholder={defaultSpacing} />
-            <Input label={`${labelSingular} Thickness (in)`} type="number" inputMode="decimal" value={thickness} onChange={(e) => setThickness(e.target.value)} placeholder={defaultThickness} />
+            <Input label={t('calculators.detail.finishing.spacing.rail_length') ?? 'Rail Length (in)'} type="number" inputMode="decimal" value={railLength} onChange={(e) => setRailLength(e.target.value)} placeholder={defaultRailLength} />
+            <Input label={t('calculators.detail.finishing.spacing.max_spacing', { label: labelSingular }) ?? `Max ${labelSingular} Spacing (in)`} type="number" inputMode="decimal" value={spacing} onChange={(e) => setSpacing(e.target.value)} placeholder={defaultSpacing} />
+            <Input label={t('calculators.detail.finishing.spacing.thickness', { label: labelSingular }) ?? `${labelSingular} Thickness (in)`} type="number" inputMode="decimal" value={thickness} onChange={(e) => setThickness(e.target.value)} placeholder={defaultThickness} />
           </div>
         </Card>
       </div>
@@ -65,14 +67,14 @@ export default function SpacingCalc({
           successMessage={projectSuccess}
         />
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Spacing Results</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.finishing.spacing.spacing_results') ?? 'Spacing Results'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">{labelPlural} Needed</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.spacing.needed', { label: labelPlural }) ?? `${labelPlural} Needed`}</span>
               <span className="text-sm font-bold tabular-nums">{count}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Actual Spacing</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.spacing.actual_spacing') ?? 'Actual Spacing'}</span>
               <span className="text-sm font-semibold tabular-nums">{actualSpacing > 0 ? `${actualSpacing.toFixed(2)} in` : "—"}</span>
             </div>
           </div>

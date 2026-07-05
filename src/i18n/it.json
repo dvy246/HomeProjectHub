@@ -11,7 +11,10 @@
     "compare": "Confronta",
     "quizzes": "Quiz",
     "about": "Chi siamo",
-    "contact": "Contatti"
+    "contact": "Contatti",
+    "plan_budget": "Plan & Budget",
+    "projects": "My Projects",
+    "all_calculators": "All Calculators"
   },
   "footer": {
     "description": "La tua fonte affidabile per calcolatrici per la casa, strumenti di pianificazione e guide di manutenzione.",
@@ -21,7 +24,15 @@
     "privacy": "Informativa sulla Privacy",
     "terms": "Termini di Servizio",
     "disclaimer": "Disclaimer",
-    "allRightsReserved": "Tutti i diritti riservati."
+    "allRightsReserved": "Tutti i diritti riservati.",
+    "planning": "Planning",
+    "interior": "Interior",
+    "estimates_note": "Estimates are for planning only. Some outbound shopping links may be affiliate links.",
+    "saved_measurements": "Saved Measurements",
+    "maintenance_planner": "Maintenance Planner",
+    "budget_plans": "Budget Plans",
+    "paint_calculator": "Paint Calculator",
+    "tile_calculator": "Tile Calculator"
   },
   "home": {
     "title": "Home Project Hub — Calcolatrici Intelligenti e Pianificazione Progetti",
@@ -161,6 +172,11 @@
       "seasonalDesc": "Attività stagionali per mantenere la casa in perfette condizioni.",
       "budgetingDesc": "Come pianificare e risparmiare per i costi di manutenzione.",
       "yearlyDesc": "Attività annuali che proteggono il tuo investimento."
+    },
+    "calendar": {
+      "description": "Monthly maintenance task schedule and tracking for every season.",
+      "title": "Home Maintenance Calendar — Monthly Task Schedule & Tracking",
+      "h1": "Maintenance Calendar"
     }
   },
   "about": {
@@ -201,7 +217,9 @@
   "guides": {
     "title": "Guide per la Casa — Consigli e Tutorial",
     "description": "Guide esperte su calcestruzzo, tetti, pavimenti, vernici e altro. Consigli fai-da-te e professionali.",
-    "h1": "Guide per la Casa"
+    "h1": "Guide per la Casa",
+    "no_guides": "No guides yet",
+    "no_guides_desc": "Guides are being written. Check back soon."
   },
   "compare": {
     "title": "Guide al Confronto Materiali — Scegli il Materiale Giusto",
@@ -212,7 +230,11 @@
     "title": "Quiz per la Casa — Metti alla Prova le Tue Conoscenze",
     "description": "Metti alla prova le tue conoscenze con quiz interattivi su materiali, strumenti e tecniche di costruzione.",
     "h1": "Quiz per la Casa",
-    "subtitle": "Metti alla prova le tue conoscenze e impara qualcosa di nuovo"
+    "subtitle": "Metti alla prova le tue conoscenze e impara qualcosa di nuovo",
+    "pipe_weight_title": "Pipe Weight Quiz",
+    "pipe_weight_desc": "Test your knowledge of pipe weight calculations, schedule ratings, steel densities, and pipe geometry.",
+    "stone_weight_title": "Stone Weight Quiz",
+    "stone_weight_desc": "Test your knowledge of natural stone densities, countertop weights, and material properties of granite, marble, and more."
   },
   "calculators": {
     "title": "Calcolatrici Gratuite per la Casa — Stime Accurate dei Materiali",
@@ -246,5 +268,65 @@
     "summer": "Estate",
     "fall": "Autunno",
     "winter": "Inverno"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "Privacy Policy for Home Project Hub — how we collect, use, and protect your information.",
+      "h1": "Privacy Policy"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "description": "Terms of Service for Home Project Hub — rules and guidelines for using our website and tools.",
+      "h1": "Terms of Service"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "description": "Disclaimer for Home Project Hub — important information about the limitations of our calculators and tools.",
+      "h1": "Disclaimer"
+    }
+  },
+  "meta": {
+    "language": "English"
+  },
+  "planner": {
+    "title": "Project Planner",
+    "description": "Plan your home improvement projects from start to finish. Save room dimensions, calculate materials, compare options, and generate a shopping list.",
+    "h1": "Project Planner",
+    "patio_slab": "Patio Slab",
+    "patio_slab_desc": "Backyard patios, shed bases, walkways",
+    "room_painting": "Room Painting",
+    "room_painting_desc": "Bedrooms, living rooms, interior repainting",
+    "tile_floor": "Tile Floor",
+    "tile_floor_desc": "Bathrooms, kitchens, laundry rooms",
+    "roof_shingles": "Roof Shingles",
+    "roof_shingles_desc": "Simple residential roof replacement planning",
+    "get_started": "Get Started"
+  },
+  "projects": {
+    "title": "My Projects",
+    "description": "Saved home improvement project plans with linked calculator results and shopping lists.",
+    "h1": "My Projects",
+    "subtitle": "Saved project plans with linked calculator estimates",
+    "new_project": "New Project"
+  },
+  "renovate": {
+    "title": "Renovation Planning Tools",
+    "description": "Plan and budget your home renovation projects. Free renovation tools, cost planners, and material calculators for homeowners.",
+    "h1": "Renovation Planning Tools",
+    "subtitle": "Everything you need to plan, budget, and execute your home renovation projects.",
+    "budget_plans": "Budget Plans",
+    "budget_plans_desc": "Create renovation budgets with your own material and labor prices. Track estimated vs. actual costs.",
+    "project_plans": "Project Plans",
+    "project_plans_desc": "Create full project plans with linked calculator results and shopping lists.",
+    "maintenance": "Maintenance Planner",
+    "maintenance_desc": "Stay on top of home maintenance with seasonal checklists and cost estimates.",
+    "calculators": "Calculators",
+    "calculators_desc": "Browse 60+ calculators for concrete, roofing, paint, and more."
+  },
+  "saved": {
+    "title": "My Saved Rooms & Projects",
+    "description": "Manage your saved room, deck, and patio dimensions. Load them directly into any of our calculators to compare materials instantly.",
+    "h1": "Saved Measurements Workspace"
   }
 }

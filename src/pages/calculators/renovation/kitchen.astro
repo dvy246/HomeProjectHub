@@ -3,8 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import KitchenRenovationCalc from "../../../components/calculators/renovation/KitchenRenovationCalc";
 import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
 
-const title = "Kitchen Renovation Cost Calculator | Cabinets & Countertops";
-const description = "Free online kitchen remodel cost calculator. Estimate stone countertops, wood cabinets, islands, sink plumbing, and local contractor installation labor.";
+const title = "Kitchen Renovation Cost Calculator";
+const description = "Free kitchen renovation cost calculator. Estimate stone countertop slabs, wood cabinets, prep islands, sink plumbing, and builder labor packages.";
 const canonical = "https://homeplanninghub.com/calculators/renovation/kitchen/";
 
 // SEO FAQ Structured Data
@@ -20,6 +20,14 @@ const faqItems = [
   {
     q: "What is the kitchen work triangle?",
     a: "The kitchen work triangle is a standard layout design principle. It dictates that the paths between the three primary work areas—the sink, the refrigerator, and the stove—should form a comfortable triangle, with each leg between 4 and 9 feet to optimize cooking efficiency."
+  },
+  {
+    q: "What is the cost of a kitchen renovation?",
+    a: "A kitchen renovation typically costs between $15,000 and $40,000, depending on the scale and material selections. A minor, cosmetic remodel (painting cabinets, new countertops, and entry-level appliances) costs $8,000 to $18,000. A mid-range remodel (semi-custom wood cabinets, quartz countertops, and mid-range appliances) averages $20,000 to $35,000. A major luxury remodel exceeds $50,000 to $80,000. Use our Kitchen Renovation Cost Calculator to customize your cabinet linear runs, stone countertops, prep islands, and labor packages to forecast costs accurately."
+  },
+  {
+    q: "How to paint kitchen cabinets?",
+    a: "Painting kitchen cabinets is a highly cost-effective way to update your kitchen's look. Start by removing all cabinet doors, drawer fronts, and hardware. Clean all surfaces with a degreaser (like TSP) to remove cooking grease. Lightly sand the cabinets to scuff the existing finish, then apply a high-quality bonding primer. Finish with two coats of durable semi-gloss or satin cabinet-grade enamel paint, sanding lightly between coats. Plan your cabinet run length using our Kitchen Renovation Cost Calculator to decide if repainting or buying stock cabinets is better for your budget."
   }
 ];
 
@@ -74,6 +82,18 @@ const schema = graphSchema([
       <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4">
         Modern kitchens require multiple dedicated 20-amp circuits for countertop outlets, refrigerator, and microwave units to satisfy the National Electrical Code (NEC). Ensure you allocate a 15% contingency buffer in your planner to cover potential panel upgrades.
       </p>
+    </section>
+    
+    <section class="max-w-3xl border-t border-[var(--border)] pt-10 mt-10">
+      <h2 class="text-xl font-bold tracking-tight mb-6">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqItems.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
     </section>
   </div>
 </Layout>

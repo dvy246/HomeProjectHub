@@ -6,8 +6,10 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function SqFtToCuYdCalc() {
+  const { t } = useI18n();
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("4");
 
@@ -27,21 +29,21 @@ export default function SqFtToCuYdCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Square Footage" type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
-            <Input label="Depth (in)" type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="4" />
+            <Input label={t('calculators.detail.converters.sq_ft_to_cu_yd.square_footage') ?? 'Square Footage'} type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
+            <Input label={t('fields.depth_in') ?? 'Depth (in)'} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="4" />
           </div>
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Results</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.common.results') ?? 'Results'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Cubic Yards</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('units.cu_yd') ?? 'Cubic Yards'}</span>
               <span className="text-sm font-bold tabular-nums">{cuYd.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Cubic Feet</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('units.cu_ft') ?? 'Cubic Feet'}</span>
               <span className="text-sm font-semibold tabular-nums">{cuFt.toFixed(2)}</span>
             </div>
           </div>

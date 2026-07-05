@@ -9,8 +9,8 @@ export interface MaterialItem {
 export interface ProjectCalculation {
   calculatorSlug: string;
   calculatorName: string;
-  inputs: Record<string, number>;
-  results: Record<string, number>;
+  inputs: Record<string, number | string>;
+  results: Record<string, number | string>;
   materials: MaterialItem[];
   completedAt: number;
 }

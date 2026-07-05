@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useCallback, useId } from "react";
 import { Card } from "../ui/Card";
 import { estimateCosts, REGION_LABELS, AGE_LABELS, PROPERTY_LABELS, type ClimateRegion, type PropertyType, type AgeRange } from "../../data/maintenance/costs";
+import { useI18n } from "../i18n/I18nProvider";
 
 const STORAGE_KEY = "hph_maintenance_costs";
 
@@ -21,6 +22,7 @@ function saveSaved(data: any) {
 }
 
 export default function CostEstimator() {
+  const { t } = useI18n();
   const [homeSize, setHomeSize] = useState("2000");
   const [age, setAge] = useState<AgeRange>("15-30");
   const [region, setRegion] = useState<ClimateRegion>("temperate");
@@ -66,10 +68,10 @@ export default function CostEstimator() {
   return (
     <div className="flex flex-col gap-6" aria-live="polite" aria-atomic="true">
       <Card>
-        <h3 className="text-sm font-semibold mb-4">Home Details</h3>
+        <h3 className="text-sm font-semibold mb-4">{t('maintenance.costEstimator.homeDetails') ?? 'Home Details'}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]" id="home-size-label">Home Size</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]" id="home-size-label">{t('maintenance.costEstimator.homeSize') ?? 'Home Size'}</label>
             <div className="flex items-center gap-3">
               <input
                 type="range"
@@ -81,12 +83,12 @@ export default function CostEstimator() {
                 className="flex-1 accent-[var(--accent)]"
                 aria-labelledby="home-size-label"
               />
-              <span className="text-sm font-semibold tabular-nums min-w-[60px] text-right" aria-hidden="true">{size.toLocaleString()} sq ft</span>
+              <span className="text-sm font-semibold tabular-nums min-w-[60px] text-right" aria-hidden="true">{size.toLocaleString()} {t('units.sq_ft') ?? 'sq ft'}</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="home-age">Home Age</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="home-age">{t('maintenance.costEstimator.homeAge') ?? 'Home Age'}</label>
             <select
               id="home-age"
               value={age}
@@ -100,7 +102,7 @@ export default function CostEstimator() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="climate-region">Climate Region</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="climate-region">{t('maintenance.costEstimator.region') ?? 'Climate Region'}</label>
             <select
               id="climate-region"
               value={region}
@@ -114,7 +116,7 @@ export default function CostEstimator() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="property-type">Property Type</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)]" htmlFor="property-type">{t('maintenance.costEstimator.propertyType') ?? 'Property Type'}</label>
             <select
               id="property-type"
               value={propertyType}
@@ -130,32 +132,32 @@ export default function CostEstimator() {
 
         <div className="mt-3 flex items-center gap-2">
           <input type="checkbox" id="save-inputs" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="w-3.5 h-3.5 rounded border-[var(--border-strong)] accent-[var(--accent)]" />
-          <label htmlFor="save-inputs" className="text-[11px] text-[var(--fg-muted)] cursor-pointer">Remember my inputs</label>
+          <label htmlFor="save-inputs" className="text-[11px] text-[var(--fg-muted)] cursor-pointer">{t('maintenance.costEstimator.remember') ?? 'Remember my inputs'}</label>
         </div>
       </Card>
 
       {result && (
         <div id={resultsId}>
           <Card>
-            <h3 className="text-sm font-semibold mb-3">Estimated Annual Maintenance Budget</h3>
+            <h3 className="text-sm font-semibold mb-3">{t('maintenance.costEstimator.annualBudget') ?? 'Estimated Annual Maintenance Budget'}</h3>
             <div className="flex flex-col sm:flex-row items-baseline gap-2 sm:gap-6 mb-4">
               <div>
                 <div className="text-3xl sm:text-4xl font-black tabular-nums">${result.yearlyMid.toLocaleString()}</div>
-                <div className="text-xs text-[var(--fg-muted)]">per year (mid-range estimate)</div>
+                <div className="text-xs text-[var(--fg-muted)]">{t('maintenance.costEstimator.perYear') ?? 'per year (mid-range estimate)'}</div>
               </div>
               <div className="text-sm text-[var(--fg-secondary)]">
-                Range: <span className="font-semibold">${result.yearlyLow.toLocaleString()}</span> – <span className="font-semibold">${result.yearlyHigh.toLocaleString()}</span>
+                {t('maintenance.costEstimator.range') ?? 'Range:'} <span className="font-semibold">${result.yearlyLow.toLocaleString()}</span> – <span className="font-semibold">${result.yearlyHigh.toLocaleString()}</span>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-[var(--bg-inset)] border border-[var(--border)]">
               <div className="text-2xl font-black tabular-nums">${result.monthlyMid.toLocaleString()}</div>
-              <div className="text-xs text-[var(--fg-secondary)]">estimated monthly budget</div>
+              <div className="text-xs text-[var(--fg-secondary)]">{t('maintenance.costEstimator.monthlyBudget') ?? 'estimated monthly budget'}</div>
             </div>
             <p className="mt-4 text-xs text-[var(--fg-muted)] leading-relaxed">{result.explanation}</p>
           </Card>
 
           <Card>
-            <h3 className="text-sm font-semibold mb-4">Cost Breakdown by Category</h3>
+            <h3 className="text-sm font-semibold mb-4">{t('maintenance.costEstimator.breakdown') ?? 'Cost Breakdown by Category'}</h3>
             <div className="flex flex-col gap-3">
               {result.breakdown.map((cat) => (
                 <div key={cat.category}>
@@ -183,16 +185,16 @@ export default function CostEstimator() {
           </Card>
 
           <Card>
-            <h3 className="text-sm font-semibold mb-2">What This Means</h3>
+            <h3 className="text-sm font-semibold mb-2">{t('maintenance.costEstimator.whatThisMeans') ?? 'What This Means'}</h3>
             <ul className="text-xs text-[var(--fg-secondary)] space-y-2">
-              <li><strong>Low range ({result.yearlyLow.toLocaleString()}):</strong> Minimal maintenance year — just filter changes, minor repairs, and routine inspections.</li>
-              <li><strong>Mid range ({result.yearlyMid.toLocaleString()}):</strong> Typical year — includes one or two professional services, some component replacements.</li>
-              <li><strong>High range ({result.yearlyHigh.toLocaleString()}):</strong> High-cost year — major repairs, system replacements, or unexpected failures.</li>
+              <li><strong>{t('maintenance.costEstimator.lowRange')?.replace('{amount}', result.yearlyLow.toLocaleString()) ?? `Low range (${result.yearlyLow.toLocaleString()}):`}</strong> {t('maintenance.costEstimator.lowRangeDesc') ?? 'Minimal maintenance year — just filter changes, minor repairs, and routine inspections.'}</li>
+              <li><strong>{t('maintenance.costEstimator.midRange')?.replace('{amount}', result.yearlyMid.toLocaleString()) ?? `Mid range (${result.yearlyMid.toLocaleString()}):`}</strong> {t('maintenance.costEstimator.midRangeDesc') ?? 'Typical year — includes one or two professional services, some component replacements.'}</li>
+              <li><strong>{t('maintenance.costEstimator.highRange')?.replace('{amount}', result.yearlyHigh.toLocaleString()) ?? `High range (${result.yearlyHigh.toLocaleString()}):`}</strong> {t('maintenance.costEstimator.highRangeDesc') ?? 'High-cost year — major repairs, system replacements, or unexpected failures.'}</li>
             </ul>
             <div className="mt-4 p-3 rounded-lg border border-[var(--warning)]/30 bg-[var(--warning)]/5">
-              <p className="text-[11px] text-[var(--warning)] font-semibold mb-1">Important Disclaimer</p>
+              <p className="text-[11px] text-[var(--warning)] font-semibold mb-1">{t('maintenance.costEstimator.disclaimerTitle') ?? 'Important Disclaimer'}</p>
               <p className="text-[11px] text-[var(--fg-secondary)] leading-relaxed">
-                This is an educational estimate based on the industry-standard 1% rule and adjusted averages. Actual maintenance costs vary significantly based on local labor rates, material costs, home condition, and unforeseen issues. This is not financial or home warranty advice. Always budget for emergencies and consult a professional for specific cost assessments.
+                {t('maintenance.costEstimator.disclaimerText') ?? 'This is an educational estimate based on the industry-standard 1% rule and adjusted averages. Actual maintenance costs vary significantly based on local labor rates, material costs, home condition, and unforeseen issues. This is not financial or home warranty advice. Always budget for emergencies and consult a professional for specific cost assessments.'}
               </p>
             </div>
           </Card>
@@ -201,7 +203,7 @@ export default function CostEstimator() {
 
       {!result && (
         <Card>
-          <p className="text-sm text-[var(--fg-muted)] text-center py-4" id={resultsId}>Enter a home size above to see your estimate.</p>
+          <p className="text-sm text-[var(--fg-muted)] text-center py-4" id={resultsId}>{t('maintenance.costEstimator.enterSize') ?? 'Enter a home size above to see your estimate.'}</p>
         </Card>
       )}
     </div>

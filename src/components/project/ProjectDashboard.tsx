@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getSavedProjects, deleteProject, updateProject, getProjectProgress, type SavedProject } from "../../lib/projectEngine";
 import ProjectDetail from "./ProjectDetail";
+import { useI18n } from "../i18n/I18nProvider";
 
 function hashToId(hash: string): string | null {
   if (!hash.startsWith("#detail-")) return null;
@@ -8,6 +9,7 @@ function hashToId(hash: string): string | null {
 }
 
 export default function ProjectDashboard() {
+  const { t } = useI18n();
   const [projects, setProjects] = useState<SavedProject[]>([]);
   const [detailId, setDetailId] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ export default function ProjectDashboard() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Delete "${name}"? This cannot be undone.`)) {
+    if (confirm(t('projects.confirm_delete')?.replace('{name}', name) ?? `Delete "${name}"? This cannot be undone.`)) {
       deleteProject(id);
     }
   };
@@ -49,7 +51,7 @@ export default function ProjectDashboard() {
 
   const handleClearAll = () => {
     if (projects.length === 0) return;
-    if (confirm(`Delete all ${projects.length} projects? This cannot be undone.`)) {
+    if (confirm(t('projects.confirm_delete_all')?.replace('{count}', String(projects.length)) ?? `Delete all ${projects.length} projects? This cannot be undone.`)) {
       projects.forEach((p) => deleteProject(p.id));
     }
   };
@@ -62,10 +64,10 @@ export default function ProjectDashboard() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
         </div>
-        <h2 className="text-lg font-bold mb-2">No projects yet</h2>
-        <p className="text-sm text-[var(--fg-secondary)] mb-6">Create your first project plan to get started.</p>
+        <h2 className="text-lg font-bold mb-2">{t('projects.no_projects') ?? 'No projects yet'}</h2>
+        <p className="text-sm text-[var(--fg-secondary)] mb-6">{t('projects.no_projects_desc') ?? 'Create your first project plan to get started.'}</p>
         <a href="/projects/new/" className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] transition-all">
-          Start a Project
+          {t('projects.start_project') ?? 'Start a Project'}
         </a>
       </div>
     );
@@ -78,9 +80,9 @@ export default function ProjectDashboard() {
       complete: "bg-[var(--success)]/10 text-[var(--success)]",
     };
     return (
-      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${colors[p.status]}`}>
-        {p.status}
-      </span>
+        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${colors[p.status]}`}>
+          {t(`projects.status_${p.status}`) ?? p.status}
+        </span>
     );
   };
 
@@ -89,7 +91,7 @@ export default function ProjectDashboard() {
       {projects.length > 1 && (
         <div className="flex justify-end">
           <button type="button" onClick={handleClearAll} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg-muted)] hover:text-[var(--error)] hover:border-[var(--error)] transition-colors">
-            Clear All Projects
+            {t('projects.clear_all') ?? 'Clear All Projects'}
           </button>
         </div>
       )}
@@ -101,7 +103,7 @@ export default function ProjectDashboard() {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h2 className="text-sm font-semibold">{project.name}</h2>
-                <p className="text-xs text-[var(--fg-muted)] capitalize">{project.projectType} project</p>
+                <p className="text-xs text-[var(--fg-muted)]">{t(`projects.type_${project.projectType}`) ?? project.projectType} {t('projects.project') ?? 'project'}</p>
               </div>
               {statusBadge(project)}
             </div>
@@ -115,7 +117,7 @@ export default function ProjectDashboard() {
 
             <div className="mb-4">
               <div className="flex items-center gap-2 text-xs text-[var(--fg-muted)] mb-1">
-                <span>Progress: {progress.completed}/{progress.total} calculators</span>
+                <span>{t('projects.progress')?.replace('{completed}', String(progress.completed)).replace('{total}', String(progress.total)) ?? `Progress: ${progress.completed}/${progress.total} calculators`}</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-[var(--bg-muted)] overflow-hidden">
                 <div className="h-full rounded-full bg-[var(--accent)] transition-all" style={{ width: `${progress.percent}%` }} />
@@ -124,9 +126,9 @@ export default function ProjectDashboard() {
 
             <div className="flex gap-2">
               <button type="button" onClick={() => openDetail(project.id)} className="flex-1 inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors">
-                View Plan
+                {t('projects.view_plan') ?? 'View Plan'}
               </button>
-              <button type="button" onClick={() => handleDelete(project.id, project.name)} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label={`Delete ${project.name}`}>
+              <button type="button" onClick={() => handleDelete(project.id, project.name)} className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-lg border border-[var(--border-strong)] text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-label={t('projects.delete_aria')?.replace('{name}', project.name) ?? `Delete ${project.name}`}>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>

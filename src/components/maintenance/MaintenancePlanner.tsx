@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { MAINTENANCE_TASKS, CATEGORIES, FREQUENCY_LABELS, SEASON_MONTHS, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
 import { getCompletedIds, toggleTask, migrateOldStorage, getNextDue, isOverdue } from "../../lib/maintenanceStorage";
+import { useI18n } from "../i18n/I18nProvider";
 
 type TabView = "monthly" | "seasonal" | "yearly";
 
@@ -9,6 +10,7 @@ const SEASONS = ["spring", "summer", "fall", "winter"] as const;
 const DIFFICULTIES = ["easy", "moderate", "professional"] as const;
 
 export default function MaintenancePlanner() {
+  const { t } = useI18n();
   const [tick, setTick] = useState(0);
   const [activeTab, setActiveTab] = useState<TabView>("monthly");
   const [seasonFilter, setSeasonFilter] = useState<string>("auto");
@@ -62,9 +64,9 @@ export default function MaintenancePlanner() {
 
 
   const tabs: { key: TabView; label: string }[] = [
-    { key: "monthly", label: "Monthly & Quarterly" },
-    { key: "seasonal", label: "Seasonal" },
-    { key: "yearly", label: "Yearly" },
+    { key: "monthly", label: t('maintenance.planner.monthlyQuarterly') ?? "Monthly & Quarterly" },
+    { key: "seasonal", label: t('maintenance.planner.seasonal') ?? "Seasonal" },
+    { key: "yearly", label: t('maintenance.planner.yearly') ?? "Yearly" },
   ];
 
   const filtered = useMemo(() => {
@@ -111,7 +113,7 @@ export default function MaintenancePlanner() {
         <div className="flex-1 h-2 bg-[var(--border)] rounded-full overflow-hidden">
           <div className="h-full bg-[var(--accent)] rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
-        <span className="text-xs font-semibold tabular-nums whitespace-nowrap text-[var(--fg-secondary)]">{completedCount}/{filtered.length} done</span>
+        <span className="text-xs font-semibold tabular-nums whitespace-nowrap text-[var(--fg-secondary)]">{t('maintenance.planner.progress')?.replace('{completed}', String(completedCount)).replace('{total}', String(filtered.length)) ?? `${completedCount}/${filtered.length} done`}</span>
       </div>
 
       <div className="flex gap-1 p-1 rounded-xl bg-[var(--bg-inset)] border border-[var(--border)]" role="tablist" aria-label="Task frequency">
@@ -140,11 +142,11 @@ export default function MaintenancePlanner() {
             value={seasonFilter}
             onChange={(e) => setSeasonFilter(e.target.value)}
             className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
-            aria-label="Filter by season"
+            aria-label={t('maintenance.planner.filterBySeason') ?? 'Filter by season'}
           >
-            <option value="auto">Current season</option>
+            <option value="auto">{t('maintenance.planner.currentSeason') ?? 'Current season'}</option>
             {SEASONS.map((s) => (
-              <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+              <option key={s} value={s}>{t(`seasons.${s}`) ?? s.charAt(0).toUpperCase() + s.slice(1)}</option>
             ))}
           </select>
         )}
@@ -152,9 +154,9 @@ export default function MaintenancePlanner() {
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value as TaskCategory | "all")}
           className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
-          aria-label="Filter by category"
+          aria-label={t('maintenance.planner.filterByCategory') ?? 'Filter by category'}
         >
-          <option value="all">All categories</option>
+          <option value="all">{t('maintenance.planner.allCategories') ?? 'All categories'}</option>
           {CATEGORIES.map((c) => (
             <option key={c.key} value={c.key}>{c.label}</option>
           ))}
@@ -163,11 +165,11 @@ export default function MaintenancePlanner() {
           value={difficultyFilter}
           onChange={(e) => setDifficultyFilter(e.target.value)}
           className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)]"
-          aria-label="Filter by difficulty"
+          aria-label={t('maintenance.planner.filterByDifficulty') ?? 'Filter by difficulty'}
         >
-          <option value="all">All difficulties</option>
-          {DIFFICULTIES.map((d) => (
-            <option key={d} value={d}>{d.charAt(0).toUpperCase() + d.slice(1)}</option>
+          <option value="all">{t('maintenance.planner.allDifficulties') ?? 'All difficulties'}</option>
+            {DIFFICULTIES.map((d) => (
+            <option key={d} value={d}>{t(`maintenance.planner.difficulty_${d}`) ?? d.charAt(0).toUpperCase() + d.slice(1)}</option>
           ))}
         </select>
       </div>
@@ -177,7 +179,7 @@ export default function MaintenancePlanner() {
           onClick={() => selectAll(allIds)}
           className="self-start text-xs font-semibold text-[var(--accent)] hover:opacity-80 transition-opacity"
         >
-          Mark all as complete
+          {t('maintenance.planner.mark_all_complete') ?? 'Mark all as complete'}
         </button>
       )}
       {allDone && allIds.length > 0 && (
@@ -185,7 +187,7 @@ export default function MaintenancePlanner() {
           onClick={() => deselectAll(allIds)}
           className="self-start text-xs font-semibold text-[var(--fg-muted)] hover:text-[var(--fg-secondary)] transition-colors"
         >
-          Reset all
+          {t('maintenance.planner.reset_all') ?? 'Reset all'}
         </button>
       )}
 
@@ -238,14 +240,14 @@ export default function MaintenancePlanner() {
                           <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--fg-muted)]">
                             {task.difficulty}
                           </span>
-                          {next && !done && (
+                            {next && !done && (
                             <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--fg-muted)]">
-                              Due {next.toLocaleDateString()}
+                              {t('maintenance.planner.due_date')?.replace('{date}', next.toLocaleDateString()) ?? `Due ${next.toLocaleDateString()}`}
                             </span>
                           )}
                           {overdue && !done && (
                             <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--warning)]/20 text-[var(--warning)]">
-                              Overdue
+                              {t('maintenance.calendar.overdue') ?? 'Overdue'}
                             </span>
                           )}
                         </div>
@@ -255,12 +257,12 @@ export default function MaintenancePlanner() {
                             onClick={(e) => e.stopPropagation()}
                             className="inline-block mt-1.5 text-[10px] font-medium text-[var(--accent)] hover:underline"
                           >
-                            Use related calculator →
+                            {t('maintenance.planner.related_calculator') ?? 'Use related calculator →'}
                           </a>
                         )}
                         {!done && (
                           <details className="mt-2">
-                            <summary className="text-[11px] text-[var(--fg-muted)] cursor-pointer hover:text-[var(--fg-secondary)]">Why this matters</summary>
+                            <summary className="text-[11px] text-[var(--fg-muted)] cursor-pointer hover:text-[var(--fg-secondary)]">{t('maintenance.planner.why_matters') ?? 'Why this matters'}</summary>
                             <p className="text-[11px] text-[var(--fg-secondary)] mt-1 leading-relaxed">{task.consequence}</p>
                           </details>
                         )}
@@ -274,7 +276,7 @@ export default function MaintenancePlanner() {
         })}
 
         {filtered.length === 0 && (
-          <p className="text-sm text-[var(--fg-muted)] text-center py-8">No tasks match the current filters.</p>
+          <p className="text-sm text-[var(--fg-muted)] text-center py-8">{t('maintenance.planner.no_filtered_tasks') ?? 'No tasks match the current filters.'}</p>
         )}
       </div>
     </div>

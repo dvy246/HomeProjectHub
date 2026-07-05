@@ -6,8 +6,10 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function SquareYardsCalc() {
+  const { t } = useI18n();
   const [sqft, setSqft] = useState("100");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("square-yards", "Square Yards Calculator");
@@ -24,19 +26,19 @@ export default function SquareYardsCalc() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <Input label="Square Feet" type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
+          <Input label={t('units.sq_ft') ?? 'Square Feet'} type="number" inputMode="decimal" value={sqft} onChange={(e) => setSqft(e.target.value)} placeholder="100" />
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Results</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.common.results') ?? 'Results'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Square Yards</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('units.sq_yd') ?? 'Square Yards'}</span>
               <span className="text-sm font-bold tabular-nums">{sqYd.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Square Meters</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('units.sq_m') ?? 'Square Meters'}</span>
               <span className="text-sm font-semibold tabular-nums">{sqM.toFixed(2)}</span>
             </div>
           </div>

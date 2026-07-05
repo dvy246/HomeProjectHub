@@ -6,8 +6,10 @@ import SpiralStaircaseDiagram from "../diagrams/SpiralStaircaseDiagram";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function SpiralStaircaseCalc() {
+  const { t } = useI18n();
   const [totalRise, setTotalRise] = useState("108");
   const [diameter, setDiameter] = useState("5");
   const [treadCount, setTreadCount] = useState("13");
@@ -47,10 +49,10 @@ export default function SpiralStaircaseCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Total Rise (in)" type="number" inputMode="decimal" value={totalRise} onChange={(e) => setTotalRise(e.target.value)} placeholder="108" helperText="Floor to floor height" />
-            <Input label="Diameter (ft)" type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="5" />
-            <Input label="Number of Treads" type="number" inputMode="numeric" value={treadCount} onChange={(e) => setTreadCount(e.target.value)} placeholder="13" />
-            <Input label="Tread Thickness (in)" type="number" inputMode="decimal" value={treadThickness} onChange={(e) => setTreadThickness(e.target.value)} placeholder="2" />
+            <Input label={t('calculators.detail.structure.spiral_staircase.total_rise_in') ?? 'Total Rise (in)'} type="number" inputMode="decimal" value={totalRise} onChange={(e) => setTotalRise(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '108'} helperText={t('calculators.detail.structure.spiral_staircase.rise_helper') ?? 'Floor to floor height'} />
+            <Input label={t('calculators.detail.structure.spiral_staircase.diameter_ft') ?? 'Diameter (ft)'} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '5'} />
+            <Input label={t('calculators.detail.structure.spiral_staircase.number_of_treads') ?? 'Number of Treads'} type="number" inputMode="numeric" value={treadCount} onChange={(e) => setTreadCount(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '13'} />
+            <Input label={t('calculators.detail.structure.spiral_staircase.tread_thickness_in') ?? 'Tread Thickness (in)'} type="number" inputMode="decimal" value={treadThickness} onChange={(e) => setTreadThickness(e.target.value)} placeholder={t('calculators.common.placeholder') ?? '2'} />
           </div>
         </Card>
       </div>
@@ -67,36 +69,36 @@ export default function SpiralStaircaseCalc() {
           <SpiralStaircaseDiagram diameter={d} numSteps={tc} unitSystem="imperial" />
         </div>
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Spiral Staircase Dimensions</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.structure.spiral_staircase.dimensions') ?? 'Spiral Staircase Dimensions'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Riser Height</span>
-              <span className="text-sm font-bold tabular-nums">{actualRiser.toFixed(2)}"</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.riser_height') ?? 'Riser Height'}</span>
+              <span className="text-sm font-bold tabular-nums">{actualRiser.toFixed(2)}{t('units.in') ?? 'in'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Tread Width (outer edge)</span>
-              <span className="text-sm font-semibold tabular-nums">{treadWidthOuter.toFixed(1)}"</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.tread_width_outer') ?? 'Tread Width (outer edge)'}</span>
+              <span className="text-sm font-semibold tabular-nums">{treadWidthOuter.toFixed(1)}{t('units.in') ?? 'in'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Tread Width (walk line)</span>
-              <span className="text-sm font-semibold tabular-nums">{treadWidthWalk.toFixed(1)}"</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.tread_width_walk') ?? 'Tread Width (walk line)'}</span>
+              <span className="text-sm font-semibold tabular-nums">{treadWidthWalk.toFixed(1)}{t('units.in') ?? 'in'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Degrees per Tread</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.degrees_per_tread') ?? 'Degrees per Tread'}</span>
               <span className="text-sm font-semibold tabular-nums">{degreesPerTread.toFixed(1)}°</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Stringer Length (approx)</span>
-              <span className="text-sm font-semibold tabular-nums">{stringerLength.toFixed(1)} ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.stringer_length') ?? 'Stringer Length (approx)'}</span>
+              <span className="text-sm font-semibold tabular-nums">{stringerLength.toFixed(1)} {t('units.ft') ?? 'ft'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Total Treads</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.total_treads') ?? 'Total Treads'}</span>
               <span className="text-sm font-bold tabular-nums">{tc}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">IRC Compliance</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.structure.spiral_staircase.irc_compliance') ?? 'IRC Compliance'}</span>
               <span className={`text-sm font-bold tabular-nums ${ircRiserOk && ircTreadOk ? "text-[var(--success)]" : "text-[var(--error)]"}`}>
-                {ircRiserOk && ircTreadOk ? "Pass" : "Check"}
+                {ircRiserOk && ircTreadOk ? (t('calculators.detail.structure.spiral_staircase.pass') ?? 'Pass') : (t('calculators.detail.structure.spiral_staircase.check') ?? 'Check')}
               </span>
             </div>
           </div>

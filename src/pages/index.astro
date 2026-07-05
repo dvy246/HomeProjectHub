@@ -6,8 +6,8 @@ import { graphSchema, webSiteSchema, faqPageSchema, webPageSchema } from "../lib
 
 const SITE_URL = "https://homeplanninghub.com";
 
-const title = "HomePlanningHub — Professional-Grade Construction Calculators";
-const description = "Free material calculators for concrete, roofing, paint, tile, and more. Get precise estimation lists with transparent math formulas and zero sign-up.";
+const title = "Free Home Improvement Calculators";
+const description = "Free home improvement calculators for concrete, roofing, paint, and tile. Estimate construction materials and plan DIY home budgets accurately.";
 
 const concreteCalcs = [
   { href: "/calculators/concrete/slab/", title: "Slab", desc: "Patios, driveways, sidewalks" },
@@ -76,7 +76,7 @@ const schema = graphSchema(
           Build with Precision,<br class="hidden sm:block" /> Estimate with Confidence
         </h1>
         <p class="text-base sm:text-lg text-[var(--fg-secondary)] text-pretty leading-relaxed max-w-lg">
-          Professional-grade calculators for concrete, roofing, paint, and tile&mdash;with transparent math you can verify.
+          Your ultimate free home improvement platform. Estimate construction materials, plan DIY projects, and calculate renovation costs with transparent math formulas.
         </p>
         <div class="flex flex-col sm:flex-row gap-3 mt-1">
           <a href="#project-types" class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] border border-[var(--accent)] shadow-sm transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50">
@@ -493,16 +493,89 @@ const schema = graphSchema(
     </details>
   </section>
 
-  <!-- SEO Copy (visually minimal, kept for crawlers) -->
-  <section class="mb-12 max-w-3xl mx-auto text-[var(--fg-muted)]">
-    <h2 class="text-base font-semibold tracking-tight mb-3 text-[var(--fg-secondary)]">Material calculators for home renovation planning</h2>
-    <div class="text-xs leading-relaxed space-y-3 text-pretty">
-      <p>
-        HomePlanningHub helps homeowners, DIY renovators, and contractors perform accurate construction material takeoffs. Whether you are estimating concrete yardage for a patio, calculating shingle bundles for a roof, figuring out gallons of paint for a bedroom, or working out tile counts for a bathroom floor&mdash;each calculator converts your dimensions into precise material quantities using standard engineering formulas.
+  <!-- Comprehensive Home Improvement & DIY Project Planning Guides -->
+  <section class="mb-16 border-t border-[var(--border)] pt-12 max-w-4xl mx-auto text-[var(--fg-secondary)] space-y-8">
+    <div>
+      <h2 class="text-2xl font-extrabold tracking-tight text-[var(--fg)] mb-4">
+        Professional-Grade Home Improvement & DIY Planning Calculators
+      </h2>
+      <p class="text-sm leading-relaxed mb-4 text-pretty">
+        Welcome to HomePlanningHub, the ultimate free <strong>home planner</strong> and <strong>home calculator</strong> platform designed to help homeowners, builders, and designers plan residential projects with 100% mathematical accuracy. Whether you are executing a comprehensive <strong>home renovation</strong> or checking dimensions for simple <strong>DIY projects</strong>, our tools are built to eliminate guesswork. Every calculation uses transparent, open-source engineering formulas and standard densities from structural code authorities, allowing you to estimate <strong>building materials</strong>, calculate <strong>construction</strong> weights, and plan budgets accurately.
       </p>
-      <p>
-        A careful quantity takeoff matched to your actual project dimensions helps you avoid costly reload fees and wasted materials, keeping your home improvement budget on track.
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-3">
+        <h3 class="text-base font-bold text-[var(--fg)]">1. Home Improvement & Room Calculators</h3>
+        <p class="text-xs leading-relaxed text-pretty">
+          Planning any remodel starts with finding the exact area of your rooms. Our suite includes a multi-shape <strong>square footage calculator</strong> and a specialized <strong>room square footage calculator</strong>. Simply input your measurements to instantly calculate surface areas, permitting you to purchase the correct amounts of flooring, drywalls, or underlayment pads. Our integrated <strong>home planner</strong> lets you save these room dimensions locally in your browser and reload them across other calculators to design custom project lists.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-base font-bold text-[var(--fg)]">2. Concrete & Foundation Estimators</h3>
+        <p class="text-xs leading-relaxed text-pretty">
+          Pouring <strong>concrete</strong> requires high precision to avoid expensive cold-joint delays. HomePlanningHub offers a dedicated <strong>concrete calculator</strong> and <strong>cement calculator</strong> to estimate volume in cubic yards or standard pre-mix bags (40lb, 60lb, 80lb). Use them to calculate rectangular slabs, footings, round columns, steps, and CMU block fills. By accounting for structural density and safety waste factors, our tools ensure you secure the right amount of <strong>foundation building materials</strong> for structural integrity.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-base font-bold text-[var(--fg)]">3. Roofing Materials & Pitch Multipliers</h3>
+        <p class="text-xs leading-relaxed text-pretty">
+          Estimating a new roof requires pitch-corrected measurements. Our <strong>roof square footage calculator</strong> uses the horizontal footprint dimensions and the pitch ratio to calculate the actual sloped surface area. Instantly estimate the quantities of asphalt shingle bundles, standing-seam metal panels, plywood deck sheathing, and ice & water shield rolls. Getting correct counts for your sloped or flat <strong>roofing materials</strong> prevents unnecessary return trips to the supplier.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-base font-bold text-[var(--fg)]">4. Interior Paint & Tile Material Takeoffs</h3>
+        <p class="text-xs leading-relaxed text-pretty">
+          Updating finishes is the fastest way to complete a remodel. Use our <strong>paint calculator</strong> and <strong>interior paint calculator</strong> to estimate gallons of <strong>paint</strong> needed for walls and ceilings. The <strong>paint calculator square feet</strong> sizer automatically subtracts standard door and window openings so you do not buy excess <strong>interior paint</strong>. If you are laying floorboards or backsplashes, use our <strong>tile calculator</strong> to compute the exact counts of ceramic, porcelain, or stone <strong>tile</strong> needed for grid, diagonal, or herringbone patterns.
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <h3 class="text-base font-bold text-[var(--fg)]">
+        Interactive Stair Calculators & Structural Construction Math
+      </h3>
+      <p class="text-sm leading-relaxed text-pretty">
+        Structural framing demands absolute precision. Our professional <strong>construction calculator</strong> tools include an interactive <strong>stair calculator with diagram</strong> and a specialized <strong>deck stair calculator</strong>. These estimators calculate total run, rise, stringer length, and incline angle, verifying safety guidelines in real time to prevent layout mistakes. Before drafting a new <strong>house plan</strong>, use these estimators to verify architectural dimensions and ensure your <strong>house planning</strong> complies with residential codes.
       </p>
+    </div>
+
+    <div class="space-y-4">
+      <h3 class="text-base font-bold text-[var(--fg)]">
+        How to Calculate Construction Project Costs and Remodeling Budgets
+      </h3>
+      <p class="text-sm leading-relaxed text-pretty">
+        Many homeowners wonder, <strong>what is the cost of construction per square foot?</strong> The answer depends heavily on material grades, structural design, and labor packages. In our <strong>renovation calculator</strong> suite, we provide free tools like the <strong>kitchen renovation</strong> cost estimator, <strong>bathroom renovation</strong> planner, and a <strong>cost bathroom renovation calculator</strong>. These pages allow you to model custom linear cabinet runs, solid stone countertops, and plumbing fixtures. 
+      </p>
+      <p class="text-sm leading-relaxed text-pretty">
+        By showing you exactly <strong>how to calculate construction project cost</strong> and detailing both material subtotals and contractor fees, our <strong>home renovation calculator free</strong> platform helps you make informed choices. If you plan to complete the labor yourself as a <strong>DIY</strong> project, our sliders let you set contractor labor to 0% to establish a pure material budget.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      <h3 class="text-base font-bold text-[var(--fg)]">
+        Empowering DIY Home Projects & Smart Home Maintenance
+      </h3>
+      <p class="text-sm leading-relaxed text-pretty">
+        Handling <strong>DIY home projects</strong> or crafting custom <strong>DIY home decor</strong> is a rewarding way to build sweat equity. HomePlanningHub provides the baseline measurements you need to execute these projects safely. From minor cosmetic fixes to complex installations, our platform helps you plan carefully. We even guide you on when to take a DIY approach—such as when installing pre-charged systems like a <strong>Mr Cool DIY</strong> mini-split—versus when to seek professional assistance, such as for major structural repairs or advanced <strong>DIY pest control</strong>. 
+      </p>
+      <p class="text-sm leading-relaxed text-pretty">
+        Beyond active remodeling, long-term ownership demands consistent attention. Our seasonal <strong>home maintenance</strong> planning checklists and cost estimators help you plan annual care budgets, ensuring you allocate appropriate funds to protect your home's structural components and keep it operating efficiently.
+      </p>
+    </div>
+
+    <div class="p-6 rounded-2xl border border-[var(--border)] bg-[var(--bg-subtle)] text-center space-y-4">
+      <h4 class="text-base font-bold text-[var(--fg)]">Ready to Start Planning Your Home Renovation?</h4>
+      <p class="text-xs text-[var(--fg-secondary)] max-w-xl mx-auto">
+        Create a new project in our Project Planner, save your room measurements from any concrete, paint, roofing, or tile calculator, and generate a unified material shopping list instantly.
+      </p>
+      <a href="/planner/" class="inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-all">
+        Open Project Planner
+        <svg class="w-3.5 h-3.5 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+      </a>
     </div>
   </section>
 

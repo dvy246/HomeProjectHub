@@ -57,6 +57,14 @@ const schema = graphSchema(
       q: "How thick should a concrete shed slab be?",
       a: "A standard shed slab or walkway should be 4 inches thick. Driveways require 5-6 inches with rebar reinforcement for heavy loads.",
     },
+    {
+      q: "How much is a yard of concrete?",
+      a: "A cubic yard of concrete delivered by a ready-mix truck typically costs between $120 and $170, depending on the strength (PSI rating), regional rates, and delivery distances. For smaller projects using our Concrete Slab Calculator, mixing bags is often more cost-effective; for larger jobs, ready-mix delivery incurs a minimum load charge of $100 to $150 if ordering under 4 or 5 cubic yards. Additional add-ons like fiber mesh reinforcement or acceleration admixtures will increase the cost by $5 to $15 per cubic yard.",
+    },
+    {
+      q: "How long does concrete take to dry?",
+      a: "Concrete typically takes 24 to 48 hours to dry enough for foot traffic, but curing is a chemical process (hydration) that takes 28 days to reach full structural strength. Slabs are usually safe for light vehicular traffic or framing after 7 days. Keeping the slab moist during the first 7 days of curing is essential to prevent cracking and ensure maximum density. Use our concrete slab calculator to estimate the volume first, and plan to keep off the poured surface for the first 24 hours minimum.",
+    },
   ], canonical)
 );
 ---
@@ -291,6 +299,18 @@ const schema = graphSchema(
           <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How thick should a concrete shed slab be?</h3></summary>
           <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
             A standard concrete slab for a backyard tool shed or residential walkway should be 4 inches thick. For heavy-duty driveways or heavy equipment, a thickness of 5 to 6 inches is recommended along with rebar reinforcement.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much is a yard of concrete?</h3></summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            A cubic yard of concrete delivered by a ready-mix truck typically costs between $120 and $170, depending on the strength (PSI rating), regional rates, and delivery distances. For smaller projects using our Concrete Slab Calculator, mixing bags is often more cost-effective; for larger jobs, ready-mix delivery incurs a minimum load charge of $100 to $150 if ordering under 4 or 5 cubic yards. Additional add-ons like fiber mesh reinforcement or acceleration admixtures will increase the cost by $5 to $15 per cubic yard.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How long does concrete take to dry?</h3></summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+            Concrete typically takes 24 to 48 hours to dry enough for foot traffic, but curing is a chemical process (hydration) that takes 28 days to reach full structural strength. Slabs are usually safe for light vehicular traffic or framing after 7 days. Keeping the slab moist during the first 7 days of curing is essential to prevent cracking and ensure maximum density. Use our concrete slab calculator to estimate the volume first, and plan to keep off the poured surface for the first 24 hours minimum.
           </p>
         </details>
       </div>

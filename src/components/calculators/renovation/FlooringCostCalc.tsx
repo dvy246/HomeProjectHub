@@ -30,7 +30,7 @@ export default function FlooringCostCalc() {
   const finishInputRef = useRef<HTMLInputElement>(null);
   const subfloorInputRef = useRef<HTMLInputElement>(null);
 
-  const { projects, addToProject, projectSuccess, clearSuccess } = useProjects();
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("flooring-cost", "Flooring Cost Calculator");
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;

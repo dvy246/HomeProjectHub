@@ -11,11 +11,13 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
+import { useI18n } from "../i18n/I18nProvider";
 
 const METAL_PANEL_WIDTH = 36;
 const METAL_PANEL_LENGTH = 144;
 
 export default function MetalRoofCalc() {
+  const { t } = useI18n();
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
   const [pitch, setPitch] = useState<string>("6");
@@ -92,23 +94,23 @@ export default function MetalRoofCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Metal Roof Parameters</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.roofing.metal.parameters') ?? 'Metal Roof Parameters'}</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Building Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 40" />
-            <Input label="Building Width (ft)" type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="e.g. 30" />
+            <Input label={t('calculators.detail.roofing.metal.building_length_ft') ?? 'Building Length (ft)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 40'} />
+            <Input label={t('calculators.detail.roofing.metal.building_width_ft') ?? 'Building Width (ft)'} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 30'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-5">
-            <Input label="Roof Pitch (rise per 12 in)" type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder="e.g. 6" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 7" helperText="5-10% for metal roofing" />
+            <Input label={t('calculators.detail.roofing.metal.roof_pitch') ?? 'Roof Pitch (rise per 12 in)'} type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 6'} />
+            <Input label={t('calculators.detail.roofing.metal.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 7'} helperText={t('calculators.detail.roofing.metal.waste_helper') ?? '5-10% for metal roofing'} />
           </div>
 
           <div className="border-t border-[var(--border)] pt-4">
-            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">Panel Dimensions</p>
+            <p className="text-xs font-medium text-[var(--fg-secondary)] mb-2">{t('calculators.detail.roofing.metal.panel_dimensions') ?? 'Panel Dimensions'}</p>
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Panel Coverage Width (inches)" type="number" inputMode="decimal" value={panelWidth} onChange={(e) => setPanelWidth(e.target.value)} placeholder="e.g. 36" />
-              <Input label="Panel Length (inches)" type="number" inputMode="decimal" value={panelLength} onChange={(e) => setPanelLength(e.target.value)} placeholder="e.g. 144" />
+              <Input label={t('calculators.detail.roofing.metal.panel_width_in') ?? 'Panel Coverage Width (inches)'} type="number" inputMode="decimal" value={panelWidth} onChange={(e) => setPanelWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 36'} />
+              <Input label={t('calculators.detail.roofing.metal.panel_length_in') ?? 'Panel Length (inches)'} type="number" inputMode="decimal" value={panelLength} onChange={(e) => setPanelLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 144'} />
             </div>
           </div>
         </Card>
@@ -121,9 +123,9 @@ export default function MetalRoofCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          heading="Save Roof Project"
-          placeholder="e.g. Garage Metal Roof"
-          projectsLabel="Saved Projects:"
+          heading={t('calculators.detail.roofing.metal.save_roof_project') ?? 'Save Roof Project'}
+          placeholder={t('calculators.detail.roofing.metal.save_placeholder') ?? 'e.g. Garage Metal Roof'}
+          projectsLabel={t('calculators.detail.roofing.metal.saved_projects') ?? 'Saved Projects:'}
         />
         <AddToProjectCard
           projects={projects}
@@ -141,43 +143,43 @@ export default function MetalRoofCalc() {
           <MetalRoofDiagram length={lenNum} width={widNum} pitch={pitchNum} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Metal Panel Output</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.roofing.metal.panel_output') ?? 'Metal Panel Output'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Total Roof Area</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.metal.total_roof_area') ?? 'Total Roof Area'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{roofArea.toFixed(0)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">sq ft</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                With {wasteFactor}% waste: {areaWithWaste.toFixed(0)} sq ft
+                {t('calculators.detail.roofing.metal.with_waste') ?? 'With waste'}: {areaWithWaste.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'}
               </span>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Metal Panels Needed</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.metal.panels_needed') ?? 'Metal Panels Needed'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{panels}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">panels</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.roofing.metal.panels_unit') ?? 'panels'}</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                {pWidth}in × {pLength}in panels
+                {pWidth}{t('units.in') ?? 'in'} &times; {pLength}{t('units.in') ?? 'in'} {t('calculators.detail.roofing.metal.panels_unit') ?? 'panels'}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Screws Needed</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.metal.screws_needed') ?? 'Screws Needed'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{screws.toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">screws</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('calculators.detail.roofing.metal.screws_unit') ?? 'screws'}</span>
                 </div>
               </div>
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Closure Strips</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.metal.closure_strips') ?? 'Closure Strips'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{closureStrips}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">pairs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('calculators.detail.roofing.metal.closure_strips_unit') ?? 'pairs'}</span>
                 </div>
               </div>
             </div>
@@ -185,14 +187,14 @@ export default function MetalRoofCalc() {
         </div>
 
         <Card>
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.roofing.metal.additional_materials') ?? 'Additional Materials'}</h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Butyl Tape (rolls)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.metal.butyl_tape') ?? 'Butyl Tape (rolls)'}</span>
               <span className="text-sm font-bold tabular-nums">{Math.ceil(roofArea / 100)}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">Ridge Cap (linear ft)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.metal.ridge_cap') ?? 'Ridge Cap (linear ft)'}</span>
               <span className="text-sm font-bold tabular-nums">{Math.ceil(lenNum * 1.1)}</span>
             </div>
           </div>

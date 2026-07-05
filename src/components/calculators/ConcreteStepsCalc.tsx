@@ -13,8 +13,10 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteStepsDiagram from "../diagrams/ConcreteStepsDiagram";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function ConcreteStepsCalc() {
+  const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [numSteps, setNumSteps] = useState<string>("3");
   const [stepWidth, setStepWidth] = useState<string>("36");
@@ -134,21 +136,21 @@ export default function ConcreteStepsCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h3 className="text-sm font-semibold tracking-tight">Steps Geometry</h3>
+            <h3 className="text-sm font-semibold tracking-tight">{t('calculators.detail.concrete.steps.parameters') ?? 'Steps Geometry'}</h3>
             <UnitToggle unitSystem={unitSystem} onChange={setUnitSystem} />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Number of Steps" type="number" inputMode="numeric" value={numSteps} onChange={(e) => setNumSteps(e.target.value)} placeholder="e.g. 3" />
-            <Input label={unitSystem === "imperial" ? "Step Width (inches)" : "Step Width (cm)"} type="number" inputMode="decimal" value={stepWidth} onChange={(e) => setStepWidth(e.target.value)} placeholder="e.g. 36" />
+            <Input label={t('calculators.detail.concrete.steps.num_steps') ?? 'Number of Steps'} type="number" inputMode="numeric" value={numSteps} onChange={(e) => setNumSteps(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 3'} />
+            <Input label={unitSystem === "imperial" ? (t('calculators.detail.concrete.steps.width_in') ?? 'Step Width (inches)') : (t('calculators.detail.concrete.steps.width_cm') ?? 'Step Width (cm)')} type="number" inputMode="decimal" value={stepWidth} onChange={(e) => setStepWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 36'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Step Rise (height)" type="number" inputMode="decimal" value={stepRise} onChange={(e) => setStepRise(e.target.value)} placeholder="e.g. 7" />
-            <Input label="Step Run (depth)" type="number" inputMode="decimal" value={stepRun} onChange={(e) => setStepRun(e.target.value)} placeholder="e.g. 11" />
+            <Input label={t('calculators.detail.concrete.steps.rise') ?? 'Step Rise (height)'} type="number" inputMode="decimal" value={stepRise} onChange={(e) => setStepRise(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 7'} />
+            <Input label={t('calculators.detail.concrete.steps.run') ?? 'Step Run (depth)'} type="number" inputMode="decimal" value={stepRun} onChange={(e) => setStepRun(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 11'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-5">
-            <Input label="Top Landing Extra Depth" type="number" inputMode="decimal" value={landingDepth} onChange={(e) => setLandingDepth(e.target.value)} placeholder="e.g. 0" helperText="Optional landing depth extension" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 10" />
+            <Input label={t('calculators.detail.concrete.steps.landing_extra') ?? 'Top Landing Extra Depth'} type="number" inputMode="decimal" value={landingDepth} onChange={(e) => setLandingDepth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 0'} helperText={t('calculators.detail.concrete.steps.landing_helper') ?? 'Optional landing depth extension'} />
+            <Input label={t('calculators.detail.concrete.steps.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 10'} />
           </div>
 
           <BagSizeSelector bagSize={bagSize} onChange={setBagSize} />
@@ -162,10 +164,10 @@ export default function ConcreteStepsCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          heading="Save Stair Workspace"
-          saveLabel="Save Set"
-          placeholder="e.g. Porch Stairs"
-          projectsLabel="Apply Saved Dimensions:"
+          heading={t('calculators.detail.concrete.steps.save_workspace') ?? 'Save Stair Workspace'}
+          saveLabel={t('calculators.detail.concrete.steps.save_set') ?? 'Save Set'}
+          placeholder={t('calculators.common.placeholder') ?? 'e.g. Porch Stairs'}
+          projectsLabel={t('calculators.common.apply_saved_dimensions') ?? 'Apply Saved Dimensions:'}
         />
         <AddToProjectCard
           projects={projects}
@@ -183,29 +185,29 @@ export default function ConcreteStepsCalc() {
           <ConcreteStepsDiagram treadDepth={runVal} riserHeight={riseVal} numSteps={stepsCount} width={widthVal} unitSystem={unitSystem} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Steps Volume Output</h3>
+          <h3 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.concrete.steps.volume_output') ?? 'Steps Volume Output'}</h3>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Required Volume (With {wasteFactor}% Waste)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.common.volume') ?? 'Required Volume'} (With {wasteFactor}% {t('calculators.detail.concrete.steps.waste') ?? 'Waste'})</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{unitSystem === "imperial" ? totalVolumeCuYd.toFixed(3) : totalVolumeCuM.toFixed(3)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? "cu yd" : "cu m"}</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{unitSystem === "imperial" ? (t('units.cu_yd') ?? 'cu yd') : (t('units.cu_m') ?? 'cu m')}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">Yields {totalVolumeWithWasteCuFt.toFixed(2)} cu ft total</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">{t('calculators.detail.concrete.steps.yields') ?? 'Yields'} {totalVolumeWithWasteCuFt.toFixed(2)} {t('units.cu_ft') ?? 'cu ft'} {t('calculators.common.total') ?? 'total'}</span>
             </div>
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Bags Needed ({bagSize} bags)</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.steps.bags_needed') ?? 'Bags Needed'} ({bagSize} {t('units.bags') ?? 'bags'})</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight">{selectedBags}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">bags</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.bags') ?? 'bags'}</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--border)]">
               <div>
-                <span className="text-xs text-[var(--fg-muted)] block mb-1">Estimated Weight</span>
+                <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.concrete.steps.estimated_weight') ?? 'Estimated Weight'}</span>
                 <div className="flex items-baseline gap-1 tabular-nums">
                   <span className="text-2xl font-bold tracking-tight">{Math.round(estimatedWeightLbs).toLocaleString()}</span>
-                  <span className="text-xs text-[var(--fg-muted)]">lbs</span>
+                  <span className="text-xs text-[var(--fg-muted)]">{t('units.lbs') ?? 'lbs'}</span>
                 </div>
               </div>
             </div>

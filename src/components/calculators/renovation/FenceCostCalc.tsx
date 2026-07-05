@@ -29,7 +29,7 @@ export default function FenceCostCalc() {
   const postInputRef = useRef<HTMLInputElement>(null);
   const gateInputRef = useRef<HTMLInputElement>(null);
 
-  const { projects, addToProject, projectSuccess, clearSuccess } = useProjects();
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("fence-cost", "Fence Cost Calculator");
 
   const lenNum = parseNumber(length) || 0;
   const spacingNum = parseNumber(postSpacing) || 8;

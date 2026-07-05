@@ -1,3 +1,4 @@
+import { useI18n } from "../i18n/I18nProvider";
 type UnitSystem = "imperial" | "metric";
 
 interface Props {
@@ -6,20 +7,22 @@ interface Props {
 }
 
 export default function UnitToggle({ unitSystem, onChange }: Props) {
+  const { t } = useI18n();
+
   return (
-    <fieldset className="flex bg-[var(--bg-muted)] p-0.5 rounded-lg text-xs" aria-label="Unit system">
+    <fieldset className="flex bg-[var(--bg-muted)] p-0.5 rounded-lg text-xs" aria-label={t('units.imperial') ?? 'Unit system'}>
       <button
         type="button"
-        aria-label="Use imperial units"
+        aria-label={t('units.imperial') ?? 'Use imperial units'}
         className={`px-3 py-1.5 rounded-md font-medium transition-colors ${unitSystem === "imperial" ? "bg-[var(--bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-secondary)] hover:text-[var(--fg)]"}`}
         onClick={() => onChange("imperial")}
-      >Imperial</button>
+      >{t('units.imperial') ?? 'Imperial'}</button>
       <button
         type="button"
-        aria-label="Use metric units"
+        aria-label={t('units.metric') ?? 'Use metric units'}
         className={`px-3 py-1.5 rounded-md font-medium transition-colors ${unitSystem === "metric" ? "bg-[var(--bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-secondary)] hover:text-[var(--fg)]"}`}
         onClick={() => onChange("metric")}
-      >Metric</button>
+      >{t('units.metric') ?? 'Metric'}</button>
     </fieldset>
   );
 }

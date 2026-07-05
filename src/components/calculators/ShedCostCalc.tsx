@@ -5,6 +5,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 const ROOF_TYPES = [
   { value: "flat", label: "Flat / Shed Roof", costMultiplier: 1.0 },
@@ -26,6 +27,7 @@ const FLOOR_TYPES = [
 ];
 
 export default function ShedCostCalc() {
+  const { t } = useI18n();
   const [shedLength, setShedLength] = useState("8");
   const [shedWidth, setShedWidth] = useState("10");
   const [wallHeight, setWallHeight] = useState("7");
@@ -74,11 +76,11 @@ export default function ShedCostCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Shed Length (ft)" type="number" inputMode="decimal" value={shedLength} onChange={(e) => setShedLength(e.target.value)} placeholder="8" />
-            <Input label="Shed Width (ft)" type="number" inputMode="decimal" value={shedWidth} onChange={(e) => setShedWidth(e.target.value)} placeholder="10" />
-            <Input label="Wall Height (ft)" type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="7" />
+            <Input label={t('calculators.detail.outdoor.shed.shed_length_ft') ?? 'Shed Length (ft)'} type="number" inputMode="decimal" value={shedLength} onChange={(e) => setShedLength(e.target.value)} placeholder="8" />
+            <Input label={t('calculators.detail.outdoor.shed.shed_width_ft') ?? 'Shed Width (ft)'} type="number" inputMode="decimal" value={shedWidth} onChange={(e) => setShedWidth(e.target.value)} placeholder="10" />
+            <Input label={t('calculators.detail.outdoor.shed.wall_height_ft') ?? 'Wall Height (ft)'} type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="7" />
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--fg-secondary)]">Roof Type</label>
+              <label className="text-xs font-medium text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.roof_type') ?? 'Roof Type'}</label>
               <select value={roofType} onChange={(e) => setRoofType(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors">
                 {ROOF_TYPES.map((r) => (
                   <option key={r.value} value={r.value}>{r.label}</option>
@@ -86,7 +88,7 @@ export default function ShedCostCalc() {
               </select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--fg-secondary)]">Siding Type</label>
+              <label className="text-xs font-medium text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.siding_type') ?? 'Siding Type'}</label>
               <select value={sidingType} onChange={(e) => setSidingType(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors">
                 {SIDING_TYPES.map((s) => (
                   <option key={s.value} value={s.value}>{s.label} (${s.costSqft}/sq ft)</option>
@@ -94,7 +96,7 @@ export default function ShedCostCalc() {
               </select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--fg-secondary)]">Floor Material</label>
+              <label className="text-xs font-medium text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.floor_material') ?? 'Floor Material'}</label>
               <select value={floorType} onChange={(e) => setFloorType(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] focus:ring-2 focus:ring-[var(--ring)]/5 transition-colors">
                 {FLOOR_TYPES.map((f) => (
                   <option key={f.value} value={f.value}>{f.label} (${f.costSqft}/sq ft)</option>
@@ -114,30 +116,30 @@ export default function ShedCostCalc() {
           successMessage={projectSuccess}
         />
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Shed Material Estimate</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.outdoor.shed.estimate') ?? 'Shed Material Estimate'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Floor Area</span>
-              <span className="text-sm font-semibold tabular-nums">{floorSqFt.toFixed(0)} sq ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.floor_area') ?? 'Floor Area'}</span>
+              <span className="text-sm font-semibold tabular-nums">{floorSqFt.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Wall Area</span>
-              <span className="text-sm font-semibold tabular-nums">{wallArea.toFixed(0)} sq ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.wall_area') ?? 'Wall Area'}</span>
+              <span className="text-sm font-semibold tabular-nums">{wallArea.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Roofing</span>
-              <span className="text-sm font-semibold tabular-nums">{roofSquares} squares ({roofSqFt.toFixed(0)} sq ft)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.roofing') ?? 'Roofing'}</span>
+              <span className="text-sm font-semibold tabular-nums">{roofSquares} squares ({roofSqFt.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'})</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Wall Studs (approx)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.wall_studs') ?? 'Wall Studs (approx)'}</span>
               <span className="text-sm font-semibold tabular-nums">{studCount}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Floor Joists (approx)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.floor_joists') ?? 'Floor Joists (approx)'}</span>
               <span className="text-sm font-semibold tabular-nums">{joistCount}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">Est. Material Cost</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.outdoor.shed.est_cost') ?? 'Est. Material Cost'}</span>
               <span className="text-sm font-bold tabular-nums">${totalLow} – ${totalHigh}</span>
             </div>
           </div>

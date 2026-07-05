@@ -5,6 +5,7 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 const BRICK_TYPES = [
   { key: "modular", label: "Modular (2.25″ × 7.625″)", height: 2.25, depth: 7.625, mortar: 0.375 },
@@ -14,6 +15,7 @@ const BRICK_TYPES = [
 ];
 
 export default function BrickCalc() {
+  const { t } = useI18n();
   const [brickType, setBrickType] = useState("modular");
   const [wallLength, setWallLength] = useState("20");
   const [wallHeight, setWallHeight] = useState("8");
@@ -44,15 +46,15 @@ export default function BrickCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="mb-4">
-            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">Brick Type</label>
+            <label className="text-xs font-medium text-[var(--fg-secondary)] block mb-1.5">{t('calculators.detail.masonry.brick.type') ?? 'Brick Type'}</label>
             <select value={brickType} onChange={(e) => setBrickType(e.target.value)} className="w-full text-sm bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-10 px-3 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
               {BRICK_TYPES.map((b) => <option key={b.key} value={b.key}>{b.label}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Wall Length (ft)" type="number" inputMode="decimal" value={wallLength} onChange={(e) => setWallLength(e.target.value)} placeholder="20" />
-            <Input label="Wall Height (ft)" type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="8" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={waste} onChange={(e) => setWaste(e.target.value)} placeholder="10" />
+            <Input label={t('calculators.detail.masonry.brick.wall_length_ft') ?? 'Wall Length (ft)'} type="number" inputMode="decimal" value={wallLength} onChange={(e) => setWallLength(e.target.value)} placeholder="20" />
+            <Input label={t('calculators.detail.masonry.brick.wall_height_ft') ?? 'Wall Height (ft)'} type="number" inputMode="decimal" value={wallHeight} onChange={(e) => setWallHeight(e.target.value)} placeholder="8" />
+            <Input label={t('calculators.common.waste_factor') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={waste} onChange={(e) => setWaste(e.target.value)} placeholder="10" />
           </div>
         </Card>
       </div>
@@ -66,22 +68,22 @@ export default function BrickCalc() {
           successMessage={projectSuccess}
         />
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Brick Estimate</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.masonry.brick.estimate') ?? 'Brick Estimate'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Wall Area</span>
-              <span className="text-sm font-semibold tabular-nums">{wallSqFt.toFixed(1)} sq ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.masonry.brick.wall_area') ?? 'Wall Area'}</span>
+              <span className="text-sm font-semibold tabular-nums">{wallSqFt.toFixed(1)} {t('units.sq_ft') ?? 'sq ft'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Bricks per Sq Ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.masonry.brick.bricks_per_sqft') ?? 'Bricks per Sq Ft'}</span>
               <span className="text-sm font-semibold tabular-nums">{bricksPerSqFt.toFixed(1)}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Bricks Needed</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.masonry.brick.bricks_needed') ?? 'Bricks Needed'}</span>
               <span className="text-sm font-bold tabular-nums">{bricksNeeded}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">With {parseNumber(waste).toFixed(0)}% Waste</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.masonry.brick.with_waste') ?? 'With'} {parseNumber(waste).toFixed(0)}% {t('calculators.detail.masonry.brick.waste') ?? 'Waste'}</span>
               <span className="text-sm font-bold tabular-nums">{bricksWithWaste}</span>
             </div>
           </div>

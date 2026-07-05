@@ -8,8 +8,10 @@ import { parseNumber } from "../../lib/helpers";
 import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
+import { useI18n } from "../i18n/I18nProvider";
 
 export default function FireGlassCalc() {
+  const { t } = useI18n();
   const [shape, setShape] = useState<"round" | "square">("round");
   const [diameter, setDiameter] = useState("24");
   const [length, setLength] = useState("24");
@@ -38,35 +40,35 @@ export default function FireGlassCalc() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
-          <Select label="Shape" value={shape} onChange={(v) => setShape(v as "round" | "square")} options={[{ value: "round", label: "Round Fire Pit" }, { value: "square", label: "Square Fire Pit" }]} />
+          <Select label={t('calculators.detail.specialty.fire_glass.shape') ?? 'Shape'} value={shape} onChange={(v) => setShape(v as "round" | "square")} options={[{ value: "round", label: t('calculators.detail.specialty.fire_glass.round_fire_pit') ?? 'Round Fire Pit' }, { value: "square", label: t('calculators.detail.specialty.fire_glass.square_fire_pit') ?? 'Square Fire Pit' }]} />
           <div className="grid grid-cols-2 gap-4">
             {shape === "round" ? (
-              <Input label="Diameter (in)" type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="24" className="col-span-2" />
+              <Input label={t('fields.diameter_in') ?? 'Diameter (in)'} type="number" inputMode="decimal" value={diameter} onChange={(e) => setDiameter(e.target.value)} placeholder="24" className="col-span-2" />
             ) : (
-              <><Input label="Length (in)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="24" /><Input label="Width (in)" type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="24" /></>
+              <><Input label={t('fields.length_in') ?? 'Length (in)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="24" /><Input label={t('fields.width_in') ?? 'Width (in)'} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="24" /></>
             )}
-            <Input label="Desired Depth (in)" type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="2" />
+            <Input label={t('calculators.detail.specialty.fire_glass.desired_depth') ?? 'Desired Depth (in)'} type="number" inputMode="decimal" value={depth} onChange={(e) => setDepth(e.target.value)} placeholder="2" />
           </div>
         </Card>
       </div>
       <div className="lg:col-span-5 flex flex-col gap-4">
         <Card>
-          <h3 className="text-sm font-semibold mb-3">Fire Glass Needed</h3>
+          <h3 className="text-sm font-semibold mb-3">{t('calculators.detail.specialty.fire_glass.fire_glass_needed') ?? 'Fire Glass Needed'}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Area</span>
-              <span className="text-sm font-semibold tabular-nums">{area.toFixed(2)} sq ft</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.specialty.fire_glass.area') ?? 'Area'}</span>
+              <span className="text-sm font-semibold tabular-nums">{area.toFixed(2)} {t('units.sq_ft') ?? 'sq ft'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Volume</span>
-              <span className="text-sm font-semibold tabular-nums">{cuFt.toFixed(3)} cu ft ({cuIn.toFixed(0)} cu in)</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.common.volume') ?? 'Volume'}</span>
+              <span className="text-sm font-semibold tabular-nums">{cuFt.toFixed(3)} {t('units.cu_ft') ?? 'cu ft'} ({cuIn.toFixed(0)} cu in)</span>
             </div>
             <div className="flex justify-between items-center py-1.5 border-b border-[var(--border)]">
-              <span className="text-xs text-[var(--fg-secondary)]">Weight Needed</span>
-              <span className="text-sm font-bold tabular-nums">{lbs.toFixed(1)} lbs</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.specialty.fire_glass.weight_needed') ?? 'Weight Needed'}</span>
+              <span className="text-sm font-bold tabular-nums">{lbs.toFixed(1)} {t('units.lbs') ?? 'lbs'}</span>
             </div>
             <div className="flex justify-between items-center py-1.5">
-              <span className="text-xs text-[var(--fg-secondary)]">5 lb Bags</span>
+              <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.specialty.fire_glass.five_lb_bags') ?? '5 lb Bags'}</span>
               <span className="text-sm font-bold tabular-nums">{bags5lb}</span>
             </div>
           </div>

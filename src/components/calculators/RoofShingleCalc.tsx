@@ -12,10 +12,12 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
+import { useI18n } from "../i18n/I18nProvider";
 
 const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
 
 export default function RoofShingleCalc() {
+  const { t } = useI18n();
   const [roofShape, setRoofShape] = useState<"gable" | "hip">("gable");
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
@@ -96,18 +98,18 @@ export default function RoofShingleCalc() {
       <div className="lg:col-span-7 flex flex-col gap-4">
         <Card>
           <div className="flex justify-between items-center border-b border-[var(--border)] pb-4 mb-5">
-            <h2 className="text-sm font-semibold tracking-tight">Roof Parameters</h2>
+            <h2 className="text-sm font-semibold tracking-tight">{t('calculators.detail.roofing.shingles.parameters') ?? 'Roof Parameters'}</h2>
           </div>
 
-          <Select label="Roof Shape" value={roofShape} onChange={(v) => setRoofShape(v as "gable" | "hip")} options={[{ value: "gable", label: "Gable Roof" }, { value: "hip", label: "Hip Roof" }]} />
+          <Select label={t('calculators.detail.roofing.shingles.roof_shape') ?? 'Roof Shape'} value={roofShape} onChange={(v) => setRoofShape(v as "gable" | "hip")} options={[{ value: "gable", label: t('calculators.detail.roofing.shingles.gable_roof') ?? 'Gable Roof' }, { value: "hip", label: t('calculators.detail.roofing.shingles.hip_roof') ?? 'Hip Roof' }]} />
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Input label="Building Length (ft)" type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder="e.g. 40" />
-            <Input label="Building Width (ft)" type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="e.g. 30" />
+            <Input label={t('calculators.detail.roofing.shingles.building_length_ft') ?? 'Building Length (ft)'} type="number" inputMode="decimal" value={length} onChange={(e) => setLength(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 40'} />
+            <Input label={t('calculators.detail.roofing.shingles.building_width_ft') ?? 'Building Width (ft)'} type="number" inputMode="decimal" value={width} onChange={(e) => setWidth(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 30'} />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-5">
-            <Input label="Roof Pitch (rise per 12 in)" type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder="e.g. 4" helperText="Common: 4, 6, 8, 12" />
-            <Input label="Waste Factor (%)" type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder="e.g. 12" helperText="12-15% recommended for shingles" />
+            <Input label={t('calculators.detail.roofing.shingles.roof_pitch') ?? 'Roof Pitch (rise per 12 in)'} type="number" inputMode="decimal" value={pitch} onChange={(e) => setPitch(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 4'} helperText={t('calculators.detail.roofing.shingles.common_pitch') ?? 'Common: 4, 6, 8, 12'} />
+            <Input label={t('calculators.detail.roofing.shingles.waste_factor_pct') ?? 'Waste Factor (%)'} type="number" inputMode="decimal" value={wasteFactor} onChange={(e) => setWasteFactor(e.target.value)} placeholder={t('calculators.common.placeholder') ?? 'e.g. 12'} helperText={t('calculators.detail.roofing.shingles.waste_helper') ?? '12-15% recommended for shingles'} />
           </div>
         </Card>
 
@@ -119,9 +121,9 @@ export default function RoofShingleCalc() {
           successMessage={successMessage}
           savedRooms={savedRooms}
           onApplyRoom={applySavedRoom}
-          heading="Save Roof Project"
-          placeholder="e.g. House Roof"
-          projectsLabel="Saved Projects:"
+          heading={t('calculators.detail.roofing.shingles.save_roof_project') ?? 'Save Roof Project'}
+          placeholder={t('calculators.detail.roofing.shingles.save_placeholder') ?? 'e.g. House Roof'}
+          projectsLabel={t('calculators.detail.roofing.shingles.saved_projects') ?? 'Saved Projects:'}
         />
         <div id="add-to-project-section" className="flex-1">
           <AddToProjectCard
@@ -141,35 +143,35 @@ export default function RoofShingleCalc() {
           <RoofShinglesDiagram shape={roofShape} length={lenNum} width={widNum} pitch={pitchNum} />
         </div>
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 card-elevated">
-          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">Shingle Material Output</h2>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-4">{t('calculators.detail.roofing.shingles.material_output') ?? 'Shingle Material Output'}</h2>
           <div className="flex flex-col gap-5">
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Total Roof Area</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.shingles.total_roof_area') ?? 'Total Roof Area'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{roofArea.toFixed(0)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">sq ft</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1 tabular-nums">
-                With {wasteFactor}% waste: {areaWithWaste.toFixed(0)} sq ft
+                {t('calculators.detail.roofing.shingles.with_waste') ?? 'With waste'}: {areaWithWaste.toFixed(0)} {t('units.sq_ft') ?? 'sq ft'}
               </span>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Squares Needed</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.shingles.squares_needed') ?? 'Squares Needed'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-4xl font-extrabold tracking-tight animate-fade-in-up">{squares.toFixed(1)}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">squares</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.roofing.shingles.squares_unit') ?? 'squares'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1">1 square = 100 sq ft</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1">{t('calculators.detail.roofing.shingles.sq_per_square') ?? '1 square = 100 sq ft'}</span>
             </div>
 
             <div>
-              <span className="text-xs text-[var(--fg-muted)] block mb-1">Bundles Needed</span>
+              <span className="text-xs text-[var(--fg-muted)] block mb-1">{t('calculators.detail.roofing.shingles.bundles_needed') ?? 'Bundles Needed'}</span>
               <div className="flex items-baseline gap-2 tabular-nums">
                 <span className="text-3xl font-extrabold tracking-tight animate-fade-in-up">{bundles}</span>
-                <span className="text-base text-[var(--fg-muted)] font-medium">bundles</span>
+                <span className="text-base text-[var(--fg-muted)] font-medium">{t('calculators.detail.roofing.shingles.bundles_unit') ?? 'bundles'}</span>
               </div>
-              <span className="text-xs text-[var(--fg-muted)] block mt-1">3 bundles = 1 square</span>
+              <span className="text-xs text-[var(--fg-muted)] block mt-1">{t('calculators.detail.roofing.shingles.bundles_per_square') ?? '3 bundles = 1 square'}</span>
             </div>
             <div className="pt-4 border-t border-[var(--border)] mt-1">
               <a
@@ -179,25 +181,25 @@ export default function RoofShingleCalc() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Save to Project Planner
+                {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
             </div>
           </div>
         </div>
 
         <Card>
-          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">Additional Materials</h2>
+          <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.roofing.shingles.additional_materials') ?? 'Additional Materials'}</h2>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Underlayment Rolls</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.shingles.underlayment_rolls') ?? 'Underlayment Rolls'}</span>
               <span className="text-sm font-bold tabular-nums">{underlayment}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)]">
-              <span className="text-sm font-medium">Nail Boxes (1 lb each)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.shingles.nail_boxes') ?? 'Nail Boxes (1 lb each)'}</span>
               <span className="text-sm font-bold tabular-nums">{nails}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
-              <span className="text-sm font-medium">Drip Edge (linear ft)</span>
+              <span className="text-sm font-medium">{t('calculators.detail.roofing.shingles.drip_edge') ?? 'Drip Edge (linear ft)'}</span>
               <span className="text-sm font-bold tabular-nums">{Math.ceil((lenNum + widNum) * 2 * 1.1)}</span>
             </div>
           </div>
