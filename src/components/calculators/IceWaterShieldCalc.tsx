@@ -7,10 +7,11 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const ROLL_COVERAGE_SQFT = 200;
 
-export default function IceWaterShieldCalc() {
+function IceWaterShieldCalc() {
   const { t } = useI18n();
   const [eaveLength, setEaveLength] = useState<string>("80");
   const [eaveWidth, setEaveWidth] = useState<string>("36");
@@ -140,3 +141,5 @@ export default function IceWaterShieldCalc() {
     </div>
   );
 }
+
+export default withI18n(IceWaterShieldCalc);

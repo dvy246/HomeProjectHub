@@ -6,8 +6,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function GallonsPerSqFtCalc() {
+function GallonsPerSqFtCalc() {
   const { t } = useI18n();
   const [area, setArea] = useState("400");
   const [gallons, setGallons] = useState("1");
@@ -67,3 +68,5 @@ export default function GallonsPerSqFtCalc() {
     </div>
   );
 }
+
+export default withI18n(GallonsPerSqFtCalc);

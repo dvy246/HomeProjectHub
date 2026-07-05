@@ -8,10 +8,11 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 type Shape = "rectangle" | "lshape" | "triangle" | "circle";
 
-export default function SquareFootageCalc() {
+function SquareFootageCalc() {
   const { t } = useI18n();
   const [shape, setShape] = useState<Shape>("rectangle");
   const [length, setLength] = useState("12");
@@ -110,3 +111,5 @@ export default function SquareFootageCalc() {
     </div>
   );
 }
+
+export default withI18n(SquareFootageCalc);

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
 interface CalcEntry {
   slug: string;
@@ -101,7 +102,7 @@ const CALCULATORS: CalcEntry[] = [
 
 const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile", "Renovation"];
 
-export default function CalculatorHub() {
+function CalculatorHub() {
   const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
@@ -166,3 +167,5 @@ export default function CalculatorHub() {
     </div>
   );
 }
+
+export default withI18n(CalculatorHub);

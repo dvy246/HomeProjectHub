@@ -9,8 +9,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function FireGlassCalc() {
+function FireGlassCalc() {
   const { t } = useI18n();
   const [shape, setShape] = useState<"round" | "square">("round");
   const [diameter, setDiameter] = useState("24");
@@ -85,3 +86,5 @@ export default function FireGlassCalc() {
     </div>
   );
 }
+
+export default withI18n(FireGlassCalc);

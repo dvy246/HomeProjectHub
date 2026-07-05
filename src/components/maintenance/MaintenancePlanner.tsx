@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { MAINTENANCE_TASKS, CATEGORIES, FREQUENCY_LABELS, SEASON_MONTHS, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
 import { getCompletedIds, toggleTask, migrateOldStorage, getNextDue, isOverdue } from "../../lib/maintenanceStorage";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 type TabView = "monthly" | "seasonal" | "yearly";
 
@@ -9,7 +10,7 @@ const TAB_PANEL_ID = "planner-tab-panel";
 const SEASONS = ["spring", "summer", "fall", "winter"] as const;
 const DIFFICULTIES = ["easy", "moderate", "professional"] as const;
 
-export default function MaintenancePlanner() {
+function MaintenancePlanner() {
   const { t } = useI18n();
   const [tick, setTick] = useState(0);
   const [activeTab, setActiveTab] = useState<TabView>("monthly");
@@ -282,3 +283,5 @@ export default function MaintenancePlanner() {
     </div>
   );
 }
+
+export default withI18n(MaintenancePlanner);

@@ -2,6 +2,7 @@ import { useState, useMemo, useId, useEffect, useCallback } from "react";
 import { MAINTENANCE_TASKS, CATEGORIES, type MaintenanceTask, type TaskCategory } from "../../data/maintenance/tasks";
 import { getCompletedIds, toggleTask, migrateOldStorage, isOverdue } from "../../lib/maintenanceStorage";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const SEASON_MONTHS: Record<string, number[]> = { spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], winter: [11, 0, 1] };
@@ -37,7 +38,7 @@ function getCategoryCounts(tasks: MaintenanceTask[]) {
   return counts;
 }
 
-export default function MaintenanceCalendar() {
+function MaintenanceCalendar() {
   const { t } = useI18n();
   const id = useId();
   const [currentMonth, setCurrentMonth] = useState<number | null>(null);
@@ -194,3 +195,5 @@ export default function MaintenanceCalendar() {
     </div>
   );
 }
+
+export default withI18n(MaintenanceCalendar);

@@ -8,6 +8,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 interface AggregateOption {
   id: string;
@@ -21,7 +22,7 @@ interface Props {
   calculatorLabel?: string;
 }
 
-export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel }: Props) {
+function AggregateCalc({ aggregates, defaultKey, calculatorLabel }: Props) {
   const { t } = useI18n();
   const label = calculatorLabel ?? t('calculators.detail.landscaping.aggregate.material') ?? "Material";
   const [aggId, setAggId] = useState(defaultKey || aggregates[0]?.id || "");
@@ -69,7 +70,7 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
                   const w = parseFloat(p.width);
                   setSqft((l * w).toString());
                   setDepth(p.depth || "4");
-                }
+}
               }}
               className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
             >
@@ -122,3 +123,5 @@ export default function AggregateCalc({ aggregates, defaultKey, calculatorLabel 
     </div>
   );
 }
+
+export default withI18n(AggregateCalc);

@@ -1,5 +1,6 @@
 import type React from "react";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger";
@@ -57,3 +58,5 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
+export default withI18n(Button);

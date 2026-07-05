@@ -14,8 +14,9 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteStepsDiagram from "../diagrams/ConcreteStepsDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ConcreteStepsCalc() {
+function ConcreteStepsCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [numSteps, setNumSteps] = useState<string>("3");
@@ -219,3 +220,5 @@ export default function ConcreteStepsCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteStepsCalc);

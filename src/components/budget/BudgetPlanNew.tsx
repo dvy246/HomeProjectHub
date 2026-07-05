@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { saveBudgetPlan, PROJECT_TYPES, type BudgetPlan } from "../../lib/budgetEngine";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function BudgetPlanNew() {
+function BudgetPlanNew() {
   const { t } = useI18n();
   const [name, setName] = useState("");
   const [projectType, setProjectType] = useState("Custom");
@@ -119,3 +120,5 @@ export default function BudgetPlanNew() {
     </form>
   );
 }
+
+export default withI18n(BudgetPlanNew);

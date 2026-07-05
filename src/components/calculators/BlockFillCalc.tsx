@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const BLOCK_SIZES: Record<string, { face: number; mortar: number }> = {
   "4x8x16": { face: 0.89, mortar: 0.004 },
@@ -16,7 +17,7 @@ const BLOCK_SIZES: Record<string, { face: number; mortar: number }> = {
   "12x8x16": { face: 2.67, mortar: 0.011 },
 };
 
-export default function BlockFillCalc() {
+function BlockFillCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("30");
   const [height, setHeight] = useState<string>("8");
@@ -137,3 +138,5 @@ export default function BlockFillCalc() {
     </div>
   );
 }
+
+export default withI18n(BlockFillCalc);

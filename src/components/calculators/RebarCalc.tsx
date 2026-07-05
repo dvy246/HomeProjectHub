@@ -7,12 +7,13 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 import ConcreteRebarDiagram from "../diagrams/ConcreteRebarDiagram";
 
 const REBAR_WEIGHTS: Record<string, number> = { "#3": 0.376, "#4": 0.668, "#5": 1.043, "#6": 1.502, "#7": 2.044, "#8": 2.67 };
 const REBAR_SIZES = Object.keys(REBAR_WEIGHTS);
 
-export default function RebarCalc() {
+function RebarCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("20");
   const [width, setWidth] = useState<string>("12");
@@ -151,3 +152,5 @@ export default function RebarCalc() {
     </div>
   );
 }
+
+export default withI18n(RebarCalc);

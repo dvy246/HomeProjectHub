@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getBudgetPlan, saveBudgetPlan, addItemToPlan, updateItemInPlan, deleteItemFromPlan, BUDGET_CATEGORIES, type BudgetPlan, type BudgetLineItem } from "../../lib/budgetEngine";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function BudgetPlanView() {
+function BudgetPlanView() {
   const { t } = useI18n();
   const [plan, setPlan] = useState<BudgetPlan | null>(null);
   const [loading, setLoading] = useState(true);
@@ -354,3 +355,5 @@ export default function BudgetPlanView() {
     </div>
   );
 }
+
+export default withI18n(BudgetPlanView);

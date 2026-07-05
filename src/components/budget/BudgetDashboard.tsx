@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getBudgetPlans, deleteBudgetPlan, type BudgetPlan } from "../../lib/budgetEngine";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function BudgetDashboard() {
+function BudgetDashboard() {
   const { t } = useI18n();
   const [plans, setPlans] = useState<BudgetPlan[]>([]);
 
@@ -143,3 +144,5 @@ export default function BudgetDashboard() {
     </div>
   );
 }
+
+export default withI18n(BudgetDashboard);

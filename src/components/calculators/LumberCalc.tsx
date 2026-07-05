@@ -8,6 +8,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const SPECIES = [
   { key: "lumber_douglas_fir", name: "Douglas Fir" },
@@ -18,7 +19,7 @@ const SPECIES = [
   { key: "lumber_walnut", name: "Walnut" },
 ];
 
-export default function LumberCalc() {
+function LumberCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState("8");
   const [width, setWidth] = useState("6");
@@ -103,3 +104,5 @@ export default function LumberCalc() {
     </div>
   );
 }
+
+export default withI18n(LumberCalc);

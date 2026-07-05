@@ -8,6 +8,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const BOARD_WIDTHS = [
   { value: "5.5", label: "5.5\" (Actual 2x6)" },
@@ -17,7 +18,7 @@ const BOARD_WIDTHS = [
   { value: "6", label: "6\" (Composite)" },
 ];
 
-export default function DeckingCalc() {
+function DeckingCalc() {
   const { t } = useI18n();
   const [deckLength, setDeckLength] = useState("12");
   const [deckWidth, setDeckWidth] = useState("10");
@@ -128,3 +129,5 @@ export default function DeckingCalc() {
     </div>
   );
 }
+
+export default withI18n(DeckingCalc);

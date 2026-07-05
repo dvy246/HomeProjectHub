@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { PROJECT_TEMPLATES, saveProject, type SavedProject } from "../../lib/projectEngine";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 type Step = "select-type" | "enter-dimensions" | "review";
 
-export default function ProjectWizard() {
+function ProjectWizard() {
   const { t } = useI18n();
   const [step, setStep] = useState<Step>("select-type");
   const [selectedType, setSelectedType] = useState<string>("");
@@ -166,3 +167,5 @@ export default function ProjectWizard() {
     </div>
   );
 }
+
+export default withI18n(ProjectWizard);

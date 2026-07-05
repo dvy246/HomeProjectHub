@@ -8,10 +8,11 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const SHEET_SIZES = ["4x8", "4x10", "4x12"] as const;
 
-export default function DrywallCalc() {
+function DrywallCalc() {
   const { t } = useI18n();
   const [wallLengths, setWallLengths] = useState("40");
   const [wallHeight, setWallHeight] = useState("8");
@@ -119,3 +120,5 @@ export default function DrywallCalc() {
     </div>
   );
 }
+
+export default withI18n(DrywallCalc);

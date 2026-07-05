@@ -13,11 +13,12 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import PaintDiagram from "../diagrams/PaintDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const COVERAGE_PER_GALLON = 350;
 const _STANDARD_COATS = 2;
 
-export default function PaintCalc() {
+function PaintCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState("12");
@@ -275,3 +276,5 @@ export default function PaintCalc() {
     </div>
   );
 }
+
+export default withI18n(PaintCalc);

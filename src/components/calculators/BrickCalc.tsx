@@ -6,6 +6,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const BRICK_TYPES = [
   { key: "modular", label: "Modular (2.25″ × 7.625″)", height: 2.25, depth: 7.625, mortar: 0.375 },
@@ -14,7 +15,7 @@ const BRICK_TYPES = [
   { key: "roman", label: "Roman (2″ × 12″)", height: 2, depth: 12, mortar: 0.375 },
 ];
 
-export default function BrickCalc() {
+function BrickCalc() {
   const { t } = useI18n();
   const [brickType, setBrickType] = useState("modular");
   const [wallLength, setWallLength] = useState("20");
@@ -92,3 +93,5 @@ export default function BrickCalc() {
     </div>
   );
 }
+
+export default withI18n(BrickCalc);

@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
-import { t, type Locale } from "../i18n";
-import { LanguageSwitcher } from "../components/i18n/LanguageSwitcher";
+import { t } from "../i18n";
 
 interface Props {
   title: string;
@@ -17,28 +16,11 @@ const { title, description, canonical, schema, noindex, articlePubDate, articleU
 
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeplanninghub.com").toString();
 
-const SUPPORTED_LOCALES = ['en', 'es', 'de', 'pt', 'pl', 'it'] as const;
-const currentPathRaw = Astro.url.pathname;
-const currentLocale = SUPPORTED_LOCALES.find(l => currentPathRaw.startsWith(`/${l}/`) || currentPathRaw === `/${l}`) || 'en';
-const locale = currentLocale as Locale;
-const tr = (key: string) => t(locale, key);
-const pathWithoutLocale = currentLocale === 'en' ? currentPathRaw : currentPathRaw.replace(/^\/[a-z]{2}/, '') || '/';
-const ogImage = new URL("/og-image.png", canonicalURL).toString();
 const currentPath = Astro.url.pathname;
-const ENGLISH_ONLY_PATHS = new Set([
-  '/calculators/concrete/', '/calculators/roofing/', '/calculators/paint/', '/calculators/tile/',
-  '/calculators/renovation/',
-  '/projects/new/', '/saved/',
-  '/renovate/plans/', '/renovate/plans/new/', '/renovate/plans/view/',
-  '/planner/shopping-list/',
-]);
-const lUrl = (path: string) => {
-  if (currentLocale === 'en') return path;
-  if (path === '/') return `/${currentLocale}/`;
-  const normalized = path.endsWith('/') ? path : path + '/';
-  if (ENGLISH_ONLY_PATHS.has(normalized)) return path;
-  return `/${currentLocale}${path}`;
-};
+const tr = (key: string) => t('en', key);
+const lUrl = (path: string) => path;
+const ogImage = new URL("/og-image.png", canonicalURL).toString();
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -58,30 +40,18 @@ const organizationSchema = {
 };
 ---
 
-<!doctype html>
-<html lang={currentLocale} class="scroll-smooth" style="color-scheme: light dark;">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="application-name" content="HomePlanningHub" />
-    <meta name="author" content="HomePlanningHub Team" />
-    <meta name="language" content={tr('meta.language')} />
-    <meta name="country" content="US" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="homeplan" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="generator" content={Astro.generator} />
-    {import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
-      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION} />
-    )}
-    {import.meta.env.PROD && (
-      <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests" />
-    )}
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B3GRZPTM95" is:inline></script>
@@ -96,14 +66,6 @@ const organizationSchema = {
     <title>{title.includes("HomePlanningHub") ? title : `${title} | HomePlanningHub`}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {!noindex && (
-      <>
-        <link rel="alternate" hreflang="x-default" href={`https://homeplanninghub.com${pathWithoutLocale}`} />
-        {SUPPORTED_LOCALES.map(l => (
-          <link rel="alternate" hreflang={l} href={`https://homeplanninghub.com${l === 'en' ? pathWithoutLocale : `/${l}${pathWithoutLocale}`}`} />
-        ))}
-      </>
-    )}
     {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content={articlePubDate ? "article" : "website"} />
@@ -115,7 +77,7 @@ const organizationSchema = {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="HomePlanningHub — free home improvement calculators and project planning tools" />
     <meta property="og:site_name" content="HomePlanningHub" />
-    <meta property="og:locale" content={currentLocale === 'en' ? 'en_US' : currentLocale === 'es' ? 'es_ES' : currentLocale === 'de' ? 'de_DE' : currentLocale === 'pt' ? 'pt_PT' : currentLocale === 'pl' ? 'pl_PL' : currentLocale === 'it' ? 'it_IT' : 'en_US'} />
+    <meta property="og:locale" content="en_US" />
     {articlePubDate && <meta property="article:published_time" content={articlePubDate.toISOString()} />}
     {articleUpdatedDate && <meta property="article:modified_time" content={articleUpdatedDate.toISOString()} />}
 
@@ -218,10 +180,10 @@ const organizationSchema = {
           <a href={lUrl("/guides/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/guides") ? "page" : undefined}>{tr('nav.guides')}</a>
           <a href={lUrl("/projects/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>{tr('nav.projects')}</a>
           <a href={lUrl("/about/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/about/" ? "page" : undefined}>{tr('nav.about')}</a>
+          <a href={lUrl("/methodology/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/methodology/" ? "page" : undefined}>{tr('nav.methodology')}</a>
         </nav>
 
         <div class="flex items-center gap-1">
-          <LanguageSwitcher initialLocale={currentLocale} client:load />
 
           <!-- Dark mode toggle -->
           <button
@@ -277,6 +239,7 @@ const organizationSchema = {
           <a href={lUrl("/guides/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.guides')}</a>
           <a href={lUrl("/projects/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.projects')}</a>
           <a href={lUrl("/about/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.about')}</a>
+          <a href={lUrl("/methodology/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.methodology')}</a>
           <div class="border-t border-[var(--border)] mt-2 pt-2 flex gap-4 px-3">
             <a href={lUrl("/privacy/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('footer.privacy')}</a>
             <a href={lUrl("/terms/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('footer.terms')}</a>
@@ -345,6 +308,7 @@ const organizationSchema = {
             <h4 class="text-xs font-semibold text-[var(--fg)] mb-3">{tr('footer.company')}</h4>
             <ul class="flex flex-col gap-2">
               <li><a href={lUrl("/about/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('nav.about')}</a></li>
+              <li><a href={lUrl("/methodology/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('nav.methodology')}</a></li>
               <li><a href={lUrl("/contact/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('nav.contact')}</a></li>
               <li><a href={lUrl("/privacy/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('footer.privacy')}</a></li>
               <li><a href={lUrl("/terms/")} class="text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors">{tr('footer.terms')}</a></li>
@@ -478,5 +442,6 @@ const organizationSchema = {
 
       setupDropdown('calc-dropdown-btn');
     </script>
+    <script src="../scripts/i18n-dom.ts"></script>
   </body>
 </html>

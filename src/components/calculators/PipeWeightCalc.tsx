@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const PIPE_MATERIALS = [
   { key: "steel_a36", label: "Steel (A36)" },
@@ -16,7 +17,7 @@ const PIPE_MATERIALS = [
   { key: "brass", label: "Brass" },
 ];
 
-export default function PipeWeightCalc() {
+function PipeWeightCalc() {
   const { t } = useI18n();
   const [material, setMaterial] = useState("steel_a36");
   const [od, setOd] = useState("4");
@@ -97,3 +98,5 @@ export default function PipeWeightCalc() {
     </div>
   );
 }
+
+export default withI18n(PipeWeightCalc);

@@ -20,6 +20,7 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { PRESETS } from "../../lib/presets";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -31,7 +32,7 @@ function convertValue(value: number, from: UnitSystem, to: UnitSystem, field: "l
   return from === "imperial" ? (value / 3.281).toFixed(2) : (value * 3.281).toFixed(2);
 }
 
-export default function ConcreteSlabCalc() {
+function ConcreteSlabCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("imperial");
   const [length, setLength] = useState<string>("10");
@@ -495,3 +496,5 @@ export default function ConcreteSlabCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteSlabCalc);

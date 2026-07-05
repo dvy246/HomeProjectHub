@@ -13,10 +13,11 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const _PLYWOOD_SHEET_AREA = 32;
 
-export default function PlywoodDeckCalc() {
+function PlywoodDeckCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
@@ -189,3 +190,5 @@ export default function PlywoodDeckCalc() {
     </div>
   );
 }
+
+export default withI18n(PlywoodDeckCalc);

@@ -14,8 +14,9 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteTubeDiagram from "../diagrams/ConcreteTubeDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ConcreteTubeCalc() {
+function ConcreteTubeCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [diameter, setDiameter] = useState<string>("8");
@@ -177,3 +178,5 @@ export default function ConcreteTubeCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteTubeCalc);

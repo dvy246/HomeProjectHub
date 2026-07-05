@@ -15,8 +15,9 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteFootingDiagram from "../diagrams/ConcreteFootingDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ConcreteFootingCalc() {
+function ConcreteFootingCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [footingShape, setFootingShape] = useState<"cylinder" | "block">("cylinder");
@@ -220,3 +221,5 @@ export default function ConcreteFootingCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteFootingCalc);

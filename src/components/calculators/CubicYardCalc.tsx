@@ -8,8 +8,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function CubicYardCalc() {
+function CubicYardCalc() {
   const { t } = useI18n();
   const [mode, setMode] = useState<"dimensions" | "cuft">("dimensions");
   const [length, setLength] = useState("10");
@@ -84,3 +85,5 @@ export default function CubicYardCalc() {
     </div>
   );
 }
+
+export default withI18n(CubicYardCalc);

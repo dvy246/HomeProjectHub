@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Card } from "./ui/Card";
 import { Button } from "./ui/Button";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
 export interface QuizQuestion {
   question: string;
@@ -24,7 +25,7 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
-export default function Quiz({ title, questions }: QuizProps) {
+function Quiz({ title, questions }: QuizProps) {
   const { t } = useI18n();
   const [shuffled, setShuffled] = useState<QuizQuestion[]>(questions);
   const [current, setCurrent] = useState(0);
@@ -136,3 +137,5 @@ export default function Quiz({ title, questions }: QuizProps) {
     </div>
   );
 }
+
+export default withI18n(Quiz);

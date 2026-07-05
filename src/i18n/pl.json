@@ -48,6 +48,12 @@
     "strategy_title": "Strategia Projektów",
     "featured_guides": "Polecane Poradniki"
   },
+  "homepage": {
+    "hero_h1_l1": "Build with Precision,",
+    "hero_h1_l2": "Estimate with Confidence",
+    "hero_desc": "Your ultimate free home improvement platform. Estimate construction materials, plan DIY projects, and calculate renovation costs with transparent math formulas.",
+    "hero_cta1": "Start Calculating"
+  },
   "common": {
     "search": "Szukaj",
     "filter": "Filtruj",

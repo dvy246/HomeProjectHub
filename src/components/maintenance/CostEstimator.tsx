@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useCallback, useId } from "react";
 import { Card } from "../ui/Card";
 import { estimateCosts, REGION_LABELS, AGE_LABELS, PROPERTY_LABELS, type ClimateRegion, type PropertyType, type AgeRange } from "../../data/maintenance/costs";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const STORAGE_KEY = "hph_maintenance_costs";
 
@@ -21,7 +22,7 @@ function saveSaved(data: any) {
   } catch {}
 }
 
-export default function CostEstimator() {
+function CostEstimator() {
   const { t } = useI18n();
   const [homeSize, setHomeSize] = useState("2000");
   const [age, setAge] = useState<AgeRange>("15-30");
@@ -209,3 +210,5 @@ export default function CostEstimator() {
     </div>
   );
 }
+
+export default withI18n(CostEstimator);

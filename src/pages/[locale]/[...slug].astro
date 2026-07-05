@@ -15,28 +15,7 @@ const guides = await getCollection("guide");
 const sortedGuides = guides.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 export function getStaticPaths() {
-  const contentPaths = [
-    undefined,
-    'about', 'contact', 'strategy', 'guides', 'compare', 'quizzes', 'calculators',
-    'privacy', 'terms', 'disclaimer',
-    'planner', 'projects', 'renovate', 'saved',
-    'maintenance',
-    'maintenance/planner', 'maintenance/calendar', 'maintenance/cost-estimator',
-    'maintenance/spring', 'maintenance/summer', 'maintenance/fall', 'maintenance/winter',
-    'maintenance/first-time-homeowner',
-  ];
-
-  const out: { params: { locale: string; slug?: string }; props: { locale: string; slug: string } }[] = [];
-
-  for (const locale of SUPPORTED_LOCALES) {
-    if (locale === DEFAULT_LOCALE) continue;
-    for (const slug of contentPaths) {
-      const params: { locale: string; slug?: string } = { locale };
-      if (slug) params.slug = slug;
-      out.push({ params, props: { locale, slug: slug || '' } });
-    }
-  }
-  return out;
+  return [];
 }
 
 const locale = Astro.props.locale as Locale;
@@ -52,6 +31,7 @@ function webPage(s: string) {
 
 function pageFor(slug: string): { title: string; description: string; h1: string; subtitle?: string; schema?: Record<string, unknown> } {
   if (slug === 'about') return { title: tr('about.title'), description: tr('about.description'), h1: tr('about.h1') };
+  if (slug === 'methodology') return { title: tr('methodology.title'), description: tr('methodology.description'), h1: tr('methodology.h1') };
   if (slug === 'contact') return { title: tr('contact.title'), description: tr('contact.description'), h1: tr('contact.h1'), subtitle: tr('contact.subtitle') };
   if (slug === 'strategy') return { title: tr('strategy.title'), description: tr('strategy.description'), h1: tr('strategy.h1'), subtitle: tr('strategy.subtitle') };
   if (slug === 'guides') return { title: tr('guides.title'), description: tr('guides.description'), h1: tr('guides.h1') };

@@ -8,6 +8,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const SNOW_DENSITIES: Record<string, number> = {
   "Fresh": 5,
@@ -17,7 +18,7 @@ const SNOW_DENSITIES: Record<string, number> = {
   "Ice": 57,
 };
 
-export default function SnowLoadCalc() {
+function SnowLoadCalc() {
   const { t } = useI18n();
   const [depth, setDepth] = useState<string>("24");
   const [snowType, setSnowType] = useState<string>("Settled");
@@ -159,3 +160,5 @@ export default function SnowLoadCalc() {
     </div>
   );
 }
+
+export default withI18n(SnowLoadCalc);

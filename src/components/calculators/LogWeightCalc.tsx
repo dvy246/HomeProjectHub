@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const WOOD_TYPES = [
   { key: "lumber_douglas_fir", label: "Douglas Fir" },
@@ -17,7 +18,7 @@ const WOOD_TYPES = [
   { key: "lumber_walnut", label: "Walnut" },
 ];
 
-export default function LogWeightCalc() {
+function LogWeightCalc() {
   const { t } = useI18n();
   const [wood, setWood] = useState("lumber_pine");
   const [diameter, setDiameter] = useState("12");
@@ -96,3 +97,5 @@ export default function LogWeightCalc() {
     </div>
   );
 }
+
+export default withI18n(LogWeightCalc);

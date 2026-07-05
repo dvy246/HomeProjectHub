@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { getProject, deleteProject, updateProject, aggregateMaterials, getProjectProgress, PROJECT_TEMPLATES, type SavedProject } from "../../lib/projectEngine";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ProjectDetail({ projectId, onBack }: { projectId: string; onBack: () => void }) {
+function ProjectDetail({ projectId, onBack }: { projectId: string; onBack: () => void }) {
   const { t } = useI18n();
   const [project, setProject] = useState<SavedProject | null>(null);
 
@@ -279,3 +280,5 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
     </div>
   );
 }
+
+export default withI18n(ProjectDetail);

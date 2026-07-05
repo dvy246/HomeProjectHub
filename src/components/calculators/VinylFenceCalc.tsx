@@ -7,8 +7,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function VinylFenceCalc() {
+function VinylFenceCalc() {
   const { t } = useI18n();
   const [fenceLength, setFenceLength] = useState("100");
   const [fenceHeight, setFenceHeight] = useState("6");
@@ -99,3 +100,5 @@ export default function VinylFenceCalc() {
     </div>
   );
 }
+
+export default withI18n(VinylFenceCalc);

@@ -12,11 +12,12 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const METAL_PANEL_WIDTH = 36;
 const METAL_PANEL_LENGTH = 144;
 
-export default function MetalRoofCalc() {
+function MetalRoofCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
@@ -203,3 +204,5 @@ export default function MetalRoofCalc() {
     </div>
   );
 }
+
+export default withI18n(MetalRoofCalc);

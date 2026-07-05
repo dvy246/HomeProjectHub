@@ -7,8 +7,9 @@ import { useProjects } from "../lib/useProjects";
 import type { MaterialItem } from "../lib/projectEngine";
 import AddToProjectCard from "./ui/AddToProjectCard";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
-export default function HeroQuickCalc() {
+function HeroQuickCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState("12");
   const [width, setWidth] = useState("10");
@@ -151,3 +152,5 @@ export default function HeroQuickCalc() {
     </div>
   );
 }
+
+export default withI18n(HeroQuickCalc);

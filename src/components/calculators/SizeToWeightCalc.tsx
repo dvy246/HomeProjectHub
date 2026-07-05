@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const MATERIALS = [
   { key: "aluminum_6061", label: "Aluminum 6061" },
@@ -18,7 +19,7 @@ const MATERIALS = [
   { key: "concrete", label: "Concrete" },
 ];
 
-export default function SizeToWeightCalc() {
+function SizeToWeightCalc() {
   const { t } = useI18n();
   const [material, setMaterial] = useState("steel_a36");
   const [length, setLength] = useState("12");
@@ -91,3 +92,5 @@ export default function SizeToWeightCalc() {
     </div>
   );
 }
+
+export default withI18n(SizeToWeightCalc);

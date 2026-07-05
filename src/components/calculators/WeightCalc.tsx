@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 interface MaterialOption {
   id: string;
@@ -22,7 +23,7 @@ interface Props {
   showQuantity?: boolean;
 }
 
-export default function WeightCalc({
+function WeightCalc({
   materials,
   defaultMaterial,
   defaultLength = "12",
@@ -119,3 +120,5 @@ export default function WeightCalc({
     </div>
   );
 }
+
+export default withI18n(WeightCalc);

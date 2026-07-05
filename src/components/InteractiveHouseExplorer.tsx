@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
 const renderSectionIcon = (id: string, className = "w-4 h-4 text-[var(--accent)] shrink-0") => {
   switch (id) {
@@ -135,7 +136,7 @@ const HOUSE_SECTIONS: HouseSection[] = [
   },
 ];
 
-export default function InteractiveHouseExplorer() {
+function InteractiveHouseExplorer() {
   const { t } = useI18n();
   const [isExploded, setIsExploded] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<HouseSection | null>(null);
@@ -982,3 +983,5 @@ export default function InteractiveHouseExplorer() {
     </div>
   );
 }
+
+export default withI18n(InteractiveHouseExplorer);

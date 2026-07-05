@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { getSavedProjects, deleteProject, updateProject, getProjectProgress, type SavedProject } from "../../lib/projectEngine";
 import ProjectDetail from "./ProjectDetail";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 function hashToId(hash: string): string | null {
   if (!hash.startsWith("#detail-")) return null;
   return hash.replace("#detail-", "");
 }
 
-export default function ProjectDashboard() {
+function ProjectDashboard() {
   const { t } = useI18n();
   const [projects, setProjects] = useState<SavedProject[]>([]);
   const [detailId, setDetailId] = useState<string | null>(null);
@@ -141,3 +142,5 @@ export default function ProjectDashboard() {
     </div>
   );
 }
+
+export default withI18n(ProjectDashboard);

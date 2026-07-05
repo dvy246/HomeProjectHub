@@ -1,4 +1,5 @@
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 type UnitSystem = "imperial" | "metric";
 
 interface Props {
@@ -6,7 +7,7 @@ interface Props {
   onChange: (unit: UnitSystem) => void;
 }
 
-export default function UnitToggle({ unitSystem, onChange }: Props) {
+function UnitToggle({ unitSystem, onChange }: Props) {
   const { t } = useI18n();
 
   return (
@@ -26,3 +27,5 @@ export default function UnitToggle({ unitSystem, onChange }: Props) {
     </fieldset>
   );
 }
+
+export default withI18n(UnitToggle);

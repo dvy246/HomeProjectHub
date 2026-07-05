@@ -8,10 +8,11 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const GRAVEL = { tonsPerCuYd: 1.4, label: "Drainage Gravel" };
 
-export default function FrenchDrainCalc() {
+function FrenchDrainCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState("50");
   const [width, setWidth] = useState("12");
@@ -85,3 +86,5 @@ export default function FrenchDrainCalc() {
     </div>
   );
 }
+
+export default withI18n(FrenchDrainCalc);

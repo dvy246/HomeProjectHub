@@ -48,6 +48,12 @@
     "strategy_title": "Strategia di Progetto",
     "featured_guides": "Guide in Evidenza"
   },
+  "homepage": {
+    "hero_h1_l1": "Build with Precision,",
+    "hero_h1_l2": "Estimate with Confidence",
+    "hero_desc": "Your ultimate free home improvement platform. Estimate construction materials, plan DIY projects, and calculate renovation costs with transparent math formulas.",
+    "hero_cta1": "Start Calculating"
+  },
   "common": {
     "search": "Cerca",
     "filter": "Filtra",

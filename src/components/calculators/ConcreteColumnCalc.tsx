@@ -15,8 +15,9 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteColumnDiagram from "../diagrams/ConcreteColumnDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ConcreteColumnCalc() {
+function ConcreteColumnCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [columnShape, setColumnShape] = useState<"round" | "square">("round");
@@ -205,3 +206,5 @@ export default function ConcreteColumnCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteColumnCalc);

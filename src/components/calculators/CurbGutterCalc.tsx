@@ -7,8 +7,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function CurbGutterCalc() {
+function CurbGutterCalc() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("50");
   const [curbWidth, setCurbWidth] = useState<string>("6");
@@ -144,3 +145,5 @@ export default function CurbGutterCalc() {
     </div>
   );
 }
+
+export default withI18n(CurbGutterCalc);

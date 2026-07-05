@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const MULCH_TYPES = [
   { key: "bark", label: "Bark Mulch", lbsPerCuFt: 25, bagsPerCuYd: 13.5 },
@@ -15,7 +16,7 @@ const MULCH_TYPES = [
   { key: "dyed", label: "Dyed Mulch", lbsPerCuFt: 25, bagsPerCuYd: 13.5 },
 ];
 
-export default function MulchCalc() {
+function MulchCalc() {
   const { t } = useI18n();
   const [type, setType] = useState("bark");
   const [sqft, setSqft] = useState("100");
@@ -81,3 +82,5 @@ export default function MulchCalc() {
     </div>
   );
 }
+
+export default withI18n(MulchCalc);

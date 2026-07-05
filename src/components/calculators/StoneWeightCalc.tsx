@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const STONE_TYPES = [
   { key: "concrete", label: "Concrete" },
@@ -24,7 +25,7 @@ const STONE_DENSITIES: Record<string, number> = {
   sandstone: 145,
 };
 
-export default function StoneWeightCalc() {
+function StoneWeightCalc() {
   const { t } = useI18n();
   const [stone, setStone] = useState("concrete");
   const [length, setLength] = useState("24");
@@ -109,3 +110,5 @@ export default function StoneWeightCalc() {
     </div>
   );
 }
+
+export default withI18n(StoneWeightCalc);

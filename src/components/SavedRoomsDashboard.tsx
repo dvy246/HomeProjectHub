@@ -5,8 +5,9 @@ import { Button } from "./ui/Button";
 import { Card } from "./ui/Card";
 import { getSavedRooms, saveRoom, deleteRoom, type SavedRoom } from "../lib/storage";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
-export default function SavedRoomsDashboard() {
+function SavedRoomsDashboard() {
   const { t } = useI18n();
   const [rooms, setRooms] = useState<SavedRoom[]>([]);
   const [name, setName] = useState<string>("");
@@ -174,3 +175,5 @@ export default function SavedRoomsDashboard() {
     </div>
   );
 }
+
+export default withI18n(SavedRoomsDashboard);

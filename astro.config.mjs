@@ -5,40 +5,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://homeplanninghub.com',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es', 'de', 'pt', 'pl', 'it'],
-    routing: {
-      prefixDefaultLocale: false,
-      strategy: 'prefix',
-      fallback: {
-        es: 'en',
-        de: 'en',
-        pt: 'en',
-        pl: 'en',
-        it: 'en',
-      },
-    },
-  },
   integrations: [
     react(),
     sitemap({
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en-US',
-          es: 'es-ES',
-          de: 'de-DE',
-          pt: 'pt-PT',
-          pl: 'pl-PL',
-          it: 'it-IT',
-        },
-      },
       filter: (page) => {
         const path = new URL(page).pathname;
-        const isLocale = /^\/(es|de|pt|pl|it)(\/|$)/.test(path);
         return (
-          !isLocale &&
           !path.includes('/saved/') &&
           !path.includes('/planner/') &&
           !path.includes('/projects/') &&

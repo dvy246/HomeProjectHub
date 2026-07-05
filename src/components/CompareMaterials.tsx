@@ -3,10 +3,10 @@ import { Input } from "./ui/Input";
 import { Card } from "./ui/Card";
 import { calculateRectArea, calculateVolume, cuFeetToCuYards } from "../lib/geometry";
 import { applyWasteFactor } from "../lib/materialEngine";
-import { buildAffiliateUrl } from "../lib/affiliates";
 import { useI18n } from "./i18n/I18nProvider";
+import { withI18n } from "./i18n/withI18n";
 
-export default function CompareMaterials() {
+function CompareMaterials() {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("20");
   const [width, setWidth] = useState<string>("10");
@@ -114,37 +114,27 @@ export default function CompareMaterials() {
 
       {/* Supplier cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <p className="md:col-span-3 text-[10px] text-[var(--fg-muted)] leading-relaxed">
-          {t('compare.affiliate_disclaimer') ?? 'Shopping links are optional and may be affiliate links. Always verify product coverage, availability, delivery fees, and local code requirements before buying.'}
-        </p>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">{t('compare.concrete_sourcing') ?? 'Concrete Sourcing'}</h4>
-            <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">{t('compare.concrete_sourcing_desc') ?? 'Best for permanent patios. Order ready-mix delivery for projects over 1.5 cubic yards.'}</p>
+            <p className="text-xs text-[var(--fg-secondary)] text-pretty">{t('compare.concrete_sourcing_desc') ?? 'Best for permanent patios. Order ready-mix delivery for projects over 1.5 cubic yards.'}</p>
           </div>
-          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=concrete+mix+80lb")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
-            {t('compare.shop_lowes') ?? "Shop at Lowe's"}
-          </a>
         </Card>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">{t('compare.paver_sourcing') ?? 'Paver Sourcing'}</h4>
-            <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">{t('compare.paver_sourcing_desc') ?? 'Perfect for modular patio setups. Order individually or by the pallet.'}</p>
+            <p className="text-xs text-[var(--fg-secondary)] text-pretty">{t('compare.paver_sourcing_desc') ?? 'Perfect for modular patio setups. Order individually or by the pallet.'}</p>
           </div>
-          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=concrete+pavers")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
-            {t('compare.shop_lowes') ?? "Shop at Lowe's"}
-          </a>
         </Card>
         <Card className="flex flex-col justify-between">
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-muted)] mb-2">{t('compare.gravel_sourcing') ?? 'Gravel Sourcing'}</h4>
-            <p className="text-xs text-[var(--fg-secondary)] mb-4 text-pretty">{t('compare.gravel_sourcing_desc') ?? 'Low-cost pathway option. Pick up bags locally or order bulk delivery.'}</p>
+            <p className="text-xs text-[var(--fg-secondary)] text-pretty">{t('compare.gravel_sourcing_desc') ?? 'Low-cost pathway option. Pick up bags locally or order bulk delivery.'}</p>
           </div>
-          <a href={buildAffiliateUrl("lowes", "/search?searchTerm=pea+gravel")} target="_blank" rel="nofollow sponsored noopener" className="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 bg-transparent text-[var(--fg)] border border-[var(--border-strong)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-muted)] px-3 py-1.5 text-xs h-8 w-full">
-            {t('compare.shop_lowes') ?? "Shop at Lowe's"}
-          </a>
         </Card>
       </div>
     </div>
   );
 }
+
+export default withI18n(CompareMaterials);

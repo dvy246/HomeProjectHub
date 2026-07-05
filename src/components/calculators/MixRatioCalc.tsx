@@ -7,6 +7,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const RATIOS: Record<string, [number, number, number]> = {
   "1:2:3 (Standard)": [1, 2, 3],
@@ -16,7 +17,7 @@ const RATIOS: Record<string, [number, number, number]> = {
   "1:3:5 (Lean Mix)": [1, 3, 5],
 };
 
-export default function MixRatioCalc() {
+function MixRatioCalc() {
   const { t } = useI18n();
   const [volume, setVolume] = useState<string>("1");
   const [unit, setUnit] = useState<"cuyd" | "cuft">("cuyd");
@@ -155,3 +156,5 @@ export default function MixRatioCalc() {
     </div>
   );
 }
+
+export default withI18n(MixRatioCalc);

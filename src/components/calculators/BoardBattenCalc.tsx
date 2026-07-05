@@ -6,8 +6,9 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function BoardBattenCalc() {
+function BoardBattenCalc() {
   const { t } = useI18n();
   const [wallWidth, setWallWidth] = useState("120");
   const [wallHeight, setWallHeight] = useState("96");
@@ -89,3 +90,5 @@ export default function BoardBattenCalc() {
     </div>
   );
 }
+
+export default withI18n(BoardBattenCalc);

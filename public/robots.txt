@@ -7,11 +7,6 @@ Allow: /guides/
 Allow: /compare/
 Allow: /about/
 Allow: /contact/
-Allow: /es/
-Allow: /de/
-Allow: /pt/
-Allow: /pl/
-Allow: /it/
 Disallow: /privacy/
 Disallow: /terms/
 Disallow: /disclaimer/

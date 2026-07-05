@@ -6,6 +6,7 @@ import { useProjects } from "../../lib/useProjects";
 import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 interface Props {
   labelSingular: string;
@@ -17,7 +18,7 @@ interface Props {
   calculatorName?: string;
 }
 
-export default function SpacingCalc({
+function SpacingCalc({
   labelSingular,
   labelPlural,
   defaultRailLength = "96",
@@ -83,3 +84,5 @@ export default function SpacingCalc({
     </div>
   );
 }
+
+export default withI18n(SpacingCalc);

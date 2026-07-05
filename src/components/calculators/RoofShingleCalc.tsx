@@ -13,10 +13,11 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
 const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
 
-export default function RoofShingleCalc() {
+function RoofShingleCalc() {
   const { t } = useI18n();
   const [roofShape, setRoofShape] = useState<"gable" | "hip">("gable");
   const [length, setLength] = useState<string>("40");
@@ -208,3 +209,5 @@ export default function RoofShingleCalc() {
     </div>
   );
 }
+
+export default withI18n(RoofShingleCalc);

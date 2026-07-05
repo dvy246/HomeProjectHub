@@ -14,8 +14,9 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import ConcreteWallDiagram from "../diagrams/ConcreteWallDiagram";
 import { useI18n } from "../i18n/I18nProvider";
+import { withI18n } from "../i18n/withI18n";
 
-export default function ConcreteWallCalc() {
+function ConcreteWallCalc() {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState<string>("10");
@@ -201,3 +202,5 @@ export default function ConcreteWallCalc() {
     </div>
   );
 }
+
+export default withI18n(ConcreteWallCalc);
