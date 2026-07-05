@@ -20,11 +20,16 @@ export function LanguageSwitcher({ initialLocale }: Props) {
 
   const handleLocaleChange = (l: string) => {
     if (initialLocale) {
-      const pathWithoutLocale = window.location.pathname.replace(/^\/[a-z]{2}/, '') || '/';
+      let pathWithoutLocale = window.location.pathname;
+      const match = pathWithoutLocale.match(/^\/([a-z]{2})(\/|$)/);
+      if (match && LOCALES.includes(match[1] as any)) {
+        pathWithoutLocale = pathWithoutLocale.substring(match[1].length + 1) || '/';
+      }
+      if (!pathWithoutLocale.startsWith('/')) pathWithoutLocale = '/' + pathWithoutLocale;
+      try { localStorage.setItem('hp_locale', l); } catch (e) {}
       window.location.href = l === 'en' ? pathWithoutLocale : `/${l}${pathWithoutLocale}`;
     } else {
       setLocale(l);
-      try { localStorage.setItem('preferred-locale', l); } catch (e) {}
     }
     setOpen(false);
   };
@@ -46,12 +51,6 @@ export function LanguageSwitcher({ initialLocale }: Props) {
         </svg>
         <span className="hidden sm:inline">{LOCALE_FLAGS[locale]} {locale.toUpperCase()}</span>
       </button>
-      {open && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setOpen(false)}
-        />
-      )}
       <div
         className={`absolute right-0 top-full mt-1 w-36 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg z-50 transition-all duration-150 ${open ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
         role="menu"

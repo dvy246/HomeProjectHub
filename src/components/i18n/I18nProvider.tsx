@@ -11,6 +11,8 @@ import {
   loadDict,
   resolveKey,
   interpolate,
+  getLocale,
+  subscribeToLocale,
 } from './i18n-store';
 
 interface I18nContextValue {
@@ -21,9 +23,10 @@ interface I18nContextValue {
   ) => string | undefined;
 }
 
+const defaultT = (): undefined => undefined;
 const I18nContext = createContext<I18nContextValue>({
   locale: 'en',
-  t: () => undefined,
+  t: defaultT,
 });
 
 interface I18nProviderProps {
@@ -75,6 +78,44 @@ export function I18nProvider({ locale, children }: I18nProviderProps) {
   );
 }
 
+function buildT(locale: string): I18nContextValue['t'] {
+  return (
+    key: string,
+    params?: Record<string, string | number>,
+  ): string | undefined => {
+    const dict = getDictSync(locale);
+    if (!dict) return undefined;
+    const resolved = resolveKey(dict, key);
+    if (resolved !== undefined) {
+      return params ? interpolate(resolved, params) : resolved;
+    }
+    const enDict = getDictSync('en');
+    if (enDict) {
+      const enResolved = resolveKey(enDict, key);
+      if (enResolved !== undefined) {
+        return params ? interpolate(enResolved, params) : enResolved;
+      }
+    }
+    return undefined;
+  };
+}
+
 export function useI18n(): I18nContextValue {
-  return useContext(I18nContext);
+  const context = useContext(I18nContext);
+
+  const hasProvider = context.t !== defaultT;
+
+  if (!hasProvider) {
+    const [locale, setLocale] = useState(getLocale);
+
+    useEffect(() => {
+      return subscribeToLocale(setLocale);
+    }, []);
+
+    const t = useCallback(buildT(locale), [locale]);
+
+    return { locale, t };
+  }
+
+  return context;
 }

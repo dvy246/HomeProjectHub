@@ -217,7 +217,7 @@ const organizationSchema = {
         </nav>
 
         <div class="flex items-center gap-1">
-          <LanguageSwitcher initialLocale={currentLocale !== 'en' ? currentLocale : undefined} client:load />
+          <LanguageSwitcher initialLocale={currentLocale} client:load />
 
           <!-- Dark mode toggle -->
           <button
