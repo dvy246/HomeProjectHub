@@ -168,11 +168,18 @@ const organizationSchema = {
     <header class="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-xl">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <a href="/" class="flex items-center gap-2.5 group" aria-label="HomePlanningHub home">
-          <svg class="w-7 h-7 text-[var(--fg)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <svg class="w-7 h-7 transition-all duration-300 group-hover:scale-105" viewBox="0 0 24 24" fill="none" stroke="url(#shiny-orange-grad)" stroke-width="1.75" aria-hidden="true" style="filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.7));">
+            <defs>
+              <linearGradient id="shiny-orange-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fdba74" />
+                <stop offset="50%" stop-color="#f97316" />
+                <stop offset="100%" stop-color="#ea580c" />
+              </linearGradient>
+            </defs>
             <path d="M3 12L12 3l9 9M5 10v10h14V10" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span class="font-bold text-[15px] tracking-tight">HomePlanningHub</span>
+          <span class="font-bold text-[15px] tracking-tight group-hover:text-[var(--accent)] transition-colors">HomePlanningHub</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -283,12 +290,19 @@ const organizationSchema = {
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div class="col-span-2">
-            <a href="/" class="flex items-center gap-2.5 mb-3">
-              <svg class="w-6 h-6 text-[var(--fg)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <a href="/" class="flex items-center gap-2.5 mb-3 group">
+              <svg class="w-6 h-6 transition-all duration-300 group-hover:scale-105" viewBox="0 0 24 24" fill="none" stroke="url(#shiny-orange-grad-footer)" stroke-width="1.75" aria-hidden="true" style="filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.6));">
+                <defs>
+                  <linearGradient id="shiny-orange-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fdba74" />
+                    <stop offset="50%" stop-color="#f97316" />
+                    <stop offset="100%" stop-color="#ea580c" />
+                  </linearGradient>
+                </defs>
                 <path d="M3 12L12 3l9 9M5 10v10h14V10" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <span class="font-bold text-sm tracking-tight">HomePlanningHub</span>
+              <span class="font-bold text-sm tracking-tight group-hover:text-[var(--accent)] transition-colors">HomePlanningHub</span>
             </a>
             <p class="text-xs text-[var(--fg-muted)] leading-relaxed max-w-xs text-pretty">
               {tr('footer.description')}
