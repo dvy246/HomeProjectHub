@@ -9,6 +9,30 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
 
+  const [checkedMaterials, setCheckedMaterials] = useState<Record<string, boolean>>(() => {
+    try {
+      const stored = localStorage.getItem(`hph-checked-${projectId}`);
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`hph-checked-${projectId}`, JSON.stringify(checkedMaterials));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [checkedMaterials, projectId]);
+
+  const toggleMaterial = (name: string) => {
+    setCheckedMaterials((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
+
   useEffect(() => {
     setProject(getProject(projectId));
     const handler = () => setProject(getProject(projectId));
@@ -210,19 +234,31 @@ export default function ProjectDetail({ projectId, onBack }: { projectId: string
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-[var(--border)]">
-                <th className="text-left py-2 font-semibold">{t('projects.material_header') ?? 'Material'}</th>
+                <th className="text-left py-2 font-semibold pl-2">{t('projects.material_header') ?? 'Material'}</th>
                 <th className="text-right py-2 font-semibold">{t('projects.qty_header') ?? 'Qty'}</th>
-                <th className="text-right py-2 font-semibold">{t('projects.unit_header') ?? 'Unit'}</th>
+                <th className="text-right py-2 font-semibold pr-2">{t('projects.unit_header') ?? 'Unit'}</th>
               </tr>
             </thead>
             <tbody>
-              {allMaterials.map((mat) => (
-                <tr key={mat.name} className="border-b border-[var(--border)]">
-                  <td className="py-2 text-[var(--fg)]">{mat.name}</td>
-                  <td className="py-2 text-right font-semibold tabular-nums">{mat.quantity}</td>
-                  <td className="py-2 text-right text-[var(--fg-muted)]">{mat.unit}</td>
-                </tr>
-              ))}
+              {allMaterials.map((mat) => {
+                const isChecked = !!checkedMaterials[mat.name];
+                return (
+                  <tr key={mat.name} className={`border-b border-[var(--border)] transition-all ${isChecked ? "opacity-40 line-through bg-[var(--bg-subtle)]" : ""}`}>
+                    <td className="py-2.5 pl-2 flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleMaterial(mat.name)}
+                        className="w-3.5 h-3.5 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--ring)] accent-[var(--accent)] cursor-pointer"
+                        aria-label={`Mark ${mat.name} as purchased`}
+                      />
+                      <span className="text-[var(--fg)]">{mat.name}</span>
+                    </td>
+                    <td className="py-2.5 text-right font-semibold tabular-nums">{mat.quantity}</td>
+                    <td className="py-2.5 pr-2 text-right text-[var(--fg-muted)]">{mat.unit}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

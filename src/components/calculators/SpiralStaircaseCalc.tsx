@@ -102,6 +102,17 @@ export default function SpiralStaircaseCalc() {
               </span>
             </div>
           </div>
+          {(!ircRiserOk || !ircTreadOk) && (
+            <div className="mt-4 p-3 rounded-lg border border-[var(--error)]/20 bg-[var(--error)]/5 text-xs text-[var(--error)] leading-relaxed space-y-1.5">
+              <p className="font-bold">⚠️ IRC R311.7.5 Safety Violations:</p>
+              {!ircRiserOk && (
+                <p>• <strong>Riser Height ({actualRiser.toFixed(2)}″)</strong> exceeds the maximum allowed <strong>9.5″</strong> for spiral steps.</p>
+              )}
+              {!ircTreadOk && (
+                <p>• <strong>Walk Line Tread Width ({treadWidthWalk.toFixed(1)}″)</strong> is below the minimum allowed <strong>7.5″</strong>.</p>
+              )}
+            </div>
+          )}
         </Card>
       </div>
     </div>

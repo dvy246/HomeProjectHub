@@ -6,6 +6,8 @@ import { useProjects } from "../../../lib/useProjects";
 import GarageDiagram from "../../diagrams/renovation/GarageDiagram";
 import { parseNumber } from "../../../lib/helpers";
 import { PRESETS } from "../../../lib/presets";
+import ContractorRfqForm from "./ContractorRfqForm";
+import DiyQuizWidget from "./DiyQuizWidget";
 
 export default function GarageRemodelCalc() {
   const [length, setLength] = useState("24");
@@ -24,6 +26,7 @@ export default function GarageRemodelCalc() {
   // Labor & Contingency sliders
   const [laborPercent, setLaborPercent] = useState(35);
   const [contingencyPercent, setContingencyPercent] = useState(15);
+  const [regionalModifier, setRegionalModifier] = useState("1.0");
 
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
@@ -67,7 +70,7 @@ export default function GarageRemodelCalc() {
   const wallPanelCost = wallArea * panelPriceVal;
 
   const totalMaterialCost = epoxyCost + doorCost + shelvingCost + wallPanelCost;
-  const totalLaborCost = totalMaterialCost * (laborPercent / 100);
+  const totalLaborCost = totalMaterialCost * (laborPercent / 100) * parseFloat(regionalModifier);
   const baseCost = totalMaterialCost + totalLaborCost;
   const contingencyCost = baseCost * (contingencyPercent / 100);
   const grandTotal = baseCost + contingencyCost;
@@ -246,6 +249,21 @@ export default function GarageRemodelCalc() {
 
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
+              <label htmlFor="regional-cost" className="text-xs font-semibold text-[var(--fg-secondary)]">Regional Cost Adjuster</label>
+              <select
+                id="regional-cost"
+                value={regionalModifier}
+                onChange={(e) => setRegionalModifier(e.target.value)}
+                className="w-full p-2.5 text-xs rounded-lg border border-[var(--border)] bg-[var(--bg-inset)] text-[var(--fg)] focus:outline-none focus:border-[var(--accent)] cursor-pointer"
+              >
+                <option value="1.0">National Average (1.0x)</option>
+                <option value="1.3">High Cost Metro / West Coast (1.3x)</option>
+                <option value="1.1">Medium Cost / East Coast / South (1.1x)</option>
+                <option value="0.8">Low Cost Area / Rural Midwest (0.8x)</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center text-xs">
                 <span className="font-medium text-[var(--fg-secondary)]">Installation Labor Fees</span>
                 <span className="font-bold text-[var(--accent)]">{laborPercent}% of Materials</span>
@@ -358,6 +376,11 @@ export default function GarageRemodelCalc() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[var(--border)] pt-8 mt-4 no-print">
+        <DiyQuizWidget projectType="Garage Remodel" />
+        <ContractorRfqForm projectType="Garage Remodel" />
       </div>
     </div>
   );
