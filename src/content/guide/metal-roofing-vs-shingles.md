@@ -2,7 +2,7 @@
 title: "Metal Roofing vs. Asphalt Shingles: Cost and Lifespan Comparison"
 description: "A detailed comparison between metal roofs and asphalt shingles. Analyze upfront installation cost, lifespan, maintenance, and energy efficiency."
 category: "roofing"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-03
 tags: ["roofing", "shingles", "metal-roof", "lifespan", "cost-comparison"]
 ---

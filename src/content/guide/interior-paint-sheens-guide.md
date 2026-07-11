@@ -2,7 +2,7 @@
 title: "Choosing the Right Paint Sheen: Matte to Gloss"
 description: "A guide on selecting paint sheens for various rooms and surfaces. Durability, light reflectivity, washability, and texture hiding."
 category: "paint"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-04
 tags: ["paint", "sheen", "flat", "eggshell", "gloss", "interior"]
 ---

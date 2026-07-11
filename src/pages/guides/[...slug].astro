@@ -28,6 +28,36 @@ const schema = graphSchema(
   breadcrumbListSchema([{ name: "Home", path: "/" }, { name: "Guides", path: "/guides/" }, { name: guide.data.title, path: `/guides/${guide.id}/` }]),
   articleSchema,
 );
+
+const RELATED_CALCS: Record<string, { href: string; title: string; desc: string }[]> = {
+  concrete: [
+    { href: "/calculators/concrete/slab/", title: "Concrete Slab Calculator", desc: "Calculate concrete volume for patios, driveways, and slabs." },
+    { href: "/calculators/concrete/rebar/", title: "Rebar Calculator", desc: "Estimate rebar grids, length, and weight for concrete slabs." },
+  ],
+  roofing: [
+    { href: "/calculators/roofing/shingles/", title: "Roof Shingle Calculator", desc: "Estimate shingle bundles, squares, and waste for your roof." },
+    { href: "/calculators/roofing/metal-roof/", title: "Metal Roofing Calculator", desc: "Calculate metal panels, ridge caps, and screws for metal roofs." },
+  ],
+  paint: [
+    { href: "/calculators/paint/", title: "Paint Calculator", desc: "Estimate paint gallons and cost for walls, ceilings, and trim." },
+    { href: "/calculators/square-footage/", title: "Square Footage Calculator", desc: "Calculate total square footage for walls and rectangular rooms." },
+  ],
+  tile: [
+    { href: "/calculators/tile/", title: "Tile Calculator", desc: "Estimate floor and wall tiles, grout volume, and patterns." },
+    { href: "/calculators/concrete/slab/", title: "Concrete Slab Calculator", desc: "Calculate concrete subfloor base quantities." },
+  ],
+  flooring: [
+    { href: "/calculators/decking/", title: "Decking Calculator", desc: "Estimate deck boards, fasteners, and joists for decking projects." },
+    { href: "/calculators/square-footage/", title: "Square Footage Calculator", desc: "Determine flooring area in square feet or square yards." },
+  ],
+  general: [
+    { href: "/calculators/board-foot/", title: "Board Foot Calculator", desc: "Calculate board footage for dimensional lumber." },
+    { href: "/calculators/cubic-yard/", title: "Cubic Yard Calculator", desc: "Convert dimensions directly to cubic yards for gravel, mulch, or dirt." },
+  ],
+};
+
+const related = RELATED_CALCS[guide.data.category] || RELATED_CALCS.general;
+
 ---
 
 <Layout
@@ -75,14 +105,12 @@ const schema = graphSchema(
     <footer class="pt-8 mt-8 border-t border-[var(--border)]">
       <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a href="/calculators/concrete/slab/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
-          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Concrete Slab Calculator</span>
-          <span class="text-[10px] text-[var(--fg-muted)]">Calculate concrete volume for patios, driveways, and slabs.</span>
-        </a>
-        <a href="/calculators/roofing/shingles/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
-          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Roof Shingle Calculator</span>
-          <span class="text-[10px] text-[var(--fg-muted)]">Estimate shingle bundles and squares for your roof.</span>
-        </a>
+        {related.map((calc) => (
+          <a href={calc.href} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+            <span class="block text-xs font-semibold text-[var(--fg)] mb-1">{calc.title}</span>
+            <span class="text-[10px] text-[var(--fg-muted)]">{calc.desc}</span>
+          </a>
+        ))}
       </div>
     </footer>
   </article>

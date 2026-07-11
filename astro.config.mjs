@@ -16,7 +16,12 @@ export default defineConfig({
           !path.includes('/projects/') &&
           !path.includes('/zz-test/') &&
           !path.includes('/embed/') &&
-          !path.includes('/renovate/plans/')
+          !path.includes('/renovate/plans/') &&
+          !path.includes('/privacy/') &&
+          !path.includes('/terms/') &&
+          !path.includes('/disclaimer/') &&
+          !path.includes('/404') &&
+          !path.includes('/500')
         );
       },
       serialize(item) {

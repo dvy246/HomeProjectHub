@@ -2,7 +2,7 @@
 title: "How Many Concrete Bags for a 10x10 Slab? (4\" & 6\" Depths)"
 description: "Calculate exactly how many 80lb or 60lb bags of concrete you need for a 10x10 slab. Includes formulas, waste factors, and thickness calculations."
 category: "concrete"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-04
 tags: ["concrete", "bags", "slab", "masonry", "DIY"]
 ---

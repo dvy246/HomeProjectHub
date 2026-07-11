@@ -2,7 +2,7 @@
 title: "Understanding Concrete Reinforcement: Rebar vs. Wire Mesh"
 description: "A comprehensive guide on when to use rebar, wire mesh, or fiber reinforcement in concrete slabs. Spacing, sizes, and installation rules."
 category: "concrete"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-02
 tags: ["concrete", "rebar", "wire-mesh", "foundation", "structural"]
 ---

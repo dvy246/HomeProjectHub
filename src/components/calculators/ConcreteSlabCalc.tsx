@@ -45,6 +45,9 @@ function ConcreteSlabCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [laborType, setLaborType] = useState<"diy" | "contractor">("diy");
   const [showMathStepper, setShowMathStepper] = useState<boolean>(false);
+  const [customUnitPrice, setCustomUnitPrice] = useState<string>("");
+  const [taxRate, setTaxRate] = useState<string>("8");
+  const [customLaborRate, setCustomLaborRate] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-slab", "Concrete Slab Calculator");
 
@@ -101,9 +104,15 @@ function ConcreteSlabCalc() {
   const bags40 = calculateConcreteBags(totalVolumeCuFt, "40lb");
 
   // Cost calculations
-  const pricePerBag = bagSize === "80lb" ? 7.20 : bagSize === "60lb" ? 6.10 : bagSize === "50lb" ? 5.20 : 4.30;
-  const materialCost = selectedBags * pricePerBag;
-  const estimatedLaborCost = area * (unitSystem === "imperial" ? 8.50 : 91.50); // $8.50 per sq ft / $91.50 per sq m
+  const defaultPricePerBag = bagSize === "80lb" ? 7.20 : bagSize === "60lb" ? 6.10 : bagSize === "50lb" ? 5.20 : 4.30;
+  const pricePerBag = customUnitPrice !== "" ? (parseFloat(customUnitPrice) || 0) : defaultPricePerBag;
+  const subtotalMaterial = selectedBags * pricePerBag;
+  const salesTaxPercent = parseFloat(taxRate) || 0;
+  const materialCost = subtotalMaterial * (1 + salesTaxPercent / 100);
+
+  const defaultLaborRate = unitSystem === "imperial" ? 8.50 : 91.50;
+  const laborRate = customLaborRate !== "" ? (parseFloat(customLaborRate) || 0) : defaultLaborRate;
+  const estimatedLaborCost = area * laborRate;
   const readyMixCost = totalVolumeCuYd * 145 + 150; // $145/cy + $150 delivery fee
 
   const projectInputs = { length: lenNum, width: widNum, thickness: thickNum, wasteFactor: parseNumber(wasteFactor) };
@@ -277,6 +286,50 @@ function ConcreteSlabCalc() {
             </div>
           </div>
 
+          {/* Custom cost inputs */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5 p-3 bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="cost-bag-price" className="text-[10px] font-semibold text-[var(--fg-secondary)]">Bag Price ($)</label>
+              <input
+                id="cost-bag-price"
+                type="number"
+                step="0.01"
+                placeholder={defaultPricePerBag.toFixed(2)}
+                value={customUnitPrice}
+                onChange={(e) => setCustomUnitPrice(e.target.value)}
+                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="cost-tax-rate" className="text-[10px] font-semibold text-[var(--fg-secondary)]">Sales Tax (%)</label>
+              <input
+                id="cost-tax-rate"
+                type="number"
+                step="0.1"
+                placeholder="8"
+                value={taxRate}
+                onChange={(e) => setTaxRate(e.target.value)}
+                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+              />
+            </div>
+            {laborType === "contractor" && (
+              <div className="flex flex-col gap-1 col-span-2 sm:col-span-1">
+                <label htmlFor="cost-labor-rate" className="text-[10px] font-semibold text-[var(--fg-secondary)]">
+                  Labor Rate ({unitSystem === "imperial" ? "$/sq ft" : "$/sq m"})
+                </label>
+                <input
+                  id="cost-labor-rate"
+                  type="number"
+                  step="0.1"
+                  placeholder={defaultLaborRate.toFixed(2)}
+                  value={customLaborRate}
+                  onChange={(e) => setCustomLaborRate(e.target.value)}
+                  className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+                />
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             {laborType === "diy" ? (
               <div className="flex flex-col gap-1">
@@ -285,7 +338,7 @@ function ConcreteSlabCalc() {
                   ${Math.round(materialCost).toLocaleString()}
                 </span>
                 <span className="text-[10px] text-[var(--fg-muted)]">
-                  Based on {selectedBags} bags ({bagSize}) at ${pricePerBag.toFixed(2)}/ea. Ready-mix cost: ~${Math.round(readyMixCost)}
+                  Based on {selectedBags} bags ({bagSize}) at ${pricePerBag.toFixed(2)}/ea (with {salesTaxPercent}% tax). Ready-mix: ~${Math.round(readyMixCost)}
                 </span>
               </div>
             ) : (
@@ -295,7 +348,7 @@ function ConcreteSlabCalc() {
                   ${Math.round(materialCost + estimatedLaborCost).toLocaleString()}
                 </span>
                 <span className="text-[10px] text-[var(--fg-muted)]">
-                  Includes ~${Math.round(estimatedLaborCost).toLocaleString()} labor fees (${unitSystem === "imperial" ? "$8.50/sq ft" : "$91.50/sq m"})
+                  Includes ~${Math.round(estimatedLaborCost).toLocaleString()} labor fees and ~${Math.round(materialCost).toLocaleString()} materials (with {salesTaxPercent}% tax)
                 </span>
               </div>
             )}
@@ -310,6 +363,27 @@ function ConcreteSlabCalc() {
                 </p>
               )}
             </div>
+          </div>
+
+          {/* Quick shop buttons */}
+          <div className="mt-4 pt-3 border-t border-[var(--border)] flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider font-semibold">Local Store Price Match:</span>
+            <a
+              href={`https://www.homedepot.com/s/concrete%20mix%20${bagSize}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#F96302]/10 hover:bg-[#F96302]/20 text-[#F96302] font-medium transition-colors"
+            >
+              Check Home Depot
+            </a>
+            <a
+              href={`https://www.lowes.com/search?searchTerm=concrete+mix+${bagSize}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#004990]/10 hover:bg-[#004990]/20 text-[#004990] font-medium transition-colors"
+            >
+              Check Lowe's
+            </a>
           </div>
         </Card>
 

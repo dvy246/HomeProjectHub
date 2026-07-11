@@ -2,7 +2,7 @@
 title: "Concrete Curing Time and Strength Development Guide"
 description: "Learn how long concrete takes to cure before you can walk, drive, or build on it. The stages of hydration, strength gain curve, and wet curing methods."
 category: "concrete"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-02
 tags: ["concrete", "curing", "hydration", "drying-time", "compressive-strength"]
 ---

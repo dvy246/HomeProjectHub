@@ -2,7 +2,7 @@
 title: "Subfloor Preparation Guidelines for Ceramic and Porcelain Tile"
 description: "A guide on preparing plywood, OSB, and concrete subfloors for tile installation. Deflection limits, backer boards, and crack isolation."
 category: "tile"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-04
 tags: ["tile", "subfloor", "backer-board", "deflection", "plywood"]
 ---

@@ -2,7 +2,7 @@
 title: "The Complete Guide to Specialty Construction Calculators"
 description: "Learn how to estimate materials for decks, drywall, lumber, spiral staircases, and shed construction. Includes formulas, material tables, and pro building tips."
 category: "general"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-03
 tags: ["decking", "drywall", "lumber", "staircase", "shed", "construction", "spiral staircase", "estimating"]
 ---

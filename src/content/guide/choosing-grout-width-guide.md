@@ -2,7 +2,7 @@
 title: "How to Choose Tile Grout Width and Spacing"
 description: "A guide on selecting the correct grout line thickness for tile installations. Standard sizes, sanded vs. unsanded grout, and layout compliance."
 category: "tile"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-04
 tags: ["tile", "grout", "spacers", "installation", "flooring"]
 ---

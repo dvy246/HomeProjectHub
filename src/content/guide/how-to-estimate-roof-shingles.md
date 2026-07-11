@@ -2,7 +2,7 @@
 title: "How to Estimate Roof Shingles: A Complete DIY Estimating Guide"
 description: "Master the math to calculate how many bundles and squares of shingles you need for a roof replacement. Standard bundles, waste factor, and pitch multipliers."
 category: "roofing"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-04
 tags: ["roofing", "shingles", "estimate", "squares", "DIY"]
 ---

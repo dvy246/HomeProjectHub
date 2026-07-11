@@ -2,7 +2,7 @@
 title: "Flooring Materials Comparison: Tile, Vinyl, Hardwood, and Laminate"
 description: "Compare tile, vinyl plank, hardwood, and laminate flooring. Cost per square foot, durability, DIY difficulty, lifespan, and which rooms each material works best in."
 category: "flooring"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-01
 tags: ["flooring", "tile", "vinyl", "hardwood", "laminate", "comparison"]
 ---

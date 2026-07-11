@@ -2,7 +2,7 @@
 title: "Choosing the Right Underlayment for Laminate and LVP Flooring"
 description: "A comprehensive guide on selecting underlayment padding for floating floors. Moisture barriers, sound dampening (IIC/STC), and comfort."
 category: "flooring"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-05
 tags: ["flooring", "underlayment", "LVP", "laminate", "moisture-barrier"]
 ---

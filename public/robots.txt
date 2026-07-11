@@ -13,5 +13,7 @@ Disallow: /disclaimer/
 Disallow: /saved/
 Disallow: /planner/
 Disallow: /projects/
+Disallow: /embed/
+Disallow: /renovate/plans/
 
 Sitemap: https://homeplanninghub.com/sitemap-index.xml

@@ -2,7 +2,7 @@
 title: "How to Estimate Attic and Roof Ventilation Requirements"
 description: "A complete guide on calculating attic ventilation ratios. Intakes, exhausts, net free ventilating area (NFVA), and the 1/150 rule."
 category: "roofing"
-author: "HomePlanningHub Team"
+author: "Marcus Vance (DIY Construction Specialist)"
 pubDate: 2026-07-03
 tags: ["roofing", "ventilation", "attic", "soffit", "ridge-vent"]
 ---
