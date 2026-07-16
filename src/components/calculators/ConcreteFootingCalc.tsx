@@ -17,7 +17,7 @@ import ConcreteFootingDiagram from "../diagrams/ConcreteFootingDiagram";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function ConcreteFootingCalc() {
+function ConcreteFootingCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [footingShape, setFootingShape] = useState<"cylinder" | "block">("cylinder");
@@ -33,6 +33,10 @@ function ConcreteFootingCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-footing", "Concrete Footing Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, footingShape, diameter, length, width, depth, quantity, wasteFactor, bagSize, roomName, savedRooms, successMessage, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());

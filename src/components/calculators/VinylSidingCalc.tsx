@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateRectArea, sqftToSqYd } from "../../lib/geometry";
@@ -9,7 +9,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function VinylSidingCalc() {
+function VinylSidingCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [wallLength, setWallLength] = useState("40");
   const [wallHeight, setWallHeight] = useState("10");
@@ -20,6 +20,10 @@ function VinylSidingCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("vinyl-siding", "Vinyl Siding Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wallLength, wallHeight, windows, windowSqft, doors, doorSqft, waste, onCalculate]);
 
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -16,6 +16,8 @@ interface Props {
   defaultThickness?: string;
   calculatorSlug?: string;
   calculatorName?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
 }
 
 function SpacingCalc({
@@ -26,6 +28,8 @@ function SpacingCalc({
   defaultThickness = "1.5",
   calculatorSlug = "baluster",
   calculatorName = "Baluster Spacing Calculator",
+  projectId,
+  onCalculate,
 }: Props) {
   const { t } = useI18n();
   const [railLength, setRailLength] = useState(defaultRailLength);
@@ -33,6 +37,10 @@ function SpacingCalc({
   const [thickness, setThickness] = useState(defaultThickness);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects(calculatorSlug, calculatorName);
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [railLength, spacing, thickness, onCalculate]);
 
   const rl = parseNumber(railLength);
   const sp = parseNumber(spacing);

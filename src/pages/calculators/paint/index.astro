@@ -5,6 +5,7 @@ import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import RelatedEstimates from "../../../components/ui/RelatedEstimates.astro";
 
 const canonical = "https://homeplanninghub.com/calculators/paint/";
 const title = "Paint Calculator";
@@ -150,6 +151,7 @@ const schema = graphSchema(
     </section>
 
     <RelatedGuides category="paint" />
+    <RelatedEstimates slug="paint" />
     <RelatedCalculators slug="paint" />
   </article>
 </Layout>

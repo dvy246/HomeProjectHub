@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -18,7 +18,7 @@ const SNOW_DENSITIES: Record<string, number> = {
   "Ice": 57,
 };
 
-function SnowLoadCalc() {
+function SnowLoadCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [depth, setDepth] = useState<string>("24");
   const [snowType, setSnowType] = useState<string>("Settled");
@@ -28,6 +28,10 @@ function SnowLoadCalc() {
   const [groundSnowLoad, setGroundSnowLoad] = useState<string>("30");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("snow-load", "Snow Load Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [depth, snowType, pitch, buildingLength, buildingWidth, groundSnowLoad, onCalculate]);
 
   const dep = parseNumber(depth) / 12;
   const pitchNum = parseNumber(pitch);

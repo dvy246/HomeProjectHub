@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function PatioCostCalc() {
+export default function PatioCostCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("15");
   const [width, setWidth] = useState("15");
   const [baseDepth, setBaseDepth] = useState("4");
@@ -33,6 +33,10 @@ export default function PatioCostCalc() {
   const sandInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("patio-cost", "Patio Cost Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, baseDepth, sandDepth, paverPrice, gravelPricePerTon, sandPricePerTon, fabricPrice, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -119,10 +123,10 @@ export default function PatioCostCalc() {
   };
 
   const projectMaterials = [
-    { name: "Patio Paver Blocks", qty: Math.round(sqFt), unit: "sq ft", cost: paverCost },
-    { name: "Crushed stone aggregate gravel sub-base", qty: parseFloat(gravelTons.toFixed(1)), unit: "tons", cost: gravelCost },
-    { name: "Coarse bedding sand layer", qty: parseFloat(sandTons.toFixed(1)), unit: "tons", cost: sandCost },
-    { name: "Geotextile barrier landscape fabric", qty: Math.round(sqFt * 1.05), unit: "sq ft", cost: fabricCost },
+    { name: "Patio Paver Blocks", quantity: Math.round(sqFt), unit: "sq ft", cost: paverCost },
+    { name: "Crushed stone aggregate gravel sub-base", quantity: parseFloat(gravelTons.toFixed(1)), unit: "tons", cost: gravelCost },
+    { name: "Coarse bedding sand layer", quantity: parseFloat(sandTons.toFixed(1)), unit: "tons", cost: sandCost },
+    { name: "Geotextile barrier landscape fabric", quantity: Math.round(sqFt * 1.05), unit: "sq ft", cost: fabricCost },
   ];
 
   return (

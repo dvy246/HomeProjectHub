@@ -1,0 +1,118 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BulkVsBaggedCalc from "../../../components/calculators/BulkVsBaggedCalc";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/bulk-vs-bagged/";
+const title = "Ready-Mix vs. Bagged Concrete & Bulk Material Delivery Planner | HomePlanningHub";
+const description = "Compare Ready-Mix vs. Bagged concrete costs and Bulk vs. Bagged gravel or mulch delivery. Calculate material weights, pallet counts, storage footprints, and hauling trips.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Bulk vs Bagged", path: PAGE_PATH },
+  ]),
+  mathSolverSchema({
+    name: "Ready-Mix vs. Bagged Material Delivery Logistics Planner",
+    description: "Compare bulk logistics options against manual bagged DIY alternatives, detailing price break-evens, storage footprints, and physical transport parameters.",
+    formula: "Bags = Math.ceil(VolumeYard * 45); ReadyMixCost = VolumeYard * 155 + Delivery + ShortLoadFee; Pallets = Math.ceil(Bags / 42)",
+    url: canonical,
+  }),
+  faqPageSchema([
+    {
+      q: "How many bags of concrete are in a cubic yard?",
+      a: "One cubic yard of concrete requires exactly 45 bags of 80-lb concrete mix. If using 60-lb bags, you will need 60 bags, and for 40-lb bags, you will need 90 bags to yield one cubic yard.",
+    },
+    {
+      q: "What is a concrete short load fee?",
+      a: "A short-load fee is a surcharge applied by ready-mix concrete suppliers when an order is less than their minimum batch size (typically 3 to 5 cubic yards). Surcharges usually range from $100 to $150 to cover the supplier's transportation overhead.",
+    },
+    {
+      q: "Is it cheaper to buy bulk or bagged gravel?",
+      a: "Bulk gravel is significantly cheaper per cubic yard (ranging from $35 to $55) compared to bags (which cost $5.50 for 0.5 cu ft, equivalent to $297 per yard). However, bulk delivery includes a flat delivery fee ($75 - $100), making bags cheaper for projects under 1.5 cubic yards.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Bulk vs Bagged</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        Ready-Mix vs. Bagged Concrete & Bulk Material Delivery Planner
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Determine the cheapest, easiest, and safest way to acquire construction and landscaping materials for your next project. Compare bulk dump truck delivery or ready-mix concrete options against manual bagged DIY hauling. Enter your material volume to calculate pricing totals, delivery surcharges, short load fees, storage space footprint, and hauling trips.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-bulk-vs-bagged-top" />
+
+    <!-- Comparative Visualizer Panel -->
+    <section>
+      <BulkVsBaggedCalc client:load />
+    </section>
+
+    <!-- Detailed SEO content -->
+    <section class="prose prose-stone dark:prose-invert max-w-none text-xs leading-relaxed text-[var(--fg-secondary)] flex flex-col gap-4 border-t border-[var(--border)] pt-6 mt-4">
+      <h2 class="text-sm font-bold text-[var(--fg)]">Bulk vs. Bagged Materials Buying Guide</h2>
+      <p>
+        Homeowners undertaking landscaping or masonry projects frequently wonder whether it is better to buy bagged materials or order bulk dump truck delivery. The answer depends on three factors: total project volume, vehicle hauling capacity, and physical labor.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Concrete ready mix vs bagged concrete calculator</h3>
+          <p>
+            When asking <strong>how many bags of concrete in a yard</strong>, the answer is 45 bags of 80-lb mix. Hauling 1 yard of concrete in a standard pickup truck requires 3,600 lbs of load capacity, which exceeds standard half-ton payload limits and requires multiple trips. Additionally, mixing 45 bags manually takes approx. 6 hours of heavy labor. Ready-mix trucks cost more per yard, but save significant labor for projects over 2 cubic yards.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Understanding the concrete short load fee</h3>
+          <p>
+            Ready-mix suppliers apply a <strong>concrete short load fee</strong> (typically $100 - $150) for orders under 3 to 5 cubic yards. This covers their fuel and transport overhead. When using a <strong>ready mix vs bagged concrete calculator</strong>, ensure you include these flat surcharges; for small projects under 1 cubic yard, these fees make bagged concrete cheaper overall.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Bulk vs bagged gravel cost break-evens</h3>
+          <p>
+            For aggregate materials like gravel, sand, topsoil, or mulch, bulk delivery includes a flat delivery surcharge ($75 - $100). Bulk gravel costs $45 per yard, whereas bagged gravel costs $290 per yard. Thus, for any project requiring more than 1.5 cubic yards, ordering bulk delivery is cheaper and saves significant carrying labor.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Storage Footprint & Handling Pallets</h3>
+          <p>
+            Bagged aggregates must be stored on dry, flat ground. A single pallet of concrete holds 42 bags and occupies 13.3 square feet of footprint. Make sure your staging area can support the overall weight load (approx. 3,360 lbs per pallet) without damaging driveways or lawns.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula="Bulk Cost = (Volume × Bulk Price) + Delivery Surcharge; Bagged Cost = (Volume × Bags/Yard) × Bag Price"
+      assumptions={[
+        "Ready-mix minimum load threshold: 3.0 yards; short-load fee of $120 applies below this volume.",
+        "Hauling trips are computed against standard vehicle payloads: Sedan = 800 lbs, SUV = 1200 lbs, Truck = 1500 lbs.",
+        "Concrete bag volume: 80 lb bag yields 0.6 cubic feet. 1 cubic yard requires 45 bags.",
+        "Aggregate storage parameters: standard pallet footprint is 40in x 48in (13.3 sq ft)."
+      ]}
+    />
+
+    <!-- Bottom Ad Slot -->
+    <AdSlot slotId="ad-bulk-vs-bagged-bottom" />
+  </article>
+</Layout>

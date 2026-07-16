@@ -17,10 +17,17 @@ import { withI18n } from "../i18n/withI18n";
 
 const _PLYWOOD_SHEET_AREA = 32;
 
-function PlywoodDeckCalc() {
+interface PlywoodDeckCalcProps {
+  initialLength?: string;
+  initialWidth?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function PlywoodDeckCalc({ initialLength, initialWidth, projectId, onCalculate }: PlywoodDeckCalcProps = {}) {
   const { t } = useI18n();
-  const [length, setLength] = useState<string>("40");
-  const [width, setWidth] = useState<string>("30");
+  const [length, setLength] = useState<string>(initialLength || "40");
+  const [width, setWidth] = useState<string>(initialWidth || "30");
   const [pitch, setPitch] = useState<string>("6");
   const [sheetSize, setSheetSize] = useState<"4x8" | "4x10" | "4x12">("4x8");
   const [wasteFactor, setWasteFactor] = useState<string>("10");
@@ -29,6 +36,25 @@ function PlywoodDeckCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roofing-plywood", "Roof Plywood Calculator");
+
+  useEffect(() => {
+    const lenNum = parseFloat(length) || 0;
+    const widNum = parseFloat(width) || 0;
+    const pitchNum = parseFloat(pitch) || 6;
+    const waste = (parseFloat(wasteFactor) || 10) / 100;
+    const sheetAreas: Record<string, number> = { "4x8": 32, "4x10": 40, "4x12": 48 };
+    const area = lenNum * widNum;
+    const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
+    const roofArea = area * pitchFactor;
+    const sheetsNeeded = Math.ceil((roofArea * (1 + waste)) / (sheetAreas[sheetSize] || 32));
+
+    const projectInputs = { length: lenNum, width: widNum, pitch: pitchNum, sheetSize, wasteFactor };
+    const projectResults = { roofArea, sheetsNeeded };
+    const projectMaterials: MaterialItem[] = [
+      { name: `Plywood Sheets (${sheetSize})`, quantity: sheetsNeeded, unit: "sheets", category: "roofing" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, pitch, sheetSize, wasteFactor, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());

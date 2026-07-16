@@ -21,6 +21,8 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { PRESETS } from "../../lib/presets";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
+import { ReportEngine } from "../ui/ReportEngine";
+import ProjectPlaybook from "./ProjectPlaybook";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -32,12 +34,20 @@ function convertValue(value: number, from: UnitSystem, to: UnitSystem, field: "l
   return from === "imperial" ? (value / 3.281).toFixed(2) : (value * 3.281).toFixed(2);
 }
 
-function ConcreteSlabCalc() {
+interface ConcreteSlabCalcProps {
+  initialLength?: string;
+  initialWidth?: string;
+  initialThickness?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, projectId, onCalculate }: ConcreteSlabCalcProps = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("imperial");
-  const [length, setLength] = useState<string>("10");
-  const [width, setWidth] = useState<string>("10");
-  const [thickness, setThickness] = useState<string>("4");
+  const [length, setLength] = useState<string>(initialLength || "10");
+  const [width, setWidth] = useState<string>(initialWidth || "10");
+  const [thickness, setThickness] = useState<string>(initialThickness || "4");
   const [wasteFactor, setWasteFactor] = useState<string>("10");
   const [bagSize, setBagSize] = useState<"40lb" | "50lb" | "60lb" | "80lb">("80lb");
   const [roomName, setRoomName] = useState<string>("");
@@ -45,11 +55,30 @@ function ConcreteSlabCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [laborType, setLaborType] = useState<"diy" | "contractor">("diy");
   const [showMathStepper, setShowMathStepper] = useState<boolean>(false);
+  const [showPlaybook, setShowPlaybook] = useState<boolean>(false);
   const [customUnitPrice, setCustomUnitPrice] = useState<string>("");
   const [taxRate, setTaxRate] = useState<string>("8");
   const [customLaborRate, setCustomLaborRate] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-slab", "Concrete Slab Calculator");
+
+  useEffect(() => {
+    const projectInputs = { length: parseFloat(length) || 0, width: parseFloat(width) || 0, thickness: parseFloat(thickness) || 0, wasteFactor: parseFloat(wasteFactor) || 0 };
+    const area = (parseFloat(length) || 0) * (parseFloat(width) || 0);
+    const volumeCuFt = area * ((parseFloat(thickness) || 0) / 12);
+    const volumeCuYd = volumeCuFt / 27;
+    const wastePercent = (parseFloat(wasteFactor) || 0) / 100;
+    const totalVolumeCuFt = volumeCuFt * (1 + wastePercent);
+    const totalVolumeCuYd = totalVolumeCuFt / 27;
+    const selectedBags = Math.ceil(totalVolumeCuFt / (bagSize === "80lb" ? 0.6 : bagSize === "60lb" ? 0.45 : bagSize === "50lb" ? 0.375 : 0.3));
+    const estimatedWeightLbs = totalVolumeCuFt * 133;
+    const projectResults = { volumeCuYd: totalVolumeCuYd, bagsCount: selectedBags, weightLbs: estimatedWeightLbs };
+    const projectMaterials: MaterialItem[] = [
+      { name: `${bagSize} Concrete Mix`, quantity: selectedBags, unit: "bags", category: "Concrete" },
+      { name: "Concrete (ready-mix)", quantity: totalVolumeCuYd, unit: "cu yd", category: "Concrete" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, thickness, wasteFactor, bagSize, onCalculate]);
 
   // DOM Refs for focusing inputs from SVG click hotspots
   const lengthInputRef = useRef<HTMLInputElement>(null);
@@ -566,6 +595,57 @@ function ConcreteSlabCalc() {
 
         {/* Bags Matrix */}
         <ConcreteBagMatrix bags80={bags80} bags60={bags60} bags50={bags50} bags40={bags40} />
+      </div>
+
+      <div className="lg:col-span-12">
+        <ReportEngine
+          calculatorId="concrete-slab"
+          inputs={{
+            length: { value: lenNum, unit: unitSystem === "imperial" ? "ft" : "m", label: "Length" },
+            width: { value: widNum, unit: unitSystem === "imperial" ? "ft" : "m", label: "Width" },
+            thickness: { value: thickNum, unit: "in", label: "Thickness" },
+          }}
+          results={{
+            area: { value: area, unit: unitSystem === "imperial" ? "sq ft" : "sq m", label: "Area" },
+            volume: { value: totalVolumeCuYd, unit: "cu yd", label: "Volume" },
+          }}
+          materials={projectMaterials}
+          metrics={{
+            weightLbs: estimatedWeightLbs,
+            volumeCuYd: totalVolumeCuYd,
+            volumeCuM: totalVolumeCuM,
+            bagsCount: selectedBags,
+            bagSize: bagSize,
+            wasteFactorPercent: wastePercent,
+            laborType: laborType,
+          }}
+        />
+
+        <div className="lg:col-span-12">
+          <button
+            type="button"
+            onClick={() => setShowPlaybook(!showPlaybook)}
+            className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)] transition-all text-left cursor-pointer"
+            aria-expanded={showPlaybook}
+          >
+            <div className="flex items-center gap-3">
+              <svg className={`w-5 h-5 text-[var(--accent)] transition-transform ${showPlaybook ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+              <div>
+                <span className="text-sm font-semibold text-[var(--fg)]">View Project Playbook</span>
+                <p className="text-xs text-[var(--fg-muted)]">Complete execution plan with checkpoints, tools, and timeline</p>
+              </div>
+            </div>
+            <svg className={`w-5 h-5 text-[var(--fg-muted)] transition-transform ${showPlaybook ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+          {showPlaybook && (
+            <ProjectPlaybook
+              workflowId="patio"
+              calculatorInputs={{ length: lenNum, width: widNum, thickness: thickNum }}
+              results={{ area, volume: totalVolumeCuYd }}
+              materials={projectMaterials}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

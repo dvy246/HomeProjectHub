@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
@@ -16,13 +16,17 @@ const MULCH_TYPES = [
   { key: "dyed", label: "Dyed Mulch", lbsPerCuFt: 25, bagsPerCuYd: 13.5 },
 ];
 
-function MulchCalc() {
+function MulchCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [type, setType] = useState("bark");
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("3");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("mulch", "Mulch Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [type, sqft, depth, onCalculate]);
 
   const mt = MULCH_TYPES.find((m) => m.key === type) || MULCH_TYPES[0];
   const sf = parseNumber(sqft);

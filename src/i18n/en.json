@@ -1439,5 +1439,39 @@
     "reset": "Reset",
     "save": "Save",
     "loading": "Loading…"
+  },
+  "report": {
+    "title": "Explain My Calculation",
+    "subtitle": "Comprehensive, values-based project breakdown.",
+    "print_btn": "Print/Export PDF",
+    "summary": {
+      "concrete_slab": "You are planning a concrete slab project measuring {length} {unit} in length by {width} {unit} in width, with a thickness of {thickness} inches. This covers a total surface area of {area} {areaUnit}.",
+      "drywall": "You are planning a drywall installation with a total wall length of {wallLengths} ft and wall height of {wallHeight} ft, covering a total surface wall area of {wallArea} sq ft.",
+      "fallback": "Project summary details for {calculatorId}."
+    },
+    "breakdown": {
+      "intro": "Based on your input parameters, the following exact quantities are required for the installation:",
+      "col_item": "Material / Tool Item",
+      "col_qty": "Required Quantity"
+    },
+    "waste": {
+      "high": "A high waste allowance of {waste}% was included. This is highly recommended for projects with complex geometries, circular cutouts, irregular corners, or uneven subgrade levels to ensure you do not run short.",
+      "low": "A very tight waste margin of {waste}% has been specified. Ensure that your formwork is highly accurate and there is minimal spillage during placement, as this leaves very little margin for error.",
+      "normal": "A standard waste allowance of {waste}% has been factored in to compensate for cutting losses, spillage, and variations in subgrade levels or framing irregularities."
+    },
+    "delivery": {
+      "truck": "Your project requires {volume} cubic yards of concrete ({bags} bags of {bagSize}). Because this volume is substantial, we strongly recommend purchasing ready-mix delivery instead of bags, which will save significant manual labor and ensure a uniform pour.",
+      "heavy": "The total material load exceeds 3,000 lbs. Standard consumer pickup trucks can typically carry between 1,500 and 2,500 lbs in the bed. To prevent vehicle damage or unsafe transport, we recommend arranging professional home delivery from your retailer.",
+      "pickup": "The total material load is approximately {weight} lbs, which can be safely transported in a standard light-duty pickup truck or cargo van in a single trip."
+    },
+    "weight": {
+      "desc": "The total estimated weight of the required physical materials is {lbs} lbs (approx. {tons} tons). Make sure your workspace floor or subgrade can support this load and that you have helper labor available to lift and stack materials safely."
+    },
+    "mixing": {
+      "concrete_heavy": "Mixing {bags} bags of concrete by hand is extremely taxing. We recommend renting a motorized drum mixer from a local tool rental center or opting for a ready-mix delivery truck to complete the project in one cohesive pour.",
+      "concrete_medium": "With {bags} bags required, you can mix this by hand using a wheelbarrow and concrete hoe, though a rented electric mixer will make the job substantially faster.",
+      "concrete_light": "This small quantity ({bags} bags) can be easily mixed by hand in a standard wheelbarrow, mortar tub, or five-gallon bucket.",
+      "fallback": "Standard mixing or application steps are recommended. Follow packaging instructions."
+    }
   }
 }

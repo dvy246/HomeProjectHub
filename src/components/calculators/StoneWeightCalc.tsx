@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
@@ -25,7 +25,7 @@ const STONE_DENSITIES: Record<string, number> = {
   sandstone: 145,
 };
 
-function StoneWeightCalc() {
+function StoneWeightCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [stone, setStone] = useState("concrete");
   const [length, setLength] = useState("24");
@@ -34,6 +34,10 @@ function StoneWeightCalc() {
   const [quantity, setQuantity] = useState("1");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("stone-weight", "Stone Weight Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [stone, length, width, thickness, quantity, onCalculate]);
 
   const s = stone;
   const l = parseNumber(length);

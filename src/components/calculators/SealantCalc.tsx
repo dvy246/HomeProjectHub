@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -8,7 +8,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function SealantCalc() {
+function SealantCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [jointLength, setJointLength] = useState("100");
   const [jointWidth, setJointWidth] = useState("0.5");
@@ -16,6 +16,10 @@ function SealantCalc() {
   const [tubeSize, setTubeSize] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("sealant", "Sealant Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [jointLength, jointWidth, jointDepth, tubeSize, onCalculate]);
 
   const jl = parseNumber(jointLength);
   const jw = parseNumber(jointWidth);

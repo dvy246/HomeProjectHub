@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
@@ -21,6 +21,8 @@ interface Props {
   defaultWidth?: string;
   defaultThickness?: string;
   showQuantity?: boolean;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
 }
 
 function WeightCalc({
@@ -30,6 +32,8 @@ function WeightCalc({
   defaultWidth = "12",
   defaultThickness = "0.5",
   showQuantity = false,
+  projectId,
+  onCalculate,
 }: Props) {
   const { t } = useI18n();
   const [material, setMaterial] = useState(defaultMaterial || materials[0]?.id || "");
@@ -39,6 +43,10 @@ function WeightCalc({
   const [quantity, setQuantity] = useState("1");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("weight", "Weight Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [material, length, width, thickness, quantity, onCalculate]);
 
   const l = parseNumber(length);
   const w = parseNumber(width);

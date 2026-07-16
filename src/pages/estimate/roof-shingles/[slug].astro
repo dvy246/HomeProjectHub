@@ -1,0 +1,243 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import {
+  graphSchema,
+  faqPageSchema,
+  howToSchema,
+  breadcrumbListSchema,
+  mathSolverSchema,
+} from "../../../lib/schema";
+import { computeRoofShingles } from "../../../lib/estimateEngine";
+import { ROOF_SHINGLE_SEEDS } from "../../../data/estimate-seeds";
+
+export function getStaticPaths() {
+  return ROOF_SHINGLE_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof ROOF_SHINGLE_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const result = computeRoofShingles({
+  length: seed.length,
+  width: seed.width,
+  pitch: seed.pitch,
+  roofShape: seed.roofShape,
+});
+
+const canonical = `https://homeplanninghub.com/estimate/roof-shingles/${seed.slug}/`;
+const shapeName = seed.roofShape === "hip" ? "Hip" : "Gable";
+const title = `Shingles for ${seed.label}: ${result.squares} Squares, ${result.bundles} Bundles`;
+const description = `Calculate shingles needed for a ${seed.label.toLowerCase()}. Get squares, bundles, nails, and underlayment for your roof.`;
+
+const h1Title = `Shingles Needed for a ${seed.label}`;
+const h1Short = `${seed.label} Shingle Estimate`;
+
+function fmt(num: number, decimals = 2): string {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const faqs = [
+  {
+    q: `How many shingles do I need for a ${seed.label.toLowerCase()}?`,
+    a: `For a ${seed.label.toLowerCase()}, you need approximately ${result.bundles} bundles of asphalt shingles, which equals ${result.squares} roofing squares (1 square = 100 sq ft). The actual roof surface area is ${fmt(result.roofAreaSqFt)} sq ft after applying the ${seed.pitch}/12 pitch multiplier of ${fmt(result.pitchMultiplier)} and the ${shapeName.toLowerCase()} roof geometry factor. You will also need ${result.nailsLbBoxes} lb boxes of roofing nails and ${result.underlaymentRolls} rolls of felt underlayment. Use our Roof Shingle Calculator to adjust dimensions and compare material options.`,
+  },
+  {
+    q: `What is the pitch multiplier for a ${seed.pitch}/12 roof?`,
+    a: `For a ${seed.pitch}/12 roof pitch (${seed.pitch} inches of rise per 12 inches of horizontal run), the pitch multiplier is ${fmt(result.pitchMultiplier)}. This means the actual sloped roof area is ${fmt(result.pitchMultiplier * 100, 1)}% of the building footprint. For a ${seed.length}×${seed.width} building footprint of ${seed.length * seed.width} sq ft, the sloped roof area becomes approximately ${fmt(result.roofAreaSqFt)} sq ft for a ${shapeName.toLowerCase()} roof. Use our Roof Pitch Calculator to find the pitch multiplier for any slope.`,
+  },
+  {
+    q: `How many squares of shingles for a ${seed.length}×${seed.width} ${shapeName.toLowerCase()} roof?`,
+    a: `A ${seed.length} ft by ${seed.width} ft ${shapeName.toLowerCase()} roof with a ${seed.pitch}/12 pitch requires ${result.squares} squares of shingles (1 square = 100 sq ft). Roofing materials are priced by the square. Standard 3-tab asphalt shingles cost $90 to $110 per square, while architectural shingles cost $130 to $180 per square. For this roof, material cost would range from $${fmt(result.squares * 90, 0)} to $${fmt(result.squares * 180, 0)} for shingles alone, plus underlayment, nails, and labor.`,
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Roofing Calculators", path: "/calculators/roofing/" },
+    { name: "Shingles", path: "/calculators/roofing/shingles/" },
+    { name: h1Short, path: `/estimate/roof-shingles/${seed.slug}/` },
+  ]),
+  mathSolverSchema({
+    name: `Shingle Count for ${seed.label}`,
+    description: `Calculate shingle squares, bundles, nails, and underlayment for a ${seed.label.toLowerCase()}.`,
+    formula: `Roof Area = footprint × pitch multiplier × shape factor`,
+    url: canonical,
+  }),
+  howToSchema(
+    `Calculate Shingles for a ${seed.label}`,
+    `Follow these steps to determine how many shingles you need for a ${seed.label.toLowerCase()}.`,
+    [
+      {
+        name: "Calculate the footprint",
+        text: `The building footprint is ${seed.length} ft × ${seed.width} ft = ${seed.length * seed.width} sq ft.`,
+      },
+      {
+        name: "Apply the pitch multiplier",
+        text: `For a ${seed.pitch}/12 pitch, the multiplier is ${fmt(result.pitchMultiplier)} (square root of 1 + (${seed.pitch}/12)²).`,
+      },
+      {
+        name: "Apply the roof shape multiplier",
+        text: `For a ${shapeName.toLowerCase()} roof, the sloped area = ${fmt(result.roofAreaSqFt)} sq ft. Divide by 100 for squares: ${result.squares} squares. Each square needs 3 bundles: ${result.bundles} bundles total.`,
+      },
+    ]
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/roofing/" class="hover:underline">roofing</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/roofing/shingles/" class="hover:underline">shingles</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{h1Short}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        This estimate shows the number of shingle bundles, squares, nails, and underlayment rolls needed for a {seed.label.toLowerCase()}. The calculation applies the {seed.pitch}/12 pitch pitch multiplier of {fmt(result.pitchMultiplier)} and a {seed.roofShape === "hip" ? "hip roof factor of 1.06" : "gable roof area formula"}.
+      </p>
+    </header>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Material Estimate for {seed.label}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Measurement</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Value</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Building Footprint</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.length} × {seed.width} ft ({seed.length * seed.width} sq ft)</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Roof Pitch</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.pitch}/12</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Roof Shape</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{shapeName}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Actual Roof Area</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.roofAreaSqFt)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Roofing Squares</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.squares} squares</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Shingle Bundles</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.bundles} bundles</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Nails (lb boxes)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.nailsLbBoxes} boxes</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Underlayment Rolls</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.underlaymentRolls} rolls</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-5">
+      <h2 class="text-base font-bold tracking-tight mb-2">Cost Estimate (Shingles Only)</h2>
+      <p class="text-xs text-[var(--fg-secondary)] leading-relaxed mb-3">
+        Shingle costs vary by type and quality. Prices are per square (100 sq ft).
+      </p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Shingle Type</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Per Square</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Total ({result.squares} squares)</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">3-Tab Asphalt</td>
+              <td class="py-2">$90&ndash;$110</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.squares * 90, 0)}&ndash;${fmt(result.squares * 110, 0)}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Architectural</td>
+              <td class="py-2">$130&ndash;$180</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.squares * 130, 0)}&ndash;${fmt(result.squares * 180, 0)}</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Premium/Luxury</td>
+              <td class="py-2">$200&ndash;$350</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.squares * 200, 0)}&ndash;${fmt(result.squares * 350, 0)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-2 text-xs text-[var(--fg-muted)]"><em>Costs exclude underlayment, flashing, drip edge, ice & water shield, labor, and permit fees. Get multiple contractor quotes for accurate pricing.</em></p>
+    </section>
+
+    <section>
+      <h2 id="how-it-works" class="text-xl font-bold tracking-tight mb-4">How the Estimate Works</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        The shingle count is calculated by converting the building footprint to the actual sloped roof area:
+      </p>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Pitch Multiplier = &radic;(1 + ({seed.pitch} ÷ 12)²) = <strong>{fmt(result.pitchMultiplier)}</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        {shapeName} Roof Area = {seed.length} × {seed.width} × {fmt(result.pitchMultiplier)}{seed.roofShape === "hip" ? " × 1.06" : ""} = <strong>{fmt(result.roofAreaSqFt)} sq ft</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Squares = {fmt(result.roofAreaSqFt)} ÷ 100 = <strong>{result.squares} squares</strong> | Bundles = {result.squares} × 3 = <strong>{result.bundles} bundles</strong>
+      </div>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Standard 3-tab and architectural asphalt shingles are packaged with 3 bundles covering exactly 1 square (100 sq ft). The nails estimate uses 4 lb boxes per square, and underlayment uses 1 roll per 400 sq ft of roof area. For complex roofs with valleys and dormers, increase quantities by 10-15%.
+      </p>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 text-center">
+      <h2 class="text-base font-bold tracking-tight mb-2">Customize This Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] mb-4">Adjust roof dimensions, pitch, shape, and waste factor.</p>
+      <a href={`/calculators/roofing/shingles/?length=${seed.length}&width=${seed.width}&pitch=${seed.pitch}&roofShape=${seed.roofShape}`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity no-underline">
+        Open Interactive Shingle Calculator
+      </a>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedGuides category="roofing" />
+    <RelatedCalculators slug="roof-shingles" />
+  </article>
+</Layout>

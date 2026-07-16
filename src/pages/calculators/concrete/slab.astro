@@ -5,6 +5,7 @@ import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import RelatedEstimates from "../../../components/ui/RelatedEstimates.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/calculators/concrete/slab/";
@@ -317,6 +318,7 @@ const schema = graphSchema(
     </section>
 
     <RelatedGuides category="concrete" />
+    <RelatedEstimates slug="concrete-slab" />
     <RelatedCalculators slug="concrete-slab" />
   </article>
 </Layout>

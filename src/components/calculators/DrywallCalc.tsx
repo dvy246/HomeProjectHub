@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -9,10 +9,11 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
+import { ReportEngine } from "../ui/ReportEngine";
 
 const SHEET_SIZES = ["4x8", "4x10", "4x12"] as const;
 
-function DrywallCalc() {
+function DrywallCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [wallLengths, setWallLengths] = useState("40");
   const [wallHeight, setWallHeight] = useState("8");
@@ -20,6 +21,10 @@ function DrywallCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("drywall", "Drywall Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wallLengths, wallHeight, sheetSize, waste, onCalculate]);
 
   const wl = parseNumber(wallLengths);
   const wh = parseNumber(wallHeight);
@@ -116,6 +121,24 @@ function DrywallCalc() {
             </div>
           </div>
         </Card>
+      </div>
+
+      <div className="lg:col-span-12">
+        <ReportEngine
+          calculatorId="drywall"
+          inputs={{
+            wallLengths: { value: wl, unit: "ft", label: "Wall Length" },
+            wallHeight: { value: wh, unit: "ft", label: "Wall Height" },
+          }}
+          results={{
+            wallArea: { value: wallArea, unit: "sq ft", label: "Wall Area" },
+          }}
+          materials={projectMaterials}
+          metrics={{
+            wasteFactorPercent: ws,
+            weightLbs: sheetsWithWaste * 50, // Drywall sheets average weight
+          }}
+        />
       </div>
     </div>
   );

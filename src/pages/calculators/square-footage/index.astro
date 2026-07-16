@@ -5,6 +5,7 @@ import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
+import RelatedEstimates from "../../../components/ui/RelatedEstimates.astro"
 
 const canonical = "https://homeplanninghub.com/calculators/square-footage/";
 const title = "Square Footage Calculator";
@@ -52,6 +53,7 @@ const schema = graphSchema(
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the square footage of a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room is 144 sq ft. This is wall-to-wall floor area — wall paint needs perimeter x ceiling height.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many square feet in an acre?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">43,560 square feet = 1 acre. A 209 ft x 209 ft square is roughly one acre.</p></details>
   </div></section>
+  <RelatedEstimates slug="square-footage" />
   <RelatedCalculators slug="square-footage" />
 </article>
 </Layout>

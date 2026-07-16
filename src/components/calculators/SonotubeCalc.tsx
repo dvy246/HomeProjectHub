@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { cuFeetToCuYards, calculateCircleAreaFromDiameter } from "../../lib/geometry";
@@ -10,7 +10,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function SonotubeCalc() {
+function SonotubeCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [diameter, setDiameter] = useState("10");
   const [height, setHeight] = useState("48");
@@ -18,6 +18,10 @@ function SonotubeCalc() {
   const [waste, setWaste] = useState("5");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("sonotube", "Sonotube Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [diameter, height, quantity, waste, onCalculate]);
 
   const d = parseNumber(diameter);
   const h = parseNumber(height);

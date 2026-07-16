@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -10,14 +10,40 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function RoofPitchCalc() {
+interface RoofPitchCalcProps {
+  initialLength?: string;
+  initialWidth?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function RoofPitchCalc({ initialLength, initialWidth, projectId, onCalculate }: RoofPitchCalcProps = {}) {
   const { t } = useI18n();
   const [rise, setRise] = useState<string>("6");
   const [run, setRun] = useState<string>("12");
-  const [buildingLength, setBuildingLength] = useState<string>("40");
-  const [buildingWidth, setBuildingWidth] = useState<string>("30");
+  const [buildingLength, setBuildingLength] = useState<string>(initialLength || "40");
+  const [buildingWidth, setBuildingWidth] = useState<string>(initialWidth || "30");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roof-pitch", "Roof Pitch Calculator");
+
+  useEffect(() => {
+    const riseNum = parseFloat(rise) || 6;
+    const runNum = parseFloat(run) || 12;
+    const bLen = parseFloat(buildingLength) || 0;
+    const bWid = parseFloat(buildingWidth) || 0;
+    const pitchDegrees = Math.atan(riseNum / runNum) * (180 / Math.PI);
+    const pitchFactor = Math.sqrt(1 + (riseNum / runNum) ** 2);
+    const slopePercent = (riseNum / runNum) * 100;
+    const roofArea = bLen * bWid * pitchFactor;
+    const rafterLength = (bWid / 2) * pitchFactor;
+
+    const projectInputs = { rise: riseNum, run: runNum, buildingLength: bLen, buildingWidth: bWid };
+    const projectResults = { pitchDegrees, slopePercent, pitchFactor, roofArea, rafterLength };
+    const projectMaterials: MaterialItem[] = [
+      { name: "Rafter Lumber", quantity: rafterLength * 2, unit: "linear ft", category: "lumber" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [rise, run, buildingLength, buildingWidth, onCalculate]);
 
   const riseNum = parseNumber(rise) || 0.001;
   const runNum = parseNumber(run) || 0.001;

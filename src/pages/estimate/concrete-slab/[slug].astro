@@ -1,0 +1,243 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import {
+  graphSchema,
+  faqPageSchema,
+  howToSchema,
+  breadcrumbListSchema,
+  mathSolverSchema,
+} from "../../../lib/schema";
+import { computeConcreteSlab } from "../../../lib/estimateEngine";
+import { CONCRETE_SLAB_SEEDS } from "../../../data/estimate-seeds";
+
+export function getStaticPaths() {
+  return CONCRETE_SLAB_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof CONCRETE_SLAB_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const result = computeConcreteSlab({
+  length: seed.length,
+  width: seed.width,
+  thickness: seed.thickness,
+  waste: 10,
+});
+
+const canonical = `https://homeplanninghub.com/estimate/concrete-slab/${seed.slug}/`;
+const title = `Concrete for a ${seed.label}: Materials & Cost Estimate`;
+const description = `Calculate the exact concrete needed for a ${seed.label.toLowerCase()}. Get cubic yards, bags of concrete, and weight for your slab.`;
+
+const h1Title = `Concrete Needed for a ${seed.length} × ${seed.width} Foot Slab (${seed.thickness} Inches Thick)`;
+const h1Short = `${seed.length}×${seed.width}×${seed.thickness}″ Slab Concrete Estimate`;
+
+function fmt(num: number, decimals = 2): string {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const faqs = [
+  {
+    q: `How much concrete do I need for a ${seed.length}×${seed.width} slab ${seed.thickness} inches thick?`,
+    a: `A ${seed.length} ft by ${seed.width} ft concrete slab at ${seed.thickness} inches thick requires approximately ${fmt(result.totalVolumeCuYd)} cubic yards of concrete (including a standard 10% waste factor). This equals about ${fmt(result.volumeCuYd, 2)} cubic yards before waste. The surface area of the slab is ${fmt(result.areaSqFt)} square feet. Use our interactive Concrete Slab Calculator to customize your waste factor and bag size for a more precise estimate.`,
+  },
+  {
+    q: `How many 80lb bags of concrete for a ${seed.label.toLowerCase()}?`,
+    a: `For a ${seed.label.toLowerCase()}, you will need ${result.bags80} bags of 80lb concrete mix. If you prefer other bag sizes, you would need ${result.bags60} bags of 60lb mix, ${result.bags50} bags of 50lb mix, or ${result.bags40} bags of 40lb mix. An 80lb bag yields approximately 0.6 cubic feet of mixed concrete. For small projects, bagged concrete is cost-effective; for larger pours, consider ready-mix delivery. Use our calculator to compare bag sizes and costs.`,
+  },
+  {
+    q: `What is the formula for calculating concrete for a ${seed.length}×${seed.width} slab?`,
+    a: `The formula is: Volume (cu yd) = (Length × Width × Thickness in feet) ÷ 27. For a ${seed.length}×${seed.width} slab at ${seed.thickness} inches: (${seed.length} ft × ${seed.width} ft × ${fmt(seed.thickness / 12)} ft) ÷ 27 = ${fmt(result.volumeCuYd)} cubic yards. Add 10% for waste and subgrade irregularities: ${fmt(result.totalVolumeCuYd)} cubic yards total.`,
+  },
+  {
+    q: `How much does concrete cost for a ${seed.label.toLowerCase()}?`,
+    a: `For a ${seed.label.toLowerCase()}, ready-mix concrete typically costs $125 to $175 per cubic yard delivered, totaling $${fmt(result.totalVolumeCuYd * 125)} to $${fmt(result.totalVolumeCuYd * 175)} for concrete alone. Using 80lb bags at approximately $7.50 each, bagged concrete would cost about $${fmt(result.bags80 * 7.5)} plus tax. For projects under 2 cubic yards, bagged concrete is often cheaper since you avoid the ready-mix minimum delivery fee of $100 to $150.`,
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: "Concrete Slab", path: "/calculators/concrete/slab/" },
+    { name: h1Short, path: `/estimate/concrete-slab/${seed.slug}/` },
+  ]),
+  mathSolverSchema({
+    name: `Concrete Volume for ${seed.label}`,
+    description: `Calculate concrete needed for a ${seed.length}×${seed.width} slab at ${seed.thickness} inches thick.`,
+    formula: `Volume (cu yd) = (${seed.length} × ${seed.width} × ${fmt(seed.thickness / 12)}) ÷ 27`,
+    url: canonical,
+  }),
+  howToSchema(
+    `Calculate Concrete for a ${seed.label}`,
+    `Follow these steps to determine exactly how much concrete you need for a ${seed.label.toLowerCase()}.`,
+    [
+      {
+        name: "Calculate the surface area",
+        text: `Multiply the slab length by width: ${seed.length} ft × ${seed.width} ft = ${fmt(result.areaSqFt)} sq ft.`,
+      },
+      {
+        name: "Convert thickness to feet",
+        text: `${seed.thickness} inches ÷ 12 = ${fmt(seed.thickness / 12)} feet.`,
+      },
+      {
+        name: "Find the volume in cubic yards",
+        text: `Multiply area by thickness in feet, then divide by 27: (${fmt(result.areaSqFt)} × ${fmt(seed.thickness / 12)}) ÷ 27 = ${fmt(result.volumeCuYd)} cu yd. Add 10% waste for ${fmt(result.totalVolumeCuYd)} cu yd total.`,
+      },
+    ]
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/" class="hover:underline">concrete</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/concrete/slab/" class="hover:underline">slab</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{h1Short}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        This estimate shows the concrete volume, bag count, and weight required for a {seed.label.toLowerCase()}. All calculations include a 10% waste factor for subgrade irregularities and form flex. Adjust the waste factor and compare bag sizes using our interactive calculator below.
+      </p>
+    </header>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Material Estimate for {seed.label}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Measurement</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Value</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Surface Area</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.areaSqFt)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Slab Thickness</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.thickness} in</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Concrete Volume (before waste)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.volumeCuYd)} cu yd</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Concrete Volume (with 10% waste)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.totalVolumeCuYd)} cu yd</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">80lb Bags Needed</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.bags80} bags</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">60lb Bags Needed</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.bags60} bags</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">50lb Bags Needed</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.bags50} bags</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">40lb Bags Needed</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.bags40} bags</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Estimated Total Weight</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.weightLbs.toLocaleString()} lbs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-5">
+      <h2 class="text-base font-bold tracking-tight mb-2">Cost Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] leading-relaxed mb-3">
+        Estimated material costs based on national averages. Prices vary by region and supplier.
+      </p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Option</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Est. Cost Range</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Ready-Mix Concrete Delivery</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.totalVolumeCuYd * 125, 0)}&ndash;${fmt(result.totalVolumeCuYd * 175, 0)}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">80lb Bags ({result.bags80} bags)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.bags80 * 7.5, 0)}</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">60lb Bags ({result.bags60} bags)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${fmt(result.bags60 * 6, 0)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-2 text-xs text-[var(--fg-muted)]"><em>Costs exclude tax, delivery fees, and labor. Verify current pricing with local suppliers.</em></p>
+    </section>
+
+    <section>
+      <h2 id="how-it-works" class="text-xl font-bold tracking-tight mb-4">How the Estimate Works</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        The concrete volume is calculated using the standard formula for a rectangular prism:
+      </p>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Volume (cu ft) = <strong>{seed.length}</strong> ft × <strong>{seed.width}</strong> ft × <strong>{seed.thickness} in ÷ 12</strong> = {fmt(result.volumeCuFt)} cu ft
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Volume (cu yd) = {fmt(result.volumeCuFt)} cu ft ÷ 27 = <strong>{fmt(result.volumeCuYd)} cu yd</strong>
+      </div>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        A 10% waste factor is applied to account for subgrade irregularities, form flex, and spillage: <strong>{fmt(result.totalVolumeCuYd)} cu yd total</strong>. Bag calculations use standard yields: 80lb bags yield 0.6 cu ft, 60lb yield 0.45 cu ft, 50lb yield 0.375 cu ft, and 40lb yield 0.3 cu ft.
+      </p>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 text-center">
+      <h2 class="text-base font-bold tracking-tight mb-2">Customize This Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] mb-4">Adjust the waste factor, compare bag sizes, or switch between imperial and metric units.</p>
+      <a href={`/calculators/concrete/slab/?length=${seed.length}&width=${seed.width}&thickness=${seed.thickness}`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity no-underline">
+        Open Interactive Concrete Calculator
+      </a>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedGuides category="concrete" />
+    <RelatedCalculators slug="concrete-slab" />
+  </article>
+</Layout>

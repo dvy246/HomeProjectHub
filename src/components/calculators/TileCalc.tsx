@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -12,7 +12,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function TileCalc() {
+function TileCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState("10");
   const [width, setWidth] = useState("10");
@@ -23,6 +23,10 @@ function TileCalc() {
   const [layout, setLayout] = useState<"grid" | "diagonal" | "herringbone">("grid");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("tile", "Tile Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, tileWidth, tileLength, tilesPerBox, wasteFactor, layout, onCalculate]);
 
   const lenNum = parseNumber(length);
   const widNum = parseNumber(width);

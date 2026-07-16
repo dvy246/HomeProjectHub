@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -17,7 +17,7 @@ const BLOCK_SIZES: Record<string, { face: number; mortar: number }> = {
   "12x8x16": { face: 2.67, mortar: 0.011 },
 };
 
-function BlockFillCalc() {
+function BlockFillCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("30");
   const [height, setHeight] = useState<string>("8");
@@ -27,6 +27,10 @@ function BlockFillCalc() {
   const [wasteFactor, setWasteFactor] = useState<string>("5");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("block-fill", "Concrete Block Fill Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, height, blockSize, coreFill, wasteFactor, _mortarJoint, onCalculate]);
 
   const len = parseNumber(length);
   const hgt = parseNumber(height);

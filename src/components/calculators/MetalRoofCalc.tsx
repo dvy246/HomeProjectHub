@@ -17,7 +17,7 @@ import { withI18n } from "../i18n/withI18n";
 const METAL_PANEL_WIDTH = 36;
 const METAL_PANEL_LENGTH = 144;
 
-function MetalRoofCalc() {
+function MetalRoofCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("40");
   const [width, setWidth] = useState<string>("30");
@@ -30,6 +30,10 @@ function MetalRoofCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("metal-roof", "Metal Roof Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, pitch, panelWidth, panelLength, wasteFactor, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());

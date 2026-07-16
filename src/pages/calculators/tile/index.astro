@@ -5,6 +5,7 @@ import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import RelatedEstimates from "../../../components/ui/RelatedEstimates.astro";
 
 const canonical = "https://homeplanninghub.com/calculators/tile/";
 const title = "Tile Calculator";
@@ -157,6 +158,7 @@ const schema = graphSchema(
       </div>
     </section>
 
+    <RelatedEstimates slug="tile" />
     <RelatedCalculators slug="tile" />
   </article>
 </Layout>

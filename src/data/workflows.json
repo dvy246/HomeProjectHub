@@ -1,0 +1,812 @@
+[
+  {
+    "id": "patio",
+    "name": "Concrete Patio Project",
+    "description": "Plan your sub-base, reinforcement, and poured concrete slab from start to finish.",
+    "steps": [
+      {
+        "id": "gravel",
+        "name": "Gravel Base",
+        "calculatorId": "gravel",
+        "url": "/calculators/gravel/",
+        "requiredInputs": ["length", "width", "depth"]
+      },
+      {
+        "id": "concrete-slab",
+        "name": "Concrete Slab",
+        "calculatorId": "concrete-slab",
+        "url": "/calculators/concrete/slab/",
+        "requiredInputs": ["length", "width", "thickness"]
+      },
+      {
+        "id": "rebar",
+        "name": "Rebar Reinforcement",
+        "calculatorId": "rebar",
+        "url": "/calculators/concrete/rebar/",
+        "requiredInputs": ["length", "width"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Excavation & Base", "duration": "Day 1", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Rent plate compactor)", "description": "Excavate the site to the required depth, rake the soil flat, lay down weed fabric, and compact the gravel base." },
+      { "phase": "Formwork & Rebar", "duration": "Day 2", "diyDifficulty": "Medium", "hiringRecommendation": "DIY-friendly (Follow structural guide)", "description": "Build wooden form boundaries, secure stakes, and lay down rebar grids with lap splices elevated on chairs." },
+      { "phase": "Concrete Pouring", "duration": "Day 3", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (High risk of concrete quick-setting)", "description": "Pour wet concrete mix, screed the top flat, float the surface, cut control joints, and apply broom finish." },
+      { "phase": "Moist Curing", "duration": "Days 4–10", "diyDifficulty": "Easy", "hiringRecommendation": "DIY (Periodic water misting)", "description": "Mist the slab with water regularly and cover with plastic sheeting to ensure optimal curing density." },
+      { "phase": "Structural Curing", "duration": "Day 28", "diyDifficulty": "Easy", "hiringRecommendation": "DIY (Wait time before loading)", "description": "Concrete reaches its full structural design strength. You may place heavy furniture or structures." }
+    ],
+    "mistakes": [
+      "Pouring concrete directly over soft soil without a compacted gravel base (causes sinking/cracking).",
+      "Forgetting to place rebar on chairs (rebar resting on the ground provides zero tensile strength).",
+      "Pouring concrete in direct scorching sun or sub-freezing temperatures without weather protection.",
+      "Adding excessive water to the concrete drum to make it easier to pour, which ruins the concrete's strength."
+    ],
+    "related": [
+      { "name": "Concrete Footing Calculator", "url": "/calculators/concrete/footing/" },
+      { "name": "Concrete Steps Calculator", "url": "/calculators/concrete/steps/" }
+    ],
+    "accessoryTools": [
+      { "name": "Wooden form boards (2x4s or 2x6s)", "recommendation": "buy" },
+      { "name": "Rebar chairs (elevators)", "recommendation": "buy" },
+      { "name": "Tie wire and wire twister tool", "recommendation": "buy" },
+      { "name": "Plate compactor", "recommendation": "rent" },
+      { "name": "Concrete screed board and bull float", "recommendation": "rent" },
+      { "name": "Slab edger and groover tools", "recommendation": "buy" },
+      { "name": "Safety goggles, heavy gloves, and rubber boots", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Call 811 to mark underground utilities before excavating",
+      "Check weather forecast — no rain expected for 48 hours after concrete pour",
+      "Order concrete delivery or confirm bag quantity for pickup",
+      "Arrange 3-4 helpers for pour day"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Excavation & Base",
+        "items": [
+          "Slope graded away from house at 1/4 inch per foot minimum?",
+          "Soil compacted thoroughly before gravel layer?",
+          "Weed barrier fabric laid over prepared base?"
+        ]
+      },
+      {
+        "phase": "Formwork & Rebar",
+        "items": [
+          "Forms level and braced against concrete pressure?",
+          "Rebar elevated on chairs — not resting on ground?",
+          "Expansion joint material placed where slab meets house?"
+        ]
+      },
+      {
+        "phase": "Concrete Pouring",
+        "items": [
+          "Concrete slump within spec (not overwatered)?",
+          "Screed board long enough to span form width?",
+          "Control joint locations marked every 4-6 feet?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove forms after 24-48 hours once concrete has set",
+      "Dispose of excess concrete — never wash residue into storm drains",
+      "Clean tools before concrete hardens on them",
+      "Sweep and dispose of form debris and scrap lumber"
+    ],
+    "maintenanceTips": [
+      "Seal concrete every 2-3 years to prevent staining and freeze-thaw damage",
+      "Re-apply caulk at expansion joints and slab/house interface annually",
+      "Avoid de-icing salts — use sand or kitty litter for winter traction",
+      "Power wash gently — keep pressure below 1500 psi to avoid surface pitting"
+    ]
+  },
+  {
+    "id": "shed",
+    "name": "Backyard Shed Construction",
+    "description": "Estimate foundation slab concrete, wall framing lumber, and roof shingles.",
+    "steps": [
+      {
+        "id": "concrete-slab",
+        "name": "Foundation Slab",
+        "calculatorId": "concrete-slab",
+        "url": "/calculators/concrete/slab/",
+        "requiredInputs": ["length", "width", "thickness"]
+      },
+      {
+        "id": "framing",
+        "name": "Wall Framing",
+        "calculatorId": "framing",
+        "url": "/calculators/framing/",
+        "requiredInputs": ["length", "spacing"]
+      },
+      {
+        "id": "roofing-shingles",
+        "name": "Roof Shingles",
+        "calculatorId": "roofing-shingles",
+        "url": "/calculators/roofing/shingles/",
+        "requiredInputs": ["length", "width", "pitch"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Slab Pouring", "duration": "Days 1–3", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Foundation leveling precision)", "description": "Prepare site, excavate, set form boards, and pour the concrete pad foundation." },
+      { "phase": "Floor & Decking", "duration": "Day 4", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Helper recommended)", "description": "Lay treated base plates, align floor joists, and screw down exterior-grade subfloor plywood sheets." },
+      { "phase": "Wall Framing", "duration": "Days 5–6", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Verify plumb and square walls)", "description": "Frame and erect the four walls, framing door/window headers, and bracing corners plumb." },
+      { "phase": "Roof Rafters", "duration": "Day 7", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro or DIY (Heights and structural load hazard)", "description": "Cut and place roof rafters or trusses, nail down plywood sheathing panels." },
+      { "phase": "Roofing & Siding", "duration": "Days 8–10", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Follow flashing guidelines)", "description": "Install weather barriers, shingles, siding panels, trim boards, windows, and doors." }
+    ],
+    "mistakes": [
+      "Using non-treated wood in direct contact with concrete slab foundation (leads to rot).",
+      "Failing to check that wall frames are perfectly square and plumb before attaching sheathing.",
+      "Inadequate roof pitch causing rainwater ponding behind shingles.",
+      "Omitting subfloor ventilation gaps leading to mold buildup beneath floor boards."
+    ],
+    "related": [
+      { "name": "Shed Cost Calculator", "url": "/calculators/shed-cost/" },
+      { "name": "Decking Calculator", "url": "/calculators/deck/" }
+    ],
+    "accessoryTools": [
+      { "name": "Circular saw and framing nailer", "recommendation": "buy or rent" },
+      { "name": "Speed square and 4-foot level", "recommendation": "buy" },
+      { "name": "House wrap moisture barrier", "recommendation": "buy" },
+      { "name": "Galvanized framing nails and deck screws", "recommendation": "buy" },
+      { "name": "Roofing nails and felt paper", "recommendation": "buy" },
+      { "name": "Safety harnesses and ladders", "recommendation": "buy or rent" }
+    ],
+    "preparationSteps": [
+      "Check local zoning — sheds over 120 sq ft may require permit",
+      "Call 811 to mark underground utilities before digging footings",
+      "Verify shed site is level and well-drained",
+      "Order materials delivery — concrete, lumber, roofing"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Slab Pouring",
+        "items": [
+          "Slab forms level and squared to layout lines?",
+          "Rebar grid on chairs at correct height?",
+          "Anchor bolts placed in wet concrete per plan?"
+        ]
+      },
+      {
+        "phase": "Wall Framing",
+        "items": [
+          "Bottom plate pressure-treated and on sill seal?",
+          "Walls plumb, square, and temporarily braced?",
+          "Header spans correct for door/window openings?"
+        ]
+      },
+      {
+        "phase": "Roofing & Siding",
+        "items": [
+          "Roof sheathing gap 1/8 inch for expansion?",
+          "Ice and water shield at eaves and valleys?",
+          "Flashing installed at roof-to-wall intersections?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove construction debris and scrap lumber from site",
+      "Return unused roofing materials for refund within return window",
+      "Store leftover paint and sealant in conditioned space",
+      "Sweep sawdust and nails from surrounding area"
+    ],
+    "maintenanceTips": [
+      "Inspect roof annually for loose or damaged shingles",
+      "Re-apply exterior stain or paint every 3-5 years",
+      "Check for ground moisture wicking into base plate each spring",
+      "Keep gutters clean and downspouts extending 4 ft from foundation"
+    ]
+  },
+  {
+    "id": "roofing",
+    "name": "Roof Shingle Replacement",
+    "description": "Calculate pitch, deck underlayment, sheathing sheets, and shingle bundles.",
+    "steps": [
+      {
+        "id": "roof-pitch",
+        "name": "Roof Pitch",
+        "calculatorId": "roof-pitch",
+        "url": "/calculators/roofing/pitch/",
+        "requiredInputs": ["rise", "run"]
+      },
+      {
+        "id": "plywood",
+        "name": "Roof Deck Plywood",
+        "calculatorId": "plywood",
+        "url": "/calculators/roofing/plywood/",
+        "requiredInputs": ["length", "width"]
+      },
+      {
+        "id": "roofing-shingles",
+        "name": "Shingle Bundles",
+        "calculatorId": "roofing-shingles",
+        "url": "/calculators/roofing/shingles/",
+        "requiredInputs": ["length", "width", "pitch"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Tear-Off", "duration": "Day 1", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Falls risk and heavy debris management)", "description": "Remove existing asphalt shingles, valley metals, flashings, and old felt paper down to wood deck." },
+      { "phase": "Deck Repair", "duration": "Day 2", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Inspect for structural rot)", "description": "Inspect underlying plywood decking for water damage, rot, or sagging; replace boards as needed." },
+      { "phase": "Weather Barriers", "duration": "Day 3", "diyDifficulty": "Medium", "hiringRecommendation": "DIY-friendly (Install self-adhesive sheets)", "description": "Install ice & water shield at eaves and valleys, lay synthetic underlayment over roof fields." },
+      { "phase": "Starter & Shingles", "duration": "Day 4", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Requires exact nailing pattern to hold warranty)", "description": "Install metal drip edges, nail down starter shingle rows, and lay main shingle fields." },
+      { "phase": "Ventilation & Capping", "duration": "Day 5", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Install ridge vents and caps)", "description": "Install ridge vents, flashing collars on plumbing vents, and nail down ridge cap shingles." }
+    ],
+    "mistakes": [
+      "Layering new shingles directly over old, curled shingles (reduces shingle life and voids warranties).",
+      "Nailing shingles incorrectly (high nailing or using too few nails causes shingles to blow off).",
+      "Re-using rusted flashings or damaged valley linings to save cost.",
+      "Improper ridge vent spacing causing condensation buildup in the attic."
+    ],
+    "related": [
+      { "name": "Metal Roofing Calculator", "url": "/calculators/roofing/metal/" },
+      { "name": "Snow Load Calculator", "url": "/calculators/roofing/snow-load/" }
+    ],
+    "accessoryTools": [
+      { "name": "Roofing shingle tear-off shovel", "recommendation": "buy" },
+      { "name": "Pneumatic coil nail gun and compressor", "recommendation": "rent" },
+      { "name": "Utility knife with hook blades", "recommendation": "buy" },
+      { "name": "Drip edge flashing metal", "recommendation": "buy" },
+      { "name": "Roofing cement and caulk gun", "recommendation": "buy" },
+      { "name": "Safety fall arrest harness kit", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Check forecast — no rain or high winds for 5 consecutive days",
+      "Confirm roof deck condition — replace rotted sheathing before shingling",
+      "Rent dumpster or arrange bag-based debris disposal",
+      "Order shingles, underlayment, and flashing — allow 2-week lead for special colors"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Tear-Off",
+        "items": [
+          "All gutters and downspouts protected from debris?",
+          "Drop cloths covering landscaping and walkways?",
+          "Trash chute or dumpster positioned safely?"
+        ]
+      },
+      {
+        "phase": "Weather Barriers",
+        "items": [
+          "Ice and water shield extends 6 ft up from eave?",
+          "Synthetic underlayment overlapped 6 inches minimum?",
+          "Valleys and pipe penetrations flashed before underlayment?"
+        ]
+      },
+      {
+        "phase": "Starter & Shingles",
+        "items": [
+          "Starter strip installed with 1/2 inch overhang at eave?",
+          "First shingle course offset 6 inches from starter?",
+          "Nails placed in nailing zone (not too high, not too low)?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove all old shingle debris from roof deck and gutters",
+      "Magnetic sweeper over driveway and lawn to collect roofing nails",
+      "Dispose of tear-off debris per local landfill guidelines",
+      "Return unused shingle bundles within supplier return window"
+    ],
+    "maintenanceTips": [
+      "Inspect roof after major storms for missing or damaged shingles",
+      "Clean gutters at least twice per year — spring and fall",
+      "Check attic for light penetration or water stains after heavy rain",
+      "Trim overhanging tree branches to prevent moss and debris accumulation"
+    ]
+  },
+  {
+    "id": "deck",
+    "name": "Deck Construction Project",
+    "description": "Design your deck from the ground up — footings, framing, decking boards, railings, and finish.",
+    "steps": [
+      {
+        "id": "concrete-footing",
+        "name": "Pier Footings",
+        "calculatorId": "concrete-footing",
+        "url": "/calculators/concrete/footing/",
+        "requiredInputs": ["diameter", "depth", "quantity"]
+      },
+      {
+        "id": "decking",
+        "name": "Deck Boards",
+        "calculatorId": "decking",
+        "url": "/calculators/decking/",
+        "requiredInputs": ["length", "width"]
+      },
+      {
+        "id": "baluster",
+        "name": "Balusters & Railing",
+        "calculatorId": "baluster",
+        "url": "/calculators/baluster/",
+        "requiredInputs": ["railLength", "spacing"]
+      },
+      {
+        "id": "paint",
+        "name": "Stain or Paint",
+        "calculatorId": "paint",
+        "url": "/calculators/paint/",
+        "requiredInputs": ["length", "width"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Site Prep & Footings", "duration": "Day 1", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Post-hole digging and concrete pouring)", "description": "Mark post locations, dig pier holes below frost line, pour concrete footings and set post anchors." },
+      { "phase": "Frame & Joists", "duration": "Days 2–3", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Helper recommended for heavy beams)", "description": "Install ledger board, beam supports, and joist hangers. Ensure level and square framing." },
+      { "phase": "Decking Boards", "duration": "Day 4", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Use deck screw gun for speed)", "description": "Screw down deck boards with proper gap spacing for drainage and expansion." },
+      { "phase": "Railings & Stairs", "duration": "Day 5", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Follow IRC code for baluster spacing)", "description": "Install posts, top and bottom rails, balusters at 4-inch max spacing, and build stair stringers." },
+      { "phase": "Stain & Seal", "duration": "Day 6", "diyDifficulty": "Easy", "hiringRecommendation": "DIY (Apply with roller or sprayer)", "description": "Clean deck surface, apply weather-resistant stain or sealant, and allow 24-hour dry time." }
+    ],
+    "mistakes": [
+      "Setting posts below frost line in cold climates (causes frost heave and deck shifting).",
+      "Using untreated lumber for ground-contact posts and beams (leads to rot within 2-3 years).",
+      "Forgetting to install joist tape or flashing on top of joists (prevents rot from standing water).",
+      "Over-spanning joists beyond code limits per the IRC span table, causing bounce."
+    ],
+    "related": [
+      { "name": "Deck Cost Calculator", "url": "/calculators/renovation/deck/" },
+      { "name": "Lumber Calculator", "url": "/calculators/lumber/" }
+    ],
+    "accessoryTools": [
+      { "name": "Post-hole digger or auger", "recommendation": "rent" },
+      { "name": "Circular saw and deck screw gun", "recommendation": "buy" },
+      { "name": "4-foot level and string line", "recommendation": "buy" },
+      { "name": "Joist hangers and galvanized hardware", "recommendation": "buy" },
+      { "name": "Deck stain and sealer (1 gallon per 200 sq ft)", "recommendation": "buy" },
+      { "name": "Safety glasses and ear protection", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Call 811 to mark underground utilities before digging post holes",
+      "Verify local building department requirements — footings below frost line",
+      "Submit deck permit if required by local code (typically required for decks over 30 inches high)",
+      "Order lumber and hardware — pressure-treated, joist hangers, ledger flashing"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Site Prep & Footings",
+        "items": [
+          "Post holes dug below frost line (check local code depth)?",
+          "Sonotubes plumb and braced before concrete pour?",
+          "Post anchors set level and at correct spacing?"
+        ]
+      },
+      {
+        "phase": "Frame & Joists",
+        "items": [
+          "Ledger board bolted to house with proper flashing behind it?",
+          "Joist hangers all sized correctly and fully nailed?",
+          "Beam spans within code limits per IRC table?"
+        ]
+      },
+      {
+        "phase": "Decking Boards",
+        "items": [
+          "Deck boards gapped 1/8 inch for drainage and expansion?",
+          "Screws driven flush — not countersunk below surface?",
+          "Joist tape applied to top of all joists?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove all construction debris, sawdust, and fasteners from site",
+      "Dispose of concrete washout water properly — never into storm drains",
+      "Return unused hardware, stain, and lumber within return window",
+      "Store leftover stain/sealer in conditioned space for future touch-ups"
+    ],
+    "maintenanceTips": [
+      "Clean and re-seal deck surface every 1-2 years depending on sun exposure",
+      "Check ledger board flashing annually for signs of water intrusion",
+      "Tighten loose railings and balusters each spring after freeze-thaw cycle",
+      "Inspect posts at ground level for rot or insect damage yearly"
+    ]
+  },
+  {
+    "id": "fence",
+    "name": "Fence Installation Project",
+    "description": "Plan a wood or vinyl fence with posts, rails, pickets, and concrete footings.",
+    "steps": [
+      {
+        "id": "vinyl-fence",
+        "name": "Fence Materials",
+        "calculatorId": "vinyl-fence",
+        "url": "/calculators/vinyl-fence/",
+        "requiredInputs": ["length", "height"]
+      },
+      {
+        "id": "concrete-footing",
+        "name": "Post Footings",
+        "calculatorId": "concrete-footing",
+        "url": "/calculators/concrete/footing/",
+        "requiredInputs": ["diameter", "depth", "quantity"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Layout & Marking", "duration": "Day 1", "diyDifficulty": "Easy", "hiringRecommendation": "DIY (Use string line and marking paint)", "description": "Locate property lines, mark post positions at 6-8 foot intervals, and call 811 for utility locate." },
+      { "phase": "Post Holes & Concrete", "duration": "Day 2", "diyDifficulty": "Hard", "hiringRecommendation": "DIY (Rent power auger for hard soil)", "description": "Dig post holes 24-36 inches deep, set posts in concrete, and brace plumb until concrete cures." },
+      { "phase": "Rails & Pickets", "duration": "Days 3–4", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Level each rail section)", "description": "Attach horizontal rails between posts, then install pickets with consistent spacing using a jig." },
+      { "phase": "Gates & Finish", "duration": "Day 5", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Heavy gate may need helper)", "description": "Build or install gate frame, hang on heavy-duty hinges, and apply final stain or weather treatment." }
+    ],
+    "mistakes": [
+      "Failing to call 811 before digging (hitting buried gas or electrical lines is dangerous and costly).",
+      "Setting posts too shallow (less than 24 inches) — causes gate sag and fence leaning over time.",
+      "Not allowing concrete to cure 24-48 hours before attaching rails (shifts post alignment).",
+      "Installing pickets without a bottom gap — leads to rot from ground moisture contact."
+    ],
+    "related": [
+      { "name": "Fence Cost Calculator", "url": "/calculators/renovation/fence/" },
+      { "name": "Concrete Footing Calculator", "url": "/calculators/concrete/footing/" }
+    ],
+    "accessoryTools": [
+      { "name": "Power post-hole auger", "recommendation": "rent" },
+      { "name": "Post level and string line", "recommendation": "buy" },
+      { "name": "Quick-set concrete mix (80lb bags)", "recommendation": "buy" },
+      { "name": "Circular saw with fence blade", "recommendation": "buy" },
+      { "name": "Pneumatic nailer or deck screw gun", "recommendation": "buy" },
+      { "name": "Gate hinges and latch kit", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Locate property lines — survey recommended if unsure of boundaries",
+      "Call 811 to mark underground utilities before digging any post holes",
+      "Check HOA or local rules on fence height, set-back, and materials",
+      "Order fence materials and concrete for post footings"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Post Holes & Concrete",
+        "items": [
+          "Post holes 24-36 inches deep (below frost line in cold climates)?",
+          "Posts spaced at consistent intervals (typically 6-8 ft)?",
+          "Each post plumb in both directions before concrete sets?"
+        ]
+      },
+      {
+        "phase": "Rails & Pickets",
+        "items": [
+          "Top and bottom rails level across each section?",
+          "Picket spacing consistent — use a jig for repeatability?",
+          "Picket tops aligned with string line?"
+        ]
+      },
+      {
+        "phase": "Gates & Finish",
+        "items": [
+          "Gate opening measured diagonally for square?",
+          "Gate hinges rated for gate weight?",
+          "Stain or sealant applied to all exposed wood surfaces?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove excess concrete, stakes, and form debris from post holes",
+      "Sweep nails, screws, and sawdust from work area",
+      "Return unused fencing materials and hardware within return window",
+      "Store leftover stain or paint for future fence repairs"
+    ],
+    "maintenanceTips": [
+      "Re-stain or seal wood fence every 2-3 years to prevent weather damage",
+      "Check gate hinges and latch annually — lubricate moving parts",
+      "Replace any warped or rotted pickets immediately to prevent spread",
+      "Keep vegetation cleared 6 inches from fence line to reduce moisture contact"
+    ]
+  },
+  {
+    "id": "driveway",
+    "name": "Driveway Construction Project",
+    "description": "Estimate sub-base gravel, concrete slab volume, and surface area for a residential driveway.",
+    "steps": [
+      {
+        "id": "square-footage",
+        "name": "Driveway Area",
+        "calculatorId": "square-footage",
+        "url": "/calculators/square-footage/",
+        "requiredInputs": ["length", "width"]
+      },
+      {
+        "id": "gravel",
+        "name": "Gravel Sub-Base",
+        "calculatorId": "gravel",
+        "url": "/calculators/gravel/",
+        "requiredInputs": ["length", "width", "depth"]
+      },
+      {
+        "id": "concrete-slab",
+        "name": "Concrete Slab",
+        "calculatorId": "concrete-slab",
+        "url": "/calculators/concrete/slab/",
+        "requiredInputs": ["length", "width", "thickness"]
+      },
+      {
+        "id": "tonnage",
+        "name": "Asphalt or Aggregate",
+        "calculatorId": "tonnage",
+        "url": "/calculators/tonnage/",
+        "requiredInputs": ["length", "width", "depth"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Excavation", "duration": "Days 1–2", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Heavy equipment for grading)", "description": "Excavate to required sub-base depth (typically 8-12 inches), grade for drainage slope of 1/4 inch per foot." },
+      { "phase": "Compacted Base", "duration": "Day 3", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Rent plate compactor)", "description": "Lay and compact gravel base in 4-inch lifts, wetting each layer for maximum density." },
+      { "phase": "Formwork & Rebar", "duration": "Day 4", "diyDifficulty": "Medium", "hiringRecommendation": "DIY-friendly", "description": "Set forms along driveway edges, place 1/2-inch rebar in a 24-inch grid pattern on chairs." },
+      { "phase": "Concrete Pour", "duration": "Day 5", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Ready-mix truck coordination)", "description": "Pour, screed, float, and broom-finish concrete. Cut control joints every 8-10 feet." },
+      { "phase": "Curing", "duration": "Days 6–14", "diyDifficulty": "Easy", "hiringRecommendation": "DIY (Keep moist)", "description": "Keep concrete moist for 7 days minimum. No vehicle traffic for 7 days, full load after 28 days." }
+    ],
+    "mistakes": [
+      "Insufficient sub-base compaction causing slab cracking under vehicle weight.",
+      "Pouring concrete thinner than 5 inches for standard passenger vehicle driveways (minimum 5 inches).",
+      "Forgetting to slope the driveway for drainage — water pooling accelerates freeze-thaw damage.",
+      "Cutting control joints too shallow or too late — uncontrolled cracking occurs."
+    ],
+    "related": [
+      { "name": "Concrete Slab Calculator", "url": "/calculators/concrete/slab/" },
+      { "name": "Tonnage Calculator", "url": "/calculators/tonnage/" }
+    ],
+    "accessoryTools": [
+      { "name": "Plate compactor", "recommendation": "rent" },
+      { "name": "Concrete screed and bull float", "recommendation": "rent" },
+      { "name": "Rebar tying tools and wire", "recommendation": "buy" },
+      { "name": "Concrete saw for control joints", "recommendation": "rent" },
+      { "name": "Grading rake and wheelbarrow", "recommendation": "buy" },
+      { "name": "Heavy-duty wheelbarrow", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Call 811 to locate underground utilities before any excavation",
+      "Verify driveway slope for proper drainage — minimum 1/4 inch per foot away from garage",
+      "Check if permit is required — driveways typically need a permit for curb-cut and drainage",
+      "Order gravel, rebar, and concrete or asphalt — schedule ready-mix delivery"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Excavation",
+        "items": [
+          "Excavated 8-12 inches deep for sub-base + concrete thickness?",
+          "Slope graded at 1/4 inch per foot away from structure?",
+          "Compacted subgrade with plate compactor — no soft spots?"
+        ]
+      },
+      {
+        "phase": "Compacted Base",
+        "items": [
+          "Gravel placed in 4-inch lifts and compacted between each lift?",
+          "Base thickness meets local code for driveway loads?",
+          "Base surface level and sloped correctly before rebar?"
+        ]
+      },
+      {
+        "phase": "Concrete Pour",
+        "items": [
+          "Forms set to correct finished grade with 5-6 inch slab thickness?",
+          "Rebar grid on chairs in center of slab thickness?",
+          "Control joints planned every 8-10 feet for 10x10 sections?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove forms after 24-48 hours once concrete has cured sufficiently",
+      "Clean tools and equipment before concrete residue hardens",
+      "Dispose of excess gravel and concrete waste properly",
+      "Seal control joints with self-leveling sealant after full cure"
+    ],
+    "maintenanceTips": [
+      "Seal concrete driveway every 2-3 years to protect from oil stains and freeze-thaw damage",
+      "Fill cracks with concrete repair caulk as soon as they appear to prevent water infiltration",
+      "Re-apply sealant to control joints annually before winter",
+      "Avoid de-icing chemicals — use sand for traction to prevent surface spalling"
+    ]
+  },
+  {
+    "id": "room",
+    "name": "Room Addition Project",
+    "description": "Calculate framing, drywall, paint, tile, and flooring for a new room addition.",
+    "steps": [
+      {
+        "id": "square-footage",
+        "name": "Room Dimensions",
+        "calculatorId": "square-footage",
+        "url": "/calculators/square-footage/",
+        "requiredInputs": ["length", "width"]
+      },
+      {
+        "id": "framing",
+        "name": "Wall Framing",
+        "calculatorId": "framing",
+        "url": "/calculators/framing/",
+        "requiredInputs": ["length", "height"]
+      },
+      {
+        "id": "drywall",
+        "name": "Drywall",
+        "calculatorId": "drywall",
+        "url": "/calculators/drywall/",
+        "requiredInputs": ["totalWallLength", "wallHeight"]
+      },
+      {
+        "id": "paint",
+        "name": "Paint",
+        "calculatorId": "paint",
+        "url": "/calculators/paint/",
+        "requiredInputs": ["length", "width", "height"]
+      },
+      {
+        "id": "tile",
+        "name": "Floor Tile",
+        "calculatorId": "tile",
+        "url": "/calculators/tile/",
+        "requiredInputs": ["length", "width"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Foundation & Rough Framing", "duration": "Days 1–5", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Foundation and structural)", "description": "Pour foundation, frame walls, install roof trusses or rafters, and sheath exterior." },
+      { "phase": "Rough Electrical & Plumbing", "duration": "Days 6–8", "diyDifficulty": "Hard", "hiringRecommendation": "Hire Pro (Licensed trade required)", "description": "Run wiring, outlets, switches, and plumbing lines through framed walls before insulation." },
+      { "phase": "Insulation & Drywall", "duration": "Days 9–12", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Rent drywall lift)", "description": "Install insulation, hang and tape drywall, apply joint compound and sand smooth." },
+      { "phase": "Flooring & Trim", "duration": "Days 13–15", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Tile cutting takes practice)", "description": "Install tile or flooring, baseboards, door casings, and window trim." },
+      { "phase": "Paint & Finish", "duration": "Days 16–18", "diyDifficulty": "Easy", "hiringRecommendation": "DIY", "description": "Prime and paint walls and ceiling, install light fixtures and switch plates, final cleanup." }
+    ],
+    "mistakes": [
+      "Skipping the permit and inspection process (unpermitted additions are flagged during home sales).",
+      "Not insulating exterior walls to local code R-value requirements (leads to high energy costs).",
+      "Placing electrical boxes too shallow for final drywall thickness (code violation).",
+      "Installing flooring before drywall finishing is complete — dust and debris damage new floors."
+    ],
+    "related": [
+      { "name": "Basement Finishing Calculator", "url": "/calculators/renovation/basement/" },
+      { "name": "Garage Remodel Calculator", "url": "/calculators/renovation/garage/" }
+    ],
+    "accessoryTools": [
+      { "name": "Drywall lift (panel hoist)", "recommendation": "rent" },
+      { "name": "Tile wet saw", "recommendation": "rent" },
+      { "name": "Miter saw for trim work", "recommendation": "buy" },
+      { "name": "Drywall taping knives and mud pan", "recommendation": "buy" },
+      { "name": "Paint sprayer or roller kit", "recommendation": "buy" },
+      { "name": "Safety dust mask and drop cloths", "recommendation": "buy" }
+    ],
+    "preparationSteps": [
+      "Obtain building permit — room additions always require permits and inspections",
+      "Verify foundation meets local frost depth requirements",
+      "Hire licensed trades for electrical and plumbing rough-in",
+      "Order materials in phases — foundation first, then framing, then finishes"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Foundation & Rough Framing",
+        "items": [
+          "Foundation poured to correct height above grade?",
+          "Framing inspected by building department before closing walls?",
+          "All rough openings sized correctly for windows and doors?"
+        ]
+      },
+      {
+        "phase": "Insulation & Drywall",
+        "items": [
+          "Insulation R-value meets local code requirements for your zone?",
+          "Vapor barrier installed on warm side of wall?",
+          "All electrical boxes extended to final drywall thickness?"
+        ]
+      },
+      {
+        "phase": "Flooring & Paint",
+        "items": [
+          "Flooring allowed to acclimate in room for 48-72 hours before installation?",
+          "Paint primer applied before color coats?",
+          "Trim caulked and nail holes filled before final paint?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Dispose of construction debris — drywall dust, scrap lumber, packaging",
+      "HVAC filters replaced after all drywall sanding is complete",
+      "Final clean — wipe all surfaces, vacuum floors, clean windows",
+      "Return unused flooring, tile, and paint within supplier return window"
+    ],
+    "maintenanceTips": [
+      "Check for settling cracks in drywall after first year — patch as needed",
+      "Keep gutters clean to prevent water infiltration near new foundation",
+      "Monitor humidity levels in new room — consider dehumidifier if above 60%",
+      "Re-caulk trim, baseboards, and window casings as seasonal movement occurs"
+    ]
+  },
+  {
+    "id": "wall",
+    "name": "Exterior Wall & Siding Project",
+    "description": "Plan a retaining wall, brick veneer, siding installation, or board-and-batten accent wall.",
+    "steps": [
+      {
+        "id": "concrete-wall",
+        "name": "Concrete Wall",
+        "calculatorId": "concrete-wall",
+        "url": "/calculators/concrete/wall/",
+        "requiredInputs": ["length", "height", "thickness"]
+      },
+      {
+        "id": "brick",
+        "name": "Brick Veneer",
+        "calculatorId": "brick",
+        "url": "/calculators/brick/",
+        "requiredInputs": ["wallLength", "wallHeight"]
+      },
+      {
+        "id": "vinyl-siding",
+        "name": "Vinyl Siding",
+        "calculatorId": "vinyl-siding",
+        "url": "/calculators/vinyl-siding/",
+        "requiredInputs": ["length", "height"]
+      },
+      {
+        "id": "board-batten",
+        "name": "Board & Batten",
+        "calculatorId": "board-batten",
+        "url": "/calculators/board-batten/",
+        "requiredInputs": ["wallWidth", "wallHeight"]
+      },
+      {
+        "id": "retaining-wall",
+        "name": "Retaining Wall",
+        "calculatorId": "retaining-wall",
+        "url": "/calculators/retaining-wall/",
+        "requiredInputs": ["wallLength", "wallHeight"]
+      }
+    ],
+    "timeline": [
+      { "phase": "Surface Prep", "duration": "Day 1", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Remove old siding)", "description": "Remove old siding or clean wall surface, repair any rot or damage, install weather barrier and flashing." },
+      { "phase": "Furring & Starter", "duration": "Day 2", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Level each furring strip)", "description": "Install vertical furring strips for drainage plane, attach starter strips for siding or brick ledge." },
+      { "phase": "Siding Installation", "duration": "Days 3–5", "diyDifficulty": "Medium", "hiringRecommendation": "DIY (Follow manufacturer overlap specs)", "description": "Install siding panels or brick veneer, overlapping correctly and leaving expansion gaps." },
+      { "phase": "Trim & Finish", "duration": "Day 6", "diyDifficulty": "Easy", "hiringRecommendation": "DIY", "description": "Install corner trim, J-channels around windows and doors, and apply final caulking." }
+    ],
+    "mistakes": [
+      "Installing siding without a proper drainage plane behind it (trapped moisture causes rot).",
+      "Nailing siding too tight — thermal expansion causes buckling in summer heat.",
+      "Not leaving weepholes at the bottom of brick veneer (trapped water destroys mortar).",
+      "Mixing siding materials without proper transition flashing between different wall claddings."
+    ],
+    "related": [
+      { "name": "Vinyl Siding Calculator", "url": "/calculators/vinyl-siding/" },
+      { "name": "Board and Batten Calculator", "url": "/calculators/board-batten/" }
+    ],
+    "accessoryTools": [
+      { "name": "Circular saw with siding blade", "recommendation": "buy" },
+      { "name": "Snap-lock or pneumatic siding nailer", "recommendation": "buy or rent" },
+      { "name": "Levels (4-ft and 6-ft)", "recommendation": "buy" },
+      { "name": "Tin snips and utility knife", "recommendation": "buy" },
+      { "name": "Flashing tape and caulk gun", "recommendation": "buy" },
+      { "name": "Scaffolding or extension ladder", "recommendation": "rent" }
+    ],
+    "preparationSteps": [
+      "Inspect existing wall sheathing for rot, water damage, or insect infestation",
+      "Remove old siding, shutters, and trim — dispose of debris per local guidelines",
+      "Install temporary weather protection if rain is expected during multi-day project",
+      "Order siding material, flashing, trim, and fasteners — allow 1-2 weeks for special orders"
+    ],
+    "decisionCheckpoints": [
+      {
+        "phase": "Surface Prep",
+        "items": [
+          "All rot and damage repaired before weather barrier installed?",
+          "Old flashing removed and replaced — not covered over?",
+          "Wall surface clean, dry, and smooth before barrier?"
+        ]
+      },
+      {
+        "phase": "Siding Installation",
+        "items": [
+          "Weather barrier lapped correctly (top over bottom)?",
+          "Siding nailed at proper angle and depth per manufacturer spec?",
+          "Expansion gaps left at ends and around windows/doors?"
+        ]
+      },
+      {
+        "phase": "Trim & Finish",
+        "items": [
+          "J-channels installed around all windows and doors?",
+          "Weep holes at bottom of brick or stone veneer?",
+          "All exposed nail heads sealed with color-matched caulk?"
+        ]
+      }
+    ],
+    "cleanupSteps": [
+      "Remove old siding debris, nails, and construction waste from property",
+      "Magnetic sweeper to collect dropped nails and screws from lawn",
+      "Clean caulk nozzles and store sealant for future repairs",
+      "Return unused siding panels and trim within supplier return window"
+    ],
+    "maintenanceTips": [
+      "Inspect siding annually for cracks, gaps, or loose panels after winter freeze-thaw",
+      "Power wash vinyl or fiber cement siding every 2-3 years with gentle pressure",
+      "Re-caulk around windows, doors, and corner trim as sealant degrades over time",
+      "Keep shrubs and vegetation trimmed at least 6 inches from siding to prevent moisture damage"
+    ]
+  }
+]

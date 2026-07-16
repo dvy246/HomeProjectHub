@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -15,7 +15,7 @@ const BRICK_TYPES = [
   { key: "roman", label: "Roman (2″ × 12″)", height: 2, depth: 12, mortar: 0.375 },
 ];
 
-function BrickCalc() {
+function BrickCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [brickType, setBrickType] = useState("modular");
   const [wallLength, setWallLength] = useState("20");
@@ -23,6 +23,10 @@ function BrickCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("brick", "Brick Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [brickType, wallLength, wallHeight, waste, onCalculate]);
 
   const bt = BRICK_TYPES.find((b) => b.key === brickType) || BRICK_TYPES[0];
   const wl = parseNumber(wallLength);

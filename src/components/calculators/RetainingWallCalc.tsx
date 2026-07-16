@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -9,7 +9,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function RetainingWallCalc() {
+function RetainingWallCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [wallLength, setWallLength] = useState("20");
   const [wallHeight, setWallHeight] = useState("4");
@@ -17,6 +17,10 @@ function RetainingWallCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("retaining-wall", "Retaining Wall Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wallLength, wallHeight, blockHeight, waste, onCalculate]);
 
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);

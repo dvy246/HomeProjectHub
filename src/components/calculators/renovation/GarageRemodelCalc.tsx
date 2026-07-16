@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function GarageRemodelCalc() {
+export default function GarageRemodelCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("24");
   const [width, setWidth] = useState("24");
 
@@ -35,6 +35,10 @@ export default function GarageRemodelCalc() {
   const shelvingInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("garage-remodel", "Garage Remodel Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, epoxyUnitPrice, numDoors, doorPriceVal, wallPanelPrice, hasShelving, shelvingLength, shelvingPrice, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -108,10 +112,10 @@ export default function GarageRemodelCalc() {
   };
 
   const projectMaterials = [
-    { name: "Epoxy Floor Flake Coating", qty: Math.round(floorArea), unit: "sq ft", cost: epoxyCost },
-    { name: "Overhead steel garage door units", qty: doorsCount, unit: "unit", cost: doorCost },
-    ...(hasShelving ? [{ name: "Heavy-duty wall shelving racks", qty: Math.round(shelfLenVal), unit: "linear ft", cost: shelvingCost }] : []),
-    { name: "Wall drywall/paneling boards", qty: Math.round(wallArea), unit: "sq ft", cost: wallPanelCost },
+    { name: "Epoxy Floor Flake Coating", quantity: Math.round(floorArea), unit: "sq ft", cost: epoxyCost },
+    { name: "Overhead steel garage door units", quantity: doorsCount, unit: "unit", cost: doorCost },
+    ...(hasShelving ? [{ name: "Heavy-duty wall shelving racks", quantity: Math.round(shelfLenVal), unit: "linear ft", cost: shelvingCost }] : []),
+    { name: "Wall drywall/paneling boards", quantity: Math.round(wallArea), unit: "sq ft", cost: wallPanelCost },
   ];
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function KitchenRenovationCalc() {
+export default function KitchenRenovationCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("12");
   const [width, setWidth] = useState("14");
 
@@ -38,6 +38,10 @@ export default function KitchenRenovationCalc() {
   const islandInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("kitchen-remodel", "Kitchen Renovation Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, cabinetLinearRun, cabinetUnitPrice, countertopArea, countertopUnitPrice, applianceAllowance, sinkFaucetAllowance, hasIsland, islandArea, islandUnitPrice, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -112,11 +116,11 @@ export default function KitchenRenovationCalc() {
   };
 
   const projectMaterials = [
-    { name: "Kitchen Cabinetry Runs", qty: Math.round(cabRunVal), unit: "linear ft", cost: cabinetCost },
-    { name: "Stone Slab Countertops", qty: Math.round(counterAreaVal), unit: "sq ft", cost: countertopCost },
-    ...(hasIsland ? [{ name: "Prep Island Cabinetry/Stone", qty: Math.round(islandAreaVal), unit: "sq ft", cost: islandCost }] : []),
-    { name: "Stainless Steel Appliance Package", qty: 1, unit: "set", cost: applianceVal },
-    { name: "Under-mount sink basin & fixtures", qty: 1, unit: "unit", cost: sinkVal },
+    { name: "Kitchen Cabinetry Runs", quantity: Math.round(cabRunVal), unit: "linear ft", cost: cabinetCost },
+    { name: "Stone Slab Countertops", quantity: Math.round(counterAreaVal), unit: "sq ft", cost: countertopCost },
+    ...(hasIsland ? [{ name: "Prep Island Cabinetry/Stone", quantity: Math.round(islandAreaVal), unit: "sq ft", cost: islandCost }] : []),
+    { name: "Stainless Steel Appliance Package", quantity: 1, unit: "set", cost: applianceVal },
+    { name: "Under-mount sink basin & fixtures", quantity: 1, unit: "unit", cost: sinkVal },
   ];
 
   return (

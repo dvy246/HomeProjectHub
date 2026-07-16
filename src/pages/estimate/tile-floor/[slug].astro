@@ -1,0 +1,200 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import {
+  graphSchema,
+  faqPageSchema,
+  howToSchema,
+  breadcrumbListSchema,
+  mathSolverSchema,
+} from "../../../lib/schema";
+import { computeTileFloor } from "../../../lib/estimateEngine";
+import { TILE_FLOOR_SEEDS } from "../../../data/estimate-seeds";
+
+export function getStaticPaths() {
+  return TILE_FLOOR_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof TILE_FLOOR_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const result = computeTileFloor({
+  length: seed.length,
+  width: seed.width,
+  tileWidth: seed.tileWidth,
+  tileLength: seed.tileLength,
+  layout: seed.layout,
+});
+
+const canonical = `https://homeplanninghub.com/estimate/tile-floor/${seed.slug}/`;
+const layoutName = seed.layout === "diagonal" ? "Diagonal" : seed.layout === "herringbone" ? "Herringbone" : "Straight Grid";
+const title = `Tile Needed for a ${seed.label}: ${result.tilesWithWaste} Tiles`;
+const description = `Calculate tiles needed for a ${seed.label.toLowerCase()}. Get exact tile count for ${layoutName.toLowerCase()} layout.`;
+
+const h1Title = `Tiles Needed for a ${seed.length} × ${seed.width} Foot Room (${seed.tileWidth}×${seed.tileLength} in Tiles, ${layoutName})`;
+const h1Short = `${seed.length}×${seed.width} ${layoutName} Tile Estimate`;
+
+function fmt(num: number, decimals = 2): string {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const wastePercent = Math.round(result.effectiveWaste * 100);
+
+const faqs = [
+  {
+    q: `How many ${seed.tileWidth}×${seed.tileLength} tiles do I need for a ${seed.length}×${seed.width} room?`,
+    a: `For a ${seed.length}×${seed.width} room (${fmt(result.areaSqFt)} sq ft) using ${seed.tileWidth}×${seed.tileLength} inch tiles in a ${layoutName.toLowerCase()} pattern, you need ${result.baseTileCount} tiles before waste and ${result.tilesWithWaste} tiles including the ${wastePercent}% waste factor for cuts. Each tile covers ${fmt(result.tileAreaSqIn / 144, 2)} sq ft. Use our interactive Tile Calculator to adjust tile sizes, layout patterns, and waste factors.`,
+  },
+  {
+    q: `How much extra tile should I buy for a ${layoutName.toLowerCase()} pattern?`,
+    a: `For a ${seed.length}×${seed.width} room with a ${layoutName.toLowerCase()} pattern, add ${wastePercent}% for waste from cuts. This means ordering ${result.tilesWithWaste} tiles instead of the base ${result.baseTileCount}. For grid layouts, 10% waste is standard. Diagonal patterns need 15%, and herringbone patterns need 20%. It is always better to have a few extra tiles for future repairs than to run short during installation.`,
+  },
+  {
+    q: `What is the best tile size for a ${seed.length}×${seed.width} room?`,
+    a: `For a ${seed.length}×${seed.width} room (${fmt(result.areaSqFt)} sq ft), ${seed.tileWidth}×${seed.tileLength} inch tiles work well. Larger tiles (12×24 or 24×24 inches) create fewer grout lines and make small rooms feel larger. Smaller tiles (6×6 or 8×8 inches) work better for bathrooms with sloped shower floors. For this room size with a ${layoutName.toLowerCase()} pattern, ${seed.tileWidth}×${seed.tileLength} tiles would require ${result.tilesWithWaste} total tiles.`,
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Tile Calculator", path: "/calculators/tile/" },
+    { name: h1Short, path: `/estimate/tile-floor/${seed.slug}/` },
+  ]),
+  mathSolverSchema({
+    name: `Tile Count for ${seed.label}`,
+    description: `Calculate the number of ${seed.tileWidth}×${seed.tileLength} tiles needed for a ${seed.length}×${seed.width} room with ${layoutName} layout.`,
+    formula: `Tiles = area ÷ tile area × (1 + waste %)`,
+    url: canonical,
+  }),
+  howToSchema(
+    `Calculate Tile for a ${seed.label}`,
+    `Follow these steps to determine exactly how many tiles you need for a ${seed.label.toLowerCase()}.`,
+    [
+      {
+        name: "Calculate the floor area",
+        text: `${seed.length} ft × ${seed.width} ft = ${fmt(result.areaSqFt)} sq ft (${fmt(result.areaSqIn / 144, 2)} sq ft).`,
+      },
+      {
+        name: "Find the tile area",
+        text: `Each ${seed.tileWidth}×${seed.tileLength} inch tile covers ${seed.tileWidth} × ${seed.tileLength} = ${fmt(result.tileAreaSqIn)} sq in = ${fmt(result.tileAreaSqIn / 144, 3)} sq ft.`,
+      },
+      {
+        name: "Apply waste factor",
+        text: `For ${layoutName.toLowerCase()} layout, use ${wastePercent}% waste: ${result.baseTileCount} tiles × ${1 + result.effectiveWaste} = ${result.tilesWithWaste} tiles total.`,
+      },
+    ]
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/tile/" class="hover:underline">tile</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{h1Short}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        This estimate shows the number of {seed.tileWidth}×{seed.tileLength} inch tiles needed for a {seed.length}×{seed.width} foot room using a {layoutName.toLowerCase()} layout pattern. The calculation includes a {wastePercent}% waste factor for cuts, breakage, and pattern matching.
+      </p>
+    </header>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Tile Estimate for {seed.label}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Measurement</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Value</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Floor Area</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.areaSqFt)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Tile Size</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.tileWidth} × {seed.tileLength} in</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Layout Pattern</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{layoutName}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Waste Factor</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{wastePercent}%</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Tiles Needed (before waste)</td>
+              <td class="py-2 text-[var(--fg)]">{result.baseTileCount} tiles</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4 font-semibold text-[var(--fg)]">Tiles Needed (with waste)</td>
+              <td class="py-2 text-lg font-bold text-[var(--fg)]">{result.tilesWithWaste} tiles</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="how-it-works" class="text-xl font-bold tracking-tight mb-4">How the Estimate Works</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        The tile count is calculated using the floor area and tile size with a layout-specific waste factor:
+      </p>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Floor Area = {seed.length} ft × {seed.width} ft = <strong>{fmt(result.areaSqFt)} sq ft</strong> = <strong>{fmt(result.areaSqIn)} sq in</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Tile Area = {seed.tileWidth} in × {seed.tileLength} in = <strong>{fmt(result.tileAreaSqIn)} sq in</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Base Tiles = {fmt(result.areaSqIn)} ÷ {fmt(result.tileAreaSqIn)} = <strong>{result.baseTileCount} tiles</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Final Tiles = {result.baseTileCount} × (1 + {wastePercent / 100}) = <strong>{result.tilesWithWaste} tiles</strong>
+      </div>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Waste factors vary by layout: 10% for straight grid, 15% for diagonal, and 20% for herringbone patterns. Always buy extra tiles and store them for future repairs — matching tile color and dye lot is nearly impossible once a batch is discontinued.
+      </p>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 text-center">
+      <h2 class="text-base font-bold tracking-tight mb-2">Customize This Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] mb-4">Adjust tile size, layout pattern, waste factor, and tiles per box.</p>
+      <a href={`/calculators/tile/?length=${seed.length}&width=${seed.width}&tileWidth=${seed.tileWidth}&tileLength=${seed.tileLength}&layout=${seed.layout}`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity no-underline">
+        Open Interactive Tile Calculator
+      </a>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="tile" />
+  </article>
+</Layout>

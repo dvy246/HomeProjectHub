@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -11,7 +11,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function FireGlassCalc() {
+function FireGlassCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [shape, setShape] = useState<"round" | "square">("round");
   const [diameter, setDiameter] = useState("24");
@@ -20,6 +20,10 @@ function FireGlassCalc() {
   const [depth, setDepth] = useState("2");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("fire-glass", "Fire Glass Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [shape, diameter, length, width, depth, onCalculate]);
 
   const d = parseNumber(diameter);
   const l = parseNumber(length);

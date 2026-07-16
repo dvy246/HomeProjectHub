@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -18,7 +18,7 @@ const BOARD_WIDTHS = [
   { value: "6", label: "6\" (Composite)" },
 ];
 
-function DeckingCalc() {
+function DeckingCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [deckLength, setDeckLength] = useState("12");
   const [deckWidth, setDeckWidth] = useState("10");
@@ -27,6 +27,10 @@ function DeckingCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("decking", "Decking Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [deckLength, deckWidth, boardWidth, gap, waste, onCalculate]);
 
   const dl = parseNumber(deckLength);
   const dw = parseNumber(deckWidth);

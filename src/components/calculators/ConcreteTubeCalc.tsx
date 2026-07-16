@@ -16,7 +16,7 @@ import ConcreteTubeDiagram from "../diagrams/ConcreteTubeDiagram";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function ConcreteTubeCalc() {
+function ConcreteTubeCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [diameter, setDiameter] = useState<string>("8");
@@ -36,6 +36,10 @@ function ConcreteTubeCalc() {
     window.addEventListener("saved-rooms-changed", handler);
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, diameter, depth, quantity, wasteFactor, bagSize, roomName, savedRooms, successMessage, onCalculate]);
 
   const diaNum = parseNumber(diameter);
   const depNum = parseNumber(depth);

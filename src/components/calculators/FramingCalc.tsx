@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateStudCount } from "../../lib/materialEngine";
@@ -10,14 +10,41 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function FramingCalc() {
+interface FramingCalcProps {
+  initialLength?: string;
+  initialHeight?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function FramingCalc({ initialLength, initialHeight, projectId, onCalculate }: FramingCalcProps = {}) {
   const { t } = useI18n();
-  const [wallLength, setWallLength] = useState("20");
-  const [wallHeight, setWallHeight] = useState("8");
+  const [wallLength, setWallLength] = useState(initialLength || "20");
+  const [wallHeight, setWallHeight] = useState(initialHeight || "8");
   const [studSpacing, setStudSpacing] = useState("16");
   const [waste, setWaste] = useState("5");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("framing", "Framing Calculator");
+
+  useEffect(() => {
+    const wl = parseFloat(wallLength) || 0;
+    const wh = parseFloat(wallHeight) || 0;
+    const sp = parseFloat(studSpacing) || 16;
+    const ws = (parseFloat(waste) || 5) / 100;
+    const studs = calculateStudCount(wl, sp as 16 | 24);
+    const platesTotal = (wl * 3) / 12;
+    const studsTotal = studs + Math.ceil(platesTotal);
+    const studsWithWaste = Math.ceil(studsTotal * (1 + ws));
+
+    const projectInputs = { wallLength: wl, wallHeight: wh, studSpacing: sp, waste: ws };
+    const projectResults = { studs, plates: Math.ceil(platesTotal), studsTotal, studsWithWaste };
+    const projectMaterials: MaterialItem[] = [
+      { name: "Studs", quantity: studs, unit: "pieces", category: "framing" },
+      { name: "Plates", quantity: Math.ceil(platesTotal), unit: "pieces", category: "framing" },
+      { name: "Nails (approx)", quantity: Math.ceil(studsTotal * 6), unit: "nails", category: "framing" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wallLength, wallHeight, studSpacing, waste, onCalculate]);
 
   const wl = parseNumber(wallLength);
   const wh = parseNumber(wallHeight);

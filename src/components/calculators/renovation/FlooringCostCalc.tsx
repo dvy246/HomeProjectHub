@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function FlooringCostCalc() {
+export default function FlooringCostCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("15");
   const [width, setWidth] = useState("12");
   
@@ -34,6 +34,10 @@ export default function FlooringCostCalc() {
   const subfloorInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("flooring-cost", "Flooring Cost Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, flooringType, flooringPrice, underlaymentPrice, hasSubfloorRepair, subfloorPrice, waste, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -104,9 +108,9 @@ export default function FlooringCostCalc() {
   };
 
   const projectMaterials = [
-    { name: `${flooringType.toUpperCase()} flooring planks/tiles`, qty: Math.round(floorAreaWithWaste), unit: "sq ft", cost: flooringCost },
-    { name: "Underlayment foam/vapor rolls", qty: Math.round(floorAreaWithWaste), unit: "sq ft", cost: underlaymentCost },
-    ...(hasSubfloorRepair ? [{ name: "OSB plywood subfloor sheeting", qty: Math.round(floorArea), unit: "sq ft", cost: subfloorCost }] : []),
+    { name: `${flooringType.toUpperCase()} flooring planks/tiles`, quantity: Math.round(floorAreaWithWaste), unit: "sq ft", cost: flooringCost },
+    { name: "Underlayment foam/vapor rolls", quantity: Math.round(floorAreaWithWaste), unit: "sq ft", cost: underlaymentCost },
+    ...(hasSubfloorRepair ? [{ name: "OSB plywood subfloor sheeting", quantity: Math.round(floorArea), unit: "sq ft", cost: subfloorCost }] : []),
   ];
 
   return (

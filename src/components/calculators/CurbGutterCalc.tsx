@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -9,7 +9,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function CurbGutterCalc() {
+function CurbGutterCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState<string>("50");
   const [curbWidth, setCurbWidth] = useState<string>("6");
@@ -19,6 +19,10 @@ function CurbGutterCalc() {
   const [wasteFactor, setWasteFactor] = useState<string>("5");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("curb-gutter", "Curb and Gutter Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, curbWidth, curbHeight, gutterWidth, gutterDepth, wasteFactor, onCalculate]);
 
   const len = parseNumber(length);
   const cw = parseNumber(curbWidth) / 12;

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function BasementFinishingCalc() {
+export default function BasementFinishingCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("24");
   const [width, setWidth] = useState("20");
   const [wallHeight, setWallHeight] = useState("8");
@@ -35,6 +35,10 @@ export default function BasementFinishingCalc() {
   const heightInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("basement-finishing", "Basement Finishing Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, wallHeight, framingUnitPrice, drywallUnitPrice, ceilingType, ceilingUnitPrice, insulationUnitPrice, flooringUnitPrice, numDoors, doorPrice, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -120,12 +124,12 @@ export default function BasementFinishingCalc() {
   };
 
   const projectMaterials = [
-    { name: "Basement wall timber framing studs", qty: Math.round(wallArea), unit: "sq ft wall", cost: framingCost },
-    { name: "Drywall boards & tape rolls", qty: Math.round(drywalledArea), unit: "sq ft surface", cost: drywallCost },
-    { name: "Fiberglass insulation batts", qty: Math.round(wallArea), unit: "sq ft", cost: insulationCost },
-    { name: `Finished flooring (${ceilingType})`, qty: Math.round(floorArea), unit: "sq ft", cost: flooringCost },
-    { name: `Ceiling tiles/grid assembly`, qty: Math.round(floorArea), unit: "sq ft", cost: ceilingCost },
-    ...(doorsCount > 0 ? [{ name: "Interior pre-hung door packs", qty: doorsCount, unit: "unit", cost: doorsCost }] : []),
+    { name: "Basement wall timber framing studs", quantity: Math.round(wallArea), unit: "sq ft wall", cost: framingCost },
+    { name: "Drywall boards & tape rolls", quantity: Math.round(drywalledArea), unit: "sq ft surface", cost: drywallCost },
+    { name: "Fiberglass insulation batts", quantity: Math.round(wallArea), unit: "sq ft", cost: insulationCost },
+    { name: `Finished flooring (${ceilingType})`, quantity: Math.round(floorArea), unit: "sq ft", cost: flooringCost },
+    { name: `Ceiling tiles/grid assembly`, quantity: Math.round(floorArea), unit: "sq ft", cost: ceilingCost },
+    ...(doorsCount > 0 ? [{ name: "Interior pre-hung door packs", quantity: doorsCount, unit: "unit", cost: doorsCost }] : []),
   ];
 
   return (

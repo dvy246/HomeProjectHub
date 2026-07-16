@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
@@ -17,7 +17,7 @@ const PIPE_MATERIALS = [
   { key: "brass", label: "Brass" },
 ];
 
-function PipeWeightCalc() {
+function PipeWeightCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [material, setMaterial] = useState("steel_a36");
   const [od, setOd] = useState("4");
@@ -26,6 +26,10 @@ function PipeWeightCalc() {
   const [quantity, setQuantity] = useState("1");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("pipe-weight", "Pipe Weight Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [material, od, wall, length, quantity, onCalculate]);
 
   const outerD = parseNumber(od);
   const wallT = parseNumber(wall);

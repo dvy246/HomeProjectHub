@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
@@ -9,12 +9,16 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function SqFtToCuYdCalc() {
+function SqFtToCuYdCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [sqft, setSqft] = useState("100");
   const [depth, setDepth] = useState("4");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("sq-ft-to-cu-yard", "Sq Ft to Cu Yd Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [sqft, depth, onCalculate]);
 
   const sf = parseNumber(sqft);
   const d = parseNumber(depth);

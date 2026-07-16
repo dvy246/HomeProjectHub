@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { sqftToCuYd } from "../../lib/geometry";
@@ -12,13 +12,17 @@ import { withI18n } from "../i18n/withI18n";
 
 const GRAVEL = { tonsPerCuYd: 1.4, label: "Drainage Gravel" };
 
-function FrenchDrainCalc() {
+function FrenchDrainCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState("50");
   const [width, setWidth] = useState("12");
   const [depth, setDepth] = useState("18");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("french-drain", "French Drain Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, depth, onCalculate]);
 
   const l = parseNumber(length);
   const w = parseNumber(width);

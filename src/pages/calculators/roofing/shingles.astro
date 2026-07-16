@@ -5,6 +5,7 @@ import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import RelatedEstimates from "../../../components/ui/RelatedEstimates.astro";
 
 const canonical = "https://homeplanninghub.com/calculators/roofing/shingles/";
 
@@ -145,6 +146,7 @@ const schema = graphSchema(
     </section>
 
     <RelatedGuides category="roofing" />
+    <RelatedEstimates slug="roofing-shingles" />
     <RelatedCalculators slug="roofing-shingles" />
   </article>
 </Layout>

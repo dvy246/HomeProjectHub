@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -8,7 +8,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function BoardBattenCalc() {
+function BoardBattenCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [wallWidth, setWallWidth] = useState("120");
   const [wallHeight, setWallHeight] = useState("96");
@@ -17,6 +17,10 @@ function BoardBattenCalc() {
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("board-batten", "Board and Batten Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wallWidth, wallHeight, boardWidth, battenWidth, waste, onCalculate]);
 
   const ww = parseNumber(wallWidth);
   const wh = parseNumber(wallHeight);

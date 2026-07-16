@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
@@ -18,7 +18,7 @@ const WOOD_TYPES = [
   { key: "lumber_walnut", label: "Walnut" },
 ];
 
-function LogWeightCalc() {
+function LogWeightCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [wood, setWood] = useState("lumber_pine");
   const [diameter, setDiameter] = useState("12");
@@ -26,6 +26,10 @@ function LogWeightCalc() {
   const [quantity, setQuantity] = useState("1");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("log-weight", "Log Weight Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [wood, diameter, length, quantity, onCalculate]);
 
   const d = parseNumber(diameter);
   const len = parseNumber(length);

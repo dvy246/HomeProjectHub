@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import IceWaterShieldDiagram from "../diagrams/IceWaterShieldDiagram";
@@ -11,7 +11,7 @@ import { withI18n } from "../i18n/withI18n";
 
 const ROLL_COVERAGE_SQFT = 200;
 
-function IceWaterShieldCalc() {
+function IceWaterShieldCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [eaveLength, setEaveLength] = useState<string>("80");
   const [eaveWidth, setEaveWidth] = useState<string>("36");
@@ -21,6 +21,10 @@ function IceWaterShieldCalc() {
   const [wasteFactor, setWasteFactor] = useState<string>("8");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("ice-water-shield", "Ice and Water Shield Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [eaveLength, eaveWidth, valleyLength, valleyWidth, pitch, wasteFactor, onCalculate]);
 
   const eLen = parseNumber(eaveLength);
   const eWid = parseNumber(eaveWidth) / 12;

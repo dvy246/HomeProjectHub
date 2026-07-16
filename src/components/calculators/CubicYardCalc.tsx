@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select } from "../ui/Select";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
@@ -10,7 +10,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function CubicYardCalc() {
+function CubicYardCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [mode, setMode] = useState<"dimensions" | "cuft">("dimensions");
   const [length, setLength] = useState("10");
@@ -19,6 +19,10 @@ function CubicYardCalc() {
   const [cuFtInput, setCuFtInput] = useState("27");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("cubic-yard", "Cubic Yard Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [mode, length, width, depth, cuFtInput, onCalculate]);
 
   const len = parseNumber(length);
   const wid = parseNumber(width);

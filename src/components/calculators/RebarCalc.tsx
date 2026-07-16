@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -13,16 +13,49 @@ import ConcreteRebarDiagram from "../diagrams/ConcreteRebarDiagram";
 const REBAR_WEIGHTS: Record<string, number> = { "#3": 0.376, "#4": 0.668, "#5": 1.043, "#6": 1.502, "#7": 2.044, "#8": 2.67 };
 const REBAR_SIZES = Object.keys(REBAR_WEIGHTS);
 
-function RebarCalc() {
+interface RebarCalcProps {
+  initialLength?: string;
+  initialWidth?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function RebarCalc({ initialLength, initialWidth, projectId, onCalculate }: RebarCalcProps = {}) {
   const { t } = useI18n();
-  const [length, setLength] = useState<string>("20");
-  const [width, setWidth] = useState<string>("12");
+  const [length, setLength] = useState<string>(initialLength || "20");
+  const [width, setWidth] = useState<string>(initialWidth || "12");
   const [spacing, setSpacing] = useState<string>("18");
   const [rebarSize, setRebarSize] = useState<string>("#4");
   const [layers, setLayers] = useState<string>("1");
   const [wasteFactor, setWasteFactor] = useState<string>("5");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("rebar", "Rebar Calculator");
+
+  useEffect(() => {
+    const len = parseFloat(length) || 0;
+    const wid = parseFloat(width) || 0;
+    const sp = Math.max(1, parseFloat(spacing) || 18);
+    const layersNum = Math.max(1, parseFloat(layers) || 1);
+    const waste = (parseFloat(wasteFactor) || 5) / 100;
+    const weightPerFt = REBAR_WEIGHTS[rebarSize] || 0.668;
+    const canCompute = len > 0 && wid > 0;
+    const longBars = canCompute ? Math.ceil(wid * 12 / sp) + 1 : 0;
+    const shortBars = canCompute ? Math.ceil(len * 12 / sp) + 1 : 0;
+    const longBarLength = len * longBars;
+    const shortBarLength = wid * shortBars;
+    const totalLength = (longBarLength + shortBarLength) * layersNum;
+    const lengthWithWaste = totalLength * (1 + waste);
+    const totalWeight = lengthWithWaste * weightPerFt / 2000;
+    const ties = Math.ceil(longBars * shortBars * layersNum * 1.1);
+
+    const projectInputs = { length: len, width: wid, spacing: sp, layers: layersNum, wastePct: waste * 100 };
+    const projectResults = { totalLength, lengthWithWaste, totalWeight, ties, longBars, shortBars };
+    const projectMaterials: MaterialItem[] = [
+      { name: `Rebar ${rebarSize}`, quantity: lengthWithWaste, unit: "linear ft", category: "reinforcement" },
+      { name: "Rebar Ties", quantity: ties, unit: "ties", category: "reinforcement" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, spacing, rebarSize, layers, wasteFactor, onCalculate]);
 
   const len = parseNumber(length);
   const wid = parseNumber(width);

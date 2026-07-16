@@ -1,0 +1,191 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import {
+  graphSchema,
+  faqPageSchema,
+  howToSchema,
+  breadcrumbListSchema,
+  mathSolverSchema,
+} from "../../../lib/schema";
+import { computeSquareFootage } from "../../../lib/estimateEngine";
+import { SQFT_SEEDS } from "../../../data/estimate-seeds";
+
+export function getStaticPaths() {
+  return SQFT_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof SQFT_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const result = computeSquareFootage({
+  length: seed.length,
+  width: seed.width,
+});
+
+const canonical = `https://homeplanninghub.com/estimate/square-footage/${seed.slug}/`;
+const title = `Square Footage of a ${seed.label}: ${result.areaSqFt} sq ft`;
+const description = `The square footage of a ${seed.label.toLowerCase()} is ${result.areaSqFt} square feet. Calculate area in sq ft, sq yd, and sq m for any room.`;
+
+const h1Title = `Square Footage of a ${seed.length} × ${seed.width} Room`;
+const h1Short = `${seed.length}×${seed.width} Square Footage`;
+
+function fmt(num: number, decimals = 2): string {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const faqs = [
+  {
+    q: `What is the square footage of a ${seed.length}×${seed.width} room?`,
+    a: `A ${seed.length} ft by ${seed.width} ft room has a square footage of ${fmt(result.areaSqFt)} sq ft. This is calculated by multiplying the length by the width: ${seed.length} × ${seed.width} = ${fmt(result.areaSqFt)} sq ft. In square yards, that's ${fmt(result.areaSqYd)} sq yd, and in square meters, it's ${fmt(result.areaSqM)} sq m. Use our Square Footage Calculator to measure rooms with different shapes, including circles, triangles, and L-shaped areas.`,
+  },
+  {
+    q: `How to measure a ${seed.length}×${seed.width} room for flooring?`,
+    a: `For flooring in a ${seed.length}×${seed.width} room, start with the floor area of ${fmt(result.areaSqFt)} sq ft. Add 10% waste for straight layouts or 15% for diagonal installations. You'll need approximately ${fmt(result.areaSqFt * 1.1)} sq ft with waste. This applies to hardwood, laminate, vinyl planks, or tile flooring. Use our Square Footage Calculator to add waste and convert between units.`,
+  },
+  {
+    q: `How many square yards is a ${seed.length}×${seed.width} room?`,
+    a: `A ${seed.length}×${seed.width} room is ${fmt(result.areaSqYd)} square yards. To convert square feet to square yards, divide by 9 (since 1 sq yd = 9 sq ft): ${fmt(result.areaSqFt)} ÷ 9 = ${fmt(result.areaSqYd)} sq yd. Many flooring materials like carpet are sold by the square yard, while tile and hardwood are sold by the square foot. Use our Square Footage Calculator for easy unit conversions.`,
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Construction Converters", path: "/calculators/" },
+    { name: "Square Footage Calculator", path: "/calculators/square-footage/" },
+    { name: h1Short, path: `/estimate/square-footage/${seed.slug}/` },
+  ]),
+  mathSolverSchema({
+    name: `Square Footage of ${seed.label}`,
+    description: `Calculate the square footage of a ${seed.length}×${seed.width} room.`,
+    formula: `Area = ${seed.length} × ${seed.width} = ${fmt(result.areaSqFt)} sq ft`,
+    url: canonical,
+  }),
+  howToSchema(
+    `Calculate Square Footage of a ${seed.label}`,
+    `Follow this simple formula to find the square footage of a ${seed.label.toLowerCase()}.`,
+    [
+      {
+        name: "Measure the length",
+        text: `Measure the length of the room in feet: ${seed.length} ft.`,
+      },
+      {
+        name: "Measure the width",
+        text: `Measure the width of the room in feet: ${seed.width} ft.`,
+      },
+      {
+        name: "Multiply length by width",
+        text: `${seed.length} ft × ${seed.width} ft = ${fmt(result.areaSqFt)} sq ft. This is the total square footage of the room.`,
+      },
+    ]
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:underline">calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/square-footage/" class="hover:underline">sq footage</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{h1Short}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        The square footage of a {seed.label.toLowerCase()} is <strong>{fmt(result.areaSqFt)} square feet</strong>. This page shows the area in multiple units and explains how to use this measurement for flooring, paint, and other home improvement projects.
+      </p>
+    </header>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Area of {seed.label}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Unit</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Value</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Square Feet</td>
+              <td class="py-2 text-lg font-bold text-[var(--fg)]">{fmt(result.areaSqFt)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Square Yards</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.areaSqYd)} sq yd</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Square Meters</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.areaSqM)} sq m</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-5">
+      <h2 class="text-base font-bold tracking-tight mb-2">Common Uses for {fmt(result.areaSqFt)} Sq Ft</h2>
+      <ul class="list-disc pl-5 flex flex-col gap-2 text-xs text-[var(--fg-secondary)]">
+        <li><strong>Flooring:</strong> Order approximately {fmt(Math.ceil(result.areaSqFt * 1.1))} sq ft (with 10% waste) for hardwood, laminate, or vinyl.</li>
+        <li><strong>Paint:</strong> One gallon of paint covers about 350 sq ft. Wall paint needs depend on ceiling height and number of doors/windows.</li>
+        <li><strong>Tile:</strong> A {fmt(result.areaSqFt)} sq ft area needs about {fmt(Math.ceil(result.areaSqFt * 1.1 / 1))} tiles at 12×12 inches with 10% waste.</li>
+        <li><strong>HVAC:</strong> A general rule is 20 BTU per square foot, so this room needs approximately {fmt(Math.round(result.areaSqFt * 20))} BTU of cooling capacity.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 id="how-it-works" class="text-xl font-bold tracking-tight mb-4">How the Estimate Works</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        The area of a rectangular room is calculated by multiplying the length by the width:
+      </p>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-sm">
+        Area = {seed.length} ft × {seed.width} ft = <strong>{fmt(result.areaSqFt)} sq ft</strong>
+      </div>
+      <div class="flex flex-col gap-2 text-xs">
+        <div class="p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+          Square Yards = {fmt(result.areaSqFt)} sq ft ÷ 9 = <strong>{fmt(result.areaSqYd)} sq yd</strong>
+        </div>
+        <div class="p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+          Square Meters = {fmt(result.areaSqFt)} sq ft × 0.092903 = <strong>{fmt(result.areaSqM)} sq m</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 text-center">
+      <h2 class="text-base font-bold tracking-tight mb-2">Calculate Other Shapes</h2>
+      <p class="text-xs text-[var(--fg-secondary)] mb-4">Our calculator supports rectangles, circles, triangles, and L-shaped areas.</p>
+      <a href={`/calculators/square-footage/?length=${seed.length}&width=${seed.width}`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity no-underline">
+        Open Square Footage Calculator
+      </a>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="square-footage" />
+  </article>
+</Layout>

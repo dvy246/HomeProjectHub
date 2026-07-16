@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -12,7 +12,7 @@ import { withI18n } from "../i18n/withI18n";
 
 type Shape = "rectangle" | "lshape" | "triangle" | "circle";
 
-function SquareFootageCalc() {
+function SquareFootageCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [shape, setShape] = useState<Shape>("rectangle");
   const [length, setLength] = useState("12");
@@ -26,6 +26,10 @@ function SquareFootageCalc() {
   const [diameter, setDiameter] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("square-footage", "Square Footage Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [shape, length, width, lenA, widA, lenB, widB, base, height, diameter, onCalculate]);
 
   let area = 0;
   switch (shape) {

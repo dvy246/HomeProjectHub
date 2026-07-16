@@ -140,6 +140,14 @@ function ProjectDetail({ projectId, onBack }: { projectId: string; onBack: () =>
             </div>
           </div>
           <div className="flex items-center gap-2 print:hidden">
+            {["patio", "shed", "roofing"].includes(project.projectType) && (
+              <a
+                href={`/planner/${project.projectType}/?projectId=${project.id}`}
+                className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-colors gap-1.5 cursor-pointer shadow-sm"
+              >
+                Launch Workflow
+              </a>
+            )}
             <button
               type="button"
               onClick={() => window.print()}

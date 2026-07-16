@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -20,19 +20,38 @@ interface Props {
   aggregates: AggregateOption[];
   defaultKey?: string;
   calculatorLabel?: string;
+  initialArea?: string;
+  initialDepth?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
 }
 
-function AggregateCalc({ aggregates, defaultKey, calculatorLabel }: Props) {
+function AggregateCalc({ aggregates, defaultKey, calculatorLabel, initialArea, initialDepth, projectId, onCalculate }: Props) {
   const { t } = useI18n();
   const label = calculatorLabel ?? t('calculators.detail.landscaping.aggregate.material') ?? "Material";
   const [aggId, setAggId] = useState(defaultKey || aggregates[0]?.id || "");
-  const [sqft, setSqft] = useState("100");
-  const [depth, setDepth] = useState("4");
+  const [sqft, setSqft] = useState(initialArea || "100");
+  const [depth, setDepth] = useState(initialDepth || "4");
   const [waste, setWaste] = useState("10");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("aggregate", "Aggregate Calculator");
 
   const agg = aggregates.find((a) => a.id === aggId) || aggregates[0];
+
+  useEffect(() => {
+    const sf = parseFloat(sqft) || 0;
+    const d = parseFloat(depth) || 0;
+    const ws = parseFloat(waste) / 100;
+    const cuYd = (sf * (d / 12)) / 27;
+    const tons = cuYd * (agg?.tonsPerCuYd ?? 1.4);
+    const tonsWaste = tons * (1 + ws);
+    const lbs = tons * 2000;
+    const cuFt = cuYd * 27;
+    const projectInputs = { sqft: sf, depth: d, wastePct: ws * 100 };
+    const projectResults = { cuYd, tons, tonsWaste, lbs, cuFt };
+    const projectMaterials: MaterialItem[] = [{ name: agg?.label || "Aggregate", quantity: tonsWaste, unit: "tons", category: "aggregate" }];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [sqft, depth, waste, aggId, agg, onCalculate]);
 
   if (!agg) {
     return (

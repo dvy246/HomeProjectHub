@@ -1,0 +1,126 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import TileDesigner from "../../../components/calculators/TileDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/tile-designer/";
+const title = "Free Online Tile Layout Planner & Pattern Designer | HomePlanningHub";
+const description = "Draw bathroom, shower, and floor tile layout patterns. Estimate tile counts, grout bags, and thinsets for 12x24, 24x48, herringbone, and subway tile grids.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Tile Designer", path: PAGE_PATH },
+  ]),
+  mathSolverSchema({
+    name: "Tile Layout Patterns & Spacing Calculations",
+    description: "Calculate tile piece counts, grout quantities, and box volumes based on room square footage, tile spacing joint widths, and layout offset patterns.",
+    formula: "Effective Area = (TileWidth + Grout) × (TileHeight + Grout); Tiles Needed = Math.ceil(RoomArea / Effective Area) × (1 + WasteFactor)",
+    url: canonical,
+  }),
+  faqPageSchema([
+    {
+      q: "Which is better for a 12x24 shower tile layout, vertical or horizontal?",
+      a: "For a 12x24 shower tile layout, laying tiles horizontally makes a narrow shower feel wider, while placing tiles vertically makes low ceilings feel taller. Horizontal running bond (brick pattern) is the most popular layout choice.",
+    },
+    {
+      q: "How much tile waste should I calculate for a herringbone tile layout?",
+      a: "A herringbone tile layout requires a 15% waste factor. Because herringbone pattern involves numerous diagonal cuts at room borders and walls, it yields higher material waste than a straight grid layout (which only requires 10%).",
+    },
+    {
+      q: "What is the standard waste factor for standard subway tile layout patterns?",
+      a: "Standard subway tile layout patterns (like 1/2 offset brick bond or straight stacks) typically require a 10% to 12% waste factor. This covers cutting loss along walls and corners.",
+    },
+    {
+      q: "How do I calculate layouts for large format 24x48 porcelain tile?",
+      a: "For a 24x48 porcelain tile layout, ensure the subfloor is perfectly level to prevent lippage. A 1/3 offset or straight grid pattern is recommended for 24x48 tile layouts; never use a 1/2 brick offset on tiles longer than 18 inches.",
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Tile Layout Planner</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        Interactive Tile Layout Designer & Pattern Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Design and estimate wall, floor, and shower tile layout patterns dynamically. Select presets including subway tile layout styles, medium format 12x24 tile patterns, and large 24x48 porcelain tile configurations. Toggle vertical or horizontal alignment to visualize layout spans instantly and calculate exact piece counts, box quantities, grout weights, and mortar requirements.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-tile-designer-top" />
+
+    <!-- Interactive Tile Layout Canvas Component -->
+    <section>
+      <TileDesigner client:load />
+    </section>
+
+    <!-- Explanatory content rich in searched keywords for SEO -->
+    <section class="prose prose-stone dark:prose-invert max-w-none text-xs leading-relaxed text-[var(--fg-secondary)] flex flex-col gap-4 border-t border-[var(--border)] pt-6 mt-4">
+      <h2 class="text-sm font-bold text-[var(--fg)]">Tiling Patterns & Layout Strategy Guide</h2>
+      <p>
+        Planning a <strong>bathroom tile layout</strong> or a complex <strong>shower tile layout</strong> involves selecting the correct pattern, dimension offsets, and grout thickness. Below are the most common tile layouts used by professionals today:
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">12x24 Tile Layout Patterns & Spacing</h3>
+          <p>
+            The <strong>12x24 tile layout</strong> is a popular option for modern floors and showers. When planning a <strong>12x24 shower tile layout vertical or horizontal</strong> alignment, remember that horizontal layouts expand the perceived width of the space, while vertical layouts draw the eye upward to make low shower ceilings feel taller. Use a 1/3 offset for <strong>tile layout patterns 12x24</strong> to minimize lippage issues (bowing in the center of long tiles).
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Subway Tile Layout Patterns</h3>
+          <p>
+            Standard <strong>subway tile layout patterns</strong> include the classic 1/2 offset brick bond, vertical stacks, or herringbone. Subway tiles (typically 3x6 or 4x12) are popular for kitchen backsplashes and bathroom tub surrounds. A <strong>subway tile layout</strong> in a brick offset pattern is highly forgiving for walls that are slightly out of plumb.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Herringbone Tile Layout</h3>
+          <p>
+            A <strong>herringbone tile layout</strong> places rectangular tiles in interlocking V-shapes at 45-degree or 90-degree angles. This pattern provides a premium, highly textured design but requires a higher waste allowance of 15% to cover multiple diagonal border cuts.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--fg)] text-xs mb-1.5">Large Format 24x48 Porcelain Tile Layouts</h3>
+          <p>
+            When layout planning a <strong>24 x 48 porcelain tile layout</strong> or <strong>24x48 shower tile layout</strong>, select a straight grid or 1/3 brick offset. Because large-format tiles are extremely heavy (~4.5 lbs/sq ft), always ensure the subfloor is structurally sound and verify that your hauling vehicle can transport the weight.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Using our free online <strong>tile layout calculator</strong> and planner, you can swap between <strong>french pattern tile layout</strong> offsets, <strong>square tile layout patterns</strong>, and standard running bonds, helping you minimize waste and buy materials with confidence.
+      </p>
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula="Effective Tile Area = (TileWidth + Grout Joint) × (TileHeight + Grout Joint) in sq inches; Tiles Count = Math.ceil(RoomArea / Effective Tile Area) × (1 + Waste Factor)"
+      assumptions={[
+        "Standard Waste Factors: Straight Grid = 10%, Brick Offset = 12%, Herringbone = 15%.",
+        "Grout weight estimate assumes dry grout density coefficient of 10.5 applied to joint volume.",
+        "Thinset mortar: 1 bag of 50 lb thinset covers 50 square feet.",
+        "Ceramic and porcelain tile weights are estimated at 4.5 lbs per square foot."
+      ]}
+    />
+
+    <!-- Bottom Ad Slot -->
+    <AdSlot slotId="ad-tile-designer-bottom" />
+  </article>
+</Layout>

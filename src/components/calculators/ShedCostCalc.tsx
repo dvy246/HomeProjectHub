@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -27,7 +27,7 @@ const FLOOR_TYPES = [
   { value: "pressure", label: "Pressure Treated", costSqft: 3.0 },
 ];
 
-function ShedCostCalc() {
+function ShedCostCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [shedLength, setShedLength] = useState("8");
   const [shedWidth, setShedWidth] = useState("10");
@@ -37,6 +37,10 @@ function ShedCostCalc() {
   const [floorType, setFloorType] = useState("plywood");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("shed-cost", "Shed Cost Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [shedLength, shedWidth, wallHeight, roofType, sidingType, floorType, onCalculate]);
 
   const sl = parseNumber(shedLength);
   const sw = parseNumber(shedWidth);

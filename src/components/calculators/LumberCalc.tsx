@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateBoardFeet } from "../../lib/geometry";
@@ -19,7 +19,7 @@ const SPECIES = [
   { key: "lumber_walnut", name: "Walnut" },
 ];
 
-function LumberCalc() {
+function LumberCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState("8");
   const [width, setWidth] = useState("6");
@@ -28,6 +28,10 @@ function LumberCalc() {
   const [species, setSpecies] = useState("lumber_douglas_fir");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("lumber", "Lumber Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, thickness, quantity, species, onCalculate]);
 
   const l = parseNumber(length);
   const w = parseNumber(width);

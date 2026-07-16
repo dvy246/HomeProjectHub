@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function DeckCostCalc() {
+export default function DeckCostCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("16");
   const [width, setWidth] = useState("12");
   const [height, setHeight] = useState("3");
@@ -37,6 +37,10 @@ export default function DeckCostCalc() {
   const stairsInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("deck-cost", "Deck Cost Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, height, deckingMaterialPrice, framingLumberFactor, railingPrice, stairPrice, hasRailing, numStairs, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -113,10 +117,10 @@ export default function DeckCostCalc() {
   };
 
   const projectMaterials = [
-    { name: "Decking boards", qty: Math.round(sqFt * 1.1), unit: "sq ft", cost: deckingCost },
-    { name: "Framing joists, hangers & post hardware", qty: 1, unit: "pkg", cost: postFramingCost },
-    ...(hasRailing ? [{ name: "Railing assembly posts/rails", qty: Math.round(railingLinearFt), unit: "linear ft", cost: railingCost }] : []),
-    ...(stairsCount > 0 ? [{ name: "Stair step stringer pack", qty: stairsCount, unit: "set", cost: stairsCost }] : []),
+    { name: "Decking boards", quantity: Math.round(sqFt * 1.1), unit: "sq ft", cost: deckingCost },
+    { name: "Framing joists, hangers & post hardware", quantity: 1, unit: "pkg", cost: postFramingCost },
+    ...(hasRailing ? [{ name: "Railing assembly posts/rails", quantity: Math.round(railingLinearFt), unit: "linear ft", cost: railingCost }] : []),
+    ...(stairsCount > 0 ? [{ name: "Stair step stringer pack", quantity: stairsCount, unit: "set", cost: stairsCost }] : []),
   ];
 
   return (

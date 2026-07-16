@@ -17,11 +17,18 @@ import { withI18n } from "../i18n/withI18n";
 
 const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
 
-function RoofShingleCalc() {
+interface RoofShingleCalcProps {
+  initialLength?: string;
+  initialWidth?: string;
+  projectId?: string;
+  onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void;
+}
+
+function RoofShingleCalc({ initialLength, initialWidth, projectId, onCalculate }: RoofShingleCalcProps = {}) {
   const { t } = useI18n();
   const [roofShape, setRoofShape] = useState<"gable" | "hip">("gable");
-  const [length, setLength] = useState<string>("40");
-  const [width, setWidth] = useState<string>("30");
+  const [length, setLength] = useState<string>(initialLength || "40");
+  const [width, setWidth] = useState<string>(initialWidth || "30");
   const [pitch, setPitch] = useState<string>("4");
   const [wasteFactor, setWasteFactor] = useState<string>("12");
   const [roomName, setRoomName] = useState<string>("");
@@ -29,6 +36,25 @@ function RoofShingleCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roofing-shingles", "Roof Shingle Calculator");
+
+  useEffect(() => {
+    const lenNum = parseFloat(length) || 0;
+    const widNum = parseFloat(width) || 0;
+    const pitchNum = parseFloat(pitch) || 4;
+    const waste = (parseFloat(wasteFactor) || 12) / 100;
+    const area = lenNum * widNum;
+    const pitchFactor = Math.sqrt(1 + (pitchNum / 12) ** 2);
+    const roofArea = area * pitchFactor;
+    const totalAreaWithWaste = roofArea * (1 + waste);
+    const bundlesNeeded = Math.ceil(totalAreaWithWaste / 33.33);
+
+    const projectInputs = { length: lenNum, width: widNum, pitch: pitchNum, wasteFactor };
+    const projectResults = { roofArea, bundlesNeeded };
+    const projectMaterials: MaterialItem[] = [
+      { name: "Asphalt Shingles", quantity: bundlesNeeded, unit: "bundles", category: "roofing" },
+    ];
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, pitch, wasteFactor, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());

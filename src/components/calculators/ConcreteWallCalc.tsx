@@ -16,7 +16,7 @@ import ConcreteWallDiagram from "../diagrams/ConcreteWallDiagram";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function ConcreteWallCalc() {
+function ConcreteWallCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState<string>("10");
@@ -38,6 +38,10 @@ function ConcreteWallCalc() {
     window.addEventListener("saved-rooms-changed", handler);
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, length, height, thickness, doorCount, windowCount, wasteFactor, bagSize, roomName, savedRooms, successMessage, onCalculate]);
 
   const lenNum = parseNumber(length);
   const hNum = parseNumber(height);

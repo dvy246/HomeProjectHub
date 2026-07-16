@@ -17,7 +17,7 @@ import ConcreteColumnDiagram from "../diagrams/ConcreteColumnDiagram";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function ConcreteColumnCalc() {
+function ConcreteColumnCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [columnShape, setColumnShape] = useState<"round" | "square">("round");
@@ -32,6 +32,10 @@ function ConcreteColumnCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-column", "Concrete Column Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, columnShape, diameter, sideLength, height, quantity, wasteFactor, bagSize, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());

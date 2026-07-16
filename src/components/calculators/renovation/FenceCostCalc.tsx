@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -8,7 +8,7 @@ import { parseNumber } from "../../../lib/helpers";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function FenceCostCalc() {
+export default function FenceCostCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("120");
   const [postSpacing, setPostSpacing] = useState("8");
 
@@ -33,6 +33,10 @@ export default function FenceCostCalc() {
   const gateInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("fence-cost", "Fence Cost Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, postSpacing, postPrice, railPrice, picketPrice, concreteBagPrice, bagsPerPost, numGates, gatePrice, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const spacingNum = parseNumber(postSpacing) || 8;
@@ -110,11 +114,11 @@ export default function FenceCostCalc() {
   };
 
   const projectMaterials = [
-    { name: "Structural Fence Posts (4x4)", qty: totalPosts, unit: "unit", cost: postsCost },
-    { name: "Horizontal structural rails (2x4)", qty: Math.round(totalRailsFt), unit: "linear ft", cost: railsCost },
-    { name: "Vertical fence pickets (1x6)", qty: totalPickets, unit: "boards", cost: picketsCost },
-    { name: "Ready-mix concrete footing bags", qty: totalConcreteBags, unit: "bags", cost: concreteCost },
-    ...(gatesCount > 0 ? [{ name: "Gates hardware and picket set", qty: gatesCount, unit: "unit", cost: gatesCost }] : []),
+    { name: "Structural Fence Posts (4x4)", quantity: totalPosts, unit: "unit", cost: postsCost },
+    { name: "Horizontal structural rails (2x4)", quantity: Math.round(totalRailsFt), unit: "linear ft", cost: railsCost },
+    { name: "Vertical fence pickets (1x6)", quantity: totalPickets, unit: "boards", cost: picketsCost },
+    { name: "Ready-mix concrete footing bags", quantity: totalConcreteBags, unit: "bags", cost: concreteCost },
+    ...(gatesCount > 0 ? [{ name: "Gates hardware and picket set", quantity: gatesCount, unit: "unit", cost: gatesCost }] : []),
   ];
 
   return (

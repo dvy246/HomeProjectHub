@@ -1,0 +1,257 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
+import {
+  graphSchema,
+  faqPageSchema,
+  howToSchema,
+  breadcrumbListSchema,
+  mathSolverSchema,
+} from "../../../lib/schema";
+import { computePaint } from "../../../lib/estimateEngine";
+import { PAINT_ROOM_SEEDS } from "../../../data/estimate-seeds";
+
+export function getStaticPaths() {
+  return PAINT_ROOM_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof PAINT_ROOM_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const result = computePaint({
+  length: seed.length,
+  width: seed.width,
+  height: seed.height,
+  doors: seed.doors,
+  windows: seed.windows,
+  coats: seed.coats,
+});
+
+const canonical = `https://homeplanninghub.com/estimate/paint-room/${seed.slug}/`;
+const title = `Paint for a ${seed.label}: Gallons Needed & Cost Estimate`;
+const description = `Calculate exactly how many gallons of paint you need for a ${seed.label.toLowerCase()}. Get accurate estimates for walls, primer, and multiple coats.`;
+
+const coatLabel = seed.coats === 1 ? "1 Coat" : `${seed.coats} Coats`;
+const h1Title = `Paint Needed for a ${seed.length} × ${seed.width} Foot Room (${seed.height} ft Ceilings, ${coatLabel})`;
+const h1Short = `${seed.length}×${seed.width} Room Paint Estimate`;
+
+function fmt(num: number, decimals = 2): string {
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const faqs = [
+  {
+    q: `How much paint do I need for a ${seed.length}×${seed.width} room with ${seed.height} ft ceilings?`,
+    a: `For a ${seed.length}×${seed.width} room with ${seed.height} ft ceilings, ${seed.doors} door(s) and ${seed.windows} window(s), you need approximately ${result.totalGallons} gallons of paint for ${seed.coats} coat(s). The total paintable wall area after subtracting openings is ${fmt(result.netWallArea)} square feet. For ${seed.coats} coat(s), that's ${fmt(result.totalWithCoats)} square feet of coverage needed. Use our interactive Paint Calculator to customize your room dimensions and compare paint types.`,
+  },
+  {
+    q: `How do you calculate paint for a ${seed.length}×${seed.width} room?`,
+    a: `The formula is: Wall Area = 2 × (Length + Width) × Height, minus openings. For your ${seed.length}×${seed.width} room: perimeter = 2 × (${seed.length} + ${seed.width}) = ${fmt(result.perimeter)} ft. Gross wall area = ${fmt(result.perimeter)} × ${seed.height} = ${fmt(result.grossWallArea)} sq ft. Subtract ${result.doorsArea} sq ft for ${seed.doors} door(s) and ${result.windowsArea} sq ft for ${seed.windows} window(s) to get ${fmt(result.netWallArea)} sq ft net. Divide by 350 (sq ft per gallon) and multiply by ${seed.coats} coat(s): ${fmt(result.totalWithCoats)} ÷ 350 = ${result.totalGallons} gallons.`,
+  },
+  {
+    q: `How many gallons for 1 coat vs 2 coats in a ${seed.length}×${seed.width} room?`,
+    a: `For a ${seed.length}×${seed.width} room, one coat of paint requires ${result.gallonsPerCoat} gallon(s). For two coats, you would need ${Math.ceil(result.totalNetArea * 2 / 350)} gallons total. Most rooms require two coats for even coverage, especially when painting over darker colors or using lighter shades. Dark colors like deep reds or blues may need three coats. Use our calculator to adjust coats and compare total paint needed.`,
+  },
+  {
+    q: `Do I need to paint the ceiling in a ${seed.length}×${seed.width} room?`,
+    a: `The ceiling area for a ${seed.length}×${seed.width} room is ${fmt(seed.length * seed.width)} square feet. Ceiling paint is typically sold separately and a gallon covers 350-400 square feet. For this room, one gallon of ceiling paint should be sufficient for one or two coats. Using a slightly different sheen (eggshell or flat) for the ceiling compared to the walls (satin or semi-gloss) is standard practice. Use our Paint Calculator to include ceiling paint in your estimate.`,
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Paint Calculator", path: "/calculators/paint/" },
+    { name: h1Short, path: `/estimate/paint-room/${seed.slug}/` },
+  ]),
+  mathSolverSchema({
+    name: `Paint Coverage for ${seed.label}`,
+    description: `Calculate paint gallons needed for a ${seed.length}×${seed.width} room with ${seed.height} ft ceilings.`,
+    formula: `Gallons = [2 × (L + W) × H - (doors × 21 + windows × 12)] × coats ÷ 350`,
+    url: canonical,
+  }),
+  howToSchema(
+    `Calculate Paint for a ${seed.label}`,
+    `Follow these steps to determine exactly how much paint you need for a ${seed.label.toLowerCase()}.`,
+    [
+      {
+        name: "Find the wall perimeter",
+        text: `Add the room length and width, then multiply by 2: 2 × (${seed.length} ft + ${seed.width} ft) = ${fmt(result.perimeter)} ft.`,
+      },
+      {
+        name: "Calculate gross wall area",
+        text: `Multiply the perimeter by the ceiling height: ${fmt(result.perimeter)} ft × ${seed.height} ft = ${fmt(result.grossWallArea)} sq ft.`,
+      },
+      {
+        name: "Subtract doors and windows",
+        text: `Deduct ${result.doorsArea} sq ft for ${seed.doors} door(s) and ${result.windowsArea} sq ft for ${seed.windows} window(s). Net wall area: ${fmt(result.netWallArea)} sq ft.`,
+      },
+      {
+        name: "Calculate gallons needed",
+        text: `Divide by 350 sq ft per gallon and multiply by ${seed.coats} coat(s): (${fmt(result.netWallArea)} × ${seed.coats}) ÷ 350 = ${result.totalGallons} gallons.`,
+      },
+    ]
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/calculators/paint/" class="hover:underline">paint</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{h1Short}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        This estimate shows the paint gallons needed for a {seed.label.toLowerCase()} with {coatLabel}. Calculations assume standard paint coverage of 350 square feet per gallon. Actual coverage varies by paint quality, wall texture, and application method.
+      </p>
+    </header>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+      <h2 class="text-lg font-bold tracking-tight mb-4">Paint Estimate for {seed.label}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Measurement</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Value</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Room Dimensions</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.length} × {seed.width} × {seed.height} ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Wall Perimeter</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.perimeter)} ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Gross Wall Area</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.grossWallArea)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Less Doors ({result.doorsArea} sq ft)</td>
+              <td class="py-2 text-[var(--fg)]">&minus;{result.doorsArea} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Less Windows ({result.windowsArea} sq ft)</td>
+              <td class="py-2 text-[var(--fg)]">&minus;{result.windowsArea} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4 font-semibold text-[var(--fg)]">Net Wall Area</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.netWallArea)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Coats</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{seed.coats}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Total Coverage Needed</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{fmt(result.totalWithCoats)} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4 font-semibold text-[var(--fg)]">Gallons per Coat</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.gallonsPerCoat} gallon(s)</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4 font-semibold text-[var(--fg)]">Total Paint Needed</td>
+              <td class="py-2 text-lg font-bold text-[var(--fg)]">{result.totalGallons} gallons</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--bg-inset)] p-5">
+      <h2 class="text-base font-bold tracking-tight mb-2">Cost Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] leading-relaxed mb-3">
+        Estimated paint costs based on national averages. Interior paint ranges from $25 to $60 per gallon depending on quality.
+      </p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)]">
+              <th class="py-2 pr-4 font-semibold text-[var(--fg)]">Paint Quality</th>
+              <th class="py-2 font-semibold text-[var(--fg)]">Est. Cost ({result.totalGallons} gal)</th>
+            </tr>
+          </thead>
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Economy Paint ($25/gal)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${result.totalGallons * 25}</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2 pr-4">Standard Paint ($35/gal)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${result.totalGallons * 35}</td>
+            </tr>
+            <tr>
+              <td class="py-2 pr-4">Premium Paint ($50/gal)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">${result.totalGallons * 50}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-2 text-xs text-[var(--fg-muted)]"><em>Costs exclude primer, supplies (tape, brushes, rollers), and labor. Premium paint often covers better in fewer coats.</em></p>
+    </section>
+
+    <section>
+      <h2 id="how-it-works" class="text-xl font-bold tracking-tight mb-4">How the Estimate Works</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Paint coverage is calculated using the standard wall area method for interior rooms:
+      </p>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Perimeter = 2 × ({seed.length} + {seed.width}) = <strong>{fmt(result.perimeter)} ft</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Gross Wall Area = {fmt(result.perimeter)} ft × {seed.height} ft = <strong>{fmt(result.grossWallArea)} sq ft</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Net Wall Area = {fmt(result.grossWallArea)} &minus; {result.doorsArea} (doors) &minus; {result.windowsArea} (windows) = <strong>{fmt(result.netWallArea)} sq ft</strong>
+      </div>
+      <div class="my-3 p-3 bg-[var(--bg-muted)] rounded-lg font-mono text-center text-xs">
+        Gallons Needed = {fmt(result.netWallArea)} sq ft × {seed.coats} coats ÷ 350 sq ft/gal = <strong>{result.totalGallons} gallons</strong>
+      </div>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Standard interior doors are estimated at 21 square feet each and standard windows at 12 square feet each. Paint coverage assumes 350 square feet per gallon, which is the standard for most interior latex paints. Textured walls or dark colors may require additional paint.
+      </p>
+    </section>
+
+    <section class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 text-center">
+      <h2 class="text-base font-bold tracking-tight mb-2">Customize This Estimate</h2>
+      <p class="text-xs text-[var(--fg-secondary)] mb-4">Adjust room dimensions, door/window count, coats, and add ceiling paint.</p>
+      <a href={`/calculators/paint/?length=${seed.length}&width=${seed.width}&height=${seed.height}&doors=${seed.doors}&windows=${seed.windows}&coats=${seed.coats}`} class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold hover:opacity-90 transition-opacity no-underline">
+        Open Interactive Paint Calculator
+      </a>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedGuides category="paint" />
+    <RelatedCalculators slug="paint" />
+  </article>
+</Layout>

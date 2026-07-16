@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -17,7 +17,7 @@ const RATIOS: Record<string, [number, number, number]> = {
   "1:3:5 (Lean Mix)": [1, 3, 5],
 };
 
-function MixRatioCalc() {
+function MixRatioCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [volume, setVolume] = useState<string>("1");
   const [unit, setUnit] = useState<"cuyd" | "cuft">("cuyd");
@@ -25,6 +25,10 @@ function MixRatioCalc() {
   const [cementBagSize, setCementBagSize] = useState<string>("94");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("mix-ratio", "Concrete Mix Ratio Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [volume, unit, ratioLabel, cementBagSize, onCalculate]);
 
   const vol = parseNumber(volume);
   const volCuFt = unit === "cuyd" ? vol * 27 : vol;

@@ -12,13 +12,14 @@ import type { MaterialItem } from "../../lib/projectEngine";
 import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import PaintDiagram from "../diagrams/PaintDiagram";
+import ProjectPlaybook from "./ProjectPlaybook";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
 const COVERAGE_PER_GALLON = 350;
 const _STANDARD_COATS = 2;
 
-function PaintCalc() {
+function PaintCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [length, setLength] = useState("12");
@@ -31,8 +32,13 @@ function PaintCalc() {
   const [roomName, setRoomName] = useState("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showPlaybook, setShowPlaybook] = useState<boolean>(false);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("paint", "Paint Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, length, width, height, doors, windows, coats, includeCeiling, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
@@ -272,6 +278,32 @@ function PaintCalc() {
             </div>
           </div>
         </Card>
+      </div>
+
+      <div className="lg:col-span-12">
+        <button
+          type="button"
+          onClick={() => setShowPlaybook(!showPlaybook)}
+          className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--border-hover)] transition-all text-left cursor-pointer"
+          aria-expanded={showPlaybook}
+        >
+          <div className="flex items-center gap-3">
+            <svg className={`w-5 h-5 text-[var(--accent)] transition-transform ${showPlaybook ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+            <div>
+              <span className="text-sm font-semibold text-[var(--fg)]">View Project Playbook</span>
+              <p className="text-xs text-[var(--fg-muted)]">Complete execution plan with checkpoints, tools, and timeline</p>
+            </div>
+          </div>
+          <svg className={`w-5 h-5 text-[var(--fg-muted)] transition-transform ${showPlaybook ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+        {showPlaybook && (
+          <ProjectPlaybook
+            workflowId="room"
+            calculatorInputs={{ length: parseFloat(length), width: parseFloat(width), height: parseFloat(height) }}
+            results={{ wallArea, totalArea, gallonsNeeded }}
+            materials={projectMaterials}
+          />
+        )}
       </div>
     </div>
   );

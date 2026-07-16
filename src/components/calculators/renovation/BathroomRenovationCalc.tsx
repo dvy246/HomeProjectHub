@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../../ui/Input";
 import { Card } from "../../ui/Card";
 import AddToProjectCard from "../../ui/AddToProjectCard";
@@ -9,7 +9,7 @@ import { PRESETS } from "../../../lib/presets";
 import ContractorRfqForm from "./ContractorRfqForm";
 import DiyQuizWidget from "./DiyQuizWidget";
 
-export default function BathroomRenovationCalc() {
+export default function BathroomRenovationCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: import("../../../lib/projectEngine").MaterialItem[]) => void } = {}) {
   const [length, setLength] = useState("10");
   const [width, setWidth] = useState("8");
   const [wallHeight, setWallHeight] = useState("8");
@@ -37,6 +37,10 @@ export default function BathroomRenovationCalc() {
   const heightInputRef = useRef<HTMLInputElement>(null);
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("bathroom-remodel", "Bathroom Renovation Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, wallHeight, floorTilePrice, wallPaintPrice, vanityCabinetPrice, showerFixturePrice, toiletFixturePrice, drywallGroutAllowance, hasVanity, hasShower, hasToilet, laborPercent, contingencyPercent, regionalModifier, focusedField, onCalculate]);
 
   const lenNum = parseNumber(length) || 0;
   const widNum = parseNumber(width) || 0;
@@ -120,12 +124,12 @@ export default function BathroomRenovationCalc() {
   };
 
   const projectMaterials = [
-    { name: "Floor tiles", qty: Math.round(floorTilingArea * 1.1), unit: "sq ft", cost: floorCost },
-    { name: "Bathroom paints & primers", qty: Math.round(wallArea), unit: "sq ft", cost: wallPaintCost },
-    ...(hasVanity ? [{ name: "Bathroom Vanity Cabinet", qty: 1, unit: "unit", cost: vanityCost }] : []),
-    ...(hasShower ? [{ name: "Shower/Tub unit fixture", qty: 1, unit: "unit", cost: showerCost }] : []),
-    ...(hasToilet ? [{ name: "Toilet unit fixture", qty: 1, unit: "unit", cost: toiletCost }] : []),
-    { name: "Screws, grout, thinset, backing boards", qty: 1, unit: "pkg", cost: drywallAllowanceVal },
+    { name: "Floor tiles", quantity: Math.round(floorTilingArea * 1.1), unit: "sq ft", cost: floorCost },
+    { name: "Bathroom paints & primers", quantity: Math.round(wallArea), unit: "sq ft", cost: wallPaintCost },
+    ...(hasVanity ? [{ name: "Bathroom Vanity Cabinet", quantity: 1, unit: "unit", cost: vanityCost }] : []),
+    ...(hasShower ? [{ name: "Shower/Tub unit fixture", quantity: 1, unit: "unit", cost: showerCost }] : []),
+    ...(hasToilet ? [{ name: "Toilet unit fixture", quantity: 1, unit: "unit", cost: toiletCost }] : []),
+    { name: "Screws, grout, thinset, backing boards", quantity: 1, unit: "pkg", cost: drywallAllowanceVal },
   ];
 
   return (

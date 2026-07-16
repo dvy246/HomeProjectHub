@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateWeight } from "../../lib/materialEngine";
@@ -19,7 +19,7 @@ const MATERIALS = [
   { key: "concrete", label: "Concrete" },
 ];
 
-function SizeToWeightCalc() {
+function SizeToWeightCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [material, setMaterial] = useState("steel_a36");
   const [length, setLength] = useState("12");
@@ -27,6 +27,10 @@ function SizeToWeightCalc() {
   const [thickness, setThickness] = useState("0.25");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("size-to-weight", "Size to Weight Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [material, length, width, thickness, onCalculate]);
 
   const l = parseNumber(length);
   const w = parseNumber(width);

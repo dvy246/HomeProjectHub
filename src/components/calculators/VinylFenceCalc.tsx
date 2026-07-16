@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { parseNumber } from "../../lib/helpers";
@@ -9,7 +9,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function VinylFenceCalc() {
+function VinylFenceCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [fenceLength, setFenceLength] = useState("100");
   const [fenceHeight, setFenceHeight] = useState("6");
@@ -18,6 +18,10 @@ function VinylFenceCalc() {
   const [gateWidth, setGateWidth] = useState("4");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("vinyl-fence", "Vinyl Fence Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [fenceLength, fenceHeight, panelWidth, gateCount, gateWidth, onCalculate]);
 
   const fl = parseNumber(fenceLength);
   const fh = parseNumber(fenceHeight);

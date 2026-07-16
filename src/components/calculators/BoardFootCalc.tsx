@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { calculateBoardFeet, cuFeetToCuYards } from "../../lib/geometry";
@@ -9,7 +9,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function BoardFootCalc() {
+function BoardFootCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [length, setLength] = useState("8");
   const [width, setWidth] = useState("6");
@@ -17,6 +17,10 @@ function BoardFootCalc() {
   const [quantity, setQuantity] = useState("1");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("board-foot", "Board Foot Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [length, width, thickness, quantity, onCalculate]);
 
   const l = parseNumber(length);
   const w = parseNumber(width);

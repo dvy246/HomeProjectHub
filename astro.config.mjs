@@ -30,6 +30,9 @@ export default defineConfig({
           item.priority = 1.0;
           item.changefreq = 'weekly';
           item.lastmod = new Date().toISOString();
+        } else if (path.startsWith('/estimate/')) {
+          item.priority = 0.8;
+          item.changefreq = 'weekly';
         } else if (path.startsWith('/calculators/')) {
           item.priority = 0.8;
           item.changefreq = 'weekly';

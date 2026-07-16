@@ -16,7 +16,7 @@ import ConcreteStepsDiagram from "../diagrams/ConcreteStepsDiagram";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
-function ConcreteStepsCalc() {
+function ConcreteStepsCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?: (inputs: Record<string, any>, results: Record<string, any>, materials: MaterialItem[]) => void } = {}) {
   const { t } = useI18n();
   const [unitSystem, setUnitSystem] = useState<"imperial" | "metric">("imperial");
   const [numSteps, setNumSteps] = useState<string>("3");
@@ -31,6 +31,10 @@ function ConcreteStepsCalc() {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-steps", "Concrete Steps Calculator");
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, numSteps, stepWidth, stepRise, stepRun, landingDepth, wasteFactor, bagSize, roomName, savedRooms, successMessage, onCalculate]);
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
