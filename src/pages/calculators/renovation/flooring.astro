@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import FlooringCostCalc from "../../../components/calculators/renovation/FlooringCostCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Flooring Cost Calculator";
 const description = "Free flooring cost calculator. Estimate hardwood, luxury vinyl plank LVP, tile, and carpet materials, underlayment rolls, and contractor labor.";
@@ -27,14 +27,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Flooring Cost", path: "/calculators/renovation/flooring/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Flooring Cost Estimator Formula",
     description,
+    formula: "Total Flooring Cost = Board/Plank Cost + Underlayment Cost + Subfloor OSB Cost + Labor Cost + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure room dimensions",
+      text: "Determine length and width of the room in feet to calculate overall square footage.",
+    },
+    {
+      name: "Select material and underlayment options",
+      text: "Choose wood, laminate, LVP, tile, or carpet styles, underlayment rolls, and waste buffers.",
+    },
+    {
+      name: "Apply installation labor and regional multipliers",
+      text: "Choose professional installation labor surcharges, regional cost offsets, and contingency buffers.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -54,7 +76,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <FlooringCostCalc client:load />
+      <FlooringCostCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

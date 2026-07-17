@@ -14,7 +14,11 @@ interface Props {
 
 const { title, description, canonical, schema, noindex, articlePubDate, articleUpdatedDate } = Astro.props;
 
-const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || "https://homeplanninghub.com").toString();
+const canonicalURL = canonical || (() => {
+  const base = Astro.site?.toString() || "https://homeplanninghub.com";
+  const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : Astro.url.pathname + "/";
+  return new URL(path, base).toString();
+})();
 
 const currentPath = Astro.url.pathname;
 const tr = (key: string) => t('en', key);
@@ -183,23 +187,83 @@ const organizationSchema = {
                 <a href={lUrl("/calculators/tile/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/tile") ? "page" : undefined}>{tr('calculators.tile')}</a>
                 <a href={lUrl("/calculators/renovation/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/renovation") ? "page" : undefined}>Renovation</a>
                 <div class="border-t border-[var(--border)] mx-2 my-1"></div>
-                <a href={lUrl("/calculators/deck-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/deck-designer") ? "page" : undefined}>★ Deck Layout Designer</a>
-                <a href={lUrl("/calculators/tile-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/tile-designer") ? "page" : undefined}>★ Tile Layout Designer</a>
                 <a href={lUrl("/calculators/bulk-vs-bagged/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/bulk-vs-bagged") ? "page" : undefined}>★ Bulk vs. Bagged Planner</a>
                 <a href={lUrl("/calculators/payload/")} role="menuitem" class="block px-3 py-2 text-xs font-semibold text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/payload") ? "page" : undefined}>Payload & Weight Safety</a>
+                <a href={lUrl("/calculators/diy-vs-pro/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/diy-vs-pro") ? "page" : undefined}>★ DIY vs. Pro Cost Splitter</a>
                 <div class="border-t border-[var(--border)] mx-2 my-1"></div>
                 <a href={lUrl("/calculators/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors">{tr('nav.all_calculators')}</a>
               </div>
             </div>
           </div>
-          <a href={lUrl("/renovate/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/renovate") ? "page" : undefined}>{tr('nav.plan_budget')}</a>
-          <a href={lUrl("/playbook/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/playbook") ? "page" : undefined}>Playbooks</a>
-          <a href={lUrl("/maintenance/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/maintenance") ? "page" : undefined}>{tr('nav.maintenance')}</a>
-          <a href={lUrl("/compare/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>{tr('nav.compare')}</a>
-          <a href={lUrl("/guides/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/guides") ? "page" : undefined}>{tr('nav.guides')}</a>
-          <a href={lUrl("/projects/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>{tr('nav.projects')}</a>
-          <a href={lUrl("/about/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/about/" ? "page" : undefined}>{tr('nav.about')}</a>
-          <a href={lUrl("/methodology/")} class="px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/methodology/" ? "page" : undefined}>{tr('nav.methodology')}</a>
+
+          <!-- Designers dropdown -->
+          <div class="relative group">
+            <button
+              type="button"
+              id="designers-dropdown-btn"
+              class="flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Designers
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="absolute left-0 top-full mt-1 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg opacity-0 invisible transition-all duration-150 z-50" role="menu">
+              <div class="py-1">
+                <a href={lUrl("/calculators/concrete-slab-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/concrete-slab-designer") ? "page" : undefined}>★ Concrete Slab & Patio Designer</a>
+                <a href={lUrl("/calculators/deck-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/deck-designer") ? "page" : undefined}>★ Deck Layout Designer</a>
+                <a href={lUrl("/calculators/tile-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/tile-designer") ? "page" : undefined}>★ Tile Layout Designer</a>
+                <a href={lUrl("/calculators/closet-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/closet-designer") ? "page" : undefined}>★ Closet & Storage Designer</a>
+                <a href={lUrl("/calculators/wainscoting-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/wainscoting-designer") ? "page" : undefined}>★ Wainscoting Designer</a>
+                <a href={lUrl("/calculators/framing-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/framing-designer") ? "page" : undefined}>★ Wall Framing Designer</a>
+                <a href={lUrl("/calculators/hardscape-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/hardscape-designer") ? "page" : undefined}>★ Hardscape Designer</a>
+                <a href={lUrl("/calculators/measure-from-photo/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/measure-from-photo") ? "page" : undefined}>★ Photo-to-Measurement Simulator</a>
+                <a href={lUrl("/calculators/stair-stringer-designer/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/calculators/stair-stringer-designer") ? "page" : undefined}>★ Stair Stringer Designer</a>
+              </div>
+            </div>
+          </div>
+          <!-- Planners dropdown -->
+          <div class="relative group">
+            <button
+              type="button"
+              class="flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Planning
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="absolute left-0 top-full mt-1 w-52 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
+              <div class="py-1">
+                <a href={lUrl("/plan/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/plan") ? "page" : undefined}>★ Budget Binder</a>
+                <a href={lUrl("/renovate/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/renovate") ? "page" : undefined}>{tr('nav.plan_budget')}</a>
+                <a href={lUrl("/playbook/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/playbook") ? "page" : undefined}>Playbooks</a>
+                <a href={lUrl("/projects/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>{tr('nav.projects')}</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resources dropdown -->
+          <div class="relative group">
+            <button
+              type="button"
+              class="flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] rounded-md hover:bg-[var(--bg-muted)] transition-colors"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Resources
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="absolute right-0 top-full mt-1 w-52 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
+              <div class="py-1">
+                <a href={lUrl("/maintenance/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/maintenance") ? "page" : undefined}>{tr('nav.maintenance')}</a>
+                <a href={lUrl("/compare/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/compare") ? "page" : undefined}>{tr('nav.compare')}</a>
+                <a href={lUrl("/guides/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/guides") ? "page" : undefined}>{tr('nav.guides')}</a>
+                <a href={lUrl("/about/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/about/" ? "page" : undefined}>{tr('nav.about')}</a>
+                <a href={lUrl("/methodology/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath === "/methodology/" ? "page" : undefined}>{tr('nav.methodology')}</a>
+              </div>
+            </div>
+          </div>
         </nav>
 
         <div class="flex items-center gap-1">
@@ -272,14 +336,30 @@ const organizationSchema = {
               <a href={lUrl("/calculators/paint/")} class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('calculators.paint')}</a>
               <a href={lUrl("/calculators/tile/")} class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('calculators.tile')}</a>
               <div class="border-t border-[var(--border)] mx-3 my-1"></div>
-              <a href={lUrl("/calculators/deck-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Deck Layout Designer</a>
-              <a href={lUrl("/calculators/tile-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Tile Layout Designer</a>
               <a href={lUrl("/calculators/bulk-vs-bagged/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Bulk vs. Bagged Planner</a>
               <a href={lUrl("/calculators/payload/")} class="px-3 py-2.5 rounded-md text-sm font-semibold text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">Payload & Weight Safety</a>
+              <a href={lUrl("/calculators/diy-vs-pro/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ DIY vs. Pro Cost Splitter</a>
               <div class="border-t border-[var(--border)] mx-3 my-1"></div>
               <a href={lUrl("/calculators/")} class="px-3 py-2.5 rounded-md text-sm font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.all_calculators')}</a>
             </div>
           </details>
+          <details class="group">
+            <summary class="flex items-center justify-between px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px] cursor-pointer list-none">
+              Designers
+              <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="ml-3 flex flex-col">
+              <a href={lUrl("/calculators/deck-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Deck Layout Designer</a>
+              <a href={lUrl("/calculators/tile-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Tile Layout Designer</a>
+              <a href={lUrl("/calculators/closet-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Closet & Storage Designer</a>
+              <a href={lUrl("/calculators/wainscoting-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Wainscoting Designer</a>
+              <a href={lUrl("/calculators/framing-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Wall Framing Designer</a>
+              <a href={lUrl("/calculators/hardscape-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Hardscape Designer</a>
+              <a href={lUrl("/calculators/measure-from-photo/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Photo-to-Measurement Simulator</a>
+              <a href={lUrl("/calculators/stair-stringer-designer/")} class="px-3 py-2.5 rounded-md text-sm font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ Stair Stringer Designer</a>
+            </div>
+          </details>
+          <a href={lUrl("/plan/")} class="px-3 py-3 rounded-md text-sm font-bold text-[var(--accent)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">Budget Binder</a>
           <a href={lUrl("/renovate/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.plan_budget')}</a>
           <a href={lUrl("/playbook/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">Playbooks</a>
           <a href={lUrl("/maintenance/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.maintenance')}</a>
@@ -425,7 +505,15 @@ const organizationSchema = {
         { name: "Will It Fit? Vehicle Payload Safety Calculator", url: "/calculators/payload/" },
         { name: "Free Online Deck Designer & Layout Planner", url: "/calculators/deck-designer/" },
         { name: "Free Online Tile Layout Planner & Pattern Designer", url: "/calculators/tile-designer/" },
-        { name: "Ready-Mix vs. Bagged Material Delivery Planner", url: "/calculators/bulk-vs-bagged/" }
+        { name: "Closet & Storage Layout Designer", url: "/calculators/closet-designer/" },
+        { name: "Wainscoting & Accent Wall Spacing Layout Designer", url: "/calculators/wainscoting-designer/" },
+        { name: "Wall Framing & Stud Cut-List Layout Designer", url: "/calculators/framing-designer/" },
+        { name: "Hardscape Designer & Patio Layout Planner", url: "/calculators/hardscape-designer/" },
+        { name: "Measure Room Square Footage from Photo Scale & Area Simulator", url: "/calculators/measure-from-photo/" },
+        { name: "Free Online Stair Stringer Calculator & Layout Planner", url: "/calculators/stair-stringer-designer/" },
+        { name: "DIY vs Pro Cost Splitter — Should You DIY or Hire a Contractor?", url: "/calculators/diy-vs-pro/" },
+        { name: "Ready-Mix vs. Bagged Material Delivery Planner", url: "/calculators/bulk-vs-bagged/" },
+        { name: "Room Renovation Budget Binder & Material Scope", url: "/plan/" }
       ];
 
       const setupSearch = (inputId, resultsId) => {
@@ -581,6 +669,7 @@ const organizationSchema = {
       };
 
       setupDropdown('calc-dropdown-btn');
+      setupDropdown('designers-dropdown-btn');
     </script>
 
 

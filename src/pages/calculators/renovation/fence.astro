@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import FenceCostCalc from "../../../components/calculators/renovation/FenceCostCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Fence Cost Calculator — Materials & Labor";
 const description = "Free fence cost calculator. Estimate wood, vinyl, or metal line posts, pickets, rails, concrete bags, gates, and builder installation labor.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Fence Cost", path: "/calculators/renovation/fence/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Fence Cost Estimator Formula",
     description,
+    formula: "Total Fence Cost = Posts Cost + Rails Cost + Pickets Cost + Concrete Bags Cost + Labor Fee + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure fence length",
+      text: "Determine the total linear length of your fence run and set post spacing parameters (6ft vs 8ft OC).",
+    },
+    {
+      name: "Choose materials and layout sizes",
+      text: "Choose wood, vinyl, or aluminum styles, choose post hole sizes, and select gate counts.",
+    },
+    {
+      name: "Input labor rates and safety buffers",
+      text: "Adjust labor ratios (DIY vs contractor) and allocate a contingency percentage (10-30%) for unexpected slope leveling or rocky soil conditions.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <FenceCostCalc client:load />
+      <FenceCostCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

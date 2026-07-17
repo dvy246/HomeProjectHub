@@ -22,25 +22,25 @@ function BulkVsBaggedCalc() {
   // Run comparisons
   const isConcrete = material === "concrete";
   const concreteRes = compareConcreteOptions(volCuYd, payloadLbs);
-  const aggregateRes = compareAggregateOptions(volCuYd, material as AggregateType, payloadLbs);
+  const aggregateRes = isConcrete ? null : compareAggregateOptions(volCuYd, material as AggregateType, payloadLbs);
 
-  const bulkCost = isConcrete ? concreteRes.readyMix.totalCost : aggregateRes.bulk.totalCost;
-  const baggedCost = isConcrete ? concreteRes.bagged.totalCost : aggregateRes.bagged.totalCost;
-  const recommendation = isConcrete ? concreteRes.recommendation : aggregateRes.recommendation;
+  const bulkCost = isConcrete ? concreteRes.readyMix.totalCost : aggregateRes!.bulk.totalCost;
+  const baggedCost = isConcrete ? concreteRes.bagged.totalCost : aggregateRes!.bagged.totalCost;
+  const recommendation = isConcrete ? concreteRes.recommendation : aggregateRes!.recommendation;
 
-  const bulkWeight = isConcrete ? concreteRes.readyMix.weightLbs : aggregateRes.bulk.weightLbs;
-  const baggedWeight = isConcrete ? concreteRes.bagged.weightLbs : aggregateRes.bagged.weightLbs;
+  const bulkWeight = isConcrete ? concreteRes.readyMix.weightLbs : aggregateRes!.bulk.weightLbs;
+  const baggedWeight = isConcrete ? concreteRes.bagged.weightLbs : aggregateRes!.bagged.weightLbs;
 
-  const bagsCount = isConcrete ? concreteRes.bagged.bagsNeeded : aggregateRes.bagged.bagsNeeded;
-  const tripsCount = isConcrete ? concreteRes.bagged.tripsCount : aggregateRes.bagged.tripsCount;
-  const laborHours = isConcrete ? concreteRes.bagged.laborHours : aggregateRes.bagged.laborHours;
+  const bagsCount = isConcrete ? concreteRes.bagged.bagsNeeded : aggregateRes!.bagged.bagsNeeded;
+  const tripsCount = isConcrete ? concreteRes.bagged.tripsCount : aggregateRes!.bagged.tripsCount;
+  const laborHours = isConcrete ? concreteRes.bagged.laborHours : aggregateRes!.bagged.laborHours;
 
-  const palletCount = isConcrete ? concreteRes.bagged.palletCount : aggregateRes.bagged.palletCount;
-  const storageSqFt = isConcrete ? concreteRes.bagged.storageSqFt : aggregateRes.bagged.storageSqFt;
-  const cumulativeLiftWeightLbs = isConcrete ? concreteRes.bagged.cumulativeLiftWeightLbs : aggregateRes.bagged.cumulativeLiftWeightLbs;
+  const palletCount = isConcrete ? concreteRes.bagged.palletCount : aggregateRes!.bagged.palletCount;
+  const storageSqFt = isConcrete ? concreteRes.bagged.storageSqFt : aggregateRes!.bagged.storageSqFt;
+  const cumulativeLiftWeightLbs = isConcrete ? concreteRes.bagged.cumulativeLiftWeightLbs : aggregateRes!.bagged.cumulativeLiftWeightLbs;
 
-  const bulkMaterialCost = isConcrete ? concreteRes.readyMix.materialCost : aggregateRes.bulk.materialCost;
-  const bulkDelivery = isConcrete ? (concreteRes.readyMix.deliveryCharge + concreteRes.readyMix.shortLoadSurcharge) : aggregateRes.bulk.deliveryCharge;
+  const bulkMaterialCost = isConcrete ? concreteRes.readyMix.materialCost : aggregateRes!.bulk.materialCost;
+  const bulkDelivery = isConcrete ? (concreteRes.readyMix.deliveryCharge + concreteRes.readyMix.shortLoadSurcharge) : aggregateRes!.bulk.deliveryCharge;
 
   return (
     <div className="flex flex-col gap-6 w-full">

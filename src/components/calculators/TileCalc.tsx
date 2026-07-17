@@ -25,6 +25,16 @@ function TileCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("tile", "Tile Calculator");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const l = params.get("length");
+      const w = params.get("width");
+      if (l) setLength(l);
+      if (w) setWidth(w);
+    }
+  }, []);
+
+  useEffect(() => {
     onCalculate?.(projectInputs, projectResults, projectMaterials);
   }, [length, width, tileWidth, tileLength, tilesPerBox, wasteFactor, layout, onCalculate]);
 

@@ -36,6 +36,6 @@ const schema = graphSchema(
       <span class="text-[var(--fg-secondary)] font-medium">Planner</span>
     </nav>
 
-    <ProjectWorkflow client:load workflowId={workflow} />
+    <ProjectWorkflow client:visible workflowId={workflow} />
   </article>
 </Layout>

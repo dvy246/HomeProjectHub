@@ -20,7 +20,7 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   it: 'Italiano',
 };
 
-const allTranslations: Record<Locale, typeof en> = {
+const allTranslations: Record<Locale, Record<string, unknown>> = {
   en: enDict,
   es: esDict,
   de: deDict,
@@ -30,7 +30,7 @@ const allTranslations: Record<Locale, typeof en> = {
 };
 
 export function getTranslations(locale: Locale): typeof en {
-  return allTranslations[locale] || allTranslations['en'];
+  return (allTranslations[locale] || allTranslations['en']) as typeof en;
 }
 
 export function t(locale: Locale, key: string): string {

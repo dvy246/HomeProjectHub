@@ -8,7 +8,7 @@ export interface ReportMaterialItem {
   name: string;
   quantity: number;
   unit: string;
-  category: string;
+  category?: string;
 }
 
 export interface ReportMetrics {

@@ -1,0 +1,912 @@
+{
+  "flooring": [
+    {
+      "id": "hardwood",
+      "name": "Solid Hardwood",
+      "category": "flooring",
+      "description": "Real wood planks milled from solid lumber, sanded and refinished multiple times.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 8, "max": 15, "avg": 11, "installed": 14 },
+      "lifespanYears": 25,
+      "maintenanceAnnualCostPerUnit": 0.18,
+      "replacementCostPerUnit": 11,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 3,
+        "scratchResistance": 4,
+        "easeMaintenance": 4,
+        "ecoFriendly": 7,
+        "resaleValue": 9,
+        "warmthComfort": 8,
+        "soundAbsorption": 7,
+        "easeInstallation": 3
+      },
+      "pros": ["Highest resale value", "Can be refinished 5-7 times", "Warm, natural feel"],
+      "cons": ["Vulnerable to moisture", "Scratches easily", "Higher upfront cost"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/flooring/hardwood/flooring/",
+        "amazon": "/s?k=solid+hardwood+flooring"
+      },
+      "svgColors": ["#C4956A", "#B8835A", "#A67B54", "#D4A77A"]
+    },
+    {
+      "id": "laminate",
+      "name": "Laminate",
+      "category": "flooring",
+      "description": "Composite core with a photographic wear layer simulating wood or stone.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 2, "max": 5, "avg": 3.5, "installed": 5 },
+      "lifespanYears": 15,
+      "maintenanceAnnualCostPerUnit": 0.05,
+      "replacementCostPerUnit": 3.5,
+      "scores": {
+        "durability": 7,
+        "waterResistance": 5,
+        "scratchResistance": 7,
+        "easeMaintenance": 8,
+        "ecoFriendly": 4,
+        "resaleValue": 4,
+        "warmthComfort": 4,
+        "soundAbsorption": 3,
+        "easeInstallation": 9
+      },
+      "pros": ["Budget friendly", "DIY click-lock install", "Scratch resistant"],
+      "cons": ["Cannot be refinished", "Lower resale value", "Can sound hollow"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/flooring/laminate/flooring/",
+        "amazon": "/s?k=laminate+flooring"
+      },
+      "svgColors": ["#D9C2A3", "#C9B291", "#B8A07E"]
+    },
+    {
+      "id": "luxury-vinyl",
+      "name": "Luxury Vinyl Plank (LVP)",
+      "category": "flooring",
+      "description": "Rigid-core vinyl with realistic wood-look photographic layer and waterproof construction.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 4, "max": 9, "avg": 6.5, "installed": 8 },
+      "lifespanYears": 20,
+      "maintenanceAnnualCostPerUnit": 0.03,
+      "replacementCostPerUnit": 6.5,
+      "scores": {
+        "durability": 8,
+        "waterResistance": 9,
+        "scratchResistance": 8,
+        "easeMaintenance": 9,
+        "ecoFriendly": 3,
+        "resaleValue": 5,
+        "warmthComfort": 4,
+        "soundAbsorption": 4,
+        "easeInstallation": 8
+      },
+      "pros": ["Fully waterproof", "Great for bathrooms/kitchs", "Quiet underfoot with pad"],
+      "cons": ["Lower resale value than wood", "Seams can peel if poorly installed", "Not refinishable"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/flooring/vinyl/flooring/",
+        "amazon": "/s?k=luxury+vinyl+plank"
+      },
+      "svgColors": ["#C8B49A", "#B8A488", "#A8946E"]
+    },
+    {
+      "id": "carpet",
+      "name": "Carpet",
+      "category": "flooring",
+      "description": "Woven or tufted textile floor covering, typically with padding underneath.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 2, "max": 7, "avg": 4, "installed": 6 },
+      "lifespanYears": 10,
+      "maintenanceAnnualCostPerUnit": 0.12,
+      "replacementCostPerUnit": 4,
+      "scores": {
+        "durability": 4,
+        "waterResistance": 2,
+        "scratchResistance": 3,
+        "easeMaintenance": 3,
+        "ecoFriendly": 5,
+        "resaleValue": 2,
+        "warmthComfort": 9,
+        "soundAbsorption": 9,
+        "easeInstallation": 5
+      },
+      "pros": ["Warmest underfoot", "Best sound absorption", "Soft for kids/pets"],
+      "cons": ["Stains easily", "Traps allergens", "Shortest lifespan"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/flooring/carpet/flooring/",
+        "amazon": "/s?k=carpet+flooring"
+      },
+      "svgColors": ["#B0A080", "#9C8C6C", "#887852"]
+    },
+    {
+      "id": "ceramic-tile",
+      "name": "Ceramic Tile",
+      "category": "flooring",
+      "description": "Fired clay tiles glazed for water resistance, set in mortar with grout.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 3, "max": 12, "avg": 7, "installed": 12 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 7,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 10,
+        "scratchResistance": 9,
+        "easeMaintenance": 9,
+        "ecoFriendly": 6,
+        "resaleValue": 7,
+        "warmthComfort": 2,
+        "soundAbsorption": 2,
+        "easeInstallation": 3
+      },
+      "pros": ["Waterproof and stain-proof", "Longest lifespan", "Great for kitchens/baths"],
+      "cons": ["Cold and hard underfoot", "Grout needs sealing", "Difficult DIY install"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/flooring/tile/flooring/",
+        "amazon": "/s?k=ceramic+floor+tile"
+      },
+      "svgColors": ["#D8D2C8", "#C8C2B8", "#B8B2A8"]
+    },
+    {
+      "id": "bamboo",
+      "name": "Bamboo",
+      "category": "flooring",
+      "description": "Grass-based planks pressed and finished similarly to hardwood, renewable resource.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 5, "max": 11, "avg": 8, "installed": 11 },
+      "lifespanYears": 20,
+      "maintenanceAnnualCostPerUnit": 0.15,
+      "replacementCostPerUnit": 8,
+      "scores": {
+        "durability": 7,
+        "waterResistance": 4,
+        "scratchResistance": 6,
+        "easeMaintenance": 4,
+        "ecoFriendly": 9,
+        "resaleValue": 6,
+        "warmthComfort": 7,
+        "soundAbsorption": 6,
+        "easeInstallation": 3
+      },
+      "pros": ["Highly renewable", "Harder than many woods", "Modern aesthetic"],
+      "cons": ["Sensitive to humidity", "Limited refinish cycles", "Variable quality"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/flooring/bamboo/flooring/",
+        "amazon": "/s?k=bamboo+flooring"
+      },
+      "svgColors": ["#D4C4A0", "#C4B490", "#B4A480"]
+    },
+    {
+      "id": "cork",
+      "name": "Cork",
+      "category": "flooring",
+      "description": "Harvested bark from cork oak, compressed into resilient planks.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 4, "max": 10, "avg": 7, "installed": 10 },
+      "lifespanYears": 15,
+      "maintenanceAnnualCostPerUnit": 0.10,
+      "replacementCostPerUnit": 7,
+      "scores": {
+        "durability": 5,
+        "waterResistance": 4,
+        "scratchResistance": 4,
+        "easeMaintenance": 5,
+        "ecoFriendly": 10,
+        "resaleValue": 5,
+        "warmthComfort": 9,
+        "soundAbsorption": 10,
+        "easeInstallation": 4
+      },
+      "pros": ["Most eco-friendly", "Naturally antimicrobial", "Very quiet and warm"],
+      "cons": ["Dents from furniture", "Needs sealing", "Limited style range"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/flooring/cork/flooring/",
+        "amazon": "/s?k=cork+flooring"
+      },
+      "svgColors": ["#E0C8A0", "#D0B890", "#C0A880"]
+    }
+  ],
+  "countertops": [
+    {
+      "id": "quartz",
+      "name": "Quartz",
+      "category": "countertops",
+      "description": "Engineered stone: ~90% crushed quartz bound with polymer resins, non-porous.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 50, "max": 120, "avg": 75, "installed": 95 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 75,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 10,
+        "scratchResistance": 8,
+        "easeMaintenance": 10,
+        "ecoFriendly": 4,
+        "resaleValue": 8,
+        "warmthComfort": 4,
+        "soundAbsorption": 2,
+        "easeInstallation": 3
+      },
+      "pros": ["Never needs sealing", "Stain and bacteria resistant", "Consistent color"],
+      "cons": ["Can scorch from hot pans", "Higher cost", "Less natural veining"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/quartz/",
+        "amazon": "/s?k=quartz+countertop"
+      },
+      "svgColors": ["#E8E4DC", "#DCD8D0", "#D0CCC4"]
+    },
+    {
+      "id": "granite",
+      "name": "Granite",
+      "category": "countertops",
+      "description": "Natural igneous stone slab, polished and sealed, unique per slab.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 45, "max": 200, "avg": 80, "installed": 110 },
+      "lifespanYears": 40,
+      "maintenanceAnnualCostPerUnit": 0.04,
+      "replacementCostPerUnit": 80,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 8,
+        "scratchResistance": 9,
+        "easeMaintenance": 7,
+        "ecoFriendly": 6,
+        "resaleValue": 9,
+        "warmthComfort": 4,
+        "soundAbsorption": 2,
+        "easeInstallation": 3
+      },
+      "pros": ["Unique natural beauty", "Heat resistant", "Top resale value"],
+      "cons": ["Needs periodic sealing", "Can crack if struck", "Heavy to install"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/granite/",
+        "amazon": "/s?k=granite+countertop"
+      },
+      "svgColors": ["#C8B8A8", "#B8A898", "#A89888"]
+    },
+    {
+      "id": "marble",
+      "name": "Marble",
+      "category": "countertops",
+      "description": "Metamorphic limestone with distinctive veining, classic and luxurious.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 60, "max": 250, "avg": 110, "installed": 140 },
+      "lifespanYears": 50,
+      "maintenanceAnnualCostPerUnit": 0.08,
+      "replacementCostPerUnit": 110,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 6,
+        "scratchResistance": 5,
+        "easeMaintenance": 4,
+        "ecoFriendly": 7,
+        "resaleValue": 10,
+        "warmthComfort": 4,
+        "soundAbsorption": 2,
+        "easeInstallation": 3
+      },
+      "pros": ["Most luxurious look", "Increases home value", "Unique veining"],
+      "cons": ["Etches from acids", "Scratches easily", "High maintenance"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/marble/",
+        "amazon": "/s?k=marble+countertop"
+      },
+      "svgColors": ["#E0DCD8", "#D0CCC8", "#C0B8B4"]
+    },
+    {
+      "id": "laminate-counter",
+      "name": "Laminate",
+      "category": "countertops",
+      "description": "Particleboard core with photographic laminate surface, budget-friendly.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 15, "max": 40, "avg": 25, "installed": 35 },
+      "lifespanYears": 15,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 25,
+      "scores": {
+        "durability": 5,
+        "waterResistance": 5,
+        "scratchResistance": 5,
+        "easeMaintenance": 8,
+        "ecoFriendly": 3,
+        "resaleValue": 2,
+        "warmthComfort": 3,
+        "soundAbsorption": 3,
+        "easeInstallation": 7
+      },
+      "pros": ["Lowest cost", "Wide color range", "Easy to install"],
+      "cons": ["Seams can peel", "Not heat resistant", "Lower resale value"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/laminate/",
+        "amazon": "/s?k=laminate+countertop"
+      },
+      "svgColors": ["#D8D4CC", "#C8C4BC", "#B8B4AC"]
+    },
+    {
+      "id": "butcher-block",
+      "name": "Butcher Block",
+      "category": "countertops",
+      "description": "Edge-glued wood strips (maple/oak/walnut) sanded and oiled.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 30, "max": 80, "avg": 50, "installed": 70 },
+      "lifespanYears": 20,
+      "maintenanceAnnualCostPerUnit": 0.10,
+      "replacementCostPerUnit": 50,
+      "scores": {
+        "durability": 5,
+        "waterResistance": 3,
+        "scratchResistance": 4,
+        "easeMaintenance": 4,
+        "ecoFriendly": 8,
+        "resaleValue": 6,
+        "warmthComfort": 7,
+        "soundAbsorption": 4,
+        "easeInstallation": 5
+      },
+      "pros": ["Warm, natural wood look", "Can be sanded and re-oiled", "Food-safe surface"],
+      "cons": ["Needs regular oiling", "Water stains if unsealed", "Scratches from knives"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/butcher-block/",
+        "amazon": "/s?k=butcher+block+countertop"
+      },
+      "svgColors": ["#C8A878", "#B89868", "#A88858"]
+    },
+    {
+      "id": "solid-surface",
+      "name": "Solid Surface",
+      "category": "countertops",
+      "description": "Acrylic/PET composite (e.g. Corian), seamless and repairable.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 40, "max": 100, "avg": 65, "installed": 90 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.03,
+      "replacementCostPerUnit": 65,
+      "scores": {
+        "durability": 7,
+        "waterResistance": 9,
+        "scratchResistance": 6,
+        "easeMaintenance": 9,
+        "ecoFriendly": 5,
+        "resaleValue": 6,
+        "warmthComfort": 4,
+        "soundAbsorption": 2,
+        "easeInstallation": 4
+      },
+      "pros": ["Seamless appearance", "Scratches can be buffed out", "Non-porous"],
+      "cons": ["Can scorch", "Mid-range cost", "Less natural look"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/kitchen/countertops/solid-surface/",
+        "amazon": "/s?k=solid+surface+countertop"
+      },
+      "svgColors": ["#E0DCD4", "#D0CCC4", "#C0B8B0"]
+    }
+  ],
+  "roofing": [
+    {
+      "id": "asphalt-shingles",
+      "name": "Asphalt Shingles",
+      "category": "roofing",
+      "description": "Fiberglass mat with asphalt and ceramic granules, most common US roof.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 4, "max": 8, "avg": 5.5, "installed": 7 },
+      "lifespanYears": 20,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 5.5,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 8,
+        "scratchResistance": 7,
+        "easeMaintenance": 7,
+        "ecoFriendly": 3,
+        "resaleValue": 5,
+        "warmthComfort": 3,
+        "soundAbsorption": 5,
+        "easeInstallation": 9
+      },
+      "pros": ["Lowest upfront cost", "Easy DIY-friendly install", "Wide color range"],
+      "cons": ["Shortest lifespan", "Petroleum-based", "Can blow off in storms"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/roofing/asphalt-shingles/",
+        "amazon": "/s?k=asphalt+roofing+shingles"
+      },
+      "svgColors": ["#8C7A5A", "#7C6A4A", "#6C5A3A"]
+    },
+    {
+      "id": "metal-standing-seam",
+      "name": "Metal (Standing Seam)",
+      "category": "roofing",
+      "description": "Interlocking metal panels with raised vertical seams, concealed fasteners.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 10, "max": 24, "avg": 15, "installed": 20 },
+      "lifespanYears": 50,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 15,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 10,
+        "scratchResistance": 9,
+        "easeMaintenance": 10,
+        "ecoFriendly": 8,
+        "resaleValue": 8,
+        "warmthComfort": 2,
+        "soundAbsorption": 2,
+        "easeInstallation": 4
+      },
+      "pros": ["Longest lifespan", "Fully recyclable", "Snow and fire resistant"],
+      "cons": ["High upfront cost", "Can be noisy in rain", "Requires skilled install"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/roofing/metal-roofing/",
+        "amazon": "/s?k=standing+seam+metal+roof"
+      },
+      "svgColors": ["#9CA8B0", "#8C98A0", "#7C8890"]
+    },
+    {
+      "id": "clay-tile",
+      "name": "Clay Tile",
+      "category": "roofing",
+      "description": "Fired clay tiles (Spanish/Mediterranean style), extremely durable.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 12, "max": 25, "avg": 18, "installed": 24 },
+      "lifespanYears": 60,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 18,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 10,
+        "scratchResistance": 9,
+        "easeMaintenance": 10,
+        "ecoFriendly": 9,
+        "resaleValue": 9,
+        "warmthComfort": 2,
+        "soundAbsorption": 3,
+        "easeInstallation": 3
+      },
+      "pros": ["Century lifespan", "Fireproof and rot-proof", "Distinctive style"],
+      "cons": ["Very heavy (needs framing)", "Expensive", "Fragile if walked on"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/roofing/clay-tile/",
+        "amazon": "/s?k=clay+roof+tile"
+      },
+      "svgColors": ["#C07A4A", "#B06A3A", "#A05A2A"]
+    },
+    {
+      "id": "slate",
+      "name": "Slate",
+      "category": "roofing",
+      "description": "Natural stone split into thin tiles, the premium forever roof.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 15, "max": 30, "avg": 22, "installed": 28 },
+      "lifespanYears": 100,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 22,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 10,
+        "scratchResistance": 10,
+        "easeMaintenance": 10,
+        "ecoFriendly": 10,
+        "resaleValue": 10,
+        "warmthComfort": 2,
+        "soundAbsorption": 3,
+        "easeInstallation": 2
+      },
+      "pros": ["Lifetime material", "Natural and beautiful", "Top-tier resale"],
+      "cons": ["Highest cost", "Extremely heavy", "Specialist install only"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/roofing/slate/",
+        "amazon": "/s?k=slate+roofing+tile"
+      },
+      "svgColors": ["#7A7A7A", "#6A6A6A", "#5A5A5A"]
+    },
+    {
+      "id": "wood-shake",
+      "name": "Wood Shake",
+      "category": "roofing",
+      "description": "Split cedar or redwood shakes, rustic natural appearance.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 8, "max": 18, "avg": 12, "installed": 17 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.06,
+      "replacementCostPerUnit": 12,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 5,
+        "scratchResistance": 6,
+        "easeMaintenance": 4,
+        "ecoFriendly": 9,
+        "resaleValue": 7,
+        "warmthComfort": 4,
+        "soundAbsorption": 6,
+        "easeInstallation": 4
+      },
+      "pros": ["Natural rustic beauty", "Good insulation", "Renewable resource"],
+      "cons": ["Fire risk without treatment", "Needs regular maintenance", "Prone to moss"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/roofing/wood-shake/",
+        "amazon": "/s?k=cedar+wood+shake+roof"
+      },
+      "svgColors": ["#9A7A5A", "#8A6A4A", "#7A5A3A"]
+    },
+    {
+      "id": "synthetic-slate",
+      "name": "Synthetic Slate",
+      "category": "roofing",
+      "description": "Polymer or rubber molded to mimic slate, lighter weight.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 10, "max": 20, "avg": 14, "installed": 19 },
+      "lifespanYears": 50,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 14,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 10,
+        "scratchResistance": 9,
+        "easeMaintenance": 10,
+        "ecoFriendly": 6,
+        "resaleValue": 7,
+        "warmthComfort": 2,
+        "soundAbsorption": 3,
+        "easeInstallation": 5
+      },
+      "pros": ["Slate look, half the weight", "Impact resistant", "Lower cost than slate"],
+      "cons": ["Less authentic", "Newer (less track record)", "Can fade over time"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/roofing/synthetic-slate/",
+        "amazon": "/s?k=synthetic+slate+roofing"
+      },
+      "svgColors": ["#8A8A8A", "#7A7A7A", "#6A6A6A"]
+    }
+  ],
+  "siding": [
+    {
+      "id": "vinyl",
+      "name": "Vinyl",
+      "category": "siding",
+      "description": "PVC panels, color-through, most popular siding in the US.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 3, "max": 8, "avg": 5, "installed": 7 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 5,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 9,
+        "scratchResistance": 5,
+        "easeMaintenance": 10,
+        "ecoFriendly": 3,
+        "resaleValue": 5,
+        "warmthComfort": 3,
+        "soundAbsorption": 3,
+        "easeInstallation": 8
+      },
+      "pros": ["Lowest maintenance", "Affordable", "No painting ever"],
+      "cons": ["Can crack in cold", "Fades over time", "Cheap look if thin"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/siding/vinyl-siding/",
+        "amazon": "/s?k=vinyl+siding"
+      },
+      "svgColors": ["#E0E4E8", "#D0D4D8", "#C0C4C8"]
+    },
+    {
+      "id": "fiber-cement",
+      "name": "Fiber Cement",
+      "category": "siding",
+      "description": "Cement, sand, and cellulose fibers (e.g. James Hardie), painted factory finish.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 6, "max": 12, "avg": 9, "installed": 13 },
+      "lifespanYears": 40,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 9,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 9,
+        "scratchResistance": 8,
+        "easeMaintenance": 7,
+        "ecoFriendly": 5,
+        "resaleValue": 8,
+        "warmthComfort": 3,
+        "soundAbsorption": 5,
+        "easeInstallation": 4
+      },
+      "pros": ["Fire and rot resistant", "Looks like wood or stucco", "High resale value"],
+      "cons": ["Heavy to install", "Needs repainting eventually", "Higher cost"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/siding/fiber-cement-siding/",
+        "amazon": "/s?k=fiber+cement+siding"
+      },
+      "svgColors": ["#D8D0C4", "#C8B8AC", "#B8A89C"]
+    },
+    {
+      "id": "wood",
+      "name": "Wood (Cedar/Pine)",
+      "category": "siding",
+      "description": "Natural wood clapboard or shingles, classic American look.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 5, "max": 12, "avg": 8, "installed": 12 },
+      "lifespanYears": 25,
+      "maintenanceAnnualCostPerUnit": 0.15,
+      "replacementCostPerUnit": 8,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 5,
+        "scratchResistance": 6,
+        "easeMaintenance": 4,
+        "ecoFriendly": 9,
+        "resaleValue": 7,
+        "warmthComfort": 5,
+        "soundAbsorption": 6,
+        "easeInstallation": 5
+      },
+      "pros": ["Timeless natural beauty", "Good insulation", "Renewable"],
+      "cons": ["Needs regular painting", "Rot and pest risk", "Higher upkeep"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/siding/wood-siding/",
+        "amazon": "/s?k=wood+siding"
+      },
+      "svgColors": ["#C8A878", "#B89868", "#A88858"]
+    },
+    {
+      "id": "brick",
+      "name": "Brick (Veneer)",
+      "category": "siding",
+      "description": "Thin brick veneer over sheathing, permanent and classic.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 8, "max": 18, "avg": 12, "installed": 16 },
+      "lifespanYears": 75,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 12,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 9,
+        "scratchResistance": 10,
+        "easeMaintenance": 10,
+        "ecoFriendly": 8,
+        "resaleValue": 9,
+        "warmthComfort": 4,
+        "soundAbsorption": 7,
+        "easeInstallation": 3
+      },
+      "pros": ["Century lifespan", "No painting", "Excellent insulation"],
+      "cons": ["High cost", "Mortar can crack", "Limited color range"],
+      "installationDifficulty": 5,
+      "affiliateLinks": {
+        "lowes": "/siding/brick-veneer/",
+        "amazon": "/s?k=brick+veneer+siding"
+      },
+      "svgColors": ["#C07A5A", "#B06A4A", "#A05A3A"]
+    },
+    {
+      "id": "stucco",
+      "name": "Stucco",
+      "category": "siding",
+      "description": "Cement plaster troweled over lath, seamless and textured.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 6, "max": 14, "avg": 9, "installed": 13 },
+      "lifespanYears": 50,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 9,
+      "scores": {
+        "durability": 8,
+        "waterResistance": 7,
+        "scratchResistance": 7,
+        "easeMaintenance": 8,
+        "ecoFriendly": 6,
+        "resaleValue": 7,
+        "warmthComfort": 3,
+        "soundAbsorption": 6,
+        "easeInstallation": 4
+      },
+      "pros": ["Seamless look", "Fire resistant", "Good sound damping"],
+      "cons": ["Cracks in shifting soil", "Hard to repair invisibly", "Poor in wet climates"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/siding/stucco/",
+        "amazon": "/s?k=stucco+siding"
+      },
+      "svgColors": ["#E4D8C8", "#D4C8B8", "#C4B8A8"]
+    },
+    {
+      "id": "metal-siding",
+      "name": "Metal (Steel/Aluminum)",
+      "category": "siding",
+      "description": "Standing-seam or ribbed metal panels, modern farmhouse look.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 7, "max": 15, "avg": 10, "installed": 14 },
+      "lifespanYears": 40,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 10,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 10,
+        "scratchResistance": 8,
+        "easeMaintenance": 9,
+        "ecoFriendly": 8,
+        "resaleValue": 7,
+        "warmthComfort": 2,
+        "soundAbsorption": 2,
+        "easeInstallation": 5
+      },
+      "pros": ["Rust and rot proof", "Recyclable", "Contemporary style"],
+      "cons": ["Can dent from impact", "Noisy in hail", "Shows oil-canning"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/siding/metal-siding/",
+        "amazon": "/s?k=metal+siding+panels"
+      },
+      "svgColors": ["#B0B8C0", "#A0A8B0", "#9098A0"]
+    }
+  ],
+  "decking": [
+    {
+      "id": "pressure-treated",
+      "name": "Pressure-Treated Wood",
+      "category": "decking",
+      "description": "Pine infused with preservative chemicals, standard budget deck board.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 3, "max": 7, "avg": 5, "installed": 15 },
+      "lifespanYears": 15,
+      "maintenanceAnnualCostPerUnit": 0.30,
+      "replacementCostPerUnit": 5,
+      "scores": {
+        "durability": 6,
+        "waterResistance": 5,
+        "scratchResistance": 7,
+        "easeMaintenance": 3,
+        "ecoFriendly": 6,
+        "resaleValue": 5,
+        "warmthComfort": 7,
+        "soundAbsorption": 3,
+        "easeInstallation": 7
+      },
+      "pros": ["Lowest material cost", "Easy to cut and screw", "Readily available"],
+      "cons": ["Needs annual sealing", "Can warp or crack", "Chemical treatment"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/decking/pressure-treated-decking/",
+        "amazon": "/s?k=pressure+treated+deck+board"
+      },
+      "svgColors": ["#B89868", "#A88858", "#987848"]
+    },
+    {
+      "id": "composite",
+      "name": "Composite",
+      "category": "decking",
+      "description": "Recycled wood fiber and plastic blend, capped for protection.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 10, "max": 25, "avg": 16, "installed": 32 },
+      "lifespanYears": 30,
+      "maintenanceAnnualCostPerUnit": 0.02,
+      "replacementCostPerUnit": 16,
+      "scores": {
+        "durability": 9,
+        "waterResistance": 10,
+        "scratchResistance": 8,
+        "easeMaintenance": 10,
+        "ecoFriendly": 7,
+        "resaleValue": 7,
+        "warmthComfort": 5,
+        "soundAbsorption": 3,
+        "easeInstallation": 6
+      },
+      "pros": ["Never needs staining", "Resists rot and insects", "Many colors"],
+      "cons": ["High material cost", "Can get hot in sun", "Heavy boards"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/decking/composite-decking/",
+        "amazon": "/s?k=composite+decking+boards"
+      },
+      "svgColors": ["#C0A888", "#B09878", "#A08868"]
+    },
+    {
+      "id": "pvc",
+      "name": "PVC (Capped Polymer)",
+      "category": "decking",
+      "description": "Solid cellular PVC board, fully synthetic, premium option.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 12, "max": 30, "avg": 20, "installed": 38 },
+      "lifespanYears": 35,
+      "maintenanceAnnualCostPerUnit": 0.01,
+      "replacementCostPerUnit": 20,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 10,
+        "scratchResistance": 7,
+        "easeMaintenance": 10,
+        "ecoFriendly": 4,
+        "resaleValue": 7,
+        "warmthComfort": 4,
+        "soundAbsorption": 3,
+        "easeInstallation": 6
+      },
+      "pros": ["Fully waterproof", "No organic content (no mold)", "Cooler than composite"],
+      "cons": ["Most expensive", "Can look plastic", "Expansion/contraction"],
+      "installationDifficulty": 3,
+      "affiliateLinks": {
+        "lowes": "/decking/pvc-decking/",
+        "amazon": "/s?k=pvc+decking+board"
+      },
+      "svgColors": ["#D8D4CC", "#C8C4BC", "#B8B4AC"]
+    },
+    {
+      "id": "cedar",
+      "name": "Cedar",
+      "category": "decking",
+      "description": "Natural cedar board, aromatic and naturally rot-resistant.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 6, "max": 14, "avg": 10, "installed": 22 },
+      "lifespanYears": 20,
+      "maintenanceAnnualCostPerUnit": 0.25,
+      "replacementCostPerUnit": 10,
+      "scores": {
+        "durability": 7,
+        "waterResistance": 6,
+        "scratchResistance": 7,
+        "easeMaintenance": 4,
+        "ecoFriendly": 9,
+        "resaleValue": 6,
+        "warmthComfort": 8,
+        "soundAbsorption": 3,
+        "easeInstallation": 7
+      },
+      "pros": ["Natural beauty and scent", "No chemical treatment", "Stable, minimal warping"],
+      "cons": ["Needs regular oiling", "Softer (dents)", "Graying if untreated"],
+      "installationDifficulty": 2,
+      "affiliateLinks": {
+        "lowes": "/decking/cedar-decking/",
+        "amazon": "/s?k=cedar+deck+board"
+      },
+      "svgColors": ["#C8A070", "#B89060", "#A88050"]
+    },
+    {
+      "id": "ipe",
+      "name": "Ipe (Brazilian Walnut)",
+      "category": "decking",
+      "description": "Extremely dense tropical hardwood, nearly indestructible.",
+      "unit": "sq ft",
+      "costPerUnit": { "min": 12, "max": 22, "avg": 16, "installed": 35 },
+      "lifespanYears": 40,
+      "maintenanceAnnualCostPerUnit": 0.10,
+      "replacementCostPerUnit": 16,
+      "scores": {
+        "durability": 10,
+        "waterResistance": 9,
+        "scratchResistance": 10,
+        "easeMaintenance": 6,
+        "ecoFriendly": 8,
+        "resaleValue": 8,
+        "warmthComfort": 7,
+        "soundAbsorption": 3,
+        "easeInstallation": 5
+      },
+      "pros": ["Hardest decking wood", "Resists rot, insects, fire", "Rich dark color"],
+      "cons": ["Very heavy and hard to cut", "Expensive", "Needs oiling to stay brown"],
+      "installationDifficulty": 4,
+      "affiliateLinks": {
+        "lowes": "/decking/ipe-decking/",
+        "amazon": "/s?k=ipe+decking+board"
+      },
+      "svgColors": ["#8A6038", "#7A5028", "#6A4018"]
+    }
+  ]
+}

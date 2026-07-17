@@ -42,6 +42,9 @@ export default defineConfig({
         } else if (path.startsWith('/maintenance/')) {
           item.priority = 0.7;
           item.changefreq = 'monthly';
+        } else if (path.startsWith('/playbook/')) {
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
         } else if (path.startsWith('/guides/')) {
           item.priority = 0.7;
           item.changefreq = 'monthly';

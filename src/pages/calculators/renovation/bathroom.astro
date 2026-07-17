@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import BathroomRenovationCalc from "../../../components/calculators/renovation/BathroomRenovationCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Bathroom Renovation Cost Calculator";
 const description = "Free bathroom renovation cost calculator. Estimate tile materials, vanity cabinets, shower or tub fixtures, paint, and plumbing labor rates.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Bathroom Renovation", path: "/calculators/renovation/bathroom/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Bathroom Renovation Cost Estimator Formula",
     description,
+    formula: "Total Bathroom Remodeling Cost = Materials Cost + Contractor Labor Fee + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure bathroom layout",
+      text: "Determine your room length, width, and wall height in feet to calculate tiling area and paint requirements.",
+    },
+    {
+      name: "Select cabinet and fixture sizes",
+      text: "Choose vanity sizes, wet-area fixtures, toilet qualities, and wall styling types.",
+    },
+    {
+      name: "Apply local labor rates and buffers",
+      text: "Adjust labor fees (DIY vs average builder) and allocate a contingency percentage (10-30%) for unexpected drywall or plumbing replacements.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <BathroomRenovationCalc client:load />
+      <BathroomRenovationCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

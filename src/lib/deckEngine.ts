@@ -61,13 +61,13 @@ export function calculateDeckMaterials(dims: DeckDimensions): DeckMaterials {
   const postsCount = postsPerBeam * beamsCount;
   const footingsCount = postsCount;
 
-  // Beams are doubled 2x10s
-  const beamLinearFt = widthFt * beamsCount * 2;
+  // Beams are doubled 2x10s + 1 single 2x10 ledger board
+  const beamLinearFt = widthFt * beamsCount * 2 + widthFt;
 
   // 2. Joists
-  // Run perpendicular to beams (along depthFt direction)
+  // Run perpendicular to beams (along depthFt direction) + 1 front capping rim/header joist
   const joistsCount = Math.ceil((widthFt * 12) / joistSpacingIn) + 1;
-  const joistLinearFt = joistsCount * depthFt;
+  const joistLinearFt = joistsCount * depthFt + widthFt;
 
   // 3. Decking Boards (5/4 x 6, actual width 5.5 inches = 0.458 ft)
   // Standard length is 16 ft. Area per board = 16 * 0.458 = 7.33 sq ft.

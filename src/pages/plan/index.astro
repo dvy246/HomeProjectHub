@@ -1,0 +1,166 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ScopeBinder from "../../components/calculators/ScopeBinder";
+import AdSlot from "../../components/AdSlot.astro";
+import RelatedCalculators from "../../components/ui/RelatedCalculators.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/plan/";
+const title = "Room Renovation Budget Binder — Material Scope & Cost Planner";
+const description = "Plan your room renovation with our interactive budget binder. Draw your room, pick materials, and get a complete material takeoff with cost breakdown. Share the printable scope of work with your contractor.";
+const formula = "Scope Plan: For each surface (floor/walls/ceiling), NetArea = GrossArea - OpeningSubtractions, then apply waste factor and multiply by unit price.";
+const PAGE_PATH = "/plan/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Plan", path: PAGE_PATH },
+    { name: "Room Renovation Budget Binder", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Renovation Scope & Budget Formula",
+    description,
+    formula,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Enter your room dimensions",
+      text: "Input your room length, width, and ceiling height in feet. Add the number of doors and windows to account for opening subtractions in wall area calculations.",
+    },
+    {
+      name: "Choose your surface materials",
+      text: "Select a finish for each surface: floor (laminate, hardwood, carpet, tile, or vinyl), walls (paint or drywall), and ceiling (paint or drywall). Pick a quality tier to set material prices.",
+    },
+    {
+      name: "Review the material takeoff",
+      text: "The tool calculates gross and net surface areas, applies waste factors, and computes material quantities. Each surface shows area, waste, quantity, and cost.",
+    },
+    {
+      name: "Share or print your budget binder",
+      text: "Copy a shareable plan link to send to contractors for quotes, or print a complete budget binder with room layout, material quantities, and cost breakdown.",
+    },
+  ]),
+  faqPageSchema([
+    {
+      q: "How do I calculate the amount of paint needed for a room?",
+      a: "Measure your room length, width, and height. Calculate total wall area (perimeter × height), subtract door (21 sq ft each) and window (12 sq ft each) areas. Add 10% waste. One gallon of paint covers approximately 350 sq ft. Our binder does this automatically — just enter your room dimensions and select Paint for walls or ceiling.",
+    },
+    {
+      q: "How much drywall do I need for a room?",
+      a: "Calculate total wall and ceiling area, subtract openings, and divide by 32 (sq ft per 4x8 sheet). Add 10% waste for cuts and mistakes. A standard 12x10 room with 8ft ceilings needs approximately 14 sheets for walls and 4 sheets for the ceiling.",
+    },
+    {
+      q: "What is a material takeoff in renovation?",
+      a: "A material takeoff is a detailed list of all materials needed for a construction project, with exact quantities. It is used by contractors to price jobs and by homeowners to budget purchases. Our interactive binder generates a takeoff automatically from your room dimensions and material choices.",
+    },
+    {
+      q: "How accurate is the budget binder cost estimate?",
+      a: "Material quantity calculations are exact based on your room dimensions and standard formulas. Cost estimates use national average prices for your chosen quality tier. Actual costs vary by region, brand, and store. Use the quantities as a shopping list and verify prices locally.",
+    },
+    {
+      q: "Can I share my renovation plan with a contractor?",
+      a: "Yes. Click 'Copy Plan Link' to generate a shareable URL containing your room dimensions and material choices. Send this link to contractors so they can see your exact scope of work. You can also print the full budget binder as a reference document.",
+    },
+    {
+      q: "What is the difference between gross and net surface area?",
+      a: "Gross area is the total surface area before subtracting openings. Net area subtracts doors and windows from wall area. For example, a wall with 120 sq ft gross area, one door (21 sq ft), and one window (12 sq ft) has 87 sq ft net area. Net area is what gets painted or covered.",
+    },
+    {
+      q: "Should I use paint or drywall for my walls?",
+      a: "If you have existing drywall in good condition, painting is the most cost-effective option. If the drywall is damaged or you need to add new walls, install new drywall sheets first, then paint. Our binder supports both options so you can compare costs.",
+    },
+  ], canonical)
+);
+
+const faqs = [
+  { q: "How do I calculate the amount of paint needed for a room?", a: "Measure your room length, width, and height. Calculate total wall area (perimeter × height), subtract door (21 sq ft each) and window (12 sq ft each) areas. Add 10% waste. One gallon of paint covers approximately 350 sq ft. Our binder does this automatically — just enter your room dimensions and select Paint for walls or ceiling." },
+  { q: "How much drywall do I need for a room?", a: "Calculate total wall and ceiling area, subtract openings, and divide by 32 (sq ft per 4x8 sheet). Add 10% waste for cuts and mistakes. A standard 12x10 room with 8ft ceilings needs approximately 14 sheets for walls and 4 sheets for the ceiling." },
+  { q: "What is a material takeoff in renovation?", a: "A material takeoff is a detailed list of all materials needed for a construction project, with exact quantities. It is used by contractors to price jobs and by homeowners to budget purchases. Our interactive binder generates a takeoff automatically from your room dimensions and material choices." },
+  { q: "How accurate is the budget binder cost estimate?", a: "Material quantity calculations are exact based on your room dimensions and standard formulas. Cost estimates use national average prices for your chosen quality tier. Actual costs vary by region, brand, and store. Use the quantities as a shopping list and verify prices locally." },
+  { q: "Can I share my renovation plan with a contractor?", a: "Yes. Click 'Copy Plan Link' to generate a shareable URL containing your room dimensions and material choices. Send this link to contractors so they can see your exact scope of work. You can also print the full budget binder as a reference document." },
+  { q: "What is the difference between gross and net surface area?", a: "Gross area is the total surface area before subtracting openings. Net area subtracts doors and windows from wall area. For example, a wall with 120 sq ft gross area, one door (21 sq ft), and one window (12 sq ft) has 87 sq ft net area. Net area is what gets painted or covered." },
+  { q: "Should I use paint or drywall for my walls?", a: "If you have existing drywall in good condition, painting is the most cost-effective option. If the drywall is damaged or you need to add new walls, install new drywall sheets first, then paint. Our binder supports both options so you can compare costs." },
+];
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema} articlePubDate={new Date("2026-07-17")} articleUpdatedDate={new Date("2026-07-17")}>
+  <article class="max-w-6xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Room Renovation Budget Binder</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Room Renovation Budget Binder — Plan Your Material Scope & Costs</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Plan every surface of your room renovation. Enter your dimensions, pick your finishes, and get a complete material takeoff with itemized costs. Share the printable budget binder with your contractor or save it for your planning binder.
+    </p>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <ScopeBinder client:visible />
+    </section>
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">What Is a Renovation Scope & Budget Binder?</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <p>
+            A <strong>renovation scope binder</strong> is the single document that defines everything about your project: the room dimensions, the materials you will use, the quantities needed, and the total budget. Contractors use it to give accurate quotes. Homeowners use it to stay on track and avoid surprise costs.
+          </p>
+          <p>
+            Unlike static spreadsheets or blog-post checklists, this tool is interactive. Change any dimension or material and the quantities update instantly. The <strong>room plan view</strong> shows your layout with door and window placements. The <strong>material budget panel</strong> breaks down costs by surface so you know exactly where your money is going.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">Why Create a Material Scope Before You Buy?</h3>
+          <p>
+            Most homeowners walk into a home improvement store without a precise material list. They guess at paint gallons, estimate drywall sheets, and end up making multiple trips — or buying too much. A material scope prevents this. By calculating exact quantities from your room dimensions, you buy only what you need and reduce waste.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">How Contractors Use Your Scope Binder</h3>
+          <p>
+            When you email a contractor your scope binder, they see exactly what materials you are planning to use. They can verify quantities, suggest alternatives, and give you a precise labor quote. This saves time on both sides — no back-and-forth about "what kind of flooring" or "how many windows."
+          </p>
+        </div>
+
+        <div class="bg-[var(--bg-muted)] p-5 rounded-xl border border-[var(--border)] space-y-4 h-fit">
+          <h4 class="font-bold text-[var(--fg)] text-xs uppercase tracking-wider">Surfaces Covered</h4>
+          <ul class="text-xs space-y-2 text-[var(--fg-secondary)] list-none pl-0">
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">-</span><span>Floor (laminate, hardwood, carpet, tile, vinyl)</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">-</span><span>Walls (paint, drywall)</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">-</span><span>Ceiling (paint, drywall)</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">-</span><span>Opening subtractions (doors, windows)</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">-</span><span>Waste factor included</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-base font-semibold text-[var(--fg)]">Budget, Mid-Range, and Premium Materials</h3>
+      <p>
+        The quality tier selector adjusts material prices to match your budget. Budget-tier prices reflect basic builder-grade materials found at major retailers. Mid-range prices are typical for most homeowner renovations. Premium prices reflect high-end designer materials. You can also override any price manually to match your local supplier.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer">
+              <h3 class="text-sm font-semibold m-0">{faq.q}</h3>
+            </summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)]">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="plan" />
+  </article>
+</Layout>

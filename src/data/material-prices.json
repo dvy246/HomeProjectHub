@@ -1,0 +1,19 @@
+{
+  "concrete_80lb_bag": { "label": "Concrete Mix (80lb bag)", "defaultPrice": 6.25, "unit": "bag" },
+  "concrete_60lb_bag": { "label": "Concrete Mix (60lb bag)", "defaultPrice": 5.45, "unit": "bag" },
+  "concrete_50lb_bag": { "label": "Concrete Mix (50lb bag)", "defaultPrice": 4.85, "unit": "bag" },
+  "concrete_40lb_bag": { "label": "Concrete Mix (40lb bag)", "defaultPrice": 4.25, "unit": "bag" },
+  "concrete_bulk_yard": { "label": "Bulk Concrete (Ready-Mix)", "defaultPrice": 150.00, "unit": "cu yd" },
+  "rebar_stick_10ft": { "label": "Rebar #4 (10ft Stick)", "defaultPrice": 8.50, "unit": "stick" },
+  "gravel_ton": { "label": "Crushed Gravel Base", "defaultPrice": 45.00, "unit": "ton" },
+  "sand_ton": { "label": "Bedding Sand", "defaultPrice": 38.00, "unit": "ton" },
+  "vapor_barrier_roll": { "label": "Vapor Barrier (Roll)", "defaultPrice": 75.00, "unit": "roll" },
+  "stud_2x4_8ft": { "label": "2x4 Stud (8ft)", "defaultPrice": 3.75, "unit": "board" },
+  "stud_2x6_8ft": { "label": "2x6 Stud (8ft)", "defaultPrice": 5.80, "unit": "board" },
+  "plate_2x4_12ft": { "label": "2x4 Plate Board (12ft)", "defaultPrice": 5.95, "unit": "board" },
+  "plate_2x6_12ft": { "label": "2x6 Plate Board (12ft)", "defaultPrice": 8.85, "unit": "board" },
+  "header_2x10_12ft": { "label": "2x10 Header Board (12ft)", "defaultPrice": 18.50, "unit": "board" },
+  "sheathing_4x8_sheet": { "label": "OSB Sheathing (4x8)", "defaultPrice": 15.50, "unit": "sheet" },
+  "nails_box": { "label": "Framing Nails (Box)", "defaultPrice": 28.00, "unit": "box" },
+  "labor_hourly_rate": { "label": "Contractor Labor", "defaultPrice": 65.00, "unit": "hour" }
+}

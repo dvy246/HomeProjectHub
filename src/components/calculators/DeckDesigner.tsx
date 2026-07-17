@@ -3,16 +3,41 @@ import { calculateDeckMaterials, type DeckDimensions } from "../../lib/deckEngin
 import { Card } from "../ui/Card";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
+import CostEstimatorWidget, { type CostItem } from "../ui/CostEstimatorWidget";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 
-function DeckDesigner() {
+interface DeckDesignerProps {
+  initialWidth?: number;
+  initialDepth?: number;
+  initialJoistSpacing?: 12 | 16 | 24;
+  initialBoardType?: "wood" | "composite";
+  initialPostHeight?: number;
+}
+
+function DeckDesigner({
+  initialWidth,
+  initialDepth,
+  initialJoistSpacing,
+  initialBoardType,
+  initialPostHeight,
+}: DeckDesignerProps = {}) {
   const { t } = useI18n();
+  const [shareSuccess, setShareSuccess] = useState(false);
 
   // State parameters
-  const [widthFt, setWidthFt] = useState<number>(16);
-  const [depthFt, setDepthFt] = useState<number>(12);
-  const [joistSpacingIn, setJoistSpacingIn] = useState<12 | 16 | 24>(16);
-  const [boardType, setBoardType] = useState<"wood" | "composite">("wood");
-  const [postHeightFt, setPostHeightFt] = useState<number>(3);
+  const [widthFt, setWidthFt] = useState<number>(() => getUrlParam("wid", initialWidth ?? 16));
+  const [depthFt, setDepthFt] = useState<number>(() => getUrlParam("dep", initialDepth ?? 12));
+  const [joistSpacingIn, setJoistSpacingIn] = useState<12 | 16 | 24>(() => getUrlParam("js", initialJoistSpacing ?? 16) as 12 | 16 | 24);
+  const [boardType, setBoardType] = useState<"wood" | "composite">(() => getUrlParam("type", initialBoardType ?? "wood") as "wood" | "composite");
+  const [postHeightFt, setPostHeightFt] = useState<number>(() => getUrlParam("ph", initialPostHeight ?? 3));
+
+  // Sync state to URL params for shareable configuration links
+  useEffect(() => {
+    setUrlParams(
+      { wid: widthFt, dep: depthFt, js: joistSpacingIn, type: boardType, ph: postHeightFt },
+      { wid: 16, dep: 12, js: 16, type: "wood", ph: 3 }
+    );
+  }, [widthFt, depthFt, joistSpacingIn, boardType, postHeightFt]);
 
   // Auto calculate deck materials
   const dims: DeckDimensions = {
@@ -23,6 +48,65 @@ function DeckDesigner() {
     postHeightFt
   };
   const materials = calculateDeckMaterials(dims);
+
+  // Deck board linear footage: each board is 16 ft long
+  const boardLinearFt = materials.deckBoards16Ft * 16;
+  // Rim joist = front band joist (widthFt) + ledger board (widthFt) — each runs the full width
+  const rimJoistLinearFt = widthFt * 2;
+  // Concrete footing bags: 12" dia × 36" deep ≈ 4 bags (80 lb) per footing
+  const footingBagsCount = materials.footingsCount * 4;
+
+  const costItems: CostItem[] = [
+    {
+      key: "deck_board_lf",
+      name: `Decking Boards (${boardType === "composite" ? "Composite" : "Pressure-Treated Wood"})`,
+      quantity: boardLinearFt,
+      unit: "lf",
+      defaultPrice: boardType === "composite" ? 3.5 : 1.8,
+    },
+    {
+      key: "deck_rim_joist_lf",
+      name: "Rim / Band Joists & Ledger Board (2×8/2×10)",
+      quantity: rimJoistLinearFt,
+      unit: "lf",
+      defaultPrice: 1.4,
+    },
+    {
+      key: "deck_joist_lf",
+      name: "Joists (2×10)",
+      quantity: materials.joistLinearFt,
+      unit: "lf",
+      defaultPrice: 1.2,
+    },
+    {
+      key: "deck_beam_lf",
+      name: "Beams (Double 2×10)",
+      quantity: materials.beamLinearFt,
+      unit: "lf",
+      defaultPrice: 2.2,
+    },
+    {
+      key: "deck_post_each",
+      name: "Support Posts (4×4)",
+      quantity: materials.postsCount,
+      unit: "each",
+      defaultPrice: 12.0,
+    },
+    {
+      key: "deck_footing_bag",
+      name: "Concrete Footing Mix (80 lb bags)",
+      quantity: footingBagsCount,
+      unit: "bags",
+      defaultPrice: 7.5,
+    },
+    {
+      key: "deck_ledger_lf",
+      name: "Ledger Board (2×10, house attachment)",
+      quantity: widthFt,
+      unit: "lf",
+      defaultPrice: 1.4,
+    },
+  ];
 
   // SVG Dimension mappings
   // Scale: 1 foot = 12 pixels. Maximum width/depth = 30ft, giving max SVG dimensions of ~360px.
@@ -58,7 +142,7 @@ function DeckDesigner() {
 
           {/* SVG Frame Canvas */}
           <div className="bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg w-full flex justify-center py-6 overflow-hidden">
-            <svg width={canvasWidth} height={canvasHeight} className="overflow-visible" role="img" aria-label="Deck Blueprint Layout Graph">
+            <svg viewBox={`0 0 ${canvasWidth} ${canvasHeight}`} className="w-full h-auto max-w-[380px] overflow-visible" role="img" aria-label="Deck Blueprint Layout Graph">
               {/* House Siding / Ledger Wall Attachment */}
               <rect x="0" y="0" width={canvasWidth} height="20" fill="var(--fg-secondary)" fillOpacity="0.08" />
               <line x1="0" y1="20" x2={canvasWidth} y2="20" stroke="var(--fg-secondary)" strokeWidth="3" />
@@ -125,7 +209,7 @@ function DeckDesigner() {
                 <g transform={`translate(0, ${deckSvgHeight + 15})`}>
                   <line x1="0" y1="0" x2={deckSvgWidth} y2="0" stroke="var(--accent)" strokeWidth="1" />
                   <polygon points={`0,0 5,-3 5,3`} fill="var(--accent)" />
-                  <polygon points={`${deckSvgWidth},0 ${deckSvgWidth - 5},-3 ${deckSvgWidth - 5,3}`} fill="var(--accent)" />
+                  <polygon points={`${deckSvgWidth},0 ${deckSvgWidth - 5},-3 ${deckSvgWidth - 5},3`} fill="var(--accent)" />
                   <rect x={(deckSvgWidth / 2) - 15} y="-8" width="30" height="15" fill="var(--bg-inset)" />
                   <text x={deckSvgWidth / 2} y="3" fill="var(--accent)" fontSize="9" fontWeight="bold" textAnchor="middle">
                     {widthFt}&prime;
@@ -263,12 +347,29 @@ function DeckDesigner() {
         <Card className="p-6 flex flex-col gap-5">
           <div className="border-b border-[var(--border)] pb-4 flex justify-between items-center">
             <h3 className="text-sm font-bold text-[var(--fg)]">Live Material List</h3>
-            <button
-              onClick={() => window.print()}
-              className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer no-print"
-            >
-              Print Blueprint
-            </button>
+            <div className="flex gap-2 items-center no-print">
+              <button
+                onClick={() => window.print()}
+                className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer"
+              >
+                Print Blueprint
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  copyShareUrl().then((ok) => {
+                    if (ok) {
+                      setShareSuccess(true);
+                      setTimeout(() => setShareSuccess(false), 2000);
+                    }
+                  });
+                }}
+                className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer"
+                aria-label="Copy shareable link"
+              >
+                {shareSuccess ? "Copied!" : "Share"}
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3 text-xs leading-relaxed">
@@ -340,9 +441,15 @@ function DeckDesigner() {
             <strong>NOTICE:</strong> Calculations are estimates based on standard IRC R507 span approximations. This tool is not a substitute for architectural blueprints or certified engineering. Always consult your local building department and owner's manual before starting construction.
           </div>
         </Card>
+
+        {/* Cost Estimator Widget */}
+        <CostEstimatorWidget
+          items={costItems}
+          defaultLaborHours={Math.max(8, Math.round((widthFt * depthFt) / 20))}
+        />
       </div>
     </div>
   );
 }
 
-export default withI18n(DeckDesigner);
+export default withI18n<DeckDesignerProps>(DeckDesigner);

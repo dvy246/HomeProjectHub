@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import BasementFinishingCalc from "../../../components/calculators/renovation/BasementFinishingCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Basement Finishing Cost Calculator";
 const description = "Free basement finishing cost calculator. Estimate wall framing lumber, drywall sheets, ceiling grids, LVP floors, door packs, and contractor labor.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Basement Finishing", path: "/calculators/renovation/basement/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Basement Finishing Cost Estimator Formula",
     description,
+    formula: "Total Basement Finishing Cost = Framing Cost + Drywall Cost + Flooring Cost + Ceiling Cost + Labor Fee + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure basement area",
+      text: "Measure the total length and width of the basement floor to compute the total square footage.",
+    },
+    {
+      name: "Estimate wall framing and drywall",
+      text: "Determine wall linear footage and wall heights to calculate wood studs, drywall sheets, and joint compounds.",
+    },
+    {
+      name: "Adjust finishes and ceiling choices",
+      text: "Select flooring material types, choose drop ceiling vs drywall sheet ceilings, and specify labor rates.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <BasementFinishingCalc client:load />
+      <BasementFinishingCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

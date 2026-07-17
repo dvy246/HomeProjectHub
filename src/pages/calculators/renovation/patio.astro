@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import PatioCostCalc from "../../../components/calculators/renovation/PatioCostCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Patio Cost Calculator";
 const description = "Free patio cost calculator. Estimate pavers, gravel base, bedding sand, fabric sheets, and local contractor installation labor rates.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Patio Cost", path: "/calculators/renovation/patio/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Patio Cost Estimator Formula",
     description,
+    formula: "Total Patio Cost = Paver Cost + Gravel Base Cost + Bedding Sand Cost + Installation Labor + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure patio footprint",
+      text: "Determine length and width of the patio area to compute the total square footage.",
+    },
+    {
+      name: "Select paver style and sub-base",
+      text: "Choose paver style pricing, base gravel depths, and sand depths.",
+    },
+    {
+      name: "Configure labor and contingency fees",
+      text: "Adjust labor fees based on contractor quote parameters or choose DIY, and apply contingency buffers.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <PatioCostCalc client:load />
+      <PatioCostCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

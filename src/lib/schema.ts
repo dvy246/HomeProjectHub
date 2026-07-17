@@ -25,14 +25,6 @@ export function webSiteSchema(name: string, description: string) {
     url: SITE_URL,
     name,
     description,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -49,6 +41,7 @@ export function aboutPageSchema() {
 export function webPageSchema(opts: {
   url: string;
   topicName: string;
+  description?: string;
   topicUrl?: string;
 }) {
   return {
@@ -80,7 +73,6 @@ export function webApplicationSchema(name: string, description: string, url: str
 
 export function breadcrumbListSchema(items: Array<{ name: string; path: string }>) {
   return {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, i) => ({
       "@type": "ListItem",
@@ -169,8 +161,9 @@ export function contactPageSchema() {
 }
 
 export function graphSchema(...nodes: Record<string, unknown>[]) {
+  const items = nodes.length === 1 && Array.isArray(nodes[0]) ? nodes[0] : nodes;
   return {
     "@context": "https://schema.org",
-    "@graph": nodes,
+    "@graph": items,
   };
 }

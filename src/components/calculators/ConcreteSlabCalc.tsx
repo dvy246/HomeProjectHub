@@ -89,6 +89,16 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
     setSavedRooms(getSavedRooms());
     const handler = () => setSavedRooms(getSavedRooms());
     window.addEventListener("saved-rooms-changed", handler);
+
+    // Read URL search params
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const l = params.get("length");
+      const w = params.get("width");
+      if (l) setLength(l);
+      if (w) setWidth(w);
+    }
+
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
 

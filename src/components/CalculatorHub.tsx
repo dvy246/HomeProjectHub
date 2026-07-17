@@ -67,12 +67,16 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "tonnage", name: "Tonnage", category: "Weight", icon: "weight" },
   { slug: "baluster", name: "Baluster", category: "Wall & Fence", icon: "fence" },
   { slug: "board-batten", name: "Board & Batten", category: "Wall & Fence", icon: "fence" },
+  { slug: "closet-designer", name: "Closet & Storage Designer", category: "Wall & Fence", icon: "grid" },
+  { slug: "concrete-slab-designer", name: "Concrete Slab & Patio Designer", category: "Concrete", icon: "box" },
+  { slug: "wainscoting-designer", name: "Wainscoting Designer", category: "Wall & Fence", icon: "grid" },
   { slug: "brick", name: "Brick", category: "Wall & Fence", icon: "grid" },
   { slug: "framing", name: "Framing", category: "Wall & Fence", icon: "lumber" },
   { slug: "retaining-wall", name: "Retaining Wall", category: "Wall & Fence", icon: "box" },
   { slug: "spindle-spacing", name: "Spindle Spacing", category: "Wall & Fence", icon: "fence" },
   { slug: "vinyl-fence", name: "Vinyl Fence", category: "Wall & Fence", icon: "fence" },
   { slug: "vinyl-siding", name: "Vinyl Siding", category: "Wall & Fence", icon: "grid" },
+  { slug: "hardscape-designer", name: "Hardscape Designer", category: "Landscaping", icon: "grid" },
   { slug: "gravel", name: "Gravel", category: "Landscaping", icon: "droplet" },
   { slug: "limestone", name: "Limestone", category: "Landscaping", icon: "droplet" },
   { slug: "rip-rap", name: "Rip Rap", category: "Landscaping", icon: "droplet" },
@@ -83,13 +87,18 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "fire-glass", name: "Fire Glass", category: "Landscaping", icon: "circle" },
   { slug: "sealant", name: "Sealant", category: "Landscaping", icon: "droplet" },
   { slug: "sonotube", name: "Sonotube", category: "Landscaping", icon: "circle" },
+  { slug: "diy-vs-pro", name: "DIY vs Pro Cost", category: "Renovation", icon: "layers" },
   { slug: "decking", name: "Decking", category: "Specialty", icon: "lumber" },
   { slug: "drywall", name: "Drywall", category: "Specialty", icon: "drywall" },
   { slug: "lumber", name: "Lumber", category: "Specialty", icon: "lumber" },
+  { slug: "measure-from-photo", name: "Photo-to-Measurement", category: "Specialty", icon: "grid" },
+  { slug: "plan", name: "Room Budget Binder", category: "Renovation", icon: "drywall" },
   { slug: "shed-cost", name: "Shed Cost", category: "Specialty", icon: "home" },
   { slug: "spiral-staircase", name: "Spiral Staircase", category: "Specialty", icon: "stairs" },
+  { slug: "stair-stringer-designer", name: "Stair Stringer Designer", category: "Specialty", icon: "stairs" },
   { slug: "paint", name: "Paint", category: "Paint", icon: "paint" },
   { slug: "tile", name: "Tile", category: "Tile", icon: "grid" },
+  { slug: "flooring", name: "Flooring", category: "Specialty", icon: "grid" },
   { slug: "renovation/bathroom", name: "Bathroom Renovation", category: "Renovation", icon: "paint" },
   { slug: "renovation/kitchen", name: "Kitchen Renovation", category: "Renovation", icon: "grid" },
   { slug: "renovation/basement", name: "Basement Finishing", category: "Renovation", icon: "drywall" },
@@ -145,7 +154,7 @@ function CalculatorHub() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filtered.map((calc) => (
-          <a key={calc.slug} href={`/calculators/${calc.slug}/`} className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] transition-colors">
+          <a key={calc.slug} href={calc.slug === "plan" ? "/plan/" : `/calculators/${calc.slug}/`} className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] transition-colors">
             <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d={ICONS[calc.icon] || ICONS.ruler} />

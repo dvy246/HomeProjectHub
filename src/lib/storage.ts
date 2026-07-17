@@ -74,4 +74,27 @@ function migrateOldRooms(): void {
   } catch {}
 }
 
+export interface MaterialPrice {
+  price: number;
+  label: string;
+}
+
+export function saveMaterialPrice(key: string, price: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(`hph_price_${key}`, price.toString());
+  } catch (e) {}
+}
+
+export function getMaterialPrice(key: string, defaultPrice: number): number {
+  if (typeof window === "undefined") return defaultPrice;
+  try {
+    const val = localStorage.getItem(`hph_price_${key}`);
+    return val ? parseFloat(val) : defaultPrice;
+  } catch (e) {
+    return defaultPrice;
+  }
+}
+
 export type { SavedProject };
+

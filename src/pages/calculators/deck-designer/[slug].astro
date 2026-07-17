@@ -1,0 +1,213 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import DeckDesigner from "../../../components/calculators/DeckDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
+import { BLUEPRINT_DECK_SEEDS } from "../../../data/blueprint-seeds";
+import { calculateDeckMaterials } from "../../../lib/deckEngine";
+
+export function getStaticPaths() {
+  return BLUEPRINT_DECK_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof BLUEPRINT_DECK_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+
+// Calculate materials at build-time using our TS Engine
+const result = calculateDeckMaterials({
+  widthFt: seed.width,
+  depthFt: seed.depth,
+  joistSpacingIn: seed.joistSpacing,
+  boardType: seed.boardType,
+  postHeightFt: seed.postHeight,
+});
+
+const canonical = `https://homeplanninghub.com/calculators/deck-designer/${seed.slug}/`;
+const title = `${seed.label} Material List & Framing Blueprint`;
+const description = `Get exact material specs, joist layout blueprints, and framing hardware details for a ${seed.label.toLowerCase()}. Pre-calculated lumber takeoffs.`;
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+// Pre-render FAQs matching the exact dimensions
+const faqs = [
+  {
+    q: `How many 16-foot deck boards do I need for a ${seed.width}x${seed.depth} deck?`,
+    a: `For a ${seed.width}x${seed.depth} deck, you will need approximately ${result.deckBoards16Ft} boards of 16-foot 5/4x6 decking lumber. This includes a standard 10% waste buffer for joints, trims, and matching.`,
+  },
+  {
+    q: `How many support posts and footings are required for a ${seed.label.toLowerCase()}?`,
+    a: `This deck design uses ${result.postsCount} structural wood posts and concrete footings. It assumes the deck is attached to the house via a ledger board, which supports the house-side framing without extra footings.`,
+  },
+  {
+    q: `What is the framing lumber count for a ${seed.width}x${seed.depth} deck structure?`,
+    a: `The framing requires ${result.joistsCount} joists spanning the depth direction and ${result.beamLinearFt} linear feet of double-ply beams. It also requires ${result.joistHangers} joist hangers for attaching to the ledger board.`,
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Deck Calculators", path: "/calculators/decking/" },
+    { name: "Deck Designer", path: "/calculators/deck-designer/" },
+    { name: seed.label, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: `${seed.label} Framing Calculation`,
+    description: `Compute joist counts and lumber takeoffs for a ${seed.width}ft wide by ${seed.depth}ft deep deck structure.`,
+    formula: `Joist Count = (Width × 12 ÷ Spacing) + 1; Deck Board Count = (Area × 1.1) ÷ Board Area`,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Determine Joist Spacing",
+      text: `For a ${seed.width}ft width: (${seed.width} × 12 inches) ÷ ${seed.joistSpacing} inches = ${result.joistsCount - 1} spans. Adding one end joist gives ${result.joistsCount} total joists.`,
+    },
+    {
+      name: "Calculate Decking Area",
+      text: `Multiply deck width by depth: ${seed.width}ft × ${seed.depth}ft = ${seed.width * seed.depth} sq ft.`,
+    },
+    {
+      name: "Estimate Deck Boards",
+      text: `Account for 10% waste: ${seed.width * seed.depth} × 1.1 = ${(seed.width * seed.depth * 1.1).toFixed(1)} sq ft. Dividing by 16-ft board coverage (7.33 sq ft) equals ${result.deckBoards16Ft} boards.`,
+    }
+  ]),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/decking/" class="hover:text-[var(--fg)] transition-colors">Decking</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/deck-designer/" class="hover:text-[var(--fg)] transition-colors">Deck Designer</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">{seed.label}</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{seed.label} Framing & Material List</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Pre-calculated joist layouts and framing hardware specifications for a {seed.label.toLowerCase()}. View post base counts, hanger specifications, and estimated lumber weights. Customize the deck details below.
+    </p>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <!-- Static Build-time Output for SEO crawlability and fast page load -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 no-print">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+        <h2 class="text-base font-bold tracking-tight mb-4">Calculated Dimensions</h2>
+        <table class="w-full text-sm text-left border-collapse">
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Deck Dimensions</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.width} × {seed.depth} ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Total Surface Area</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.width * seed.depth} sq ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Joist Spacing</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.joistSpacing} in OC</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Deck Board Type</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)] capitalize">{seed.boardType}</td>
+            </tr>
+            <tr>
+              <td class="py-2.5">Est. Total Framing Weight</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{result.totalWeightLbs.toLocaleString()} lbs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+        <h2 class="text-base font-bold tracking-tight mb-4">Material Takeoff</h2>
+        <table class="w-full text-sm text-left border-collapse">
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2">Support Footings & Posts</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.postsCount} posts</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2">Double Beams (2x10)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.beamLinearFt} ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2">Framing Joists</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.joistsCount} joists ({result.joistLinearFt} lin ft)</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2">16-Ft Decking Boards (5/4x6)</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.deckBoards16Ft} boards</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2">Joist Hangers & Hardware</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.joistHangers} hangers</td>
+            </tr>
+            <tr>
+              <td class="py-2">Deck Fasteners & Screws</td>
+              <td class="py-2 font-semibold text-[var(--fg)]">{result.deckScrewsLbs} lbs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Live Interactive Component Hydrated client-side -->
+    <section class="mt-4">
+      <h2 class="text-lg font-bold mb-4">Interactive Blueprint & Materials Planner</h2>
+      <DeckDesigner 
+        client:visible 
+        initialWidth={seed.width} 
+        initialDepth={seed.depth} 
+        initialJoistSpacing={seed.joistSpacing} 
+        initialBoardType={seed.boardType} 
+        initialPostHeight={seed.postHeight}
+      />
+    </section>
+
+    <EstimateMethodology
+      formula="Joist count = (width × 12 ÷ spacing) + 1; decking boards account for 10% waste."
+      assumptions={[
+        `Designed specifically for a ${seed.label.toLowerCase()}.`,
+        "Assumes deck is attached to a solid house ledger board.",
+        "Weight calculations assume pressure-treated Southern Yellow Pine framing."
+      ]}
+    />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">Deck Construction Guidelines for {seed.label}</h2>
+      <p>
+        Building a stable deck structure requires meeting structural load regulations. The beam spans and support post placements in our visual blueprint are pre-configured to handle standard 40 psf live loads and 10 psf dead loads. Be sure to check local municipal building codes for frost footing depth requirements before placing your concrete piers.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)]">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="deck-designer" />
+  </article>
+</Layout>

@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import DeckCostCalc from "../../../components/calculators/renovation/DeckCostCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Deck Cost Calculator";
 const description = "Free deck cost calculator. Estimate wood or composite decking boards, joists, railings, post footings, and contractor installation labor.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Deck Cost", path: "/calculators/renovation/deck/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Deck Cost Estimator Formula",
     description,
+    formula: "Total Deck Cost = Decking Boards Cost + Joists/Substructure Cost + Railing Cost + Footing/Posts Cost + Labor Fee + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure deck footprint",
+      text: "Determine length and width of the planned deck in feet to compute total square footage.",
+    },
+    {
+      name: "Select framing and board styles",
+      text: "Choose decking material types (wood vs composite) and select posts, joists, and railing configurations.",
+    },
+    {
+      name: "Compute labor and total expenses",
+      text: "Input contractor installation labor ratios or specify DIY, and apply contingency budgets.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <DeckCostCalc client:load />
+      <DeckCostCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

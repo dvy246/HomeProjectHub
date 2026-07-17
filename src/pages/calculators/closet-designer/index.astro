@@ -1,0 +1,345 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ClosetDesignerComponent from "../../../components/calculators/ClosetDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+
+const canonical = "https://homeplanninghub.com/calculators/closet-designer/";
+const title = "Closet & Storage Layout Designer";
+const description = "Design your custom closet layout with our interactive closet organizer planner. Plan reach-in, walk-in L-shape, U-shape closets, pantries, mudrooms, and garages with an SVG blueprint and material shopping list.";
+const formula = "Section Width = Wall Width / Number of Sections";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Closet & Storage Designer", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: title,
+    description,
+    formula,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Select your room type",
+      text: "Choose from reach-in closet, walk-in L-shape, walk-in U-shape, pantry, mudroom, or garage. Each mode provides relevant section types and default dimensions.",
+    },
+    {
+      name: "Enter your dimensions",
+      text: "Set wall width, height, and depth. Multi-wall layouts let you configure each wall independently with its own width and sections.",
+    },
+    {
+      name: "Add storage sections",
+      text: "Choose from hanging rods, shelves, drawers, shoe racks, hooks, cubbies, heavy shelves, or pegboard panels. Each section adjusts to your preferred width.",
+    },
+    {
+      name: "Review the elevation blueprint",
+      text: "The SVG elevation view shows all storage elements to scale. Switch between walls for multi-wall layouts. Section dividers and dimension arrows confirm fit.",
+    },
+    {
+      name: "Get your material list",
+      text: "Review the live material takeoff with quantities, hanger capacity, and estimated cost. Print the plan or check payload capacity.",
+    },
+  ]),
+  faqPageSchema([
+    {
+      q: "What is the standard height for a closet rod?",
+      a: "Single hang rods are typically 66 inches from the floor for long garments like coats and dresses. For double hang closets, the upper rod sits at 78 to 84 inches and the lower rod at 42 inches. Adjust based on your ceiling height and wardrobe needs."
+    },
+    {
+      q: "How deep should closet shelves be?",
+      a: "Standard closet shelves are 12 to 16 inches deep for folded clothes, bins, and accessories. Pantry shelves work best at 20 inches deep. Garage heavy-duty shelves need 24 inches for tool cases and bins. Shoes fit best on 12-inch deep shelves with a slight angled front."
+    },
+    {
+      q: "How many hangers fit per foot of closet rod?",
+      a: "Standard wood or plastic hangers require about 1.5 inches each, fitting roughly 8 hangers per linear foot. Thin velvet hangers use only 1 inch each, fitting up to 12 hangers per foot. Our calculator estimates both capacities."
+    },
+    {
+      q: "What size should a reach-in closet be?",
+      a: "A standard reach-in closet is 4 to 8 feet wide and 24 inches deep. The minimum comfortable width for a single-person reach-in is 36 inches. Bifold or sliding doors require clear floor space of at least 24 inches in front of the closet."
+    },
+    {
+      q: "How many drawers should a closet have?",
+      a: "A well-organized closet typically includes 2 to 4 drawers for folded items, underwear, socks, and accessories. Each drawer unit is 18 inches tall. Drawer stacks work best in sections 18 to 36 inches wide."
+    },
+    {
+      q: "Should I use single or double hang closet rods?",
+      a: "Double hang rods maximize vertical space in closets with 84-inch or taller ceilings. Use the 42-inch lower rod for shirts, folded pants, and short jackets, and the upper rod for longer items. Single hang is better for floor-length coats, dresses, and robes."
+    },
+    {
+      q: "What is the best depth for a shoe rack shelf?",
+      a: "Shoe rack shelves work best at 8 to 12 inches deep with 8 inches of vertical clearance per shelf. Angled shelves at 10 to 15 degrees make shoes visible and easy to grab. Each linear foot holds approximately 2 pairs of shoes."
+    },
+    {
+      q: "Can I use this planner for walk-in closets?",
+      a: "Yes. Select the L-Shape or U-Shape room type to design multi-wall walk-in closets with up to 3 walls. Each wall gets its own width, sections, and elevation blueprint. Switch between walls using the wall tabs above the SVG canvas."
+    },
+    {
+      q: "What is the best pantry shelving depth?",
+      a: "Walk-in pantry shelves work best at 20 to 24 inches deep for dry goods, canned foods, and small appliances. For narrow pantries, 12 to 16 inch deep shelves maximize vertical storage without wasting floor space. Use deep pull-out drawers for pots and heavy items."
+    },
+    {
+      q: "How do I design a mudroom storage system?",
+      a: "Use Mudroom mode to combine cubby sections for backpacks and boots with hook sections for coats and jackets. Cubbies at 12-inch spacing fit standard backpacks and lunch bags. Install hooks 48 to 60 inches above the floor for adult coats, 36 to 42 inches for kids."
+    },
+    {
+      q: "What is the best garage shelving setup?",
+      a: "Use Garage mode with heavy-duty shelves (18-inch spacing) for tool cases, bins, and power tools. Pegboard panels provide flexible tool organization with hooks, baskets, and shelf brackets. Heavy shelves at 24-inch depth fit standard 5-gallon buckets and storage totes."
+    },
+    {
+      q: "Can I design an L-shaped walk-in closet?",
+      a: "Yes. Switch to L-Shape mode to design a two-wall walk-in closet. Configure the long wall for double hang rods and the short wall for drawers and shoe racks. Each wall maintains its own width and section layout. U-Shape mode adds a third back wall for maximum storage."
+    }
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Closet & Storage Layout Designer</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Closet & Storage Layout Designer</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Design your custom closet layout with rods, shelves, drawers, and shoe racks. Enter wall dimensions, add sections, and get a live material list with estimated cost.
+    </p>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <ClosetDesignerComponent client:visible />
+    </section>
+
+    <EstimateMethodology
+      formula={formula}
+      assumptions={[
+        "Rod heights follow industry standards: 66 inches for single-hang, 42 and 78 inches for double-hang.",
+        "Shelving is 3/4-inch melamine with 14-inch vertical spacing (standard), 18-inch spacing (garage heavy-duty).",
+        "Drawer units are 18 inches tall each. Cubbies are 12 inches tall. Hook rows are 14 inches apart.",
+        "Pegboard panels are 4x8 perforated hardboard. Heavy shelves are double-thick (1.5 inches).",
+        "Hanger capacity: thin velvet hangers at 1 inch each, thick hangers at 1.5 inches each."
+      ]}
+    />
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">Closet Organization & Layout Design Guide</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <p>
+            Planning a <strong>closet organization</strong> project is one of the highest-impact home improvements you can make. Whether you are designing a <strong>custom closet system</strong> for a master bedroom walk-in, installing budget-friendly <strong>closet shelving</strong> in a reach-in, or organizing a <strong>pantry</strong>, <strong>mudroom</strong>, or <strong>garage workshop</strong>, getting the layout right determines whether your storage actually works. This interactive <strong>room planner</strong> replaces graph paper and guesswork with a live SVG elevation view, helping you visualize rods, shelves, drawers, hooks, cubbies, and pegboard panels before you buy a single bracket.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">Reach-In, Walk-In, Pantry, Mudroom & Garage Modes</h3>
+          <p>
+            This planner supports <strong>six room modes</strong>, each with its own default dimensions, section types, and material recommendations. <strong>Reach-in closet</strong> mode handles standard 4-8 foot closets with hanging rods, shelves, and drawers. <strong>L-Shape</strong> and <strong>U-Shape walk-in closet</strong> modes let you design multi-wall layouts with up to three independent walls, each with its own width and section configuration. <strong>Pantry mode</strong> provides deep shelving optimized for dry goods and appliances. <strong>Mudroom mode</strong> combines cubbies and hooks for entryway organization. <strong>Garage mode</strong> offers heavy-duty shelves and pegboard panels for tools and equipment. Switch between modes at any time without losing your current design.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">Rod Height & Storage Zone Planning</h3>
+          <p>
+            The most common mistake in DIY <strong>closet design</strong> is installing rods and shelves at the wrong height. A <strong>single hang closet rod</strong> should sit at 66 inches from the floor for long garments. <strong>Double hang closet rods</strong> split the vertical space — upper rod at 78 inches for short hanging items, lower rod at 42 inches for shirts and folded pants. Use <strong>adjustable closet shelves</strong> and wall standards to reconfigure zones as your wardrobe changes over time.
+          </p>
+        </div>
+
+        <div class="bg-[var(--bg-muted)] p-5 rounded-xl border border-[var(--border)] space-y-4 h-fit">
+          <h4 class="font-bold text-[var(--fg)] text-xs uppercase tracking-wider">Section Types by Mode</h4>
+          <ul class="text-xs space-y-2 text-[var(--fg-secondary)] list-none pl-0">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Single Hang:</strong> Closet rod at 66 inches for coats and dresses.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Double Hang:</strong> Two rods for maximum vertical density.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Shelving:</strong> 14-inch spaced shelves for all modes.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Drawers:</strong> 18-inch stackable units for small items.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Shoe Rack:</strong> 8-inch spacing for footwear organization.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Hooks:</strong> Wall hook rows for coats and bags (mudroom).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Cubbies:</strong> 12-inch cubby bins for backpacks and boots.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Heavy Shelf:</strong> 18-inch spaced shelves for garage loads.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Pegboard:</strong> Perforated panels for tool organization.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-base font-semibold text-[var(--fg)]">Multi-Wall Walk-In Closet Layout</h3>
+      <p>
+        For <strong>walk-in closet design</strong>, switch to L-Shape or U-Shape mode to configure multiple walls. L-Shape closets use two adjacent walls (e.g., 120-inch long wall for double hang rods, 72-inch short wall for drawers and shoe racks). U-Shape closets add a third back wall, typically 120 inches wide, for maximum hanging and shelving space. Each wall is rendered as its own SVG elevation blueprint with independent section dividers and dimension arrows. The material summary aggregates quantities across all walls for a single shopping list. Standard walk-in closets need a 36 to 48-inch center aisle for comfortable access.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Pantry Shelving & Storage</h3>
+          <p>
+            Use <strong>Pantry mode</strong> to design a walk-in pantry with deep shelves optimized for dry goods, canned foods, and small appliances. The recommended <strong>pantry shelving depth</strong> is 20 inches for standard pantry items. Open shelving sections at 14-inch vertical spacing accommodate cereal boxes, pasta, and spices. Drawer sections hold utensils, wraps, and small tools. For heavy bulk items, use heavy-duty shelf sections with 18-inch spacing. Combine narrow and wide sections to create zones for canned goods (12-inch shelves), dry goods (24-inch shelves), and small appliances (pull-out drawers).
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Mudroom Entryway Organization</h3>
+          <p>
+            Switch to <strong>Mudroom mode</strong> for entryway storage systems combining cubbies and hooks. Cubby sections at 12-inch spacing fit standard backpacks, lunch bags, and small sports equipment. Hook sections provide coat, jacket, and bag hanging with multiple hooks per row — approximately one hook every 6 inches of wall width. Install hooks 48 to 60 inches above the floor for adult coats and 36 to 42 inches for children. For boot storage, add shoe rack sections below the hooks. Mudroom depth of 18 inches accommodates cubbies, hooks, and a bench without crowding the entry path.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Garage Workshop Storage</h3>
+          <p>
+            Use <strong>Garage mode</strong> for heavy-duty storage systems designed for tools, equipment, and bulk supplies. <strong>Heavy-duty garage shelves</strong> at 18-inch vertical spacing hold tool cases, storage bins, and power tools. Each heavy shelf is double-thick (1.5 inches) for structural loads up to 200 pounds. <strong>Pegboard panels</strong> provide flexible tool organization with hooks, baskets, and shelf brackets arranged in a perforated grid pattern. Combine pegboard sections for frequently-used hand tools with heavy shelf sections for bulk storage. Garage depth of 24 inches accommodates standard 5-gallon buckets, tool chests, and storage totes.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Closet Shelf Depth Guide</h3>
+          <p>
+            Choosing the right <strong>closet shelf depth</strong> depends on what you are storing. For folded clothes and bins, 12 to 16-inch deep shelves work best. <strong>Deep closet shelves</strong> at 24 inches are ideal for bulky items like comforters, luggage, and off-season storage. <strong>Closet shoe rack</strong> shelves should be 8 to 12 inches deep with angled fronts. Our planner uses your selected depth to calculate total shelf square footage and material requirements.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">DIY Closet Organizer Installation Tips</h3>
+          <p>
+            Installing a <strong>DIY closet organizer</strong> starts with locating wall studs — shelf standards must screw into studs or use heavy-duty toggle bolts rated for at least 100 pounds per pair. Use a 24-inch stud finder and mark all stud locations before cutting any track. For <strong>closet organization ideas</strong>, combine open shelving above double hang rods for seasonal storage, and install pull-out drawers below hang sections for accessories. Always measure your space three times before cutting melamine shelving boards.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the standard height for a closet rod?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Single hang rods are typically 66 inches from the floor for long garments like coats and dresses. For double hang closets, the upper rod sits at 78 to 84 inches and the lower rod at 42 inches. Adjust based on your ceiling height and wardrobe needs.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How deep should closet shelves be?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Standard closet shelves are 12 to 16 inches deep for folded clothes, bins, and accessories. For deep storage of bulky items like luggage or comforters, 24-inch deep shelves are recommended. Shoes fit best on 12-inch deep shelves with a slight angled front.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How many hangers fit per foot of closet rod?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Standard wood or plastic hangers require about 1.5 inches each, fitting roughly 8 hangers per linear foot. Thin velvet hangers use only 1 inch each, fitting up to 12 hangers per foot. Our calculator estimates both capacities.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What size should a reach-in closet be?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A standard reach-in closet is 4 to 8 feet wide and 24 inches deep. The minimum comfortable width for a single-person reach-in is 36 inches. Bifold or sliding doors require clear floor space of at least 24 inches in front of the closet.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How many drawers should a closet have?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A well-organized closet typically includes 2 to 4 drawers for folded items, underwear, socks, and accessories. Each drawer unit is 18 inches tall. Drawer stacks work best in sections 18 to 36 inches wide.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Should I use single or double hang closet rods?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Double hang rods maximize vertical space in closets with 84-inch or taller ceilings. Use the 42-inch lower rod for shirts, folded pants, and short jackets, and the upper rod for longer items. Single hang is better for floor-length coats, dresses, and robes.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the best depth for a shoe rack shelf?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Shoe rack shelves work best at 8 to 12 inches deep with 8 inches of vertical clearance per shelf. Angled shelves at 10 to 15 degrees make shoes visible and easy to grab. Each linear foot holds approximately 2 pairs of shoes.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Can I use this planner for walk-in closets?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Yes. Select the L-Shape or U-Shape room type to design multi-wall walk-in closets with up to 3 walls. Each wall gets its own width, sections, and elevation blueprint. Switch between walls using the wall tabs above the SVG canvas.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the best pantry shelving depth?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Walk-in pantry shelves work best at 20 to 24 inches deep for dry goods, canned foods, and small appliances. For narrow pantries, 12 to 16 inch deep shelves maximize vertical storage without wasting floor space. Use deep pull-out drawers for pots and heavy items.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How do I design a mudroom storage system?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Use Mudroom mode to combine cubby sections for backpacks and boots with hook sections for coats and jackets. Cubbies at 12-inch spacing fit standard backpacks and lunch bags. Install hooks 48 to 60 inches above the floor for adult coats, 36 to 42 inches for kids.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the best garage shelving setup?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Use Garage mode with heavy-duty shelves (18-inch spacing) for tool cases, bins, and power tools. Pegboard panels provide flexible tool organization with hooks, baskets, and shelf brackets. Heavy shelves at 24-inch depth fit standard 5-gallon buckets and storage totes.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Can I design an L-shaped walk-in closet?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Yes. Switch to L-Shape mode to design a two-wall walk-in closet. Configure the long wall for double hang rods and the short wall for drawers and shoe racks. Each wall maintains its own width and section layout. U-Shape mode adds a third back wall for maximum storage.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <RelatedCalculators slug="closet-designer" />
+  </article>
+</Layout>

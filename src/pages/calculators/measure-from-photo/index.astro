@@ -1,0 +1,248 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import MeasureFromPhoto from "../../../components/calculators/MeasureFromPhoto";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+
+const canonical = "https://homeplanninghub.com/calculators/measure-from-photo/";
+const title = "Measure Room Square Footage from Photo | Free Online Tool";
+const description = "Upload blueprints, floor plans, or room images, set a known calibration scale, and trace walls to calculate square footage and linear perimeter instantly.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Measure From Photo", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Pixel-to-Physical Scaling & Shoelace Area Equation",
+    description: "Determine room boundaries, linear perimeters, and square footage from 2D coordinates scaled from a known physical reference line.",
+    formula: "Scale = Pixels / Inches; Perimeter = Sum of distances / Scale; Area = Shoelace(Points) / Scale^2",
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    { name: "Upload room photo", text: "Select and upload a blueprint, floor plan, or room photo." },
+    { name: "Calibrate scale", text: "Place two markers over a known physical length (e.g. standard door or countertop) and input its length." },
+    { name: "Trace boundaries", text: "Click corners on the canvas to trace the room perimeter and get instant square footage." },
+    { name: "Export to calculators", text: "Export the measurements to paint, tile, or concrete slab calculators in one click." },
+  ]),
+  faqPageSchema([
+    {
+      q: "Can you calculate square footage from a photo?",
+      a: "Yes. By uploading a 2D floor plan, blueprint, or flat overhead drone image, you can calibrate a reference scale using a known dimension (like a door or wall length). Once scaled, you click to trace the room corners to calculate the total square footage."
+    },
+    {
+      q: "How accurate is measuring a room from a picture?",
+      a: "For flat orthographic images like blueprints and layout drawings, the accuracy is extremely high (usually within 1-2%). For perspective room photos taken from an angle, lens distortion and skewing will reduce accuracy. We recommend using flat floor plan scans for maximum precision."
+    },
+    {
+      q: "What can I use as a scale reference when calibrating?",
+      a: "You can use any object of known length in the photo. Common choices include standard exterior doors (36 inches wide), ceiling heights (typically 8 or 9 feet), standard countertops (36 inches high), or the width of a standard wall segment from a blueprint."
+    },
+    {
+      q: "Does this photo measurement tool support irregular L-shaped rooms?",
+      a: "Yes. The polygon tracer allows you to place an unlimited number of corner vertices. You can easily trace L-shaped, T-shaped, triangular, or highly irregular multi-sided rooms to get an exact boundary and square footage."
+    },
+    {
+      q: "Can I measure blueprints or PDF floor plans?",
+      a: "Yes. Simply take a screenshot of the blueprint or floor plan drawing on your device (saving it as a PNG or JPG), upload it to the tool, calibrate a scale line from one of the blueprint's dimensions, and trace the rooms."
+    },
+    {
+      q: "How does the camera angle impact measurement accuracy?",
+      a: "If the photo is tilted, objects further away appear smaller in pixels than objects nearby. This perspective distortion skewes simple flat 2D ratio scaling. For tilted room photos, ensure your calibration line and tracing coordinates are in the same relative depth plane."
+    },
+    {
+      q: "Are my uploaded photos private?",
+      a: "Yes. Your photos are processed entirely inside your local web browser using the HTML5 Canvas API. No images or dimension files are uploaded to any external server or saved in the cloud. Your data stays 100% private."
+    },
+    {
+      q: "How do I send these measurements to material calculators?",
+      a: "Once you have completed tracing a room, click one of the quick-action buttons in the sidebar (e.g. 'Calculate Paint' or 'Calculate Floor Tiles'). The tool will automatically redirect you to that calculator with the dimensions prefilled."
+    }
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Measure From Photo</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        Measure Room Square Footage from Photo
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Upload blueprints, real estate floor plans, or overhead yard photos to calculate area and perimeter without a tape measure. Calibrate a reference scale on the canvas and trace any boundary using our free <a href="/calculators/measure-from-photo/" class="font-semibold text-[var(--accent)] hover:underline">floor plan square footage calculator</a>.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-measure-photo-top" />
+
+    <!-- Interactive React Component -->
+    <section>
+      <MeasureFromPhoto client:visible />
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula="Scale Ratio = Calibration Pixel Distance / Physical Inches; Traced Perimeter = Pixel Distance / Scale Ratio; Traced Area = Shoelace(X, Y) Coordinates / Scale Ratio^2"
+      assumptions={[
+        "Calibration assumes the reference line lies on the same depth plane as the traced area boundary.",
+        "Blueprint scaling accuracy relies on drawing the calibration line precisely over the marked reference span.",
+        "Traced vertices must form a closed loop (connecting back to the first point) to calculate a complete square footage area.",
+        "This tool supports PNG, JPG, and WebP image uploads. PDF files must be screenshotted or exported as images first.",
+        "All photo-scaled estimates are subject to our engineering disclaimer. Read the full disclaimer at /disclaimer/."
+      ]}
+    />
+
+    <!-- Informative Article Content (SEO/Methodology Values) -->
+    <section class="prose max-w-none text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed flex flex-col gap-6 border-t border-[var(--border)] pt-8">
+      
+      <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-inset)]/50 no-print">
+        <div class="flex-1">
+          <span class="block text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider mb-1">Calculation Integrity</span>
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-0.5">Verified Estimation Methodology</span>
+          <span class="block text-xs text-[var(--fg-secondary)] leading-normal">
+            This simulator runs on open geometric equations, code-compliant spacing rules, and standard nominal lumber dimensions. Inspect formulas in our <a href="/methodology/" class="font-medium text-[var(--accent)] hover:underline">Estimation Methodology guide</a> or read our <a href="/disclaimer/" class="font-medium text-[var(--accent)] hover:underline">full disclaimer</a>.
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-3 items-center sm:border-l sm:border-[var(--border)] sm:pl-4 text-[10px] text-[var(--fg-secondary)] font-medium">
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Open Formulas</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Scaling Math</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Browser Sandbox</span>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">How to Measure Room Dimensions from an Image</h2>
+        <p class="text-pretty mb-4">
+          Measuring a room without a tape measure is incredibly convenient when planning renovations from a distance, reviewing real estate listings, or estimating material budgets before closing. This tool works by translating digital image coordinates (pixels) into real-world units through a known scale reference.
+        </p>
+        <h3 class="text-base font-semibold text-[var(--fg)] mb-2">Choosing the Best Reference Scale</h3>
+        <p class="text-pretty mb-4">
+          To ensure maximum accuracy, choose a calibration reference in the photo that is solid and well-defined. Good references include:
+        </p>
+        <ul class="list-disc pl-5 flex flex-col gap-2 mb-4">
+          <li>
+            <strong>Blueprint Dimensions:</strong> Look for marked dimension lines on a floor plan (e.g. \"12'-0\"\") to calibrate your scale line.
+          </li>
+          <li>
+            <strong>Standard Door Openings:</strong> A standard interior passage door in the US is almost always 80 inches (6.67 feet) tall, and standard entryways are typically 36 inches (3 feet) wide.
+          </li>
+          <li>
+            <strong>Ceiling Height:</strong> Residential construction typically utilizes 8-foot (96 inches) or 9-foot (108 inches) ceilings.
+          </li>
+        </ul>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">Connecting Dimensions to Material Packages</h2>
+        <p class="text-pretty mb-4">
+          Calculating the area in square feet is only the first step. To make your planning project successful, HomePlanningHub allows you to export your traced dimensions directly into our material estimating calculators. 
+        </p>
+        <p class="text-pretty mb-4">
+          By selecting a destination calculator in the sidebar, your square footage is converted into standard layout parameters (represented as a square room segment) and loaded instantly. This lets you calculate flooring box quantities, paint gallons, or concrete yardage counts in seconds without having to re-type any measurements.
+        </p>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6 no-print">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-4">Photo-to-Measurement FAQ</h2>
+        <div class="flex flex-col gap-4">
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Can you calculate square footage from a photo?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes. By uploading a 2D floor plan, blueprint, or flat overhead drone image, you can calibrate a reference scale using a known dimension (like a door or wall length). Once scaled, you click to trace the room corners to calculate the total square footage.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How accurate is measuring a room from a picture?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              For flat orthographic images like blueprints and layout drawings, the accuracy is extremely high (usually within 1-2%). For perspective room photos taken from an angle, lens distortion and skewing will reduce accuracy. We recommend using flat floor plan scans for maximum precision.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What can I use as a scale reference when calibrating?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              You can use any object of known length in the photo. Common choices include standard exterior doors (36 inches wide), ceiling heights (typically 8 or 9 feet), standard countertops (36 inches high), or the width of a standard wall segment from a blueprint.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Does this photo measurement tool support irregular L-shaped rooms?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes. The polygon tracer allows you to place an unlimited number of corner vertices. You can easily trace L-shaped, T-shaped, triangular, or highly irregular multi-sided rooms to get an exact boundary and square footage.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Can I measure blueprints or PDF floor plans?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes. Simply take a screenshot of the blueprint or floor plan drawing on your device (saving it as a PNG or JPG), upload it to the tool, calibrate a scale line from one of the blueprint's dimensions, and trace the rooms.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How does the camera angle impact measurement accuracy?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              If the photo is tilted, objects further away appear smaller in pixels than objects nearby. This perspective distortion skewes simple flat 2D ratio scaling. For tilted room photos, ensure your calibration line and tracing coordinates are in the same relative depth plane.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Are my uploaded photos private?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes. Your photos are processed entirely inside your local web browser using the HTML5 Canvas API. No images or dimension files are uploaded to any external server or saved in the cloud. Your data stays 100% private.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How do I send these measurements to material calculators?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Once you have completed tracing a room, click one of the quick-action buttons in the sidebar (e.g. 'Calculate Paint' or 'Calculate Floor Tiles'). The tool will automatically redirect you to that calculator with the dimensions prefilled.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Planners Routing -->
+    <RelatedCalculators slug="measure-from-photo" />
+  </article>
+</Layout>

@@ -1,0 +1,281 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import MaterialWise from "../../components/calculators/MaterialWise";
+import AdSlot from "../../components/AdSlot.astro";
+import { graphSchema, webPageSchema, webApplicationSchema, breadcrumbListSchema, faqPageSchema, mathSolverSchema, howToSchema } from "../../lib/schema";
+import {
+  ALL_CATEGORIES,
+  getMaterialsByCategory,
+  getMaterialById,
+  getPairs,
+  parsePairSlug,
+  parseSizeSlug,
+  formatCategory,
+  getDefaultWeights,
+  compareMaterials,
+  COMPARISON_SIZES,
+  type ComparisonCategory,
+} from "../../lib/compareEngine";
+
+export async function getStaticPaths() {
+  const paths: { params: { slug: string } }[] = [];
+
+  for (const category of ALL_CATEGORIES) {
+    paths.push({ params: { slug: category } });
+
+    const materials = getMaterialsByCategory(category);
+    const pairs = getPairs(materials);
+
+    for (const [m1, m2] of pairs) {
+      const pairSlug = `${m1.id}-vs-${m2.id}`;
+      paths.push({ params: { slug: `${category}/${pairSlug}` } });
+
+      for (const size of COMPARISON_SIZES) {
+        paths.push({ params: { slug: `${category}/${pairSlug}/${size.slug}` } });
+      }
+    }
+  }
+
+  return paths;
+}
+
+const slugStr = Astro.params.slug || "";
+const slugParts = slugStr.split("/").filter(Boolean);
+const [categorySlug, pairSlug, sizeSlug] = slugParts;
+
+const category = ALL_CATEGORIES.find((c) => c === categorySlug) as ComparisonCategory | undefined;
+const isValidCategory = !!category;
+
+const mats = isValidCategory ? getMaterialsByCategory(category) : [];
+
+const parsedPair = pairSlug ? parsePairSlug(pairSlug) : null;
+const mat1 = parsedPair && category ? getMaterialById(category, parsedPair[0]) : null;
+const mat2 = parsedPair && category ? getMaterialById(category, parsedPair[1]) : null;
+
+const sqft = sizeSlug ? parseSizeSlug(sizeSlug) : undefined;
+
+const canonical = `https://homeplanninghub.com/compare/${slugStr}/`;
+const pathForBreadcrumb = `/compare/${slugStr}/`;
+
+function formatSizeLabel(sizeSlug: string | undefined): string {
+  if (!sizeSlug) return "";
+  const found = COMPARISON_SIZES.find((s) => s.slug === sizeSlug);
+  if (found) return found.label;
+  return sizeSlug.replace(/-/g, " ");
+}
+
+function matLabel(m: typeof mat1): string {
+  return m ? `${m.name} ($${m.costPerUnit.avg}/sq ft)` : "";
+}
+
+function generateDescription(): string {
+  if (!isValidCategory) return "Compare home improvement materials side by side.";
+  const catLabel = formatCategory(category);
+  if (mat1 && mat2) {
+    const sizeText = sqft ? ` for ${formatSizeLabel(sizeSlug)}` : "";
+    return `Compare ${mat1.name} vs ${mat2.name}${sizeText}. Side-by-side cost, durability, maintenance, and lifecycle cost analysis with personalized priority scoring for your ${catLabel.toLowerCase()} project.`;
+  }
+  return `Compare ${catLabel} materials side by side. Use our interactive tool to find the best option for your project.`;
+}
+
+function generateH1(): string {
+  if (!isValidCategory) return "Material Comparison";
+  const catLabel = formatCategory(category);
+  if (mat1 && mat2) {
+    const sizeText = sqft ? `for ${formatSizeLabel(sizeSlug)}` : "";
+    return `${mat1.name} vs ${mat2.name}: Which ${catLabel} is Better${sizeText ? ` (${sizeText})` : ""}?`;
+  }
+  return `${catLabel} Material Comparison`;
+}
+
+function generateHowToSteps(mat1Name: string, mat2Name: string, catLabel: string) {
+  return [
+    { name: "Measure your space", text: `Determine the total square footage of your ${catLabel.toLowerCase()} project area. Accurate measurements are essential for cost estimation.` },
+    { name: "Compare material costs", text: `${mat1Name} costs $${mat1?.costPerUnit.avg || 0}/sq ft on average, while ${mat2Name} costs $${mat2?.costPerUnit.avg || 0}/sq ft. Factor in installation costs for a complete picture.` },
+    { name: "Set your priorities", text: "Use the priority sliders to weight what matters most: upfront cost, long-term durability, maintenance requirements, lifespan, eco-friendliness, or aesthetics." },
+    { name: "Review the comparison", text: `See how ${mat1Name} and ${mat2Name} score across 9 performance dimensions with your personalized weights.` },
+    { name: "Check lifecycle costs", text: `Review the 1-year, 5-year, 10-year, and 25-year total cost of ownership for each ${catLabel.toLowerCase()} material.` },
+    { name: "Make your decision", text: "The tool declares a winner based on your unique priorities. Use the printable comparison report and affiliate links to purchase materials." },
+  ];
+}
+
+function generateFAQs(): Array<{ q: string; a: string }> {
+  if (!mat1 || !mat2 || !category) {
+    return [
+      { q: "Why compare materials before buying?", a: "Comparing materials side by side helps you make an informed decision based on cost, durability, maintenance, and lifespan — not just upfront price." },
+      { q: "How is the winner determined?", a: "The winner is determined by your personalized priority weights. Adjust the sliders to reflect what matters most to your project." },
+    ];
+  }
+  return [
+    { q: `Which costs more: ${mat1.name} or ${mat2.name}?`, a: `${mat1.name} averages $${mat1.costPerUnit.avg}/sq ft, while ${mat2.name} averages $${mat2.costPerUnit.avg}/sq ft. However, consider 25-year lifecycle costs — not just upfront — especially for large areas.` },
+    { q: `Which lasts longer: ${mat1.name} or ${mat2.name}?`, a: `${mat1.name} has a typical lifespan of ${mat1.lifespanYears} years with proper maintenance. ${mat2.name} lasts approximately ${mat2.lifespanYears} years. Actual lifespan depends on installation quality, climate, and usage.` },
+    { q: `Which is easier to maintain: ${mat1.name} or ${mat2.name}?`, a: `${mat1.name} scores ${mat1.scores.easeMaintenance}/10 for ease of maintenance, compared to ${mat2.name}'s ${mat2.scores.easeMaintenance}/10. ${mat1.scores.easeMaintenance > mat2.scores.easeMaintenance ? mat1.name : mat2.name} requires less ongoing upkeep.` },
+    { q: `What is the best ${formatCategory(category).toLowerCase()} for a DIY project?`, a: `For DIY installation, consider ease of installation scores: ${mat1.name} scores ${mat1.scores.easeInstallation}/10 and ${mat2.name} scores ${mat2.scores.easeInstallation}/10. Material weight, cutting difficulty, and required tools all factor in.` },
+    sqft ? { q: `How much will ${formatSizeLabel(sizeSlug)} of ${formatCategory(category).toLowerCase()} cost?`, a: `At approximately ${sqft} sq ft, expect to pay around $${((sqft * (mat1.costPerUnit.avg + mat2.costPerUnit.avg) / 2)).toLocaleString()} for materials alone. Total project cost varies by installation method and regional labor rates.` } : null,
+    { q: `Which material has better resale value: ${mat1.name} or ${mat2.name}?`, a: `${mat1.name} scores ${mat1.scores.resaleValue}/10 for resale value, while ${mat2.name} scores ${mat2.scores.resaleValue}/10. ${mat1.scores.resaleValue > mat2.scores.resaleValue ? mat1.name : mat2.name} typically provides better return on investment.` },
+    { q: `Is ${mat1.name} or ${mat2.name} better for the environment?`, a: `${mat1.name} scores ${mat1.scores.ecoFriendly}/10 for eco-friendliness. ${mat2.name} scores ${mat2.scores.ecoFriendly}/10. Consider material sourcing, manufacturing energy, and end-of-life recyclability.` },
+  ].filter(Boolean) as Array<{ q: string; a: string }>;
+}
+
+const catLabel = category ? formatCategory(category) : "Materials";
+const h1 = generateH1();
+const description = generateDescription();
+const faqs = generateFAQs();
+const isPairPage = !!(mat1 && mat2);
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Compare", path: "/compare/" },
+    ...(category ? [{ name: catLabel, path: `/compare/${category}/` }] : []),
+    ...(pairSlug && mat1 && mat2 ? [{ name: `${mat1.name} vs ${mat2.name}`, path: `/compare/${category}/${pairSlug}/` }] : []),
+  ]),
+  ...(isPairPage ? [
+    webApplicationSchema(h1, description, canonical),
+    mathSolverSchema({
+      name: `${mat1!.name} vs ${mat2!.name} Weighted Score Comparison`,
+      description: `Compare ${mat1!.name} and ${mat2!.name} using a weighted scoring formula across 9 performance dimensions.`,
+      formula: "Score = Σ(priority_weight_i × material_score_i) / Σ(priority_weight_i)",
+      url: canonical,
+    }),
+    howToSchema(
+      `How to Choose Between ${mat1!.name} and ${mat2!.name}`,
+      `Step-by-step guide to selecting the right ${catLabel.toLowerCase()} material.`,
+      generateHowToSteps(mat1!.name, mat2!.name, catLabel),
+    ),
+  ] : []),
+  faqPageSchema(faqs, canonical),
+  webPageSchema({ url: canonical, topicName: h1 }),
+);
+---
+
+<Layout title={h1} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/compare/" class="hover:underline">compare</a>
+        {category && <>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <a href={`/compare/${category}/`} class="hover:underline">{catLabel.toLowerCase()}</a>
+        </>}
+        {mat1 && mat2 && <>
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <span class="text-[var(--fg-secondary)]">{mat1.name.toLowerCase()} vs {mat2.name.toLowerCase()}</span>
+        </>}
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3">{h1}</h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">{description}</p>
+    </header>
+
+    <AdSlot slotId={`ad-top-compare-${category || "hub"}`} />
+
+    <section class="my-4">
+      <MaterialWise client:visible
+        initialCategory={category}
+        initialM1={mat1?.id}
+        initialM2={mat2?.id}
+        initialSqft={sqft}
+      />
+    </section>
+
+    <section class="pt-8 mt-6">
+      <h2 id="comparison-details" class="text-xl font-bold tracking-tight mb-4">
+        {isPairPage ? `${mat1!.name} vs ${mat2!.name} Comparison Details` : `${catLabel} Materials Overview`}
+      </h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-6 text-pretty">
+        {isPairPage
+          ? `Choosing between ${mat1!.name} and ${mat2!.name} depends on your budget, project timeline, and long-term priorities. Here is a detailed breakdown of how these ${catLabel.toLowerCase()} materials compare across key dimensions.`
+          : `Browse our ${catLabel.toLowerCase()} material comparisons below. Each comparison includes cost, durability, maintenance, lifespan, and personalized scoring.`}
+      </p>
+
+      {isPairPage && mat1 && mat2 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+          <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <h3 class="font-semibold text-[var(--fg)] mb-1">{mat1.name}</h3>
+            <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty mb-3">{mat1.description}</p>
+            <ul class="text-xs text-[var(--fg-secondary)] flex flex-col gap-1">
+              <li><strong>Cost:</strong> ${mat1.costPerUnit.min}-${mat1.costPerUnit.max}/sq ft (avg ${mat1.costPerUnit.avg})</li>
+              <li><strong>Lifespan:</strong> {mat1.lifespanYears} years</li>
+              <li><strong>DIY Difficulty:</strong> {["", "Very Easy", "Easy", "Moderate", "Hard", "Very Hard"][mat1.installationDifficulty]}</li>
+              <li><strong>Pros:</strong> {mat1.pros.slice(0, 2).join(", ")}</li>
+              <li><strong>Cons:</strong> {mat1.cons.slice(0, 2).join(", ")}</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <h3 class="font-semibold text-[var(--fg)] mb-1">{mat2.name}</h3>
+            <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty mb-3">{mat2.description}</p>
+            <ul class="text-xs text-[var(--fg-secondary)] flex flex-col gap-1">
+              <li><strong>Cost:</strong> ${mat2.costPerUnit.min}-${mat2.costPerUnit.max}/sq ft (avg ${mat2.costPerUnit.avg})</li>
+              <li><strong>Lifespan:</strong> {mat2.lifespanYears} years</li>
+              <li><strong>DIY Difficulty:</strong> {["", "Very Easy", "Easy", "Moderate", "Hard", "Very Hard"][mat2.installationDifficulty]}</li>
+              <li><strong>Pros:</strong> {mat2.pros.slice(0, 2).join(", ")}</li>
+              <li><strong>Cons:</strong> {mat2.cons.slice(0, 2).join(", ")}</li>
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          {mats.slice(0, 6).map((m) => (
+            <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+              <h3 class="font-semibold text-[var(--fg)] mb-1">{m.name}</h3>
+              <p class="text-xs text-[var(--fg-secondary)] leading-relaxed text-pretty mb-2">{m.description}</p>
+              <ul class="text-xs text-[var(--fg-secondary)] flex flex-col gap-0.5">
+                <li><strong>Cost:</strong> ${m.costPerUnit.avg}/sq ft</li>
+                <li><strong>Lifespan:</strong> {m.lifespanYears} years</li>
+                <li><strong>Score:</strong> {m.scores.durability}/10 durability</li>
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <section class="pt-8 mt-6">
+      <h2 id="how-to-choose" class="text-xl font-bold tracking-tight mb-4">How to Choose Between{isPairPage ? ` ${mat1!.name} and ${mat2!.name}` : ` ${catLabel} Materials`}</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed mb-4 text-pretty">
+        Follow these steps to make an informed decision:
+      </p>
+      <ol class="flex flex-col gap-3 list-decimal pl-5 text-sm text-[var(--fg-secondary)] leading-relaxed">
+        <li><strong>Measure your project area</strong> — Accurate square footage is essential for cost comparison.</li>
+        <li><strong>Set your budget</strong> — Consider both upfront cost and long-term maintenance.</li>
+        <li><strong>Prioritize what matters</strong> — Use the priority sliders above to weight durability, cost, maintenance, and aesthetics.</li>
+        <li><strong>Compare lifecycle costs</strong> — The 25-year total cost of ownership reveals which material is truly more affordable.</li>
+        <li><strong>Check local availability</strong> — Click affiliate links to check current pricing at Lowe's or Amazon.</li>
+      </ol>
+    </section>
+
+    <AdSlot slotId={`ad-bottom-compare-${category || "hub"}`} />
+
+    <section class="pt-8 mt-6">
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0 inline">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <footer class="pt-8 mt-12 mb-6">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/square-footage/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Square Footage Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Measure your project area.</span>
+        </a>
+        <a href="/compare/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">All Comparisons</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Compare more materials.</span>
+        </a>
+        <a href={isPairPage && mat1 ? `/calculators/payload/?material=${mat1.id}` : "/calculators/payload/"} class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors">
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-1">Payload Safety Calculator</span>
+          <span class="text-[10px] text-[var(--fg-muted)]">Check if your vehicle can haul the materials.</span>
+        </a>
+      </div>
+    </footer>
+  </article>
+</Layout>

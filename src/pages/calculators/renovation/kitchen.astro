@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import KitchenRenovationCalc from "../../../components/calculators/renovation/KitchenRenovationCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Kitchen Renovation Cost Calculator";
 const description = "Free kitchen renovation cost calculator. Estimate stone countertop slabs, wood cabinets, prep islands, sink plumbing, and builder labor packages.";
@@ -31,14 +31,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Kitchen Renovation", path: "/calculators/renovation/kitchen/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Kitchen Renovation Cost Estimator Formula",
     description,
+    formula: "Total Kitchen Remodeling Cost = Cabinetry Cost + Countertop Cost + Appliance Budget + Installation Labor + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure cabinet runs",
+      text: "Measure the linear footage of base and wall cabinets needed for your kitchen layout.",
+    },
+    {
+      name: "Estimate countertop area",
+      text: "Calculate the total square footage of countertops, including islands and breakfast bar overhangs.",
+    },
+    {
+      name: "Adjust quality tiers and labor rates",
+      text: "Choose materials quality tiers (budget, mid, premium) and configure professional installer labor fees.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -58,7 +80,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <KitchenRenovationCalc client:load />
+      <KitchenRenovationCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

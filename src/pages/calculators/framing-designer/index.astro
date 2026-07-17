@@ -1,0 +1,262 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import FramingDesigner from "../../../components/calculators/FramingDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/framing-designer/";
+const title = "Free Interactive 2D Wall Framing & Cut-List Designer";
+const description = "Use our interactive 2D wall framing designer and stud layout planner. Place doors and windows on an SVG elevation canvas, verify IRC code violations, and get a printable wood miter cut list.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Framing Designer", path: PAGE_PATH },
+  ]),
+  mathSolverSchema({
+    name: "Interactive Wall Framing Stud Placement Equation",
+    description: "Calculate king studs, jack studs, header size requirements, and O.C. spacings dynamically with doors and window obstacles.",
+    formula: "Studs = (Length / Spacing) + 1; Plus side framing (1 King + 1/2 Jacks per opening); Plus cripples above/below openings",
+    url: canonical,
+  }),
+  faqPageSchema([
+    {
+      q: "What is the difference between a king stud and a jack stud?",
+      a: "A king stud runs full-height from the bottom plate to the top plate and is nailed to the jack stud. A jack stud (or trimmer stud) is cut shorter to fit directly under and support the weight of the header. The jack and king stud calculator works together to frame opening borders."
+    },
+    {
+      q: "How does this wall framing layout tool handle windows and doors?",
+      a: "When you place a window or door opening on the wall canvas, the engine automatically splits intersecting studs into top and bottom cripples. It then inserts the required jack studs and king studs on the left and right boundaries and places a solid structural double-header over the opening."
+    },
+    {
+      q: "When should I use double jack studs for an opening?",
+      a: "According to general building code guidelines, openings wider than 72 inches (6 feet) require double jack studs on each side to properly distribute the downward header load to the sole plate. Our framing planner automatically detects this and adds double jack studs for wide openings."
+    },
+    {
+      q: "What header size do I need for a load bearing wall framing planner?",
+      a: "Header size depends on the span (opening width) and load conditions. In typical residential structures, double 2x6 headers are used for spans up to 3 feet, double 2x8 for spans up to 4.5 feet, double 2x10 for spans up to 6 feet, and double 2x12 for spans up to 8 feet. Always verify spans with local code charts."
+    },
+    {
+      q: "How does a stud spacing calculator with windows calculate cripple studs?",
+      a: "A stud spacing calculator with windows aligns cripple studs with the existing 16\" or 24\" on-center layout. Rather than shifting layout spacing, vertical cripples are placed above headers and below window sill plates so that exterior siding and interior drywall panels still line up with solid wood."
+    },
+    {
+      q: "How to frame a wall with a door using standard spacing?",
+      a: "To frame a wall with a door, maintain the standard 16\" O.C. stud grid across the entire wall. At the door location, add full-height king studs and jack studs cut to the height of the door header. The bottom plate (sole plate) is nailed down during framing and later cut out inside the door rough opening."
+    },
+    {
+      q: "Do I need a double top plate for interior partition walls?",
+      a: "Yes, double top plates are standard for load-bearing walls and exterior walls to tie intersecting walls together and distribute joist weight. Non-load-bearing interior partition walls can sometimes utilize a single top plate if joists align directly over studs, but double plates remain standard practice."
+    },
+    {
+      q: "Can I print the framing cut list for on-site construction?",
+      a: "Yes. The simulator features a print button that generates a clean, styled 'Miter Station Cut List' containing the exact dimensions of every stud piece, jack, header, sill, and plate. Print this blueprint to follow on-site while cutting lumber."
+    }
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Framing Designer</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        Interactive 2D Wall Framing & Cut-List Designer
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Design your wall framing layout, place door and window openings, and generate an exact, piece-by-piece cut list for your building project. This interactive <a href="/calculators/framing-designer/" class="font-semibold text-[var(--accent)] hover:underline">wall framing layout tool</a> models king studs, jack studs, headers, and cripple placements dynamically on a live 2D SVG canvas.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-framing-designer-top" />
+
+    <!-- Interactive React Component -->
+    <section>
+      <FramingDesigner client:visible />
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula={"Full Studs = Count of O.C. studs outside openings + 2 Kings per opening; Jack Studs = 2 Trimmers per opening (4 if span > 72\"); Header Length = Opening Width + Side Jack Widths"}
+      assumptions={[
+        "Bottom Sole Plate: runs full length (cut out at door thresholds after assembly).",
+        "Double Top Plate: two rows of plates running full length to distribute structural loads.",
+        "Pre-cut stud length is calculated as Wall Height minus 4.5 inches (the combined thickness of 3 plates).",
+        "Rough Opening offsets assume standard trimmers (1.5 inch thickness each).",
+        "Waste margin: default 10% added to linear lumber calculations to account for saw kerfs, defects, and cutoffs."
+      ]}
+    />
+
+    <!-- Informative Article Content (SEO/E-E-A-T) -->
+    <section class="prose max-w-none text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed flex flex-col gap-6 border-t border-[var(--border)] pt-8">
+      <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-inset)]/50 no-print">
+        <div class="flex-1">
+          <span class="block text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider mb-1">Calculation Integrity</span>
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-0.5">Verified Estimation Methodology</span>
+          <span class="block text-xs text-[var(--fg-secondary)] leading-normal">
+            This designer runs on open geometric equations, code-compliant spacing rules, and standard nominal lumber dimensions. Inspect formulas in our <a href="/methodology/" class="font-medium text-[var(--accent)] hover:underline">Estimation Methodology guide</a>.
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-3 items-center sm:border-l sm:border-[var(--border)] sm:pl-4 text-[10px] text-[var(--fg-secondary)] font-medium">
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Open Formulas</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> IRC Compliance</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Localized Auto-Save</span>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">Understanding the Components of Wall Framing</h2>
+        <p class="text-pretty mb-4">
+          Framing a structural wall involves more than just laying out studs at fixed intervals. When you incorporate doors or windows, the load path from the roof and ceiling must be routed around the opening. This requires a dedicated framing system consisting of headers, king studs, and jack studs:
+        </p>
+        <ul class="list-disc pl-5 flex flex-col gap-2.5 mb-4">
+          <li>
+            <strong>King Studs:</strong> Full-length vertical studs that run from the bottom sole plate to the top plate. They are placed directly next to the opening and provide lateral stability.
+          </li>
+          <li>
+            <strong>Jack Studs (Trimmers):</strong> Shorter studs nailed directly to the king studs. They support the bottom of the header, transferring the vertical weight from above safely down to the foundation. Our <span class="font-semibold text-[var(--fg)]">jack and king stud calculator</span> ensures the appropriate count of both are placed around doors and windows.
+          </li>
+          <li>
+            <strong>Headers:</strong> Heavy horizontal beams spanning the top of the opening to bridge the load across the jacks. Choosing the correct size in a <span class="font-semibold text-[var(--fg)]">load bearing wall framing planner</span> is critical to prevent sag or structural failure.
+          </li>
+        </ul>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">How to Frame a Wall with a Door or Window</h2>
+        <p class="text-pretty mb-4">
+          Learning <a href="/calculators/framing/" class="text-[var(--accent)] hover:underline">how to frame a wall with a door</a> or window requires keeping your layout consistent so that insulation and sheathing panels align. Here is the step-by-step workflow:
+        </p>
+        <ol class="list-decimal pl-5 flex flex-col gap-2.5">
+          <li>
+            <strong>Establish the Layout:</strong> Use a tape measure to mark your 16-inch or 24-inch on-center layout on the top and bottom plates. Keep this grid fixed.
+          </li>
+          <li>
+            <strong>Mark the Openings:</strong> Mark the center point of your doors and windows, then draw the rough opening dimensions outwards.
+          </li>
+          <li>
+            <strong>Insert King and Jack Studs:</strong> Position king studs and jack studs on the boundaries of the rough opening. Note that jack studs sit inside the king studs, narrowing the opening to its exact rough size.
+          </li>
+          <li>
+            <strong>Calculate Cripple Spacings:</strong> Use a <span class="font-semibold text-[var(--fg)]">stud spacing calculator with windows</span> to determine where the layout studs would have run. Place cripples in these locations above the header and below the window sill.
+          </li>
+        </ol>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6 no-print">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-4">Wall Framing & Spacing FAQ</h2>
+        <div class="flex flex-col gap-4">
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What is the difference between a king stud and a jack stud?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              A king stud runs full-height from the bottom plate to the top plate and is nailed to the jack stud. A jack stud (or trimmer stud) is cut shorter to fit directly under and support the weight of the header. The jack and king stud calculator works together to frame opening borders.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How does this wall framing layout tool handle windows and doors?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              When you place a window or door opening on the wall canvas, the engine automatically splits intersecting studs into top and bottom cripples. It then inserts the required jack studs and king studs on the left and right boundaries and places a solid structural double-header over the opening.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>When should I use double jack studs for an opening?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              According to general building code guidelines, openings wider than 72 inches (6 feet) require double jack studs on each side to properly distribute the downward header load to the sole plate. Our framing planner automatically detects this and adds double jack studs for wide openings.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What header size do I need for a load bearing wall framing planner?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Header size depends on the span (opening width) and load conditions. In typical residential structures, double 2x6 headers are used for spans up to 3 feet, double 2x8 for spans up to 4.5 feet, double 2x10 for spans up to 6 feet, and double 2x12 for spans up to 8 feet. Always verify spans with local code charts.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How does a stud spacing calculator with windows calculate cripple studs?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              A stud spacing calculator with windows aligns cripple studs with the existing 16\" or 24\" on-center layout. Rather than shifting layout spacing, vertical cripples are placed above headers and below window sill plates so that exterior siding and interior drywall panels still line up with solid wood.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How to frame a wall with a door using standard spacing?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              To frame a wall with a door, maintain the standard 16\" O.C. stud grid across the entire wall. At the door location, add full-height king studs and jack studs cut to the height of the door header. The bottom plate (sole plate) is nailed down during framing and later cut out inside the door rough opening.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Do I need a double top plate for interior partition walls?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes, double top plates are standard for load-bearing walls and exterior walls to tie intersecting walls together and distribute joist weight. Non-load-bearing interior partition walls can sometimes utilize a single top plate if joists align directly over studs, but double plates remain standard practice.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Can I print the framing cut list for on-site construction?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Yes. The simulator features a print button that generates a clean, styled 'Miter Station Cut List' containing the exact dimensions of every stud piece, jack, header, sill, and plate. Print this blueprint to follow on-site while cutting lumber.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Calculators Routing -->
+    <section class="no-print">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-3">Next Recommended Planners</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/calculators/closet-designer/" class="p-3 border border-[var(--border)] rounded-xl bg-[var(--card-bg)] hover:border-[var(--accent)] transition-all">
+          <span class="block text-xs font-bold text-[var(--fg)] mb-1">Closet Designer</span>
+          <span class="block text-[10px] text-[var(--fg-secondary)] leading-normal">Layout custom rods, shelving brackets, and vertical drawer towers.</span>
+        </a>
+        <a href="/calculators/wainscoting-designer/" class="p-3 border border-[var(--border)] rounded-xl bg-[var(--card-bg)] hover:border-[var(--accent)] transition-all">
+          <span class="block text-xs font-bold text-[var(--fg)] mb-1">Wainscoting Designer</span>
+          <span class="block text-[10px] text-[var(--fg-secondary)] leading-normal">Plan panels, shaker board widths, and batten layouts.</span>
+        </a>
+        <a href="/calculators/payload/" class="p-3 border border-[var(--border)] rounded-xl bg-[var(--card-bg)] hover:border-[var(--accent)] transition-all">
+          <span class="block text-xs font-bold text-[var(--fg)] mb-1">Payload Safety Calculator</span>
+          <span class="block text-[10px] text-[var(--fg-secondary)] leading-normal">Verify total framing lumber weight against vehicle suspension thresholds.</span>
+        </a>
+      </div>
+    </section>
+  </article>
+</Layout>

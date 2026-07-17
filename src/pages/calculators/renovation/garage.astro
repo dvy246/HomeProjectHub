@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import GarageRemodelCalc from "../../../components/calculators/renovation/GarageRemodelCalc";
-import { graphSchema, webPageSchema, faqPageSchema } from "../../../lib/schema";
+import { graphSchema, webPageSchema, faqPageSchema, webApplicationSchema, mathSolverSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const title = "Garage Remodel Cost Calculator";
 const description = "Free garage remodel cost calculator. Estimate industrial epoxy floor coatings, insulated steel overhead doors, shelving racks, and contractor labor.";
@@ -23,14 +23,36 @@ const faqItems = [
   }
 ];
 
-const schema = graphSchema([
-  webPageSchema({
-    url: canonical,
-    topicName: title,
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Renovation", path: "/calculators/renovation/" },
+    { name: "Garage Remodel", path: "/calculators/renovation/garage/" },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Garage Remodel Cost Estimator Formula",
     description,
+    formula: "Total Garage Remodel Cost = Epoxy Floor Cost + Overhead Doors Cost + Storage Systems Cost + Labor Fee + Contingency Buffer",
+    url: canonical,
   }),
+  howToSchema(title, description, [
+    {
+      name: "Measure garage dimensions",
+      text: "Determine length and width of your garage to estimate epoxy square footage and wall shelf sizing.",
+    },
+    {
+      name: "Choose overhead doors and finishes",
+      text: "Select number and insulation ratings of garage doors, cabinet packages, and floor coat styles.",
+    },
+    {
+      name: "Input labor and budget parameters",
+      text: "Adjust labor fees based on contractor vs DIY installs, and apply contingency budgets.",
+    },
+  ]),
   faqPageSchema(faqItems)
-]);
+);
 ---
 
 <Layout title={title} description={description} canonical={canonical} schema={schema}>
@@ -50,7 +72,7 @@ const schema = graphSchema([
     </header>
 
     <main id="main-content" class="mb-12">
-      <GarageRemodelCalc client:load />
+      <GarageRemodelCalc client:visible />
     </main>
 
     {/* SEO Rich Editorial Guide Content */}

@@ -27,7 +27,7 @@ const schema = graphSchema(
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Home Maintenance Calendar</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">View all maintenance tasks organized by month. Click a month to see details, check off completed tasks, and track your progress.</p>
 
-    <MaintenanceCalendar client:load />
+    <MaintenanceCalendar client:visible />
 
     <div class="flex gap-4 text-sm">
       <a href="/maintenance/planner/" class="text-[var(--accent)] hover:underline font-semibold">Use the interactive planner →</a>

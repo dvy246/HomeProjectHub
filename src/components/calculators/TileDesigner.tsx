@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { calculateTileMaterials, type TileDimensions } from "../../lib/tileEngine";
 import { Card } from "../ui/Card";
+import CostEstimatorWidget, { type CostItem } from "../ui/CostEstimatorWidget";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 
@@ -9,15 +11,16 @@ type PatternId = "straight" | "brick" | "herringbone" | "french";
 
 function TileDesigner() {
   const { t } = useI18n();
+  const [shareSuccess, setShareSuccess] = useState(false);
 
   // State parameters
-  const [widthFt, setWidthFt] = useState<number>(10);
-  const [heightFt, setHeightFt] = useState<number>(10);
-  const [tilePreset, setTilePreset] = useState<TilePresetId>("12x24");
-  const [groutWidthIn, setGroutWidthIn] = useState<number>(0.125); // 1/8"
-  const [pattern, setPattern] = useState<PatternId>("brick");
-  const [orientation, setOrientation] = useState<"horizontal" | "vertical">("horizontal");
-  const [tileThicknessIn, setTileThicknessIn] = useState<number>(0.375); // 3/8"
+  const [widthFt, setWidthFt] = useState<number>(() => getUrlParam("wid", 10));
+  const [heightFt, setHeightFt] = useState<number>(() => getUrlParam("hgt", 10));
+  const [tilePreset, setTilePreset] = useState<TilePresetId>(() => getUrlParam("pr", "12x24") as TilePresetId);
+  const [groutWidthIn, setGroutWidthIn] = useState<number>(() => getUrlParam("gw", 0.125));
+  const [pattern, setPattern] = useState<PatternId>(() => getUrlParam("pat", "brick") as PatternId);
+  const [orientation, setOrientation] = useState<"horizontal" | "vertical">(() => getUrlParam("ori", "horizontal") as "horizontal" | "vertical");
+  const [tileThicknessIn, setTileThicknessIn] = useState<number>(() => getUrlParam("thk", 0.375));
 
   // Preset measurements
   const presets: Record<TilePresetId, { w: number; h: number; label: string }> = {
@@ -33,6 +36,14 @@ function TileDesigner() {
   const rawH = presets[tilePreset].h;
   const tileWidthIn = orientation === "horizontal" ? rawH : rawW;
   const tileHeightIn = orientation === "horizontal" ? rawW : rawH;
+
+  // Sync state parameters to URL query parameters for shareable layout links
+  useEffect(() => {
+    setUrlParams(
+      { wid: widthFt, hgt: heightFt, pr: tilePreset, gw: groutWidthIn, pat: pattern, ori: orientation, thk: tileThicknessIn },
+      { wid: 10, hgt: 10, pr: "12x24", gw: 0.125, pat: "brick", ori: "horizontal", thk: 0.375 }
+    );
+  }, [widthFt, heightFt, tilePreset, groutWidthIn, pattern, orientation, tileThicknessIn]);
 
   // Calculate calculations
   const dims: TileDimensions = {
@@ -163,7 +174,7 @@ function TileDesigner() {
 
           {/* SVG Frame Canvas */}
           <div className="bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg w-full flex justify-center py-6 overflow-hidden">
-            <svg width={canvasWidth} height={canvasHeight} className="overflow-visible" role="img" aria-label="Tile Pattern Visualizer Grid">
+            <svg viewBox={`0 0 ${canvasWidth} ${canvasHeight}`} className="w-full h-auto max-w-[360px] overflow-visible" role="img" aria-label="Tile Pattern Visualizer Grid">
               <defs>
                 {/* Clip path to match exact room bounds */}
                 <clipPath id="room-bounds">
@@ -189,7 +200,7 @@ function TileDesigner() {
                 <g transform={`translate(0, ${roomSvgHeight + 15})`}>
                   <line x1="0" y1="0" x2={roomSvgWidth} y2="0" stroke="var(--accent)" strokeWidth="1" />
                   <polygon points={`0,0 5,-3 5,3`} fill="var(--accent)" />
-                  <polygon points={`${roomSvgWidth},0 ${roomSvgWidth - 5},-3 ${roomSvgWidth - 5,3}`} fill="var(--accent)" />
+                  <polygon points={`${roomSvgWidth},0 ${roomSvgWidth - 5},-3 ${roomSvgWidth - 5},3`} fill="var(--accent)" />
                   <rect x={(roomSvgWidth / 2) - 15} y="-8" width="30" height="15" fill="var(--bg-inset)" />
                   <text x={roomSvgWidth / 2} y="3" fill="var(--accent)" fontSize="9" fontWeight="bold" textAnchor="middle">
                     {widthFt}&prime;
@@ -364,7 +375,14 @@ function TileDesigner() {
                   min="0.125"
                   max="0.75"
                   value={tileThicknessIn}
-                  onChange={(e) => setTileThicknessIn(parseFloat(e.target.value) || 0.375)}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    setTileThicknessIn(isNaN(val) ? 0 : val);
+                  }}
+                  onBlur={(e) => {
+                    const val = parseFloat(e.target.value);
+                    setTileThicknessIn(isNaN(val) ? 0.375 : Math.max(0.125, Math.min(0.75, val)));
+                  }}
                   className="w-full text-xs bg-[var(--bg)] border border-[var(--border)] rounded-lg p-2 font-medium"
                 />
               </div>
@@ -378,12 +396,29 @@ function TileDesigner() {
         <Card className="p-6 flex flex-col gap-5">
           <div className="border-b border-[var(--border)] pb-4 flex justify-between items-center">
             <h3 className="text-sm font-bold text-[var(--fg)]">Live Material List</h3>
-            <button
-              onClick={() => window.print()}
-              className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer no-print"
-            >
-              Print Blueprint
-            </button>
+            <div className="flex gap-2 items-center no-print">
+              <button
+                onClick={() => window.print()}
+                className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer"
+              >
+                Print Blueprint
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  copyShareUrl().then((ok) => {
+                    if (ok) {
+                      setShareSuccess(true);
+                      setTimeout(() => setShareSuccess(false), 2000);
+                    }
+                  });
+                }}
+                className="text-[10px] bg-[var(--bg-subtle)] hover:bg-[var(--bg-muted)] border border-[var(--border-strong)] text-[var(--fg)] font-bold px-2.5 py-1 rounded transition-all cursor-pointer"
+                aria-label="Copy shareable link"
+              >
+                {shareSuccess ? "Copied!" : "Share"}
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3 text-xs leading-relaxed">
@@ -433,6 +468,34 @@ function TileDesigner() {
               <span className="text-sm font-black text-[var(--accent)] tabular-nums">{materials.totalWeightLbs.toLocaleString()} lbs</span>
             </div>
           </div>
+
+          {/* Cost Estimator Widget */}
+          <CostEstimatorWidget
+            items={[
+              {
+                key: "tile_sqft",
+                name: "Floor / Wall Tiles",
+                quantity: materials.areaSqFt,
+                unit: "sq ft",
+                defaultPrice: 3.50,
+              },
+              {
+                key: "tile_mortar_sqft",
+                name: "Thinset Mortar / Adhesive",
+                quantity: materials.areaSqFt,
+                unit: "sq ft",
+                defaultPrice: 0.85,
+              },
+              {
+                key: "tile_grout_sqft",
+                name: "Grout",
+                quantity: materials.areaSqFt,
+                unit: "sq ft",
+                defaultPrice: 0.45,
+              },
+            ] satisfies CostItem[]}
+            defaultLaborHours={Math.max(4, Math.round(materials.areaSqFt / 15))}
+          />
 
           {/* Payload Redirect Hook */}
           <a

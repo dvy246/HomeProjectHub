@@ -19,7 +19,7 @@ const schema = graphSchema(
 );
 ---
 
-<Layout title={title} description={description} schema={schema}>
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
   <article class="max-w-4xl mx-auto flex flex-col gap-6">
     <header class="mb-2">
       <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
@@ -42,7 +42,7 @@ const schema = graphSchema(
 
     <!-- Interactive Grid -->
     <section class="my-4">
-      <CompareMaterials client:load />
+      <CompareMaterials client:visible />
     </section>
 
     <!-- Editorial Comparison Details -->

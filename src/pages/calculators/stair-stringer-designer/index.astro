@@ -1,0 +1,262 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import StairStringerDesigner from "../../../components/calculators/StairStringerDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/stair-stringer-designer/";
+const title = "Free Stair Stringer Calculator & Layout Planner | 2x12 Cut Blueprint";
+const description = "Design safe, code-compliant stair stringers. Calculate rise and run, optimal step counts, and download a printable layout plan with framing square guides.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Stair Stringer Designer", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Comfort Stair Spacing & Stringer Pythagoras Equation",
+    description: "Determine comfort step count, unit riser comfort height, and required raw stringer stock length using total stair rise.",
+    formula: "Riser Height = Total Rise / Stair Count; Comfort Coefficient = 2 * Riser Height + Tread Run; Stringer Length = Sqrt(Rise^2 + Run^2)",
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    { name: "Measure total rise", text: "Measure the exact vertical distance from the lower finished floor to the upper finished landing." },
+    { name: "Calculate riser height", text: "Divide total rise by recommended stair counts to get an individual rise between 7\" and 7.75\"." },
+    { name: "Adjust bottom riser height", text: "Subtract the thickness of your wood tread from the bottom-most riser height before cutting." },
+    { name: "Mark and cut stringer", text: "Align a framing square's rise and run dimensions on a 2x12 timber board to draw layout cutting lines." },
+  ]),
+  faqPageSchema([
+    {
+      q: "How do I calculate the rise and run of a stair stringer?",
+      a: "Measure the total vertical rise. Divide the rise by 7.5 to get the optimal number of steps. Divide the total rise by this number to get the exact riser height. The tread run is typically set to 10 or 10.5 inches."
+    },
+    {
+      q: "What is the maximum rise height allowed by building codes?",
+      a: "Under section R311.7 of the International Residential Code (IRC), the maximum rise height of an individual step is 7.75 inches (7 3/4 inches) in residential construction."
+    },
+    {
+      q: "Why do I need to subtract the tread thickness from the bottom riser?",
+      a: "To keep all steps at an identical height. Because the first step rests on the floor, adding a 1-inch tread makes that step 1 inch higher than planned. Subtracting the tread thickness from the bottom stringer cut restores consistency."
+    },
+    {
+      q: "What size lumber is best for cutting stair stringers?",
+      a: "Stair stringers must be cut from 2x12 lumber. Standard 2x10 wood is not wide enough because after cutting out the steps, the remaining uncut solid wood (the throat) would be too narrow and structurally weak."
+    },
+    {
+      q: "What is the comfortable stair slope angle?",
+      a: "The most comfortable and safe staircase slope angle lies between 30° and 38°. Angles above 50° are too steep (essentially ladders), while angles below 20° are too flat."
+    },
+    {
+      q: "How many stringers do I need for my staircase?",
+      a: "For standard residential stairs with 1-inch wood treads, stringers should be spaced no more than 16 inches on center. A standard 36-inch wide staircase requires at least 3 stringers."
+    },
+    {
+      q: "How do I use a framing square to mark a stair stringer?",
+      a: "Attach stair gauges to your framing square at your rise dimension on the tongue and run dimension on the blade. Place the square on the 2x12 board edge and trace the corner. Slide the square along the edge to mark consecutive steps."
+    },
+    {
+      q: "How does the Comfort comfort score (2R + T) work?",
+      a: "The Blondel formula states that two risers (2R) plus one tread run (T) should equal between 24 and 25 inches for a natural, comfortable walking stride. If the score is outside this range, the stairs will feel awkward."
+    }
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Stair Stringer Designer</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        Free Stair Stringer Calculator &amp; Layout Planner
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Design safe, building code-compliant stairs. Use our interactive <a href="/calculators/stair-stringer-designer/" class="font-semibold text-[var(--accent)] hover:underline">stair stringer layout planner</a> to calculate optimal rise/run spacing, visualize framing square alignment on 2x12 lumber, and print a custom step cutting blueprint.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotId="ad-stair-top" />
+
+    <!-- Interactive React Component -->
+    <section>
+      <StairStringerDesigner client:visible />
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula="Optimal Stair Count = Round(Total Rise / 7.5); Riser Spacing Height = Total Rise / Stair Count; Bottom Step Cut Height = Riser Spacing - Tread Thickness; Raw Stringer Board Length = Sqrt((Stair Count - 1)^2 * Run^2 + Total Rise^2) + Margin"
+      assumptions={[
+        "Calculations assume standard residential construction. Confirm local variances with inspectors.",
+        "Bottom riser deduction is critical to maintain identical riser heights when installing tread boards.",
+        "Recommended stringer lumber board stock length includes a 12-inch margin for top and bottom level attachments.",
+        "Maximum recommended residential riser height is 7.75 inches under IRC R311.7 code guidelines.",
+        "All layout estimates are subject to our engineering disclaimer. Read the full disclaimer at /disclaimer/."
+      ]}
+    />
+
+    <!-- Informative Article Content (SEO/Methodology Values) -->
+    <section class="prose max-w-none text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed flex flex-col gap-6 border-t border-[var(--border)] pt-8">
+      
+      <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-inset)]/50 no-print">
+        <div class="flex-1">
+          <span class="block text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider mb-1">Calculation Integrity</span>
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-0.5">Verified Estimation Methodology</span>
+          <span class="block text-xs text-[var(--fg-secondary)] leading-normal">
+            This designer runs on open comfort equations, IRC section R311.7 building code rules, and standard nominal lumber widths. Inspect formulas in our <a href="/methodology/" class="font-medium text-[var(--accent)] hover:underline">Estimation Methodology guide</a> or read our <a href="/disclaimer/" class="font-medium text-[var(--accent)] hover:underline">full disclaimer</a>.
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-3 items-center sm:border-l sm:border-[var(--border)] sm:pl-4 text-[10px] text-[var(--fg-secondary)] font-medium">
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> IRC Compliance</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Comfort Scoring</span>
+          <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Local Storage</span>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">Understanding Stair Stringer Geometry</h2>
+        <p class="text-pretty mb-4">
+          Cutting a stair stringer is often considered one of the most challenging layout tasks in residential carpentry. A minor calculation error can lead to uneven riser heights, which are a major tripping hazard and will fail building inspections. 
+        </p>
+        <h3 class="text-base font-semibold text-[var(--fg)] mb-2">The Critical Bottom Step Adjustment</h3>
+        <p class="text-pretty mb-4">
+          The most common mistake made by DIYers when cutting stringers is neglecting to adjust the height of the bottom-most step. Since the tread board adds thickness to each step surface, the bottom riser height must be shortened by the exact thickness of the tread material.
+        </p>
+        <p class="text-pretty mb-4">
+          For example, if your calculated riser height is 7.5 inches and your tread lumber is 1 inch thick:
+        </p>
+        <ul class="list-disc pl-5 flex flex-col gap-2 mb-4">
+          <li>
+            <strong>First Step (Bottom):</strong> Cut the stringer riser to 6.5 inches. Once the 1-inch tread is placed on top, the height from the floor to the top of the tread will be exactly 7.5 inches.
+          </li>
+          <li>
+            <strong>Intermediate Steps:</strong> Cut all other risers to 7.5 inches. Since each step has a tread on the bottom and a tread on the top, the relative step height remains exactly 7.5 inches.
+          </li>
+        </ul>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">How to Lay Out a Stringer Board with a Framing Square</h2>
+        <p class="text-pretty mb-4">
+          Using a standard carpenter's framing square is the most efficient way to transfer your calculated stair dimensions onto a 2x12 timber board:
+        </p>
+        <ol class="list-decimal pl-5 flex flex-col gap-2.5 mb-4">
+          <li>
+            Identify the tongue (narrow limb) and blade (wide limb) of your steel square.
+          </li>
+          <li>
+            Locate your riser height on the outer scale of the tongue and your tread run dimension on the outer scale of the blade.
+          </li>
+          <li>
+            Place the square on the lumber so that these two marks align exactly with the top edge of the board.
+          </li>
+          <li>
+            Trace the L-shape corner with a pencil to mark the step cut.
+          </li>
+          <li>
+            Slide the square down the board, aligning the run mark with the end of your previous trace, and repeat.
+          </li>
+        </ol>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6 no-print">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-4">Stair Stringer FAQ</h2>
+        <div class="flex flex-col gap-4">
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How do I calculate the rise and run of a stair stringer?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Measure the total vertical rise. Divide the rise by 7.5 to get the optimal number of steps. Divide the total rise by this number to get the exact riser height. The tread run is typically set to 10 or 10.5 inches.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What is the maximum rise height allowed by building codes?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Under section R311.7 of the International Residential Code (IRC), the maximum rise height of an individual step is 7.75 inches (7 3/4 inches) in residential construction.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>Why do I need to subtract the tread thickness from the bottom riser?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              To keep all steps at an identical height. Because the first step rests on the floor, adding a 1-inch tread makes that step 1 inch higher than planned. Subtracting the tread thickness from the bottom stringer cut restores consistency.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What size lumber is best for cutting stair stringers?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Stair stringers must be cut from 2x12 lumber. Standard 2x10 wood is not wide enough because after cutting out the steps, the remaining uncut solid wood (the throat) would be too narrow and structurally weak.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>What is the comfortable stair slope angle?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              The most comfortable and safe staircase slope angle lies between 30° and 38°. Angles above 50° are too steep (essentially ladders), while angles below 20° are too flat.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How many stringers do I need for my staircase?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              For standard residential stairs with 1-inch wood treads, stringers should be spaced no more than 16 inches on center. A standard 36-inch wide staircase requires at least 3 stringers.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How do I use a framing square to mark a stair stringer?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              Attach stair gauges to your framing square at your rise dimension on the tongue and run dimension on the blade. Place the square on the 2x12 board edge and trace the corner. Slide the square along the edge to mark consecutive steps.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-3.5 bg-[var(--bg-subtle)] cursor-pointer">
+            <summary class="flex justify-between items-center text-xs sm:text-sm font-semibold text-[var(--fg)] list-none">
+              <span>How does the Comfort comfort score (2R + T) work?</span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <p class="text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed mt-2.5 text-pretty">
+              The Blondel formula states that two risers (2R) plus one tread run (T) should equal between 24 and 25 inches for a natural, comfortable walking stride. If the score is outside this range, the stairs will feel awkward.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Planners Routing -->
+    <RelatedCalculators slug="stair-stringer-designer" />
+  </article>
+</Layout>

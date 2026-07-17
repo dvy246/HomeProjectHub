@@ -9,7 +9,7 @@ describe("logisticsEngine tests", () => {
     expect(res.readyMix.totalCost).toBe(155 + 100 + 120); // 375
     // Bagged has 45 bags
     expect(res.bagged.bagsNeeded).toBe(45);
-    expect(res.bagged.totalCost).toBe(45 * 6.50); // 293
+    expect(res.bagged.totalCost).toBe(293); // Math.ceil(45 * 6.50)
     // Hauling: 45 bags * 80 lbs = 3600 lbs. Payload 1500 -> 3 trips.
     expect(res.bagged.tripsCount).toBe(3);
     // Storage: 45 bags / 42 bags/pallet = 2 pallets (rounded up)

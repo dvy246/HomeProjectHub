@@ -26,16 +26,36 @@ const schema = graphSchema(
   faqPageSchema([
     {
       q: "Do I need a building permit to build a deck?",
-      a: "Yes, in most jurisdictions, a building permit is required if the deck is more than 30 inches above adjacent grade, attached to the house, or has a total area exceeding 200 square feet. Always check with your local municipal building department before starting.",
+      a: "Yes, in most jurisdictions, a building permit is required if the deck is more than 30 inches above adjacent grade, attached to the house, or has a total area exceeding 200 square feet. Always check with your local municipal building department before starting."
     },
     {
       q: "What is the standard joist spacing for wood vs. composite decks?",
-      a: "Standard pressure-treated wood decks typically use 16-inch on-center joist spacing. Composite decking is more flexible and often requires tighter 12-inch on-center joist spacing to prevent sagging, especially if laid diagonally at 45 degrees.",
+      a: "Standard pressure-treated wood decks typically use 16-inch on-center joist spacing. Composite decking is more flexible and often requires tighter 12-inch on-center joist spacing to prevent sagging, especially if laid diagonally at 45 degrees."
     },
     {
       q: "How far can a double 2x10 deck beam span between posts?",
-      a: "Under typical IRC Section R507 loading rules, a doubled 2x10 wood beam can safely span 6 to 8 feet between support posts depending on the species (Southern Pine can span further than Douglas Fir or Spruce-Pine-Fir).",
+      a: "Under typical IRC Section R507 loading rules, a doubled 2x10 wood beam can safely span 6 to 8 feet between support posts depending on the species (Southern Pine can span further than Douglas Fir or Spruce-Pine-Fir)."
     },
+    {
+      q: "How deep should deck post footings be buried?",
+      a: "Deck post footings must extend below your local climate's frost line to prevent frost heave from shifting the deck. The standard minimum depth is 12 inches below the frost line, which typically translates to 36 to 48 inches deep in colder climates."
+    },
+    {
+      q: "What is a deck ledger board, and does it need posts?",
+      a: "A ledger board is a horizontal timber that fastens the deck structure directly to the band joist of your house. When a ledger is properly bolted to the house, that side of the deck is self-supporting and does not require vertical posts or footings."
+    },
+    {
+      q: "Should I use nails or screws for deck framing?",
+      a: "Use structural screws or hot-dipped galvanized nails for joist hangers and framing connectors because they have high shear strength. For fastening decking boards to joists, use premium 2.5-inch or 3-inch deck screws, which resist backing out over time."
+    },
+    {
+      q: "What is the difference between beams and joists?",
+      a: "Beams are heavy horizontal timbers supported directly by vertical posts. Joists are smaller parallel boards (usually 2x8s or 2x10s) that sit on top of or flush with the beams to support the decking boards."
+    },
+    {
+      q: "How do I calculate the weight of deck materials for transport?",
+      a: "Green pressure-treated wood is very heavy due to moisture retention. A standard 2x10 board weighs about 3.5 pounds per linear foot. A deck pier footing uses about 2 to 3 bags of 80lb concrete. Use the Payload Safety Calculator to ensure your vehicle payload can handle the cargo."
+    }
   ], canonical)
 );
 ---
@@ -63,7 +83,7 @@ const schema = graphSchema(
 
     <!-- Interactive Deck Visualizer Canvas -->
     <section>
-      <DeckDesigner client:load />
+      <DeckDesigner client:visible />
     </section>
 
     <!-- Estimate Methodology -->
@@ -77,6 +97,127 @@ const schema = graphSchema(
         "Wet-treated wood densities: 2x10 = 3.0 lbs/ft, 2x8 = 2.2 lbs/ft, 5/4x6 = 1.8 lbs/ft."
       ]}
     />
+
+    <!-- SEO-optimized Educational Guide Section -->
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6 border-t border-[var(--border)] pt-6 mt-4">
+      <h2 class="text-xl font-bold text-[var(--fg)]">Backyard Deck Layout & Design Guide</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <p>
+            Planning a new <strong>backyard deck layout</strong> is one of the most rewarding home improvement projects you can take on. Whether you are outlining a simple <strong>small deck layout</strong> or mapping out complex <strong>backyard deck layout deck designs</strong>, having a solid plan is essential. This interactive 2D <strong>deck layout tool</strong> serves as a comprehensive <strong>deck layout planner</strong> to visualize your framing, joist spacing, and footings in real-time, functioning as an intelligent <strong>deck layout calculator</strong>.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">Popular Deck Layout Ideas & Dimensions</h3>
+          <p>
+            Before you start building, explore various <strong>deck layout ideas</strong> to match your yard size. Common footprints include the standard <strong>10x10 deck layout</strong> or <strong>12x12 deck layout</strong> for compact spaces. If you have more room, a mid-sized <strong>12x16 deck layout</strong> or a spacious <strong>12x20 deck layout</strong> provides ample room for seating and dining. For larger properties, building a <strong>16x20 deck layout</strong>, a <strong>16x16 deck layout</strong>, or a massive <strong>20x20 deck layout</strong> allows for multiple zones, such as an outdoor kitchen and a separate fire pit lounge area.
+          </p>
+        </div>
+
+        <div class="bg-[var(--bg-muted)] p-5 rounded-xl border border-[var(--border)] space-y-4 h-fit">
+          <h4 class="font-bold text-[var(--fg)] text-xs uppercase tracking-wider">Layout Configurations</h4>
+          <ul class="text-xs space-y-2 text-[var(--fg-secondary)] list-none pl-0">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Attached Deck:</strong> Bolted to the house framing with a structural ledger board.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Floating Deck Layout:</strong> Fully self-supporting, freestanding deck built close to grade level.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Pool Deck Layout:</strong> Built flush with the coping of an above-ground or in-ground pool.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Picture Frame Deck Layouts</h3>
+          <p>
+            To elevate your <strong>deck layout design</strong>, consider adding a perimeter border board, commonly called a <strong>picture frame deck layout</strong>. A picture frame covers the raw cut ends of your decking boards for a clean, professional finish. For high-end composite decks, a <strong>double picture frame deck layout</strong> is particularly popular, utilizing a darker accent color to outline the entire surface and act as a visual safety indicator along steps and edges.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Freestanding & Floating Deck Layout Deck Designs</h3>
+          <p>
+            If you want to build a deck without attaching it to your house foundation, a <strong>floating deck layout</strong> is the ideal choice. Freestanding structures do not require deep frost-protected footings in some local jurisdictions, making them a popular DIY project. However, they must be built on compacted gravel and concrete deck blocks to prevent uneven settling.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-4">
+      <h2 id="faq" class="text-xl font-bold mb-4 text-[var(--fg)]">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Do I need a building permit to build a deck?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Yes, in most jurisdictions, a building permit is required if the deck is more than 30 inches above adjacent grade, attached to the house, or has a total area exceeding 200 square feet. Always check with your local municipal building department before starting.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the standard joist spacing for wood vs. composite decks?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Standard pressure-treated wood decks typically use 16-inch on-center joist spacing. Composite decking is more flexible and often requires tighter 12-inch on-center joist spacing to prevent sagging, especially if laid diagonally at 45 degrees.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How far can a double 2x10 deck beam span between posts?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Under typical IRC Section R507 loading rules, a doubled 2x10 wood beam can safely span 6 to 8 feet between support posts depending on the species (Southern Pine can span further than Douglas Fir or Spruce-Pine-Fir).
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How deep should deck post footings be buried?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Deck post footings must extend below your local climate's frost line to prevent frost heave from shifting the deck. The standard minimum depth is 12 inches below the frost line, which typically translates to 36 to 48 inches deep in colder climates.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is a deck ledger board, and does it need posts?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A ledger board is a horizontal timber that fastens the deck structure directly to the band joist of your house. When a ledger is properly bolted to the house, that side of the deck is self-supporting and does not require vertical posts or footings.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Should I use nails or screws for deck framing?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Use structural screws or hot-dipped galvanized nails for joist hangers and framing connectors because they have high shear strength. For fastening decking boards to joists, use premium 2.5-inch or 3-inch deck screws, which resist backing out over time.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the difference between beams and joists?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Beams are heavy horizontal timbers supported directly by vertical posts. Joists are smaller parallel boards (usually 2x8s or 2x10s) that sit on top of or flush with the beams to support the decking boards.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How do I calculate the weight of deck materials for transport?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Green pressure-treated wood is very heavy due to moisture retention. A standard 2x10 board weighs about 3.5 pounds per linear foot. A deck pier footing uses about 2 to 3 bags of 80lb concrete. Use the Payload Safety Calculator to ensure your vehicle payload can handle the cargo.
+          </p>
+        </details>
+      </div>
+    </section>
 
     <!-- Bottom Ad Slot -->
     <AdSlot slotId="ad-deck-designer-bottom" />

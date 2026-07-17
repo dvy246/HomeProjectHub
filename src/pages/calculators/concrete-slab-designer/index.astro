@@ -1,0 +1,355 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ConcreteSlabDesigner from "../../../components/calculators/ConcreteSlabDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/concrete-slab-designer/";
+const title = "Concrete Slab & Patio Designer";
+const description = "Design your concrete slab or patio with our interactive designer. Plan rectangular, L-shaped, or circular slabs with rebar, wire mesh, control joints, vapor barrier, and sub-base. Get live SVG plans, material lists, and bag counts.";
+const formula = "Volume (cu yd) = Area (sq ft) × Thickness (ft) ÷ 27; Area = length × width (rect), πr² (circle), or subtracted rects (L-shape)";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Concrete Calculators", path: "/calculators/concrete/" },
+    { name: "Concrete Slab & Patio Designer", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Concrete Slab & Patio Design Formulas",
+    description,
+    formula,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Choose your slab shape",
+      text: "Select from rectangular, L-shaped, or circular slab geometries. Each shape adjusts the dimension inputs and SVG overhead view to match your project.",
+    },
+    {
+      name: "Enter dimensions and thickness",
+      text: "Set length, width, and thickness for rectangular slabs. L-shaped slabs add secondary dimensions for the notch. Circular slabs use diameter. Thickness ranges from 2 to 48 inches.",
+    },
+    {
+      name: "Configure construction layers",
+      text: "Choose sub-base material (gravel, crushed stone, or sand) and depth. Toggle vapor barrier. Select finish type: broom, smooth trowel, stamped, exposed aggregate, or integral color.",
+    },
+    {
+      name: "Add reinforcement",
+      text: "Choose no reinforcement, welded wire mesh, or rebar. For rebar, select bar size (#3, #4, or #5) and spacing (6 to 36 inches OC). The SVG canvas overlays the rebar grid and control joint lines.",
+    },
+    {
+      name: "Review results and material list",
+      text: "Get live volume in cubic yards, bag counts for all common bag sizes, sub-base tonnage, rebar quantities, and total weight. Print the plan or check payload capacity.",
+    },
+  ]),
+  faqPageSchema([
+    {
+      q: "How thick should a concrete slab be for a patio?",
+      a: "A standard residential patio slab should be 4 inches thick. For patios that will support heavy features like a fire pit, outdoor kitchen, or hot tub, increase thickness to 5 or 6 inches with rebar reinforcement. Walkways and light-use patios can use 4-inch slabs with wire mesh."
+    },
+    {
+      q: "What is the best sub-base material for a concrete slab?",
+      a: "Crushed stone (#57 stone) is the best sub-base for concrete slabs. It provides excellent drainage, resists settling, and creates a stable platform. Compact it in 4-inch lifts to 95% density. Pea gravel works for light-duty slabs, while compactable sand is suitable for temporary or very light loads."
+    },
+    {
+      q: "Should I use rebar or wire mesh for my slab?",
+      a: "Use rebar (#4 at 18 to 24 inches OC) for driveways, garage slabs, and any slab that will bear heavy loads or vehicle traffic. Wire mesh (6x6 W1.4/W1.4) is sufficient for light-duty slabs like walkways, patios, and shed bases. For heavy equipment pads or structural slabs, always use rebar with minimum 3-inch cover."
+    },
+    {
+      q: "How do control joints prevent cracking?",
+      a: "Control joints create weak planes that control where the slab cracks as it shrinks during curing. Space them at 8 to 12 feet apart for 4-inch slabs, or 2 to 3 times the slab thickness in inches. Joints should be cut to one-quarter of the slab depth within 4 to 12 hours after finishing."
+    },
+    {
+      q: "Do I need a vapor barrier under my concrete slab?",
+      a: "A vapor barrier (6-mil polyethylene) is recommended for interior slabs, garages, and any slab where moisture protection is critical. For exterior patios and walkways, a vapor barrier is optional — the sub-base drainage is more important. Overlap vapor barrier sheets by 6 inches and seal seams with tape."
+    },
+    {
+      q: "What is the best finish for a concrete patio?",
+      a: "Broom finish is the most popular for patios — it provides slip resistance and a clean texture. Smooth trowel finish works for modern designs but becomes slippery when wet. Stamped concrete costs 30 to 50 percent more but mimics stone, brick, or tile patterns. Exposed aggregate offers excellent traction and a decorative pebble surface."
+    },
+    {
+      q: "How many 80lb bags do I need for a 10x12 slab?",
+      a: "A 10x12 slab at 4 inches thick has a volume of approximately 1.48 cubic yards (40 cubic feet). An 80lb bag yields 0.6 cubic feet, so you need 67 bags. For projects requiring more than 1.5 cubic yards, ready-mix concrete is typically more cost-effective."
+    },
+    {
+      q: "Can I design an L-shaped concrete slab?",
+      a: "Yes. Select the L-Shape option to design non-rectangular slabs for irregular patios, walkways, and foundations. Enter the overall length and width as the bounding rectangle, then specify the notch dimensions. The engine calculates the true area by subtracting the notch from the bounding rectangle."
+    },
+    {
+      q: "How long should concrete cure before building on it?",
+      a: "Concrete reaches about 70 percent of its full strength after 7 days of moist curing and full structural strength at 28 days. Light foot traffic is safe after 24 to 48 hours. For building structures on a slab, wait at least 7 days. Keep the slab moist or apply a curing compound for the first 7 days to prevent cracking."
+    },
+    {
+      q: "What is the difference between ready-mix and bagged concrete?",
+      a: "Ready-mix concrete is delivered by truck and costs $125 to $175 per cubic yard with a minimum load fee of $150 to $250. Bagged concrete (80lb bags at $5 to $7 each) costs more per yard but has no minimum and allows DIY mixing. For slabs under 1.5 cubic yards, bagged is usually cheaper. Use the Payload Safety Calculator to check if your vehicle can haul the bags."
+    },
+    {
+      q: "How do I calculate concrete for a circular patio?",
+      a: "Select the Circular shape option and enter the diameter. The area is calculated as π × (diameter/2)². For a 12-foot diameter circular patio at 4 inches thick: area = 113 sq ft, thickness = 0.333 ft, volume = 37.7 cu ft = 1.4 cu yd, requiring approximately 63 bags of 80lb mix."
+    },
+    {
+      q: "What size rebar do I need for a 4-inch slab?",
+      a: "For a 4-inch residential slab, use #3 (3/8-inch) or #4 (1/2-inch) rebar. #3 rebar at 18-inch spacing is adequate for patios and walkways. #4 rebar at 24-inch spacing is better for driveways. The rebar should sit on chairs at mid-depth (2 inches from the bottom of a 4-inch slab) with 3 inches of overlap at splices."
+    },
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/concrete/" class="hover:text-[var(--fg)] transition-colors">Concrete</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Concrete Slab & Patio Designer</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Concrete Slab & Patio Designer</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Design your concrete slab or patio with an interactive SVG plan view and cross-section. Choose rectangular, L-shaped, or circular shapes, configure rebar, control joints, sub-base, and finish — all with live material quantities.
+    </p>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <section>
+      <ConcreteSlabDesigner client:visible />
+    </section>
+
+    <EstimateMethodology
+      formula={formula}
+      assumptions={[
+        "Bag yields: 80lb = 0.60 cu ft, 60lb = 0.45 cu ft, 50lb = 0.375 cu ft, 40lb = 0.30 cu ft.",
+        "Rebar sticks are 20 feet long. Overlap and waste are included in the stick count.",
+        "Control joint spacing follows industry standards: 8 to 12 feet for 4-inch slabs.",
+        "Sub-base compaction assumes 95% density with 10% waste for compaction and spillage.",
+        "Vapor barrier overlap is 6 inches per seam with 10% waste factor."
+      ]}
+    />
+
+    <AdSlot slotId="ad-in-content-mid" />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">Concrete Slab & Patio Design Guide</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <p>
+            Planning a <strong>concrete slab</strong> project — whether a backyard <strong>patio</strong>, a <strong>driveway</strong>, a <strong>shed base</strong>, or a <strong>walkway</strong> — requires more than just calculating cubic yards. You need to decide on slab geometry, reinforcement strategy, sub-base material, finish type, and control joint layout. This interactive <strong>concrete slab designer</strong> replaces graph paper and manual takeoffs with a live SVG overhead plan view and cross-section, helping you visualize every layer before you pour a single bag.
+          </p>
+          <p>
+            Unlike a basic <strong>concrete volume calculator</strong>, this designer models three slab shapes (rectangular, L-shaped, circular), supports rebar and wire mesh reinforcement, calculates control joint spacing, and generates a complete material list with bag counts for all standard bag sizes. Use it as your <strong>concrete slab planner</strong> for patios, driveways, and foundations.
+          </p>
+
+          <h3 class="text-base font-semibold text-[var(--fg)]">Rectangular, L-Shaped & Circular Slabs</h3>
+          <p>
+            This designer supports <strong>three slab geometries</strong>, each with its own dimension inputs and SVG visualization. <strong>Rectangular slabs</strong> are the most common — ideal for patios, walkways, and shed bases. Enter length and width in feet, and the overhead plan view renders to scale with dimension arrows you can click to jump to the corresponding input. <strong>L-shaped slabs</strong> let you design irregular patios and foundation corners by specifying a bounding rectangle and a notch. <strong>Circular slabs</strong> use diameter input for round patios, fire pit bases, and gazebo foundations. Switch between shapes at any time without losing your other settings.
+          </p>
+        </div>
+
+        <div class="bg-[var(--bg-muted)] p-5 rounded-xl border border-[var(--border)] space-y-4 h-fit">
+          <h4 class="font-bold text-[var(--fg)] text-xs uppercase tracking-wider">Design Features</h4>
+          <ul class="text-xs space-y-2 text-[var(--fg-secondary)] list-none pl-0">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>3 Slab Shapes:</strong> Rect, L-shape, Circle.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Rebar Grid:</strong> Bar #3, #4, #5 at 6–36" OC.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Control Joints:</strong> Auto-spacing with SVG overlay.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Sub-base:</strong> Gravel, crushed stone, or sand.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>5 Finishes:</strong> Broom, smooth, stamped, exposed, colored.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Vapor Barrier:</strong> Toggle on/off with overlap math.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Cross-Section View:</strong> Live SVG layer stack.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>All Bag Sizes:</strong> 40lb, 50lb, 60lb, 80lb.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Print & Save:</strong> Print plan, save to projects.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--accent)] font-bold">✓</span>
+              <span><strong>Cross-Link:</strong> Payload safety check.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-base font-semibold text-[var(--fg)]">Reinforcement: Rebar vs Wire Mesh</h3>
+      <p>
+        The choice between <strong>rebar</strong> and <strong>welded wire mesh</strong> depends on your slab's load requirements. For <strong>concrete driveways</strong> and <strong>garage slabs</strong> that support vehicle traffic, use <strong>rebar reinforcement</strong> — #4 (1/2-inch) bars at 18 to 24 inches on center. The designer calculates the exact number of 20-foot rebar sticks needed, accounting for overlap and waste. For <strong>patio slabs</strong> and <strong>walkways</strong>, <strong>6x6 wire mesh</strong> (W1.4/W1.4) provides sufficient crack control at lower cost. Select <strong>"None"</strong> for temporary or non-structural slabs. The SVG overhead view overlays the rebar grid in dashed lines when rebar is selected, and you can toggle the grid visibility with the checkbox above the canvas.
+      </p>
+
+      <h3 class="text-base font-semibold text-[var(--fg)]">Control Joint Layout</h3>
+      <p>
+        <strong>Control joints</strong> are the most important crack-prevention feature in any <strong>concrete slab pour</strong>. The designer automatically calculates joint spacing based on your slab dimensions and standard rules: joints should be spaced at 2 to 3 times the slab thickness in feet (e.g., 8 to 12 feet for a 4-inch slab). The SVG plan view shows control joints as red dashed lines, and you can toggle their visibility. The results panel reports total linear feet of joint to cut, helping you plan your concrete saw work. Cut joints to one-quarter of the slab depth within 4 to 12 hours after finishing for best results.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Sub-Base & Compaction Guide</h3>
+          <p>
+            A proper <strong>sub-base</strong> prevents settling and extends the life of your slab. <strong>Crushed stone (#57)</strong> is the preferred material — compact in 4-inch lifts to 95% density. For a 10x12 patio, a 4-inch crushed stone base requires approximately 1.5 cubic yards of material. <strong>Pea gravel</strong> works for light-duty applications but provides less stability. <strong>Compactable sand</strong> is suitable only for temporary slabs. The cross-section view in the designer shows the layer stack from sub-base through vapor barrier to concrete and finish sealer.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Slab Finish Comparison</h3>
+          <p>
+            Choose from <strong>five finish options</strong> depending on your project's aesthetic and safety needs. <strong>Broom finish</strong> provides excellent slip resistance for patios and walkways. <strong>Smooth trowel</strong> gives a modern polished look but becomes slippery when wet. <strong>Stamped concrete</strong> adds decorative patterns mimicking stone, brick, or tile. <strong>Exposed aggregate</strong> reveals the pebble surface for a textured decorative finish. <strong>Integral color</strong> mixes pigment throughout the concrete for uniform color. Each finish affects cost: broom is standard, stamped adds $3 to $8 per square foot.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Vapor Barrier & Moisture Protection</h3>
+          <p>
+            A <strong>vapor barrier</strong> (6-mil polyethylene sheeting) prevents ground moisture from migrating through the slab. It is <strong>essential</strong> for interior slabs, garage floors, and any enclosed space where moisture could damage flooring or cause mold. For exterior patios, vapor barrier is optional if you have good sub-base drainage. The designer automatically calculates the required square footage with 6-inch overlap and 10% waste when you toggle vapor barrier on. Overlap all seams by 6 inches and seal with polyethylene tape.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Ready-Mix vs Bagged Concrete</h3>
+          <p>
+            For small projects like a 10x12 patio (1.5 cubic yards), <strong>bagged concrete mix</strong> is typically more cost-effective than ready-mix because you avoid the minimum delivery fee ($150 to $250). You would need approximately 67 bags of 80lb mix. For larger projects like a 20x24 driveway (8.9 cubic yards), <strong>ready-mix delivery</strong> is more practical and cost-effective at $125 to $175 per cubic yard. The designer shows both bag counts and ready-mix cost estimates side by side, and links to the <strong>Payload Safety Calculator</strong> to verify if your vehicle can haul the bags.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--fg)] text-base">Concrete Curing Best Practices</h3>
+          <p>
+            Proper <strong>concrete curing</strong> is critical for slab strength and durability. Keep the slab moist for the first 7 days — this is the curing period during which concrete gains approximately 70% of its full strength. Use wet burlap and plastic sheeting, or apply a liquid curing compound. Avoid heavy loads for at least 7 days. Full structural strength (100%) is reached at 28 days. In hot weather (above 85°F), use evaporation retardant and start curing within 30 minutes of finishing. In cold weather (below 40°F), use insulated blankets and consider accelerators.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How thick should a concrete slab be for a patio?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A standard residential patio slab should be 4 inches thick. For patios that will support heavy features like a fire pit, outdoor kitchen, or hot tub, increase thickness to 5 or 6 inches with rebar reinforcement. Walkways and light-use patios can use 4-inch slabs with wire mesh.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the best sub-base material for a concrete slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Crushed stone (#57 stone) is the best sub-base for concrete slabs. It provides excellent drainage, resists settling, and creates a stable platform. Compact it in 4-inch lifts to 95% density. Pea gravel works for light-duty slabs, while compactable sand is suitable for temporary or very light loads.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Should I use rebar or wire mesh for my slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Use rebar (#4 at 18 to 24 inches OC) for driveways, garage slabs, and any slab that will bear heavy loads or vehicle traffic. Wire mesh (6x6 W1.4/W1.4) is sufficient for light-duty slabs like walkways, patios, and shed bases. For heavy equipment pads or structural slabs, always use rebar with minimum 3-inch cover.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How do control joints prevent cracking?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Control joints create weak planes that control where the slab cracks as it shrinks during curing. Space them at 8 to 12 feet apart for 4-inch slabs, or 2 to 3 times the slab thickness in inches. Joints should be cut to one-quarter of the slab depth within 4 to 12 hours after finishing.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Do I need a vapor barrier under my concrete slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A vapor barrier (6-mil polyethylene) is recommended for interior slabs, garages, and any slab where moisture protection is critical. For exterior patios and walkways, a vapor barrier is optional — the sub-base drainage is more important. Overlap vapor barrier sheets by 6 inches and seal seams with tape.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the best finish for a concrete patio?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Broom finish is the most popular for patios — it provides slip resistance and a clean texture. Smooth trowel finish works for modern designs but becomes slippery when wet. Stamped concrete costs 30 to 50 percent more but mimics stone, brick, or tile patterns. Exposed aggregate offers excellent traction and a decorative pebble surface.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How many 80lb bags do I need for a 10x12 slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            A 10x12 slab at 4 inches thick has a volume of approximately 1.48 cubic yards (40 cubic feet). An 80lb bag yields 0.6 cubic feet, so you need 67 bags. For projects requiring more than 1.5 cubic yards, ready-mix concrete is typically more cost-effective.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">Can I design an L-shaped concrete slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Yes. Select the L-Shape option to design non-rectangular slabs for irregular patios, walkways, and foundations. Enter the overall length and width as the bounding rectangle, then specify the notch dimensions. The engine calculates the true area by subtracting the notch from the bounding rectangle.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How long should concrete cure before building on it?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Concrete reaches about 70 percent of its full strength after 7 days of moist curing and full structural strength at 28 days. Light foot traffic is safe after 24 to 48 hours. For building structures on a slab, wait at least 7 days. Keep the slab moist or apply a curing compound for the first 7 days to prevent cracking.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What is the difference between ready-mix and bagged concrete?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Ready-mix concrete is delivered by truck and costs $125 to $175 per cubic yard with a minimum load fee of $150 to $250. Bagged concrete (80lb bags at $5 to $7 each) costs more per yard but has no minimum and allows DIY mixing. For slabs under 1.5 cubic yards, bagged is usually cheaper. Use the Payload Safety Calculator to check if your vehicle can haul the bags.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">How do I calculate concrete for a circular patio?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            Select the Circular shape option and enter the diameter. The area is calculated as pi times radius squared. For a 12-foot diameter circular patio at 4 inches thick: area = 113 sq ft, thickness = 0.333 ft, volume = 1.4 cu yd, requiring approximately 63 bags of 80lb mix.
+          </p>
+        </details>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+          <summary class="text-sm font-semibold cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">What size rebar do I need for a 4-inch slab?</h3>
+          </summary>
+          <p class="mt-3 text-sm text-[var(--fg-secondary)]">
+            For a 4-inch residential slab, use #3 (3/8-inch) or #4 (1/2-inch) rebar. #3 rebar at 18-inch spacing is adequate for patios and walkways. #4 rebar at 24-inch spacing is better for driveways. The rebar should sit on chairs at mid-depth (2 inches from the bottom of a 4-inch slab) with 3 inches of overlap at splices.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <RelatedCalculators slug="concrete-slab-designer" />
+  </article>
+</Layout>

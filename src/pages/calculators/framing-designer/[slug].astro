@@ -1,0 +1,207 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import FramingDesigner from "../../../components/calculators/FramingDesigner";
+import AdSlot from "../../../components/AdSlot.astro";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
+import { BLUEPRINT_FRAMING_SEEDS } from "../../../data/blueprint-seeds";
+import { calculateFraming } from "../../../lib/framingEngine";
+
+export function getStaticPaths() {
+  return BLUEPRINT_FRAMING_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof BLUEPRINT_FRAMING_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+
+// Calculate framing materials at build-time using our TS Engine
+const result = calculateFraming({
+  wallLengthFt: seed.length,
+  wallHeightFt: seed.height,
+  studSpacingIn: seed.studSpacing,
+  studSize: seed.studSize,
+  headerSize: seed.headerSize,
+  wastePercent: 10,
+  openings: [], // assume a clean wall for the blueprint baseline
+});
+
+const canonical = `https://homeplanninghub.com/calculators/framing-designer/${seed.slug}/`;
+const title = `${seed.label} Material List & Stud Blueprint`;
+const description = `Get exact stud count takeoffs, cut list blueprints, and framing lumber calculations for a ${seed.label.toLowerCase()}. Pre-calculated wall framing details.`;
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+// Pre-render FAQs matching the exact dimensions
+const faqs = [
+  {
+    q: `How many studs do I need for a ${seed.length}-foot wall?`,
+    a: `For a ${seed.length}-foot framing wall, you will need approximately ${result.studsCount} studs (assumes standard ${seed.studSpacing}-inch spacing on center and includes a 10% waste buffer).`,
+  },
+  {
+    q: `What is the total lumber count for a ${seed.label.toLowerCase()}?`,
+    a: `A complete structural takeoff requires ${result.studsCount} studs and ${result.platesCount} top/bottom plates. This brings the total wood count to ${result.totalLumberCount} boards (excluding headers or sill plates for window openings).`,
+  },
+  {
+    q: `What are the structural warnings for a ${seed.length}ft by ${seed.height}ft wall?`,
+    a: result.warnings.length > 0 
+      ? `The calculations flagged the following warnings: ${result.warnings.join(". ")}`
+      : "No structural or building code warnings were flagged for this dimension configuration.",
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Framing Calculators", path: "/calculators/framing/" },
+    { name: "Wall Framing Designer", path: "/calculators/framing-designer/" },
+    { name: seed.label, path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: `${seed.label} Framing Calculation`,
+    description: `Compute wood stud requirements and cut list for a ${seed.length}ft long by ${seed.height}ft high stud wall.`,
+    formula: `Stud Count = (Wall Length in inches ÷ Spacing) + 1; Plates Count = 3 plates per wall length`,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Calculate Core Studs",
+      text: `Convert wall length to inches: ${seed.length} × 12 = ${seed.length * 12} inches. Divide by spacing: ${seed.length * 12} ÷ ${seed.studSpacing} = ${Math.ceil((seed.length * 12) / seed.studSpacing)} spans. Add 1 end stud for ${Math.ceil((seed.length * 12) / seed.studSpacing) + 1} studs.`,
+    },
+    {
+      name: "Add Plates",
+      text: `Calculate plates (1 bottom plate, 2 top plates): 3 plates × ${seed.length} ft = ${seed.length * 3} linear feet of plate stock.`,
+    },
+    {
+      name: "Apply Waste Allowance",
+      text: `Add a standard 10% waste allowance to cover warped or damaged lumber: total studs = ${result.studsCount}.`,
+    }
+  ]),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/framing/" class="hover:text-[var(--fg)] transition-colors">Framing</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/framing-designer/" class="hover:text-[var(--fg)] transition-colors">Wall Framing Designer</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">{seed.label}</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">{seed.label} Framing & Material List</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Pre-calculated stud counts and layout blueprints for a {seed.label.toLowerCase()}. View top/bottom plates, cripple layout details, and printable framing schedules. Customize openings and spacing below.
+    </p>
+
+    <AdSlot slotId="ad-top-leaderboard" />
+
+    <!-- Static Build-time Output for SEO crawlability and fast page load -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 no-print">
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+        <h2 class="text-base font-bold tracking-tight mb-4">Calculated Dimensions</h2>
+        <table class="w-full text-sm text-left border-collapse">
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Wall Size</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.length} × {seed.height} ft</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Stud Spacing</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.studSpacing} in OC</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Stud Material Size</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.studSize} lumber</td>
+            </tr>
+            <tr>
+              <td class="py-2.5">Header Dimensions</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{seed.headerSize} lumber</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+        <h2 class="text-base font-bold tracking-tight mb-4">Lumber Takeoff</h2>
+        <table class="w-full text-sm text-left border-collapse">
+          <tbody class="text-[var(--fg-secondary)]">
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Studs Needed (with 10% waste)</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{result.studsCount} studs</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Top/Bottom Plate Boards</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{result.platesCount} plates</td>
+            </tr>
+            <tr class="border-b border-[var(--border)]">
+              <td class="py-2.5">Total Lumber Pieces</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{result.totalLumberCount} pieces</td>
+            </tr>
+            <tr>
+              <td class="py-2.5">Required Nails</td>
+              <td class="py-2.5 font-semibold text-[var(--fg)]">{result.nailsCount} nails</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Live Interactive Component Hydrated client-side -->
+    <section class="mt-4">
+      <h2 class="text-lg font-bold mb-4">Interactive Wall Framing Layout Designer</h2>
+      <FramingDesigner 
+        client:visible 
+        initialLength={seed.length} 
+        initialHeight={seed.height} 
+        initialStudSpacing={seed.studSpacing} 
+        initialStudSize={seed.studSize} 
+        initialHeaderSize={seed.headerSize} 
+        initialWastePercent={10}
+        initialOpenings={[]}
+      />
+    </section>
+
+    <EstimateMethodology
+      formula="Studs count = (Length ÷ spacing) + 1; Plates count = 3 plates per wall length; includes 10% waste."
+      assumptions={[
+        `Designed specifically for a ${seed.label.toLowerCase()}.`,
+        "Calculations assume standard double top plates and a single bottom sill plate.",
+        "Headers and jack studs are estimated based on your door and window placements."
+      ]}
+    />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">Framing Standards & Codes for {seed.label}</h2>
+      <p>
+        Wall framing layout must comply with local IRC building codes. Standard load-bearing exterior walls require studs spaced at 16 inches on center using double top plates to distribute ceiling joist loads. When adding doors or window openings, jack studs must be cut to support headers while king studs provide lateral strength to the framing bays.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)]">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="framing-designer" />
+  </article>
+</Layout>

@@ -18,6 +18,8 @@ interface InputProps {
   error?: string;
   required?: boolean;
   spellcheck?: boolean;
+  disabled?: boolean;
+  maxLength?: number;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
@@ -38,6 +40,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
   error,
   required,
   spellcheck,
+  disabled,
+  maxLength,
 }: InputProps, ref) {
   const id = useId();
   const descriptionId = error || helperText ? `${id}-desc` : undefined;
@@ -62,6 +66,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
         step={step}
         required={required}
         spellCheck={spellcheck}
+        disabled={disabled}
+        maxLength={maxLength}
         aria-label={ariaLabel || label}
         aria-invalid={error ? "true" : "false"}
         aria-describedby={descriptionId}

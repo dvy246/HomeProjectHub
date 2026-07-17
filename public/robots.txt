@@ -7,9 +7,9 @@ Allow: /guides/
 Allow: /compare/
 Allow: /about/
 Allow: /contact/
-Disallow: /privacy/
-Disallow: /terms/
-Disallow: /disclaimer/
+Allow: /privacy/
+Allow: /terms/
+Allow: /disclaimer/
 Disallow: /saved/
 Disallow: /planner/
 Disallow: /projects/

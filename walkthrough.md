@@ -86,3 +86,25 @@ We have completely upgraded the visual style from a standard AI template to a pr
 *   **Bento/Glassmorphism Cards:** Introduced a `@utility glass-panel` utility for modern translucent backdrop blur effects. Applied it directly to the quick paint estimate widget in [HeroQuickCalc.tsx](file:///Users/divyyadav/developer/HomeProjectHub/src/components/HeroQuickCalc.tsx).
 *   **Emoji-to-SVG Vector Overhaul:** Replaced all emojis in the Home Explorer tooltip and detail panels with modern, color-matched SVG vector icons to remove cheap indicators and establish visual authority.
 *   **Native Save-to-PDF/Print Layout:** Added an "Export PDF" button to the project detail view in [ProjectDetail.tsx](file:///Users/divyyadav/developer/HomeProjectHub/src/components/project/ProjectDetail.tsx) that calls `window.print()`. Cleaned up the print styling using Tailwind `print:hidden` and `print:inline-block` modifiers to automatically hide back buttons, headers, footers, theme switches, and replace interactive selects with clean static print labels.
+
+---
+
+## 3. Flagship Interactive Feature: Dynamic Wainscoting & Accent Wall Designer
+
+We have successfully designed, implemented, and verified a flagship interactive feature: **Dynamic Wainscoting & Accent Wall Designer** (located at [Wainscoting Layout Page](file:///Users/divyyadav/developer/HomeProjectHub/src/pages/calculators/wainscoting-designer/index.astro)).
+
+### Key Components Implemented:
+*   **Precise Spatial & Math Engine ([wainscotingEngine.ts](file:///Users/divyyadav/developer/HomeProjectHub/src/lib/wainscotingEngine.ts)):**
+    *   Equal-spacing calculation formulas for four popular styles: Board & Batten, Shaker Panels, Picture Frame Molding, and Wood Slat Walls.
+    *   Fractional measurements (rounded to the nearest 1/16") for tape measure compatibility.
+    *   Bin-packing (cutting stock) algorithm optimization to calculate standard lumber board count (8ft, 10ft, 12ft, 16ft) to purchase.
+*   **Interactive 2D Blueprint Canvas ([WainscotingDesigner.tsx](file:///Users/divyyadav/developer/HomeProjectHub/src/components/calculators/WainscotingDesigner.tsx)):**
+    *   Live SVG rendering of the wall, stiles, rails, and obstacles. Faint lines represent standard 16" studs.
+    *   **Draggable/Editable Obstacle Manager:** Dynamic adding, positioning, and sizing of outlets, switches, windows, and doors.
+    *   **Clash Detection Engine:** Automatically highlights stiles/rails in warning copper/red if they overlap an outlet cover.
+    *   **Layout Shift Slider:** Offsets the grid horizontally to bypass clashes without disrupting spacing.
+    *   **Optimized Cut Lists:** Generates board counts, linear footage with waste margin, and detailed cuts.
+*   **Layout Navigation & Live Search Integration ([Layout.astro](file:///Users/divyyadav/developer/HomeProjectHub/src/layouts/Layout.astro)):**
+    *   Added dropdown links in desktop header, mobile menu, and live utility search index.
+    *   Syncs results directly with the user's Local Workspace.
+
