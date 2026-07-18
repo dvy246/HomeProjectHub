@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { BID_BUILDER_SEEDS } from "../../data/bid-builder-seeds";
+import { graphSchema, breadcrumbListSchema } from "../../lib/schema";
+
+const title = "Transparent Home Renovation Cost Estimators | HomePlanningHub";
+const description = "Line-by-line transparent cost estimators for your home renovation projects. See the math and build your own accurate bid.";
+const canonical = "https://homeplanninghub.com/cost-estimator/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Cost Estimators", path: "/cost-estimator/" },
+  ])
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <div class="max-w-5xl mx-auto flex flex-col gap-8">
+    <header class="text-center max-w-2xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-4">
+        Transparent Home Renovation Cost Estimators
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Unlike Homewyse or other black-box tools, every line item is visible and editable to match your local prices. Your customizations are saved to your browser so you can build accurate bids over time.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {BID_BUILDER_SEEDS.map(seed => (
+        <a href={`/cost-estimator/${seed.slug}/`} class="block no-underline group h-full">
+          <div class="h-full rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)] hover:shadow-sm transition-all flex flex-col">
+            <h2 class="text-lg font-bold text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors mb-2">
+              {seed.label} Cost Estimator
+            </h2>
+            <p class="text-sm text-[var(--fg-secondary)] line-clamp-3">
+              {seed.description}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

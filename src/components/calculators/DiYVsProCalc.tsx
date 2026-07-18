@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { computeDIYVsPro, computeSunkCost, type ProjectType, type SkillLevel, type Mistakes, PROJECT_TYPES, getProjectLabel } from "../../lib/diyVsProEngine";
+import { getSkillProfile } from "../../lib/storage";
+import { getSkillForProject, DEFAULT_SKILL_PROFILE } from "../../lib/skillProfileEngine";
 import { Card } from "../ui/Card";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
@@ -15,6 +17,25 @@ function DiYVsProCalc() {
   const [skillLevel, setSkillLevel] = useState<SkillLevel>("intermediate");
   const [toolCost, setToolCost] = useState(200);
   const [permitCost, setPermitCost] = useState(0);
+
+  const [hasCustomProfile, setHasCustomProfile] = useState(false);
+
+  useEffect(() => {
+    function loadProfile() {
+      const profile = getSkillProfile();
+      if (JSON.stringify(profile) !== JSON.stringify(DEFAULT_SKILL_PROFILE)) {
+        setHasCustomProfile(true);
+        setSkillLevel(getSkillForProject(profile, projectType));
+      } else {
+        setHasCustomProfile(false);
+      }
+    }
+    loadProfile();
+    
+    const handleProfileChange = () => loadProfile();
+    window.addEventListener('skill-profile-changed', handleProfileChange);
+    return () => window.removeEventListener('skill-profile-changed', handleProfileChange);
+  }, [projectType]);
 
   const [showSunk, setShowSunk] = useState(false);
   const [hoursInvested, setHoursInvested] = useState(10);
@@ -77,6 +98,11 @@ function DiYVsProCalc() {
           </div>
           <div className="flex flex-col gap-1.5">
             <span className="font-semibold text-[var(--fg-secondary)]">Your Skill Level</span>
+            {hasCustomProfile && (
+              <div className="text-[10px] text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-1 rounded border border-[var(--accent)]/20 mb-1">
+                Using your saved profile. <a href="/skill-profile/" className="underline font-bold">Update here</a>.
+              </div>
+            )}
             <select
               value={skillLevel}
               onChange={(e) => setSkillLevel(e.target.value as SkillLevel)}

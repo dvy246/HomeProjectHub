@@ -232,14 +232,14 @@ export default function CostEstimatorWidget({
             <div className="inline-flex p-0.5 rounded-lg bg-[var(--bg-muted)] border border-[var(--border)] text-[10px]">
               <button
                 type="button"
-                className={`px-2.5 py-2 rounded-md font-medium transition-all ${laborType === "percent" ? "bg-[var(--card-bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}`}
+                className={`px-3 py-2.5 min-h-[44px] rounded-md font-medium transition-all ${laborType === "percent" ? "bg-[var(--card-bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}`}
                 onClick={() => { setLaborType("percent"); localStorage.setItem("hph_labor_type", "percent"); }}
               >
                 % of Materials
               </button>
               <button
                 type="button"
-                className={`px-2.5 py-2 rounded-md font-medium transition-all ${laborType === "hourly" ? "bg-[var(--card-bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}`}
+                className={`px-3 py-2.5 min-h-[44px] rounded-md font-medium transition-all ${laborType === "hourly" ? "bg-[var(--card-bg)] text-[var(--fg)] shadow-sm" : "text-[var(--fg-muted)] hover:text-[var(--fg)]"}`}
                 onClick={() => { setLaborType("hourly"); localStorage.setItem("hph_labor_type", "hourly"); }}
               >
                 Hourly Rates

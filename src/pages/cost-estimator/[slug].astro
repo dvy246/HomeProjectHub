@@ -1,0 +1,100 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import BidBuilder from "../../components/calculators/BidBuilder";
+import { BID_BUILDER_SEEDS } from "../../data/bid-builder-seeds";
+import {
+  graphSchema,
+  faqPageSchema,
+  breadcrumbListSchema,
+  webApplicationSchema,
+} from "../../lib/schema";
+
+export function getStaticPaths() {
+  return BID_BUILDER_SEEDS.map((seed) => ({
+    params: { slug: seed.slug },
+    props: { seed },
+  }));
+}
+
+interface Props {
+  seed: (typeof BID_BUILDER_SEEDS)[number];
+}
+
+const { seed } = Astro.props;
+const slug = seed.slug;
+
+const canonical = `https://homeplanninghub.com/cost-estimator/${slug}/`;
+const title = `${seed.label} Cost Estimator — Transparent Breakdown | HomePlanningHub`;
+const description = `Calculate the true cost of ${seed.label.toLowerCase()} with a fully transparent, line-by-line breakdown. Edit any price, save your local rates, and get an accurate estimate.`;
+
+const h1Title = `${seed.label} Cost Estimator — Line-by-Line Breakdown`;
+
+const faqs = [
+  {
+    q: "How accurate is this estimate?",
+    a: "This estimate uses national average pricing for materials and labor. However, because it is fully transparent, its accuracy depends on how closely the default prices match your local market. You can edit any line item to reflect actual quotes from your local suppliers.",
+  },
+  {
+    q: "Can I use my local prices?",
+    a: "Yes! Every single line item in this estimator can be edited. When you change a price, it is automatically saved to your browser's local storage so you won't lose your work if you refresh or return later.",
+  },
+  {
+    q: "What's included in the labor cost?",
+    a: "Labor cost can be calculated either as a percentage of materials (typical for many trades) or based on an hourly rate and estimated hours. This flexibility allows you to model both DIY-with-help and full-contractor scenarios.",
+  },
+  {
+    q: "How is the contingency buffer calculated?",
+    a: "The contingency buffer is a percentage applied to the total project cost (materials plus labor). We recommend keeping it at least at 10% to account for unplanned waste, rework, or hidden issues discovered during the project.",
+  },
+  {
+    q: "Why is this better than Homewyse or other calculators?",
+    a: "Unlike black-box calculators that hide their math, this estimator shows you exactly what materials are being counted and what they cost. You have full control over the line items, making it a true bid-building tool rather than just a rough guess.",
+  },
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Cost Estimators", path: "/cost-estimator/" },
+    { name: seed.label, path: `/cost-estimator/${slug}/` },
+  ]),
+  webApplicationSchema(
+    `${seed.label} Cost Estimator`,
+    description,
+    canonical
+  ),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-4">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+        <a href="/" class="hover:underline">home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <a href="/cost-estimator/" class="hover:underline">cost estimators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)]">{seed.label.toLowerCase()}</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-balance mb-3">{h1Title}</h1>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Unlike black-box calculators that hide their math, our transparent approach lets you see and edit every line item. Build your own bid for a {seed.label.toLowerCase()} using real local prices.
+      </p>
+    </header>
+
+    <BidBuilder client:load slug={slug} />
+
+    <section class="mt-8">
+      <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0 inline">{faq.q}</h3></summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </article>
+</Layout>

@@ -98,3 +98,33 @@ export function getMaterialPrice(key: string, defaultPrice: number): number {
 
 export type { SavedProject };
 
+import type { DIYSkillProfile } from './skillProfileEngine';
+import { DEFAULT_SKILL_PROFILE } from './skillProfileEngine';
+
+const SKILL_PROFILE_KEY = 'hph_diy_skill_profile_v1';
+
+export function getSkillProfile(): DIYSkillProfile {
+  if (typeof window === 'undefined') return DEFAULT_SKILL_PROFILE;
+  try {
+    const data = localStorage.getItem(SKILL_PROFILE_KEY);
+    return data ? { ...DEFAULT_SKILL_PROFILE, ...JSON.parse(data) } : DEFAULT_SKILL_PROFILE;
+  } catch {
+    return DEFAULT_SKILL_PROFILE;
+  }
+}
+
+export function saveSkillProfile(profile: DIYSkillProfile): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(SKILL_PROFILE_KEY, JSON.stringify(profile));
+    window.dispatchEvent(new Event('skill-profile-changed'));
+  } catch {}
+}
+
+export function resetSkillProfile(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(SKILL_PROFILE_KEY);
+    window.dispatchEvent(new Event('skill-profile-changed'));
+  } catch {}
+}

@@ -96,7 +96,7 @@ function HeroQuickCalc() {
         <button
           type="button"
           onClick={() => setCoats(1)}
-          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
+          className={`flex-1 text-xs font-semibold rounded-lg h-11 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
             coats === 1
               ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-sm"
               : "bg-[var(--bg-inset)] text-[var(--fg-secondary)] hover:bg-[var(--border)]"
@@ -107,7 +107,7 @@ function HeroQuickCalc() {
         <button
           type="button"
           onClick={() => setCoats(2)}
-          className={`flex-1 text-xs font-semibold rounded-lg h-9 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
+          className={`flex-1 text-xs font-semibold rounded-lg h-11 transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]/50 ${
             coats === 2
               ? "bg-[var(--accent)] text-[var(--accent-fg)] shadow-sm"
               : "bg-[var(--bg-inset)] text-[var(--fg-secondary)] hover:bg-[var(--border)]"

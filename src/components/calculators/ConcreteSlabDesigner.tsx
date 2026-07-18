@@ -468,7 +468,7 @@ function ConcreteSlabDesigner({
             <div>
               <label className="text-xs font-medium text-[var(--fg-secondary)] mb-1.5 block">Sub-base Material</label>
               <select value={subBaseMaterial} onChange={(e) => setSubBaseMaterial(e.target.value as SubBaseMaterial)}
-                className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
+                className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-11 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
                 {(["gravel", "crushed-stone", "sand"] as SubBaseMaterial[]).map((m) => (
                   <option key={m} value={m}>{SUBBASE_LABELS[m]}</option>
                 ))}
@@ -483,7 +483,7 @@ function ConcreteSlabDesigner({
             <div>
               <label className="text-xs font-medium text-[var(--fg-secondary)] mb-1.5 block">Finish</label>
               <select value={finish} onChange={(e) => setFinish(e.target.value as FinishType)}
-                className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
+                className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-11 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
                 {(["broom", "smooth", "stamped", "exposed", "colored"] as FinishType[]).map((f) => (
                   <option key={f} value={f}>{FINISH_LABELS[f]}</option>
                 ))}
@@ -517,7 +517,7 @@ function ConcreteSlabDesigner({
               <div>
                 <label className="text-xs font-medium text-[var(--fg-secondary)] mb-1.5 block">Bar Size</label>
                 <select value={rebarSize} onChange={(e) => setRebarSize(e.target.value as "#3" | "#4" | "#5")}
-                  className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
+                  className="w-full text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-11 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]">
                   <option value="#3">#3 (3/8")</option>
                   <option value="#4">#4 (1/2")</option>
                   <option value="#5">#5 (5/8")</option>

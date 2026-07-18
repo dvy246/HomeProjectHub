@@ -20,7 +20,10 @@
     "contact": "Contact",
     "plan_budget": "Plan & Budget",
     "projects": "My Projects",
-    "all_calculators": "All Calculators"
+    "all_calculators": "All Calculators",
+    "bid_estimators": "Bid Cost Estimators",
+    "diy_skill_profile": "DIY Skill Profile",
+    "climate_matchmaker": "Climate Matchmaker"
   },
   "footer": {
     "description": "Your trusted source for home improvement calculators, project planning tools, and maintenance guides.",
@@ -509,6 +512,8 @@
     "searchPlaceholder": "Search calculators...",
     "concrete": "Concrete & Masonry",
     "roofing": "Roofing",
+    "paint": "Paint",
+    "tile": "Tile",
     "weight": "Weight & Material",
     "landscaping": "Landscaping & Outdoor",
     "walls": "Walls & Fencing",

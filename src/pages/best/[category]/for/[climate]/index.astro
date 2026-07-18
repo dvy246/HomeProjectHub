@@ -1,0 +1,129 @@
+---
+import Layout from "../../../../../layouts/Layout.astro";
+import ClimateMatchmaker from "../../../../../components/calculators/ClimateMatchmaker";
+import {
+  CLIMATE_CATEGORY_SEEDS,
+  CLIMATE_PROFILES,
+  type ClimateCondition,
+} from "../../../../../lib/climateEngine";
+import {
+  formatCategory,
+  type ComparisonCategory,
+} from "../../../../../lib/compareEngine";
+import {
+  webApplicationSchema,
+  breadcrumbListSchema,
+  faqPageSchema,
+  graphSchema,
+} from "../../../../../lib/schema";
+
+export async function getStaticPaths() {
+  return CLIMATE_CATEGORY_SEEDS.map((seed) => ({
+    params: {
+      category: seed.category,
+      climate: seed.climate,
+    },
+  }));
+}
+
+const { category, climate } = Astro.params as {
+  category: ComparisonCategory;
+  climate: ClimateCondition;
+};
+
+const profile = CLIMATE_PROFILES[climate];
+const categoryLabel = formatCategory(category);
+const climateLabel = profile.label;
+
+const title = `Best ${categoryLabel} for ${climateLabel} — Expert Material Comparison`;
+const description = `Find the best ${category} materials for ${climateLabel.toLowerCase()}. Our climate-aware scoring engine ranks materials by durability, water resistance, and long-term cost.`;
+
+const canonicalURL = `https://homeplanninghub.com/best/${category}/for/${climate}/`;
+const pathForBreadcrumb = `/best/${category}/for/${climate}/`;
+
+const breadcrumb = breadcrumbListSchema([
+  { name: "Home", path: "/" },
+  { name: "Material Matchmaker", path: "/best/" },
+  { name: categoryLabel, path: `/best/${category}/` },
+  { name: climateLabel, path: pathForBreadcrumb },
+]);
+
+const webApp = webApplicationSchema(
+  "Climate-Aware Material Matchmaker",
+  description,
+  canonicalURL
+);
+
+const faqs = faqPageSchema(
+  [
+    {
+      q: `What is the best ${category} for ${climateLabel.toLowerCase()}?`,
+      a: `The best ${category} for ${climateLabel.toLowerCase()} depends on your budget and secondary priorities, but generally you should look for materials that score high in ${profile.keyScores.join(" and ")}.`,
+    },
+    {
+      q: `Why does ${climateLabel.toLowerCase()} matter when choosing ${category}?`,
+      a: profile.description,
+    },
+    {
+      q: `How do we score materials for this climate?`,
+      a: `Our engine adjusts the standard weights, prioritizing durability and lifespan based on the stresses of ${climateLabel.toLowerCase()}.`,
+    },
+    {
+      q: `Can I adjust the recommendations?`,
+      a: `Yes, you can use our Material Matchmaker to adjust your priorities like budget, low-maintenance, or eco-friendliness to get personalized results.`,
+    },
+  ],
+  canonicalURL
+);
+
+const schema = graphSchema(breadcrumb, webApp, faqs);
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical={canonicalURL}
+  schema={schema}
+>
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-4 text-[var(--fg)]">{title}</h1>
+    <p class="text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+      {description}
+    </p>
+
+    <ClimateMatchmaker
+      client:load
+      initialClimate={climate}
+      initialCategory={category}
+    />
+
+    <section class="mt-16 max-w-4xl mx-auto prose prose-lg">
+      <h2>Why {climateLabel} Matters for {categoryLabel}</h2>
+      <p>{profile.description}</p>
+      <p>
+        When selecting materials for your home, the local climate plays a massive role in longevity and maintenance costs. 
+        For {climateLabel.toLowerCase()}, we strongly weight <strong>{profile.keyScores.join(" and ")}</strong> to ensure your {category} lasts.
+      </p>
+      
+      <div class="mt-8">
+        <h3>Frequently Asked Questions</h3>
+        <details class="mb-4">
+          <summary class="font-semibold cursor-pointer">What is the best {category} for {climateLabel.toLowerCase()}?</summary>
+          <p class="mt-2 text-gray-600">The best {category} for {climateLabel.toLowerCase()} depends on your budget and secondary priorities, but generally you should look for materials that score high in {profile.keyScores.join(" and ")}.</p>
+        </details>
+        <details class="mb-4">
+          <summary class="font-semibold cursor-pointer">Why does {climateLabel.toLowerCase()} matter when choosing {category}?</summary>
+          <p class="mt-2 text-gray-600">{profile.description}</p>
+        </details>
+        <details class="mb-4">
+          <summary class="font-semibold cursor-pointer">How do we score materials for this climate?</summary>
+          <p class="mt-2 text-gray-600">Our engine adjusts the standard weights, prioritizing durability and lifespan based on the stresses of {climateLabel.toLowerCase()}.</p>
+        </details>
+        <details class="mb-4">
+          <summary class="font-semibold cursor-pointer">Can I adjust the recommendations?</summary>
+          <p class="mt-2 text-gray-600">Yes, you can use our Material Matchmaker to adjust your priorities like budget, low-maintenance, or eco-friendliness to get personalized results.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+</Layout>

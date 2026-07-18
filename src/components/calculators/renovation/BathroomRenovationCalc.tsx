@@ -152,7 +152,7 @@ export default function BathroomRenovationCalc({ projectId, onCalculate }: { pro
                     setWallHeight(p.height || "8");
                   }
                 }}
-                className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+                className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-11 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
               >
                 {PRESETS.rooms.map((p, i) => (
                   <option key={i} value={i}>{p.name}</option>

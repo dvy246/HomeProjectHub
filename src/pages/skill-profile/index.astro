@@ -1,0 +1,62 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SkillProfileWidget from "../../components/ui/SkillProfileWidget";
+import { breadcrumbListSchema, webPageSchema, graphSchema } from "../../lib/schema";
+
+const title = "DIY Skill Profile — Personalized Renovation Cost Calculator";
+const description = "Save your DIY skill levels to automatically personalize waste factors and rework contingencies across all HomePlanningHub calculators.";
+const url = "https://homeplanninghub.com/skill-profile/";
+
+const schema = graphSchema(
+  webPageSchema({ url, topicName: "DIY Skill Profile", description }),
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "DIY Skill Profile", path: "/skill-profile/" }
+  ])
+);
+---
+
+<Layout title={title} description={description} schema={schema} canonical={url}>
+  <div class="max-w-3xl mx-auto flex flex-col gap-8">
+    <div class="flex flex-col gap-3">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-[var(--fg)] tracking-tight">Your DIY Skill Profile</h1>
+      <p class="text-[var(--fg-secondary)] leading-relaxed">
+        Your skill levels are saved to your browser and automatically applied to every calculator on this site.
+      </p>
+    </div>
+
+    <div class="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-6 md:p-8">
+      <SkillProfileWidget client:load />
+    </div>
+
+    <div class="bg-[var(--bg-subtle)] border border-[var(--border)] rounded-2xl p-6 flex flex-col gap-4 mt-4">
+      <h2 class="text-lg font-bold text-[var(--fg)]">How Your Profile Affects Calculations</h2>
+      <p class="text-sm text-[var(--fg-secondary)] leading-relaxed">
+        We use your skill profile to automatically adjust the material waste factor and rework contingencies in our cost calculators. Beginners tend to make more mistakes, requiring more materials.
+      </p>
+      <ul class="text-sm text-[var(--fg-secondary)] list-disc pl-5 flex flex-col gap-2 mt-2">
+        <li><strong>Beginner:</strong> +20% material waste, +15% rework contingency</li>
+        <li><strong>Intermediate:</strong> +10% material waste, +8% rework contingency</li>
+        <li><strong>Advanced:</strong> +5% material waste, +3% rework contingency</li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col gap-4 border-t border-[var(--border)] pt-8 mt-4">
+      <h2 class="text-lg font-bold text-[var(--fg)]">Once set, visit any of these calculators to see your personalized results:</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <a href="/calculators/diy-vs-pro/" class="p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)] bg-[var(--bg)] transition-colors group">
+          <h3 class="text-sm font-bold group-hover:text-[var(--accent)] transition-colors">DIY vs Pro Cost Splitter</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-1">Compare your actual DIY cost vs hiring a pro.</p>
+        </a>
+        <a href="/calculators/deck-designer/" class="p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)] bg-[var(--bg)] transition-colors group">
+          <h3 class="text-sm font-bold group-hover:text-[var(--accent)] transition-colors">Deck Designer</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-1">Design a deck and calculate wood waste.</p>
+        </a>
+        <a href="/calculators/framing-designer/" class="p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)] bg-[var(--bg)] transition-colors group">
+          <h3 class="text-sm font-bold group-hover:text-[var(--accent)] transition-colors">Framing Designer</h3>
+          <p class="text-xs text-[var(--fg-muted)] mt-1">Calculate studs with adjusted waste factors.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

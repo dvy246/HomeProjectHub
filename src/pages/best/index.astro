@@ -1,0 +1,68 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { CLIMATE_PROFILES, CLIMATE_CATEGORY_SEEDS } from "../../lib/climateEngine";
+import { formatCategory } from "../../lib/compareEngine";
+import { breadcrumbListSchema, graphSchema, webPageSchema } from "../../lib/schema";
+
+const title = "Climate-Aware Material Matchmaker";
+const description = "Find the best home improvement materials for your specific climate. Our engine adjusts recommendations based on your local weather challenges.";
+
+const canonicalURL = "https://homeplanninghub.com/best/";
+
+const breadcrumb = breadcrumbListSchema([
+  { name: "Home", path: "/" },
+  { name: "Material Matchmaker", path: "/best/" },
+]);
+
+const webPage = webPageSchema({
+  url: canonicalURL,
+  topicName: title,
+  description,
+});
+
+const schema = graphSchema(breadcrumb, webPage);
+
+// Group seeds by climate for the UI
+const climates = Object.values(CLIMATE_PROFILES);
+---
+
+<Layout title={title} description={description} canonical={canonicalURL} schema={schema}>
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-4 text-[var(--fg)]">{title}</h1>
+    <p class="text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+      {description}
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {climates.map(climate => {
+        const relevantSeeds = CLIMATE_CATEGORY_SEEDS.filter(s => s.climate === climate.id);
+        
+        return (
+          <div class="bg-[var(--bg-card)] border rounded-lg p-6 flex flex-col hover:border-[var(--accent)] transition-colors">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 text-[var(--accent)]" set:html={climate.icon} />
+              <h2 class="text-xl font-bold text-[var(--fg)]">{climate.label}</h2>
+            </div>
+            <p class="text-sm text-gray-600 mb-6 flex-grow">{climate.description}</p>
+            
+            <div>
+              <h3 class="text-sm font-semibold mb-2 text-[var(--fg)]">Best Materials For:</h3>
+              <ul class="flex flex-wrap gap-2">
+                {relevantSeeds.map(seed => (
+                  <li>
+                    <a 
+                      href={`/best/${seed.category}/for/${seed.climate}/`}
+                      class="inline-block px-3 py-1 bg-gray-100 hover:bg-gray-200 text-sm rounded-full text-gray-800 transition-colors"
+                    >
+                      {formatCategory(seed.category)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </main>
+</Layout>

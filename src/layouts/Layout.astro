@@ -238,6 +238,10 @@ const organizationSchema = {
             <div class="absolute left-0 top-full mt-1 w-52 rounded-xl border border-[var(--border)] bg-[var(--bg)] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
               <div class="py-1">
                 <a href={lUrl("/plan/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/plan") ? "page" : undefined}>★ Budget Binder</a>
+                <a href={lUrl("/cost-estimator/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/cost-estimator") ? "page" : undefined}>★ {tr('nav.bid_estimators')}</a>
+                <a href={lUrl("/skill-profile/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/skill-profile") ? "page" : undefined}>★ {tr('nav.diy_skill_profile')}</a>
+                <a href={lUrl("/best/")} role="menuitem" class="block px-3 py-2 text-xs font-bold text-[var(--accent)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/best") ? "page" : undefined}>★ {tr('nav.climate_matchmaker')}</a>
+                <div class="border-t border-[var(--border)] mx-2 my-1"></div>
                 <a href={lUrl("/renovate/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/renovate") ? "page" : undefined}>{tr('nav.plan_budget')}</a>
                 <a href={lUrl("/playbook/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/playbook") ? "page" : undefined}>Playbooks</a>
                 <a href={lUrl("/projects/")} role="menuitem" class="block px-3 py-2 text-xs font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors" aria-current={currentPath.startsWith("/projects") ? "page" : undefined}>{tr('nav.projects')}</a>
@@ -362,6 +366,9 @@ const organizationSchema = {
             </div>
           </details>
           <a href={lUrl("/plan/")} class="px-3 py-3 rounded-md text-sm font-bold text-[var(--accent)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">Budget Binder</a>
+          <a href={lUrl("/cost-estimator/")} class="px-3 py-3 rounded-md text-sm font-bold text-[var(--accent)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ {tr('nav.bid_estimators')}</a>
+          <a href={lUrl("/skill-profile/")} class="px-3 py-3 rounded-md text-sm font-bold text-[var(--accent)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ {tr('nav.diy_skill_profile')}</a>
+          <a href={lUrl("/best/")} class="px-3 py-3 rounded-md text-sm font-bold text-[var(--accent)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">★ {tr('nav.climate_matchmaker')}</a>
           <a href={lUrl("/renovate/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.plan_budget')}</a>
           <a href={lUrl("/playbook/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">Playbooks</a>
           <a href={lUrl("/maintenance/")} class="px-3 py-3 rounded-md text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-muted)] transition-colors min-h-[44px]">{tr('nav.maintenance')}</a>

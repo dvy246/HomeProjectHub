@@ -217,7 +217,7 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
                   }
                 }
               }}
-              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-9 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
+              className="text-xs bg-[var(--bg-inset)] border border-[var(--border)] rounded-lg h-11 px-2.5 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)] transition-colors w-full"
             >
               {PRESETS.concrete.map((p, i) => (
                 <option key={i} value={i}>{p.name}</option>
@@ -336,7 +336,7 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
                 placeholder={defaultPricePerBag.toFixed(2)}
                 value={customUnitPrice}
                 onChange={(e) => setCustomUnitPrice(e.target.value)}
-                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-10 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -348,7 +348,7 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
                 placeholder="8"
                 value={taxRate}
                 onChange={(e) => setTaxRate(e.target.value)}
-                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+                className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-10 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
               />
             </div>
             {laborType === "contractor" && (
@@ -363,7 +363,7 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
                   placeholder={defaultLaborRate.toFixed(2)}
                   value={customLaborRate}
                   onChange={(e) => setCustomLaborRate(e.target.value)}
-                  className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-8 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
+                  className="text-xs bg-[var(--bg)] border border-[var(--border)] rounded-md h-10 px-2 text-[var(--fg)] focus:outline-none focus:border-[var(--border-hover)]"
                 />
               </div>
             )}
