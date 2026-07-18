@@ -162,6 +162,9 @@ All schemas built in [schema.ts](file:///Users/divyyadav/developer/HomeProjectHu
 - All guides credit **Marcus Vance (DIY Construction Specialist)**.
 - All estimates link to [/disclaimer/](file:///Users/divyyadav/developer/HomeProjectHub/src/pages/disclaimer.astro).
 
+### AdSense & Placement Rules
+- Do not manually layout advertisement slots or create mock placeholders. AdSense Auto Ads handles ad injection automatically. Ad components should be completely empty/stubbed out.
+
 ---
 
 ## 7. Shipped Features

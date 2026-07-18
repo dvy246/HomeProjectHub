@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import SquareFootageCalc from "../../../components/calculators/SquareFootageCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -44,10 +43,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Square Footage Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate square footage for rectangles, circles, triangles, and L-shapes.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><SquareFootageCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["All measurements in feet.", "L-shape areas calculated by dividing into rectangles.", "Circle area uses radius (half the diameter).", "Triangle area uses base x height / 2.", "Results rounded to 2 decimal places."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How to measure square footage of a room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed text-pretty">To measure the square footage of a standard rectangular room, use a tape measure to find the length and width of the floor in feet. Multiply those two numbers together (Length × Width) to calculate the total square feet. For rooms with alcoves, closets, or L-shapes, divide the floor space into individual rectangular sections, calculate the square footage of each section separately, and sum them together. If you are planning flooring or paint, use our online Square Footage Calculator to easily sum multiple areas and add a 10% safety waste factor.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the square footage of a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room is 144 sq ft. This is wall-to-wall floor area — wall paint needs perimeter x ceiling height.</p></details>

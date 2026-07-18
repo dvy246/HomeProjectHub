@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import PipeWeightCalc from "../../../components/calculators/PipeWeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Pipe Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate pipe weight per foot based on outer diameter and wall thickness.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><PipeWeightCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Formula calculates weight of the pipe wall material only.", "Steel density: 0.2836 lb/cu in (490 lb/cu ft).", "Does not include fittings, flanges, or valves.", "Schedule designations follow ANSI/ASME B36.10 standard."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does 1 ft of 4 inch Schedule 40 steel pipe weigh?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 4" Schedule 40 pipe (4.5" OD, 0.237" wall) weighs 10.79 lb/ft. For 20 ft: 215.8 lbs.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is Schedule 80 vs Schedule 40 weight?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Schedule 80 has thicker walls than Schedule 40 for the same OD. For 2" pipe: Sch 40 = 3.65 lb/ft, Sch 80 = 5.02 lb/ft.</p></details>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import SpiralStaircaseCalc from "../../../components/calculators/SpiralStaircaseCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -44,11 +43,9 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Spiral Staircase Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Design a spiral staircase with accurate dimensions. Calculate riser height, tread width, stringer length, and check IRC compliance for your stair project.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
 
   <section><SpiralStaircaseCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Walk line calculated at 12 inches from inner handrail.", "IRC 2018 code minimums applied for compliance checks.", "Stringer length is approximate — verify with manufacturer specs.", "Headroom clearance assumes minimum 6 ft 6 inches."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the minimum diameter for a spiral staircase?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">IRC requires minimum 60 inches diameter (5 ft) for a spiral staircase to allow 26 inch clear tread width at the walk line.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the maximum riser height for a spiral staircase?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">IRC allows maximum 9.5 inch riser height for spiral staircases, compared to 7.75 inches for standard stairs.</p></details>

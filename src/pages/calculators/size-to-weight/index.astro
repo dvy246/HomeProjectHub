@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import SizeToWeightCalc from "../../../components/calculators/SizeToWeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Size to Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Convert material dimensions to weight for any material.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><SizeToWeightCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Material densities from standard engineering references.", "Weight is for solid rectangular plates only.", "Actual weight varies by alloy, moisture, and composition.", "Steel: 0.2836 lb/cu in, Aluminum: 0.0975, Wood: varies by species."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How do I convert size to weight?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Multiply length x width x thickness in consistent units, then multiply by the material density. Use our calculator for quick results.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What materials can I calculate?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Steel, aluminum, copper, brass, wood (multiple species), glass, concrete, and stone — all with built-in density values.</p></details>

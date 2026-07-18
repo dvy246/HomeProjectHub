@@ -1,6 +1,5 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import AdSlot from "../../components/AdSlot.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/compare/concrete-vs-asphalt/";
@@ -35,7 +34,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-compare" />
 
     <section>
       <h2 id="cost-comparison" class="text-xl font-bold tracking-tight mb-4">Cost Comparison</h2>
@@ -86,7 +84,6 @@ const schema = graphSchema(
       </div>
     </section>
 
-    <AdSlot slotId="ad-mid-compare" />
 
     <section>
       <h2 id="verdict" class="text-xl font-bold tracking-tight mb-4">Which Should You Choose?</h2>

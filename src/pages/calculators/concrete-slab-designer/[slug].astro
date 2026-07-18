@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteSlabDesigner from "../../../components/calculators/ConcreteSlabDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
@@ -119,7 +118,6 @@ const schema = graphSchema(
       Pre-calculated blueprints and complete material quantities for a {seed.label.toLowerCase()}. View structural details, rebar stick counts, and required sub-base materials. Customize the design in real-time below.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <!-- Static Build-time Output for SEO crawlability and fast page load -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 no-print">

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import DeckDesigner from "../../../components/calculators/DeckDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../lib/schema";
@@ -102,7 +101,6 @@ const schema = graphSchema(
       Pre-calculated joist layouts and framing hardware specifications for a {seed.label.toLowerCase()}. View post base counts, hanger specifications, and estimated lumber weights. Customize the deck details below.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <!-- Static Build-time Output for SEO crawlability and fast page load -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 no-print">

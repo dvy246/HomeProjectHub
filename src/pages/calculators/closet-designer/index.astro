@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ClosetDesignerComponent from "../../../components/calculators/ClosetDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
@@ -114,7 +113,6 @@ const schema = graphSchema(
       Design your custom closet layout with rods, shelves, drawers, and shoe racks. Enter wall dimensions, add sections, and get a live material list with estimated cost.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <ClosetDesignerComponent client:visible />
@@ -131,7 +129,6 @@ const schema = graphSchema(
       ]}
     />
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
       <h2 class="text-xl font-bold text-[var(--fg)]">Closet Organization & Layout Design Guide</h2>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import IceWaterShieldCalc from "../../../components/calculators/IceWaterShieldCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 
@@ -76,7 +75,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <IceWaterShieldCalc client:visible />

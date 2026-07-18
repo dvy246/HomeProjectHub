@@ -1,6 +1,5 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import AdSlot from "../../components/AdSlot.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/compare/shingles-vs-metal-roof/";
@@ -35,7 +34,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-compare" />
 
     <section>
       <h2 id="quick-comparison" class="text-xl font-bold tracking-tight mb-4">Quick Comparison</h2>
@@ -72,7 +70,6 @@ const schema = graphSchema(
       </div>
     </section>
 
-    <AdSlot slotId="ad-mid-compare" />
 
     <section>
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>

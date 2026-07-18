@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import TileDesigner from "../../../components/calculators/TileDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
@@ -79,7 +78,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId="ad-tile-designer-top" />
 
     <!-- Interactive Tile Layout Canvas Component -->
     <section>
@@ -207,6 +205,5 @@ const schema = graphSchema(
     </section>
 
     <!-- Bottom Ad Slot -->
-    <AdSlot slotId="ad-tile-designer-bottom" />
   </article>
 </Layout>

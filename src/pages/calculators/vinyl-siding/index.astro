@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import VinylSidingCalc from "../../../components/calculators/VinylSidingCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -45,10 +44,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Vinyl Siding Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate vinyl siding squares, trim pieces, and starter strips.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><VinylSidingCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["1 square = 100 sq ft of siding coverage.", "Trim estimated by linear footage of openings.", "Starter strip equals linear ft of wall base.", "J-channel needed around each window and door.", "Add 10-15% waste for cuts and overlaps.", "Gable ends calculated as triangle area."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is a square of siding?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A square is 100 sq ft of siding coverage. It's the standard unit for quoting all lap siding materials.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many squares of siding for a 2000 sq ft house?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Rough estimate: exterior wall area of a 2000 sq ft house is about 1600-2000 sq ft = 16-20 squares. This varies by wall height and window count.</p></details>

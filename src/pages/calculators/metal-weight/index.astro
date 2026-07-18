@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import WeightCalc from "../../../components/calculators/WeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Metal Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate metal weight for steel, aluminum, brass, and copper.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><WeightCalc client:visible materials={[{ id: "steel_a36", label: "Steel A36 (0.2836 lb/cu in)" }, { id: "aluminum_6061", label: "Aluminum 6061 (0.0975 lb/cu in)" }, { id: "brass", label: "Brass (0.315 lb/cu in)" }, { id: "copper", label: "Copper (0.324 lb/cu in)" }]} defaultMaterial="steel_a36" /></section>
   <EstimateMethodology formula={formula} assumptions={["Material densities from standard engineering references.", "Weight calculated for solid rectangular shapes only.", "Actual weight varies by alloy composition and temper.", "Steel A36: 0.2836 lb/cu in, Aluminum 6061: 0.0975, Brass: 0.315, Copper: 0.324."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does steel weigh per cubic inch?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Steel weighs 0.2836 lb per cubic inch (490 lb/cu ft). A 1" x 1" x 1" cube of steel weighs 0.28 lbs.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Is brass heavier than steel?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Brass at 0.315 lb/cu in is about 11% heavier than steel at 0.284 lb/cu in. Copper at 0.324 lb/cu in is even heavier.</p></details>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import AggregateCalc from "../../../components/calculators/AggregateCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 
@@ -73,7 +72,6 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Rip Rap Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Estimate rip rap for erosion control projects. Get cubic yards and tons for shoreline and slope protection.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
     <section><AggregateCalc client:visible aggregates={aggs} defaultKey="rip_rap" calculatorLabel="Rip Rap" /></section>
     <EstimateMethodology
       formula={formula}
@@ -83,7 +81,6 @@ const schema = graphSchema(
         "Rip rap is typically placed over filter fabric.",
       ]}
     />
-    <AdSlot slotId="ad-in-content-mid" />
     <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3"><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much rip rap?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">(sq ft × depth/12)/27 = cu yd. × 1.55 = tons.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Rip rap uses?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Erosion control on shorelines, slopes, channels.</p></details><details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Rip rap depth?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">12-24" depending on water flow and slope.</p></details></div></section>
     <footer class="pt-8 mt-6 border-t border-[var(--border)]"><h4 class="text-xs font-bold uppercase tracking-wider text-[var(--fg-muted)] mb-4">Related Calculators</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <a href="/calculators/river-rock/" class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] transition-colors"><span class="text-sm font-semibold">River Rock</span></a>

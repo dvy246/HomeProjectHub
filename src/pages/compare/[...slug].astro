@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import MaterialWise from "../../components/calculators/MaterialWise";
-import AdSlot from "../../components/AdSlot.astro";
 import { graphSchema, webPageSchema, webApplicationSchema, breadcrumbListSchema, faqPageSchema, mathSolverSchema, howToSchema } from "../../lib/schema";
 import {
   ALL_CATEGORIES,
@@ -169,7 +168,6 @@ const schema = graphSchema(
       <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">{description}</p>
     </header>
 
-    <AdSlot slotId={`ad-top-compare-${category || "hub"}`} />
 
     <section class="my-4">
       <MaterialWise client:visible
@@ -246,7 +244,6 @@ const schema = graphSchema(
       </ol>
     </section>
 
-    <AdSlot slotId={`ad-bottom-compare-${category || "hub"}`} />
 
     <section class="pt-8 mt-6">
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>

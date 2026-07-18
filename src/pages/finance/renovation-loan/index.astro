@@ -1,0 +1,116 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import RenovationLoanCalc from "../../../components/calculators/RenovationLoanCalc";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/finance/renovation-loan/";
+const title = "Renovation Loan Calculator (FHA 203k & HomeStyle) | HomePlanningHub";
+const description = "Calculate monthly payments and costs for FHA 203k and Fannie Mae HomeStyle renovation loans. Estimate contingency reserves, HUD fees, and PMI.";
+
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "What is an FHA 203k loan?",
+    a: "An FHA 203k loan is a government-backed mortgage that allows you to borrow money for both home purchase (or refinance) and home improvements through a single loan. It is designed for primary residences and comes in two forms: Limited (for minor repairs up to $35,000) and Standard (for major structural renovations)."
+  },
+  {
+    q: "What is the difference between Limited and Standard 203k?",
+    a: "The Limited 203k is for straightforward, non-structural repairs up to $35,000 and does not require a HUD consultant. The Standard 203k is for complex, structural renovations over $35,000 and mandates the use of a certified HUD consultant to oversee the project."
+  },
+  {
+    q: "What is a Fannie Mae HomeStyle loan?",
+    a: "The Fannie Mae HomeStyle Renovation loan is a conventional loan that combines home purchase and renovation costs. Unlike the FHA 203k, it can be used for second homes or investment properties, and often allows a wider range of luxury improvements like installing a pool."
+  },
+  {
+    q: "How much is the minimum down payment for a renovation loan?",
+    a: "For an FHA 203k loan, the minimum down payment is typically 3.5% of the total cost (purchase price plus renovation costs). For a Fannie Mae HomeStyle loan, the minimum down payment is 3% for first-time homebuyers or 5% for standard primary residence buyers."
+  },
+  {
+    q: "What is a contingency reserve?",
+    a: "A contingency reserve is a safety fund required by the lender, typically 10% to 20% of the total renovation budget. It ensures that any unexpected costs or overruns during construction are covered without the borrower running out of money. If unused, it is typically applied to the principal balance."
+  },
+  {
+    q: "Do I need a HUD Consultant?",
+    a: "If you are applying for a Standard FHA 203k loan, a HUD consultant is mandatory. They inspect the property, write the work write-up, and conduct draw inspections during construction. You do not need a HUD consultant for a Limited 203k or a conventional HomeStyle loan, though lenders may require their own inspectors."
+  },
+  {
+    q: "How are contractor payments handled?",
+    a: "Contractors are not paid upfront. Instead, the renovation funds are held in an escrow account. As work is completed, the lender (or HUD consultant) inspects the progress and releases funds in 'draws' directly to the contractor or borrower."
+  },
+  {
+    q: "Can I do the work myself (DIY)?",
+    a: "Generally, no. Both FHA 203k and HomeStyle loans strongly prefer or require that you hire licensed, insured contractors to complete the work. Self-help is very rarely approved and only if you can prove you have the professional licenses and experience to do the job."
+  },
+  {
+    q: "Does my credit score affect the loan?",
+    a: "Yes. FHA 203k loans typically require a minimum credit score of 580 to qualify for the 3.5% down payment, though many lenders prefer 620+. Fannie Mae HomeStyle loans generally require a minimum score of 620, with better interest rates offered to those with scores above 740."
+  },
+  {
+    q: "What improvements are NOT allowed?",
+    a: "For FHA 203k, 'luxury' items like new swimming pools, outdoor fireplaces, or satellite dishes are prohibited (though repairing an existing pool is usually allowed). Fannie Mae HomeStyle is more lenient and generally allows any permanent fixture that adds value to the property, including pools."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Finance", path: "/finance/" },
+    { name: "Renovation Loan", path: PAGE_PATH },
+  ]),
+  mathSolverSchema({
+    name: "Renovation Loan Calculator Equation",
+    description: "Determine the total cost, monthly PITI, contingency reserve, and required HUD consultant fees for FHA 203k or Fannie Mae HomeStyle loans.",
+    formula: "Total Loan = (Purchase Price + Renovation Budget + Contingency Reserve + Fees) - Down Payment; Monthly Payment = Principal + Interest + PMI + Taxes + Insurance",
+    url: canonical,
+  }),
+  faqPageSchema(faqs)
+);
+---
+<Layout title={title} description={description} schema={schema} canonical={canonical}>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="mb-8 md:mb-12 print:hidden">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-[var(--fg)] tracking-tight mb-4 text-balance">
+        Renovation Loan Calculator
+      </h1>
+      <p class="text-lg text-[var(--fg-secondary)] max-w-3xl text-pretty">
+        {description}
+      </p>
+    </div>
+
+    <div class="mb-16">
+      <RenovationLoanCalc client:load />
+    </div>
+
+    <section class="border-t border-[var(--border)] pt-8 mt-4 flex flex-col gap-6 print:hidden">
+      <div>
+        <h2 id="faq" class="text-2xl font-bold tracking-tight mb-6 text-[var(--fg)]">
+          Frequently Asked Questions
+        </h2>
+        
+        <div class="space-y-4">
+          {faqs.map(faq => (
+            <details class="group border border-[var(--border)] rounded-lg bg-white dark:bg-stone-900 overflow-hidden">
+              <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-[var(--fg)] hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors">
+                <span>{faq.q}</span>
+                <span class="transition group-open:rotate-180">
+                  <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </summary>
+              <p class="text-[var(--fg-secondary)] text-sm mt-3 group-open:animate-fadeIn p-4 pt-0 leading-relaxed text-pretty">
+                {faq.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-12">
+      <RelatedCalculators slug="diy-vs-pro" />
+    </div>
+  </main>
+</Layout>

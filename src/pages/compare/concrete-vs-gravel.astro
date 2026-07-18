@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CompareMaterials from "../../components/CompareMaterials";
-import AdSlot from "../../components/AdSlot.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/compare/concrete-vs-gravel/";
@@ -38,7 +37,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Ad Slot -->
-    <AdSlot slotId="ad-compare-gravel-top" />
 
     <!-- Interactive Grid -->
     <section class="my-4">
@@ -116,6 +114,5 @@ const schema = graphSchema(
     </section>
 
     <!-- Ad Slot -->
-    <AdSlot slotId="ad-compare-gravel-bottom" />
   </article>
 </Layout>

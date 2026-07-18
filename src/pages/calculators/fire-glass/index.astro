@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import FireGlassCalc from "../../../components/calculators/FireGlassCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -64,7 +63,6 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Fire Glass Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how much fire glass you need for fire pits, fire tables, and fireplaces. Get pounds and bag counts for round or square fire features.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
     <section><FireGlassCalc client:visible /></section>
     <EstimateMethodology
       formula={formula}
@@ -74,7 +72,6 @@ const schema = graphSchema(
         "Round pits: use diameter, Square pits: use length × width."
       ]}
     />
-    <AdSlot slotId="ad-in-content-mid" />
     <section>
       <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-3">

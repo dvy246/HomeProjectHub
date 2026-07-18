@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import DiYVsProCalc from "../../../components/calculators/DiYVsProCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
@@ -126,7 +125,6 @@ const faqs = [
       Compare the true cost of doing it yourself vs hiring a professional contractor. Factor in materials, tools, your time value, waste, rework risk, and get a side-by-side cost comparison for any home improvement project.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <DiYVsProCalc client:visible />
@@ -142,7 +140,6 @@ const faqs = [
       ]}
     />
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
       <h2 class="text-xl font-bold text-[var(--fg)]">DIY vs Pro Cost Comparison Guide</h2>

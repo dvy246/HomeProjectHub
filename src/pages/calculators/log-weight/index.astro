@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import LogWeightCalc from "../../../components/calculators/LogWeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Log Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Estimate the weight of a log based on diameter, length, and species.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><LogWeightCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Log approximated as a cylinder — actual taper may reduce volume.", "Species density values from the USDA Wood Handbook.", "Weight assumes green (freshly cut) moisture content.", "Standing timber weight is higher than milled lumber weight.", "Bark weight not included — adds ~10% to total."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does an 8 ft oak log weigh?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">An 8 ft oak log with 12" diameter weighs about 300 lbs. Oak density averages 47 lb/cu ft. Volume: (pi x 1^2 x 8) / 4 = 6.3 cu ft x 47 = 296 lbs.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the heaviest common log species?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Hickory at 50 lb/cu ft and white oak at 47 lb/cu ft are among the heaviest. Balsa at 9 lb/cu ft is the lightest.</p></details>

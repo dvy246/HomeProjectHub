@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Quiz from "../../../components/Quiz";
-import AdSlot from "../../../components/AdSlot.astro";
 import { PIPE_WEIGHT_QUESTIONS } from "../../../data/quizzes/pipe-weight";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../../lib/schema";
 
@@ -33,9 +32,7 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Pipe Weight Quiz</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Test your understanding of pipe weight calculations, schedule classifications, and steel material properties. This 8-question quiz covers the essential knowledge for working with steel pipe specifications.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
     <section><Quiz title="Pipe Weight Quiz" questions={PIPE_WEIGHT_QUESTIONS} client:visible /></section>
-    <AdSlot slotId="ad-in-content-mid" />
     <section>
       <h2 id="faq" class="text-xl font-bold mb-3">Pipe Weight Reference</h2>
       <div class="flex flex-col gap-3">

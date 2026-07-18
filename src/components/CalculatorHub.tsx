@@ -108,6 +108,11 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "renovation/deck", name: "Deck Cost", category: "Renovation", icon: "lumber" },
   { slug: "renovation/flooring", name: "Flooring Cost", category: "Renovation", icon: "grid" },
   { slug: "renovation/fence", name: "Fence Cost", category: "Renovation", icon: "fence" },
+  { slug: "finance/renovation-loan", name: "Renovation Loan Calculator", category: "Renovation", icon: "weight" },
+  { slug: "renovation/adu-calculator", name: "ADU Cost & ROI Calculator", category: "Renovation", icon: "home" },
+  { slug: "planning/permit-cost-calculator", name: "Building Permit Cost Estimator", category: "Renovation", icon: "shield" },
+  { slug: "energy/hvac-replacement-calculator", name: "HVAC & Heat Pump Savings", category: "Specialty", icon: "shield" },
+  { slug: "maintenance/inspection-checklist", name: "Home Inspection Checklist & Repair", category: "Specialty", icon: "shield" },
 ];
 
 const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile", "Renovation"];

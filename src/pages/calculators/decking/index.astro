@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import DeckingCalc from "../../../components/calculators/DeckingCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -43,7 +42,6 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Decking Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how many deck boards you need. Enter deck dimensions and board size to get board count, linear feet, square footage, and fastener estimates.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
 
   <section><DeckingCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Standard 5/4\" decking or 2x6 boards.", "Board gaps of 1/8\" between boards.", "10% waste factor recommended for cuts and mistakes."]} />
@@ -82,7 +80,6 @@ const schema = graphSchema(
     </div>
   </section>
 
-  <AdSlot slotId="ad-in-content-mid" />
 
   <section>
     <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Decking Estimation</h2>

@@ -1,0 +1,115 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import InspectionChecklist from "../../../components/calculators/InspectionChecklist";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/maintenance/inspection-checklist/";
+const title = "Home Inspection Checklist & Repair Cost Estimator | HomePlanningHub";
+const description = "An interactive home inspection checklist with instant repair cost estimates. Flag major issues, estimate negotiation credits, and download a punch list.";
+const formula = "Estimated Repair Cost = Sum of low/high estimated costs of selected inspection checklist items.";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "How much does a typical home inspection cost?",
+    a: "A typical home inspection costs between $300 and $500, depending on the size, age, and location of the house. Additional specialized inspections, such as for radon, mold, or pests, can add $100 to $200 each to the total cost."
+  },
+  {
+    q: "What are the most common major issues found during home inspections?",
+    a: "The most common major issues include roof damage or end of lifespan, foundation and structural cracks, outdated or unsafe electrical panels, plumbing leaks or old galvanized pipes, and HVAC systems requiring immediate replacement."
+  },
+  {
+    q: "Can I use this checklist to negotiate after an inspection?",
+    a: "Yes. By identifying issues and using the estimated repair costs, you can request that the seller either fix the specific problems before closing or provide a credit at closing so you can hire your own contractors."
+  },
+  {
+    q: "What does 'High Risk/Major Action' mean?",
+    a: "Items flagged as 'High Risk/Major Action' are typically safety hazards, structural defects, or expensive repairs that could significantly impact the home's value or livability, such as foundation cracks, electrical panel upgrades, or major plumbing leaks."
+  },
+  {
+    q: "Are the repair cost estimates accurate for my area?",
+    a: "The estimates provided are based on national averages. Actual repair costs can vary significantly based on your local labor rates, material costs, and the specific scope of the repair. Always get quotes from local licensed contractors."
+  },
+  {
+    q: "Do I still need to hire a professional home inspector?",
+    a: "Yes. This checklist is a helpful tool for initial walkthroughs or estimating repair credits, but it does not replace a licensed, professional home inspector who has the training and tools to uncover hidden issues."
+  },
+  {
+    q: "What should I look for when inspecting the roof?",
+    a: "Look for missing, curled, or damaged shingles, rusted or leaking flashing around chimneys and vents, sagging areas in the roof deck, and gutters that are clogged, damaged, or pulling away from the fascia."
+  },
+  {
+    q: "How do I check for foundation problems?",
+    a: "Look for horizontal or large step-stair cracks in the foundation walls, uneven or sloping floors inside the home, doors and windows that stick or won't close properly, and signs of water intrusion or poor grading outside."
+  },
+  {
+    q: "What are common electrical issues flagged in older homes?",
+    a: "Older homes frequently have ungrounded outlets, double-tapped breakers, outdated knob-and-tube wiring, or undersized electrical panels (like 60-amp or 100-amp service) that need upgrading to handle modern electrical loads."
+  },
+  {
+    q: "How can I tell if the HVAC system is failing?",
+    a: "Signs of a failing HVAC system include inconsistent temperatures between rooms, unusual noises (banging, squealing), frequent cycling on and off, visible rust or leaks around the unit, and systems that are over 15-20 years old."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Maintenance", path: "/maintenance/" },
+    { name: "Inspection Checklist", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Home Inspection Repair Estimator",
+    description,
+    formula,
+    url: canonical,
+  }),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 print:hidden" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/maintenance/" class="hover:text-[var(--fg)] transition-colors">Maintenance</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Inspection Checklist</span>
+    </nav>
+
+    <div class="print:hidden">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Home Inspection Checklist & Repair Estimator</h1>
+      <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl mt-4">
+        {description}
+      </p>
+    </div>
+
+    <section>
+      <InspectionChecklist client:load />
+    </section>
+
+    <section class="print:hidden mt-12">
+      <h2 id="faq" class="text-xl font-bold mb-6">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 group">
+            <summary class="text-sm font-semibold cursor-pointer list-none flex justify-between items-center">
+              <h3 class="text-sm font-semibold m-0">{faq.q}</h3>
+              <svg class="w-4 h-4 text-[var(--fg-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)] leading-relaxed">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <div class="print:hidden">
+      <RelatedCalculators slug="inspection-checklist" />
+    </div>
+  </article>
+</Layout>

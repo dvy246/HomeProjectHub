@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import WainscotingDesignerComponent from "../../../components/calculators/WainscotingDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
@@ -94,7 +93,6 @@ const schema = graphSchema(
       Design wainscoting, board and batten, picture frame molding, or wood slat accent walls. Enter wall dimensions, place outlets or windows to avoid clashes, and get an optimized wood cut list.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <WainscotingDesignerComponent client:visible />
@@ -109,7 +107,6 @@ const schema = graphSchema(
       ]}
     />
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
       <h2 class="text-xl font-bold text-[var(--fg)]">Wainscoting & Accent Wall Spacing Guide</h2>

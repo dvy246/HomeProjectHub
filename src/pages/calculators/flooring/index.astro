@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import FlooringCalc from "../../../components/calculators/FlooringCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
@@ -77,7 +76,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-flooring" />
 
     <section>
       <FlooringCalc client:visible />

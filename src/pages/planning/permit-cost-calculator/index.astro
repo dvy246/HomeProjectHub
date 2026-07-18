@@ -1,0 +1,125 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PermitCostCalculator from "../../../components/calculators/PermitCostCalculator";
+import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/planning/permit-cost-calculator/";
+const title = "Building Permit Cost Estimator & Plan Review Timeline | HomePlanningHub";
+const description = "Estimate municipal building permit costs, plan review fees, and processing times by project valuation and category. Find required permit documents.";
+const formula = "Permit Fee = Base Fee + Plan Review Fee (often 65% of base) + Surcharges (often 0.05% of valuation).";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "What is a building permit and why do I need one?",
+    a: "A building permit is official approval from your local government indicating that your proposed construction project complies with local building codes. You need one to ensure the safety, structural integrity, and zoning compliance of your project."
+  },
+  {
+    q: "How much does a building permit cost?",
+    a: "Building permit costs typically range from $150 to $2,000 depending on your location and project size. Some cities charge a flat fee, while others base the cost on the total project value (usually 1-2%)."
+  },
+  {
+    q: "Do I need a permit for a bathroom remodel?",
+    a: "Yes, you generally need a permit if you are moving plumbing, adding electrical outlets, or taking down walls. Cosmetic updates like painting or replacing a vanity usually do not require a permit."
+  },
+  {
+    q: "How much is a permit for a deck?",
+    a: "Deck permits usually cost between $100 and $300. You will almost always need a permit for a deck that is attached to your house or is more than 30 inches off the ground."
+  },
+  {
+    q: "What happens if I build without a permit?",
+    a: "Building without a permit can result in heavy fines, forced removal of the work, and issues when trying to sell your home. Insurance companies may also refuse to cover damages related to unpermitted work."
+  },
+  {
+    q: "How long does it take to get a building permit?",
+    a: "Simple permits (like for a deck or fence) can often be approved over the counter or within a few days. Complex projects (like additions) can take 2-6 weeks for plan review."
+  },
+  {
+    q: "What documents are required for a permit application?",
+    a: "Typical requirements include an application form, architectural drawings, site plans showing property lines, and engineering specs. Specific requirements vary heavily based on the project category."
+  },
+  {
+    q: "Can I estimate permit costs if I do the work myself?",
+    a: "Yes, but you still need to estimate the fair market value of the project as if a contractor were doing it. Municipalities use standard valuation tables, so drastically underestimating the value of your labor won't reduce the permit fee."
+  },
+  {
+    q: "What happens if I do work without a permit?",
+    a: "Working without a permit can result in stop-work orders, heavy fines, and you may be forced to tear down the unpermitted work. It also creates major legal and financial liabilities when trying to sell the home later."
+  },
+  {
+    q: "Are there additional state surcharges?",
+    a: "Many states apply a small surcharge to building permits, often a fraction of a percent of the valuation (e.g., 0.05%). These funds typically go toward state building code updates, education, or environmental programs."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Planning", path: "/planning/" },
+    { name: "Permit Cost Calculator", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Building Permit Cost Formulas",
+    description,
+    formula,
+    url: canonical,
+  }),
+  faqPageSchema(faqs)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-8 print:hidden">
+      <nav class="flex text-sm text-stone-500 mb-4" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2">
+          <li>
+            <a href="/" class="hover:text-stone-900 transition-colors">Home</a>
+          </li>
+          <li>
+            <span class="mx-2 text-stone-400">/</span>
+          </li>
+          <li>
+            <a href="/planning/" class="hover:text-stone-900 transition-colors">Planning</a>
+          </li>
+          <li>
+            <span class="mx-2 text-stone-400">/</span>
+          </li>
+          <li class="text-stone-900 font-medium" aria-current="page">Permit Cost Calculator</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl font-bold text-stone-900 mb-4">Building Permit Cost Estimator</h1>
+      <p class="text-lg text-stone-600 max-w-3xl">
+        Estimate municipal building permit costs, plan review fees, and processing times by project valuation and category. Avoid surprises when submitting your plans to the city.
+      </p>
+    </div>
+
+    <PermitCostCalculator client:load />
+
+    <section class="mt-16 pt-12 border-t border-stone-200 print:hidden">
+      <h2 class="text-2xl font-bold text-stone-900 mb-8">Frequently Asked Questions</h2>
+      <div class="space-y-4 max-w-4xl">
+        {faqs.map((faq) => (
+          <details class="group bg-white border border-stone-200 rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-stone-900 hover:bg-stone-50 transition-colors">
+              <span class="text-lg">{faq.q}</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <div class="p-4 bg-stone-50/50 text-stone-600 border-t border-stone-100 leading-relaxed">
+              <p>{faq.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

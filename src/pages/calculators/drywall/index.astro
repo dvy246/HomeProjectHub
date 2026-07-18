@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import DrywallCalc from "../../../components/calculators/DrywallCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -45,7 +44,6 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Drywall Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate drywall sheets, joint tape, compound, and screws for your walls. Enter wall dimensions and sheet size for accurate material estimates.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><DrywallCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Wall area calculated as perimeter x ceiling height.", "Standard 4x8 sheet size (32 sq ft per sheet).", "Does not subtract door and window openings — order 10% extra for waste instead.", "Joint compound estimate covers 3 coats of taping/mudding."]} />
 
@@ -86,7 +84,6 @@ const schema = graphSchema(
     </div>
   </section>
 
-  <AdSlot slotId="ad-in-content-mid" />
 
   <section>
     <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Drywall Estimation</h2>

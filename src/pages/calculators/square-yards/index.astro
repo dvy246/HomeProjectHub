@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import SquareYardsCalc from "../../../components/calculators/SquareYardsCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Square Yards Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Convert square feet to square yards instantly.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><SquareYardsCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Formula: sq ft / 9 = sq yd.", "Based on 3 ft per yard (9 sq ft per sq yd).", "Result rounded to 2 decimal places."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many square feet in a square yard?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">9 square feet = 1 square yard (3 ft x 3 ft). To convert sq ft to sq yd, divide by 9.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many square yards is a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room = 144 sq ft. 144 / 9 = 16 square yards. Carpet is often sold by the square yard.</p></details>

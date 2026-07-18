@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import MulchCalc from "../../../components/calculators/MulchCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -65,7 +64,6 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Mulch Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how many bags or cubic yards of mulch you need for garden beds and landscaping. Compare bark, cedar, rubber, and dyed mulch.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
     <section><MulchCalc client:visible /></section>
     <EstimateMethodology
       formula={formula}
@@ -75,7 +73,6 @@ const schema = graphSchema(
         "Rubber mulch is significantly heavier."
       ]}
     />
-    <AdSlot slotId="ad-in-content-mid" />
     <section>
       <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-3">

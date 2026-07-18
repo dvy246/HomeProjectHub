@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import WeightCalc from "../../../components/calculators/WeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Steel Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate steel weight for A36, 1018, 4140, and stainless steels.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><WeightCalc client:visible materials={[{ id: "steel_a36", label: "Steel A36 (0.2836 lb/cu in)" }, { id: "steel_1018", label: "Steel 1018 (0.2836 lb/cu in)" }, { id: "steel_4140", label: "Steel 4140 (0.2836 lb/cu in)" }, { id: "steel_stainless_304", label: "Stainless 304 (0.289 lb/cu in)" }, { id: "steel_stainless_316", label: "Stainless 316 (0.290 lb/cu in)" }]} defaultMaterial="steel_a36" /></section>
   <EstimateMethodology formula={formula} assumptions={["Carbon steel density: 0.2836 lb/cu in (490 lb/cu ft).", "Stainless 304: 0.289 lb/cu in, Stainless 316: 0.290 lb/cu in.", "Weight calculated for solid rectangular shapes only.", "Actual weight varies slightly by specific alloy composition."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does a cubic inch of steel weigh?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Carbon steel (A36, 1018, 4140) weighs 0.2836 lb per cubic inch. Stainless steel is slightly heavier at 0.289-0.290 lb/cu in.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the weight of a 1 inch steel plate per sq ft?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 1" thick A36 steel plate weighs 40.8 lbs per square foot. That's 0.2836 lb/cu in x 144 cu in = 40.8 lbs.</p></details>

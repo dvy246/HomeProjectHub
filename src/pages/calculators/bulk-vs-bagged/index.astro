@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import BulkVsBaggedCalc from "../../../components/calculators/BulkVsBaggedCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
@@ -59,7 +58,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId="ad-bulk-vs-bagged-top" />
 
     <!-- Comparative Visualizer Panel -->
     <section>
@@ -113,6 +111,5 @@ const schema = graphSchema(
     />
 
     <!-- Bottom Ad Slot -->
-    <AdSlot slotId="ad-bulk-vs-bagged-bottom" />
   </article>
 </Layout>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import AggregateCalc from "../../../components/calculators/AggregateCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Limestone Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate crushed limestone quantity in tons and cubic yards.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><AggregateCalc client:visible aggregates={[{ id: "limestone", label: "Crushed Limestone (1.55 t/cu yd)", tonsPerCuYd: 1.55 }]} defaultKey="limestone" calculatorLabel="Limestone" /></section>
   <EstimateMethodology formula={formula} assumptions={["Limestone density: 1.55 tons per cubic yard.", "Compaction factor: material settles 10-15%.", "Depth recommendations for driveways: 6 inches."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much crushed limestone for a driveway?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 10x40 ft driveway at 6" depth needs about 5.9 tons: (400 x 0.5) / 27 = 7.4 cu yd x 1.55 = 11.5 tons.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What size crushed limestone is best for driveways?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">#57 stone (1-1.5") is standard for driveways. #8 (3/8-1/2") is better for walkways. #4 (2-4") is used as base course.</p></details>

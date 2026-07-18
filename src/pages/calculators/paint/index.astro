@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import PaintCalc from "../../../components/calculators/PaintCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import RelatedGuides from "../../../components/ui/RelatedGuides.astro";
@@ -64,7 +63,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-paint" />
 
 
     <section><PaintCalc client:visible /></section>
@@ -112,7 +110,6 @@ const schema = graphSchema(
       </ul>
     </section>
 
-    <AdSlot slotId="ad-mid-paint" />
 
     <section>
       <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Paint Estimation</h2>

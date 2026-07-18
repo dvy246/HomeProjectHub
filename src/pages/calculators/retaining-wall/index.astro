@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import RetainingWallCalc from "../../../components/calculators/RetainingWallCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -65,7 +64,6 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Retaining Wall Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how many blocks and how much gravel base you need for a retaining wall project. Enter wall length, height, and block size for accurate estimates.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
 
   <section><RetainingWallCalc client:visible /></section>
   <EstimateMethodology
@@ -113,7 +111,6 @@ const schema = graphSchema(
     </div>
   </section>
 
-  <AdSlot slotId="ad-in-content-mid" />
 
   <section>
     <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Retaining Wall Estimation</h2>

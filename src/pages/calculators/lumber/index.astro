@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import LumberCalc from "../../../components/calculators/LumberCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -45,10 +44,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Lumber Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate board feet, weight, and volume for lumber by species. Enter dimensions and quantity to estimate material requirements for woodworking projects.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><LumberCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Board foot formula uses nominal dimensions.", "Species density values from Wood Database.", "Weight assumes kiln-dried lumber at 12% moisture content.", "Hardwood and softwood densities differ significantly."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is a board foot?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A board foot is 1 ft long x 1 ft wide x 1 inch thick (144 cubic inches). It's the standard unit for measuring lumber volume.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many board feet in a 2x4x8?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 2x4x8 contains 5.33 board feet: (8 x 2 x 4) / 12 = 5.33 bd ft. Actual size is 1.5 x 3.5 inches.</p></details>

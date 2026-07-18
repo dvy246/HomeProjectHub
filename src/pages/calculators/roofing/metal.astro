@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import MetalRoofCalc from "../../../components/calculators/MetalRoofCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 
@@ -74,7 +73,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-metal" />
 
     <section><MetalRoofCalc client:visible /></section>
 
@@ -115,7 +113,6 @@ const schema = graphSchema(
       </ul>
     </section>
 
-    <AdSlot slotId="ad-mid-metal" />
 
     <section>
       <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes in Metal Roof Estimation</h2>

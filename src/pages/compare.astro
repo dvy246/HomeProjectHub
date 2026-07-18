@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CompareMaterials from "../components/CompareMaterials";
-import AdSlot from "../components/AdSlot.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema } from "../lib/schema";
 
 const canonical = "https://homeplanninghub.com/compare/";
@@ -32,7 +31,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId="ad-top-compare" />
 
     <!-- Interactive Component -->
     <section class="my-4">
@@ -73,6 +71,5 @@ const schema = graphSchema(
     </section>
 
     <!-- Secondary Ad Slot -->
-    <AdSlot slotId="ad-bottom-compare" />
   </article>
 </Layout>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ScopeBinder from "../../components/calculators/ScopeBinder";
-import AdSlot from "../../components/AdSlot.astro";
 import RelatedCalculators from "../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../lib/schema";
 
@@ -98,13 +97,11 @@ const faqs = [
       Plan every surface of your room renovation. Enter your dimensions, pick your finishes, and get a complete material takeoff with itemized costs. Share the printable budget binder with your contractor or save it for your planning binder.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <ScopeBinder client:visible />
     </section>
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
       <h2 class="text-xl font-bold text-[var(--fg)]">What Is a Renovation Scope & Budget Binder?</h2>

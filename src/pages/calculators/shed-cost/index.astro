@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import ShedCostCalc from "../../../components/calculators/ShedCostCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -44,10 +43,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Shed Cost Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Estimate shed building material costs. Enter dimensions, roof type, siding, and floor material for a detailed cost breakdown of your shed project.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><ShedCostCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Material prices based on national averages — local prices may vary.", "Roofing cost includes sheathing, underlayment, and shingles or metal.", "Hardware includes hinges, handles, hasp, and fasteners.", "Does not include foundation prep, permits, or labor costs."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does it cost to build a 10x12 shed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Material cost for a 10x12 shed ranges from $1,500-$3,500 for DIY. A contractor-built shed costs $3,000-$8,000 depending on materials and finish level.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What's the cheapest shed roof type?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A flat or shallow-pitch shed roof is cheapest. Gable roofs cost more but provide attic storage and better water runoff.</p></details>

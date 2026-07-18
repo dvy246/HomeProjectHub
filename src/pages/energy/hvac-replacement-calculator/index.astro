@@ -1,0 +1,146 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import HVACCalculator from "../../../components/calculators/HVACCalculator";
+import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/energy/hvac-replacement-calculator/";
+const title = "HVAC & Heat Pump Cost & Energy Savings Calculator | HomePlanningHub";
+const description = "Estimate HVAC replacement costs and energy bill savings. Compare standard AC + gas furnace vs. high-efficiency heat pumps with Section 25C tax credits.";
+const formula = "Tonnage = sq ft / (550 to 650); Net Cost = Gross Cost - Tax Credits; Savings = Annual Bill * (0.02 to 0.40)";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "How many tons of HVAC do I need for my house?",
+    a: "A general rule of thumb is 1 ton of HVAC capacity per 500 to 600 square feet in hot or cold climates, and 1 ton per 600 to 700 square feet in moderate climates. For example, a 2,000 sq ft home in a moderate climate typically needs a 3-ton to 3.5-ton system."
+  },
+  {
+    q: "What is the Section 25C tax credit for heat pumps?",
+    a: "The Federal Section 25C Energy Efficient Home Improvement Credit provides a non-refundable tax credit for 30% of the cost of installing a qualifying high-efficiency heat pump, up to a maximum credit of $2,000 per year."
+  },
+  {
+    q: "How much does it cost to replace a standard AC and gas furnace?",
+    a: "Replacing a standard central AC and gas furnace typically costs between $7,500 and $12,500 for the full system. The cost varies based on the tonnage required, efficiency ratings (SEER2 and AFUE), and installation complexity."
+  },
+  {
+    q: "How much does a high-efficiency heat pump cost?",
+    a: "A high-efficiency heat pump installation generally costs between $9,000 and $16,500 before tax credits or rebates. While the upfront cost is higher than a standard gas furnace setup, federal tax credits up to $2,000 and lower annual utility bills help offset the difference."
+  },
+  {
+    q: "Do heat pumps work in cold climates?",
+    a: "Yes, modern high-efficiency cold-climate heat pumps are designed to operate efficiently in sub-freezing temperatures, often down to -15°F (-26°C) or lower. They use advanced variable-speed compressors to extract heat from very cold outdoor air."
+  },
+  {
+    q: "How much energy does a heat pump save?",
+    a: "Compared to electric resistance heating (like baseboards), a heat pump can save 30% to 40% on heating energy. Compared to an older gas furnace, savings typically range from 10% to 15%, depending on local gas and electricity rates and the system's efficiency."
+  },
+  {
+    q: "What is the payback period for a high-efficiency heat pump?",
+    a: "The payback period usually ranges from 5 to 12 years. It depends on the initial cost difference (after the $2,000 tax credit), your home's insulation, and how much you currently pay for gas, oil, or electricity."
+  },
+  {
+    q: "Should I replace my AC and furnace at the same time?",
+    a: "Yes, it is highly recommended to replace both the AC and furnace simultaneously. The two systems share the same blower motor and ductwork. Mismatched systems can suffer from poor efficiency, frequent breakdowns, and voided warranties."
+  },
+  {
+    q: "What is a dual-fuel heat pump system?",
+    a: "A dual-fuel system pairs an electric heat pump with a gas furnace. The heat pump provides highly efficient heating during mild winter days, and the system automatically switches to the gas furnace when temperatures drop to extreme lows."
+  },
+  {
+    q: "Do I need a 3-ton or 4-ton heat pump?",
+    a: "Sizing depends on your square footage, ceiling height, insulation, and climate. While a 2,000 sq ft home might need a 3-ton unit in a moderate climate, a similar home in a very hot climate or with poor insulation might require a 4-ton unit. A professional Manual J load calculation is the only way to know for sure."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Energy", path: "/energy/" },
+    { name: "HVAC Replacement", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "HVAC Sizing and Cost Formulas",
+    description,
+    formula,
+    url: canonical,
+  }),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <main class="w-full">
+    {/* Page Header */}
+    <header class="w-full bg-stone-50 border-b border-stone-200 pt-24 pb-12 mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-4 tracking-tight">
+          HVAC Replacement & Heat Pump Savings Calculator
+        </h1>
+        <p class="text-xl text-stone-600 max-w-3xl leading-relaxed">
+          Estimate sizing, replacement costs, and annual energy savings. Compare a standard gas furnace & AC system to a high-efficiency heat pump with federal tax credits.
+        </p>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      {/* Calculator Section */}
+      <section class="mb-20">
+        <HVACCalculator client:load />
+      </section>
+
+      {/* Guide/SEO Content */}
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <article class="lg:col-span-8 prose prose-stone max-w-none">
+          <h2>Understanding HVAC Replacement Costs</h2>
+          <p>
+            Upgrading your HVAC system is a major investment, but it also presents an opportunity to significantly reduce your energy bills and carbon footprint. When deciding between a traditional gas furnace with a standard AC unit and a high-efficiency heat pump, it's essential to consider the net cost after incentives.
+          </p>
+
+          <h3>Heat Pump vs. Gas Furnace + AC</h3>
+          <p>
+            A <strong>standard gas furnace and AC</strong> setup has been the norm for decades. It relies on combusting natural gas for heat and using a traditional split-system AC for cooling. While cheaper upfront, it misses out on major efficiency gains and larger tax credits.
+          </p>
+          <p>
+            A <strong>high-efficiency heat pump</strong> handles both heating and cooling by moving heat rather than generating it. Thanks to modern variable-speed compressors, they operate efficiently even in cold climates. They qualify for the lucrative Section 25C tax credit, which covers 30% of project costs up to $2,000.
+          </p>
+          
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8 not-prose">
+            <h4 class="font-bold text-blue-900 mb-2">Section 25C Tax Credit Example</h4>
+            <p class="text-blue-800 text-sm">
+              If your heat pump installation costs $12,000, 30% of the cost is $3,600. However, the credit is capped at $2,000. Therefore, you receive a $2,000 reduction in your tax liability, lowering your net cost to $10,000.
+            </p>
+          </div>
+
+          <h2 class="mt-12">Frequently Asked Questions</h2>
+          <div class="space-y-4 not-prose mt-6">
+            {faqs.map((faq) => (
+              <details class="group border border-stone-200 rounded-lg bg-white overflow-hidden">
+                <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-5 text-stone-900 hover:bg-stone-50 transition-colors">
+                  <span class="pr-6 font-semibold">{faq.q}</span>
+                  <span class="transition group-open:rotate-180 flex-shrink-0 text-stone-400">
+                    <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </summary>
+                <div class="text-stone-600 bg-stone-50 p-5 pt-0 border-t border-stone-100 text-sm leading-relaxed">
+                  <p>{faq.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </article>
+        
+        <aside class="lg:col-span-4 print:hidden">
+          <div class="sticky top-8 space-y-6">
+             <div class="bg-stone-100 rounded-xl p-6 border border-stone-200">
+               <h3 class="font-bold text-stone-900 mb-3">Professional Estimates</h3>
+               <p class="text-sm text-stone-600 mb-4">
+                 Our calculator provides a baseline estimate based on national averages. HVAC installation costs can vary by up to 40% depending on local labor rates, ductwork condition, and home accessibility.
+               </p>
+             </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</Layout>

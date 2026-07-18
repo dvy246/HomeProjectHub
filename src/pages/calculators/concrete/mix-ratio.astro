@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import MixRatioCalc from "../../../components/calculators/MixRatioCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, howToSchema, webApplicationSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 
@@ -81,7 +80,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <MixRatioCalc client:visible />
@@ -129,7 +127,6 @@ const schema = graphSchema(
       </ul>
     </section>
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section>
       <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">

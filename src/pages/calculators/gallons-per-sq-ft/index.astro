@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import GallonsPerSqFtCalc from "../../../components/calculators/GallonsPerSqFtCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Gallons per Square Foot Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate gallons needed per square foot for painting or coating projects.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><GallonsPerSqFtCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Paint coverage: 350 sq ft per gallon (one coat).", "Rough/textured surfaces reduce coverage by 10-20%.", "Two coats recommended for most projects.", "Always buy 10% extra for touch-ups."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many square feet does a gallon of paint cover?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">One gallon of paint typically covers 350-400 sq ft for one coat. Darker colors and rougher surfaces may need more.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many gallons for a 12x12 room?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">A 12x12 room with 8 ft ceilings has about 384 sq ft of wall area. At 350 sq ft per gallon: 1.1 gallons per coat — buy 2 gallons.</p></details>

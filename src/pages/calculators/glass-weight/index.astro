@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import WeightCalc from "../../../components/calculators/WeightCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Glass Weight Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate glass weight for annealed, tempered, and laminated glass.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><WeightCalc client:visible materials={[{ id: "glass_annealed", label: "Annealed Glass (0.09 lb/cu in)" }, { id: "glass_tempered", label: "Tempered Glass (0.09 lb/cu in)" }, { id: "glass_laminated", label: "Laminated Glass (0.092 lb/cu in)" }]} defaultMaterial="glass_annealed" /></section>
   <EstimateMethodology formula={formula} assumptions={["Glass density: ~0.09 lb/cu in (160 lb/cu ft).", "Laminated glass weight includes PVB interlayer.", "Weight calculated for flat glass panels only.", "Curved or drilled glass may vary in actual weight."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How much does a square foot of 1/4 glass weigh?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Standard 1/4" glass weighs about 3.28 lbs per sq ft. For a 4x8 sheet: 12.8 sq ft x 3.28 = 42 lbs.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">Is tempered glass heavier than annealed?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Tempered and annealed glass have the same density (0.09 lb/cu in). Tempered glass is heat-treated for strength but the weight is identical.</p></details>

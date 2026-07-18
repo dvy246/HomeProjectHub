@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteSlabDesigner from "../../../components/calculators/ConcreteSlabDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
@@ -117,7 +116,6 @@ const schema = graphSchema(
       Design your concrete slab or patio with an interactive SVG plan view and cross-section. Choose rectangular, L-shaped, or circular shapes, configure rebar, control joints, sub-base, and finish — all with live material quantities.
     </p>
 
-    <AdSlot slotId="ad-top-leaderboard" />
 
     <section>
       <ConcreteSlabDesigner client:visible />
@@ -134,7 +132,6 @@ const schema = graphSchema(
       ]}
     />
 
-    <AdSlot slotId="ad-in-content-mid" />
 
     <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
       <h2 class="text-xl font-bold text-[var(--fg)]">Concrete Slab & Patio Design Guide</h2>

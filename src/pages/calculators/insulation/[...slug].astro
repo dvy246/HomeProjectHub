@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import InsulationDesigner from "../../../components/calculators/InsulationDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, howToSchema } from "../../../lib/schema";
 import { INSULATION_SEEDS, INSULATION_DIMENSION_SEEDS } from "../../../data/insulation-seeds";
@@ -152,7 +151,6 @@ if (type === "state-home") {
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId="ad-insulation-slug-top" />
 
     <!-- Interactive Component with Seed Props -->
     <section>
@@ -242,7 +240,6 @@ if (type === "state-home") {
     </section>
 
     <!-- Bottom Ad Slot -->
-    <AdSlot slotId="ad-insulation-slug-bottom" />
 
     <!-- Related Calculators Routing -->
     <section class="no-print">

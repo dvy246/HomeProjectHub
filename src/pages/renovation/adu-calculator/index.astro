@@ -1,0 +1,114 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ADUCalculator from "../../../components/calculators/ADUCalculator";
+import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/renovation/adu-calculator/";
+const title = "ADU Cost & ROI Calculator (Accessory Dwelling Unit) | HomePlanningHub";
+const description = "Estimate construction cost, permit fees, utilities, and ROI of building an Accessory Dwelling Unit (ADU) or garage conversion. Calculate payback period.";
+const formula = "ROI = (Annual Net Cash Flow / Grand Total Project Cost) * 100. Payback Period = Grand Total Project Cost / Annual Net Cash Flow.";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "How much does it cost to build a detached ADU?",
+    a: "Building a detached ADU typically costs between $250 and $450 per square foot. For a standard 500 square foot unit, expect total project costs including utility connections and permits to range from $130,000 to $250,000, depending on the quality of finishes and local labor rates."
+  },
+  {
+    q: "Is a garage conversion cheaper than a detached ADU?",
+    a: "Yes, garage conversions are generally much more affordable. They typically cost between $120 and $220 per square foot because the foundation, framing, and roof are already in place. However, you must still budget for insulation, drywall, plumbing, electrical, and updated energy code compliance."
+  },
+  {
+    q: "Do I need special permits for an ADU?",
+    a: "Yes, ADUs require building permits, which often range from $2,500 to $6,000 depending on your municipality. Some regions have streamlined ADU permitting processes to encourage development, but you will still need zoning approval, utility connection permits, and standard construction inspections."
+  },
+  {
+    q: "Can I build an ADU myself to save money?",
+    a: "Yes, taking a DIY approach (self-building) can save you approximately 20% on overall project costs by eliminating general contractor overhead and significantly reducing labor expenses. However, you must still hire licensed professionals for specialized work like plumbing, electrical, and HVAC to meet building codes."
+  },
+  {
+    q: "What are the utility connection costs for an ADU?",
+    a: "Utility connections are a major expense, especially for detached ADUs, often costing $5,000 to $12,000. This includes trenching and running new water, sewer, and electrical lines from the main house or the street. Attached ADUs and garage conversions usually have lower utility connection costs ($2,500 to $7,500)."
+  },
+  {
+    q: "How do I calculate the ROI of an ADU?",
+    a: "To calculate ROI, subtract your annual estimated expenses (maintenance, insurance, taxes, typically 2% of the project cost) from your expected annual rental income to find the net cash flow. Divide the net cash flow by the grand total project cost and multiply by 100 to get your ROI percentage."
+  },
+  {
+    q: "What is a good payback period for an ADU investment?",
+    a: "A strong payback period for an ADU is typically between 7 and 12 years. If your rental income allows you to recoup the initial construction and permitting costs within this timeframe, it is generally considered a highly favorable real estate investment."
+  },
+  {
+    q: "What is the difference between an attached and detached ADU?",
+    a: "An attached ADU shares at least one wall with the primary residence and typically requires a 1-hour rated firewall separation. A detached ADU is a standalone structure in the backyard. Detached units offer more privacy and often command higher rent but come with higher construction and utility trenching costs."
+  },
+  {
+    q: "Does adding an ADU increase my property taxes?",
+    a: "Yes, adding an ADU will trigger a reassessment of your property value, which will increase your property taxes. However, in many jurisdictions, only the value of the new addition is assessed at the current rate, while the primary home's original tax basis remains unchanged."
+  },
+  {
+    q: "Are there zoning restrictions for ADUs?",
+    a: "Zoning regulations vary widely by city and state. Common restrictions include minimum lot sizes, maximum ADU square footage (often capped at 800-1200 sq ft), setback requirements (e.g., 4-5 feet from property lines), and sometimes owner-occupancy requirements or replacement parking mandates for garage conversions."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Renovation", path: "/renovation/" },
+    { name: "ADU Calculator", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "ADU Cost & ROI Formulas",
+    description,
+    formula,
+    url: canonical,
+  }),
+  faqPageSchema(faqs, canonical)
+);
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/renovation/" class="hover:text-[var(--fg)] transition-colors">Renovation</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">ADU Calculator</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">
+      ADU Cost & ROI Calculator — Accessory Dwelling Unit Planner
+    </h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Plan your Accessory Dwelling Unit or garage conversion. Estimate construction costs, utility connections, and permit fees. Calculate your potential rental income, net cash flow, payback period, and overall ROI.
+    </p>
+
+    <section>
+      <ADUCalculator client:visible />
+    </section>
+
+    <section class="mt-12">
+      <h2 id="faq" class="text-2xl font-bold mb-6 text-[var(--fg)]">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-4">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 group">
+            <summary class="text-base font-semibold cursor-pointer list-none flex justify-between items-center text-[var(--fg)]">
+              <h3 class="text-base font-semibold m-0 inline-block">{faq.q}</h3>
+              <span class="ml-4 flex-shrink-0 transition-transform duration-200 group-open:rotate-180">
+                <svg class="w-5 h-5 text-[var(--fg-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-sm text-[var(--fg-secondary)] leading-relaxed">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </article>
+</Layout>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CompareMaterials from "../../components/CompareMaterials";
-import AdSlot from "../../components/AdSlot.astro";
 import { graphSchema, webPageSchema, breadcrumbListSchema, faqPageSchema } from "../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/compare/concrete-vs-pavers/";
@@ -35,7 +34,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-compare-cvp" />
 
     <section class="my-4"><CompareMaterials client:visible /></section>
 
@@ -85,7 +83,6 @@ const schema = graphSchema(
       </div>
     </section>
 
-    <AdSlot slotId="ad-bottom-compare-cvp" />
 
     <section class="pt-8 mt-6">
       <h2 id="faq" class="text-xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>

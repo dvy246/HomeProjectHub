@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../../layouts/Layout.astro";
 import StairStringerDesigner from "../../../../components/calculators/StairStringerDesigner";
-import AdSlot from "../../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../../components/EstimateMethodology.astro";
 import RelatedCalculators from "../../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, webApplicationSchema, howToSchema } from "../../../../lib/schema";
@@ -132,7 +131,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId={`ad-stair-${structure}-${height}`} />
 
     <!-- Interactive React Component prefilled with height param -->
     <section>

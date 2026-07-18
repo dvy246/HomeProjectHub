@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import FrenchDrainCalc from "../../../components/calculators/FrenchDrainCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -43,11 +42,9 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">French Drain Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate french drain materials including gravel, pipe, and fabric.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
 
   <section><FrenchDrainCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Trench width: 12-18 inches for typical french drain.", "Gravel fill rate ~60% of trench volume (subtracting pipe).", "Standard perforated 4 inch PVC pipe.", "Filter fabric wraps the gravel envelope.", "Trench should slope 1% toward outlet (1 ft drop per 100 ft)."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How deep should a french drain be?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">French drains are typically 18-24 inches deep. The trench must be below the problem water level and slope 1% toward the outlet.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What size gravel for french drain?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">1-1.5 inch washed gravel (clear crush) is ideal. Pea gravel is too small and can clog. Never use dirty gravel with fines.</p></details>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import SqFtToCuYdCalc from "../../../components/calculators/SqFtToCuYdCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Square Feet to Cubic Yards Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Convert square footage to cubic yards at any depth.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><SqFtToCuYdCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["Formula: (sq ft x depth in inches) / 324 = cubic yards.", "Add 10-15% waste for compaction and irregular shapes.", "Result rounded to 2 decimal places for accuracy."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many cubic yards is 500 sq ft at 4 inches?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">(500 x 4) / 324 = 6.17 cubic yards. Order 6.8 yards with 10% waste for compaction.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the formula to convert sq ft to cu yd?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Multiply area (sq ft) by depth in inches, divide by 324. This converts to cubic yards directly.</p></details>

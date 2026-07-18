@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ConcreteTubeCalc from "../../../components/calculators/ConcreteTubeCalc";
-import AdSlot from "../../../components/AdSlot.astro";
 import { graphSchema, mathSolverSchema, howToSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 
@@ -74,7 +73,6 @@ const schema = graphSchema(
       </p>
     </header>
 
-    <AdSlot slotId="ad-top-tube" />
 
 
     <section><ConcreteTubeCalc client:visible /></section>
@@ -111,7 +109,6 @@ const schema = graphSchema(
       </ul>
     </section>
 
-    <AdSlot slotId="ad-mid-tube" />
 
     <section>
       <h2 id="common-mistakes" class="text-xl font-bold tracking-tight mb-4">Common Mistakes with Tube Forms</h2>

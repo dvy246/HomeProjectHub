@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import TonnageCalc from "../../../components/calculators/TonnageCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 
@@ -42,10 +41,8 @@ const schema = graphSchema(
   </nav>
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Tonnage Calculator</h1>
   <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Convert pounds to tons and kilograms with this simple weight converter.</p>
-  <AdSlot slotId="ad-top-leaderboard" />
   <section><TonnageCalc client:visible /></section>
   <EstimateMethodology formula={formula} assumptions={["US short ton = 2,000 lbs.", "UK long ton = 2,240 lbs.", "Metric tonne = 1,000 kg = 2,204.6 lbs.", "Conversion uses standard international values."]} />
-  <AdSlot slotId="ad-in-content-mid" />
   <section><h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2><div class="flex flex-col gap-3">
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">How many pounds in a ton?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">2,000 pounds = 1 short ton (US). 2,240 pounds = 1 long ton (UK). 1,000 kilograms = 1 metric tonne.</p></details>
     <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"><summary class="text-sm font-semibold cursor-pointer"><h3 class="text-sm font-semibold m-0">What is the difference between ton and tonne?</h3></summary><p class="mt-3 text-sm text-[var(--fg-secondary)]">Ton (short ton) = 2,000 lbs. Tonne (metric ton) = 1,000 kg = 2,204.6 lbs. Long ton (UK) = 2,240 lbs.</p></details>

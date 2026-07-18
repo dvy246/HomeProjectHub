@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro"
 import AggregateCalc from "../../../components/calculators/AggregateCalc"
-import AdSlot from "../../../components/AdSlot.astro"
 import EstimateMethodology from "../../../components/EstimateMethodology.astro"
 import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema"
 import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro"
@@ -65,7 +64,6 @@ const schema = graphSchema(
     </nav>
     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Gravel Calculator</h1>
     <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-2xl">Calculate how much gravel, crushed stone, or sand you need for driveways, paths, and landscaping beds. Get cubic yards, tons, and truckload estimates.</p>
-    <AdSlot slotId="ad-top-leaderboard" />
     <section><AggregateCalc client:visible aggregates={[
       {
             id: "gravel",
@@ -96,7 +94,6 @@ const schema = graphSchema(
         "Depth should be 4-6 inches for driveways."
       ]}
     />
-    <AdSlot slotId="ad-in-content-mid" />
     <section>
       <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
       <div class="flex flex-col gap-3">

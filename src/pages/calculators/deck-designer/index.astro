@@ -1,7 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import DeckDesigner from "../../../components/calculators/DeckDesigner";
-import AdSlot from "../../../components/AdSlot.astro";
 import EstimateMethodology from "../../../components/EstimateMethodology.astro";
 import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema } from "../../../lib/schema";
 
@@ -79,7 +78,6 @@ const schema = graphSchema(
     </header>
 
     <!-- Top Ad Slot -->
-    <AdSlot slotId="ad-deck-designer-top" />
 
     <!-- Interactive Deck Visualizer Canvas -->
     <section>
@@ -220,6 +218,5 @@ const schema = graphSchema(
     </section>
 
     <!-- Bottom Ad Slot -->
-    <AdSlot slotId="ad-deck-designer-bottom" />
   </article>
 </Layout>
