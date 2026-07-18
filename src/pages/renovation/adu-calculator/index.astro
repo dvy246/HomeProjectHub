@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ADUCalculator from "../../../components/calculators/ADUCalculator";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/renovation/adu-calculator/";
@@ -110,5 +111,9 @@ const schema = graphSchema(
         ))}
       </div>
     </section>
+
+    <div class="mt-12">
+      <RelatedCalculators slug="diy-vs-pro" />
+    </div>
   </article>
 </Layout>

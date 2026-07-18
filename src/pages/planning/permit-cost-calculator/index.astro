@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import PermitCostCalculator from "../../../components/calculators/PermitCostCalculator";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/planning/permit-cost-calculator/";
@@ -121,5 +122,9 @@ const schema = graphSchema(
         ))}
       </div>
     </section>
+
+    <div class="mt-12">
+      <RelatedCalculators slug="diy-vs-pro" />
+    </div>
   </main>
 </Layout>

@@ -13,7 +13,9 @@ export default defineConfig({
         return (
           !path.startsWith('/saved/') &&
           !path.startsWith('/planner/') &&
-          !path.startsWith('/projects/') &&
+          path !== '/projects/' &&
+          path !== '/projects/index.html' &&
+          !path.startsWith('/projects/new') &&
           !path.startsWith('/zz-test/') &&
           !path.startsWith('/embed/') &&
           !path.startsWith('/renovate/plans/') &&
@@ -45,7 +47,8 @@ export default defineConfig({
           path.startsWith('/finance/') ||
           path.startsWith('/renovation/') ||
           path.startsWith('/planning/') ||
-          path.startsWith('/energy/')
+          path.startsWith('/energy/') ||
+          path.startsWith('/projects/')
         ) {
           item.priority = 0.8;
           item.changefreq = 'weekly';

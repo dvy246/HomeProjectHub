@@ -17,7 +17,15 @@ Allow: /terms/
 Allow: /disclaimer/
 Disallow: /saved/
 Disallow: /planner/
-Disallow: /projects/
+Allow: /projects/concrete-patio/
+Allow: /projects/building-deck/
+Allow: /projects/room-renovation/
+Allow: /projects/flooring-tiling/
+Allow: /projects/roofing-replacement/
+Allow: /projects/landscaping-hardscape/
+Disallow: /projects/new/
+Disallow: /projects/index.html
+Disallow: /projects/$
 Disallow: /embed/
 Disallow: /renovate/plans/
 

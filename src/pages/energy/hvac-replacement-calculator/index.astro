@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import HVACCalculator from "../../../components/calculators/HVACCalculator";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
 import { graphSchema, webApplicationSchema, faqPageSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
 
 const canonical = "https://homeplanninghub.com/energy/hvac-replacement-calculator/";
@@ -140,6 +141,10 @@ const schema = graphSchema(
              </div>
           </div>
         </aside>
+      </div>
+
+      <div class="mt-12">
+        <RelatedCalculators slug="insulation" />
       </div>
     </div>
   </main>
