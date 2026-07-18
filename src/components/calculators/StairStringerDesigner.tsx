@@ -298,6 +298,7 @@ function StairStringerDesigner({ initialRise, initialStructure, projectId }: Sta
                 value={totalRise}
                 onChange={e => setTotalRise(e.target.value)}
                 className="w-full accent-[var(--accent)] cursor-ew-resize h-1 bg-[var(--bg-inset)] rounded-lg appearance-none"
+                aria-label="Total rise or height of stairs in inches"
               />
             </div>
 
@@ -315,6 +316,7 @@ function StairStringerDesigner({ initialRise, initialStructure, projectId }: Sta
                 value={targetRun}
                 onChange={e => setTargetRun(e.target.value)}
                 className="w-full accent-[var(--accent)] cursor-ew-resize h-1 bg-[var(--bg-inset)] rounded-lg appearance-none"
+                aria-label="Tread run depth in inches"
               />
             </div>
 
@@ -487,9 +489,14 @@ function StairStringerDesigner({ initialRise, initialStructure, projectId }: Sta
           </div>
         </Card>
 
-        {/* Warning disclaimer YMYL */}
-        <div className="border-l-4 border-l-[var(--warning)] bg-[var(--bg-subtle)] p-3 rounded-r-lg text-[10px] leading-relaxed text-[var(--fg-secondary)]">
-          <strong>YMYL SAFETY NOTICE:</strong> Stair design calculations are structural estimates. Building code requirements (such as IRC R311.7) vary by municipality. Always verify plans with local building departments and consult a licensed structural professional before starting construction.
+        <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 text-xs text-[var(--fg-secondary)] leading-relaxed no-print">
+          <span className="font-bold flex items-center gap-1.5 mb-1.5 text-[var(--fg)]">
+            <svg className="w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Professional Verification Recommended
+          </span>
+          This is a planning and layout estimator tool. Load-bearing structural elements (including stair rises, treads, stringer framing hangers, and concrete footing pads) are subject to localized building codes (such as IRC R311.7 regulations). Always verify specifications with a certified structural engineer or licensed contractor before purchase or installation.
         </div>
       </div>
     </div>

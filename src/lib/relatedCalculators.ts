@@ -229,6 +229,12 @@ const RELATED_MAP: Record<string, RelatedLink[]> = {
     { href: "/calculators/square-footage/", label: "Square Footage Calculator", description: "Measure any room or space." },
     { href: "/calculators/diy-vs-pro/", label: "DIY vs Contractor Cost", description: "Compare DIY vs hiring a pro for your project." },
     { href: "/calculators/tile/", label: "Tile Calculator", description: "Estimate tile quantities for floors." },
+    { href: "/calculators/insulation/", label: "Insulation Planner", description: "Estimate whole-house R-value insulation needs." },
+  ],
+  "insulation": [
+    { href: "/calculators/framing-designer/", label: "Wall Framing Designer", description: "Layout studs and headers before insulating." },
+    { href: "/calculators/diy-vs-pro/", label: "DIY vs Pro Cost", description: "Compare insulation contractor bids with DIY cost." },
+    { href: "/calculators/payload/", label: "Payload Safety Calculator", description: "Verify vehicle payload margins for rigid foam bundles." },
   ],
 };
 
@@ -241,4 +247,88 @@ const DEFAULT_RELATED: RelatedLink[] = [
 
 export function getRelatedCalculators(slug: string): RelatedLink[] {
   return RELATED_MAP[slug] || DEFAULT_RELATED;
+}
+
+export interface ParentHub {
+  href: string;
+  label: string;
+}
+
+const PARENT_HUB_MAP: Record<string, ParentHub> = {
+  // Concrete
+  "concrete-slab": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete-slab-designer": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/slab": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/footing": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/column": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/wall": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/tube": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/steps": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/mix-ratio": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/curb-gutter": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/block-fill": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  "concrete/rebar": { href: "/projects/concrete-patio/", label: "Concrete Patios & Slabs" },
+  
+  // Decks & Railings
+  "deck-designer": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+  "decking": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+  "baluster": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+  "spindle-spacing": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+  "stair-stringer-designer": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+  "spiral-staircase": { href: "/projects/building-deck/", label: "Decks, Railings & Stairs" },
+
+  // Room Renovation & Drywall
+  "plan": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "framing-designer": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "framing": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "drywall": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "wainscoting-designer": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "closet-designer": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "paint": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "lumber": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "board-foot": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+
+  // Flooring & Tiling
+  "tile-designer": { href: "/projects/flooring-tiling/", label: "Flooring, Tiling & Accents" },
+  "tile": { href: "/projects/flooring-tiling/", label: "Flooring, Tiling & Accents" },
+  "flooring": { href: "/projects/flooring-tiling/", label: "Flooring, Tiling & Accents" },
+
+  // Roofing & Pitch
+  "roofing/shingles": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "roofing/metal": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "roofing/plywood": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "roofing/pitch": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "roofing/snow-load": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "roofing/ice-water-shield": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+  "insulation": { href: "/projects/roofing-replacement/", label: "Roof Replacement & Pitch" },
+
+  // Landscaping & Hardscapes
+  "hardscape-designer": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "gravel": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "limestone": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "rip-rap": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "river-rock": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "sand": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "mulch": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "french-drain": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "fire-glass": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "sealant": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "sonotube": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "retaining-wall": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "brick": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" }
+};
+
+export function getParentHub(pathname: string): ParentHub | null {
+  let clean = pathname.trim();
+  if (clean.startsWith("/")) clean = clean.slice(1);
+  if (clean.endsWith("/")) clean = clean.slice(0, -1);
+  
+  if (clean.startsWith("calculators/")) {
+    const slug = clean.substring("calculators/".length);
+    if (PARENT_HUB_MAP[slug]) return PARENT_HUB_MAP[slug];
+  }
+  
+  if (PARENT_HUB_MAP[clean]) return PARENT_HUB_MAP[clean];
+  
+  return null;
 }

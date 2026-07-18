@@ -27,7 +27,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 function Quiz({ title, questions }: QuizProps) {
   const { t } = useI18n();
-  const [shuffled, setShuffled] = useState<QuizQuestion[]>(questions);
+  const [shuffled, setShuffled] = useState<QuizQuestion[]>(() => questions.slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
@@ -35,14 +35,14 @@ function Quiz({ title, questions }: QuizProps) {
   const [finished, setFinished] = useState(false);
 
   useEffect(() => {
-    setShuffled(shuffleArray(questions));
+    setShuffled(shuffleArray(questions).slice(0, 8));
   }, [questions]);
 
   const total = shuffled.length;
   const q = shuffled[current];
 
   const handleSelect = useCallback((idx: number) => {
-    if (answered) return;
+    if (answered || !q) return;
     setSelected(idx);
     setAnswered(true);
     if (idx === q.correctIndex) setScore((s) => s + 1);
@@ -59,7 +59,8 @@ function Quiz({ title, questions }: QuizProps) {
   }, [current, total]);
 
   const handleRestart = useCallback(() => {
-    const reshuffled = shuffleArray(questions);
+    const reshuffled = shuffleArray(questions).slice(0, 8);
+    setShuffled(reshuffled);
     setCurrent(0);
     setSelected(null);
     setAnswered(false);
@@ -91,6 +92,8 @@ function Quiz({ title, questions }: QuizProps) {
       </Card>
     );
   }
+
+  if (!q) return null;
 
   return (
     <div className="flex flex-col gap-4">

@@ -96,6 +96,7 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "shed-cost", name: "Shed Cost", category: "Specialty", icon: "home" },
   { slug: "spiral-staircase", name: "Spiral Staircase", category: "Specialty", icon: "stairs" },
   { slug: "stair-stringer-designer", name: "Stair Stringer Designer", category: "Specialty", icon: "stairs" },
+  { slug: "insulation", name: "Insulation Planner", category: "Specialty", icon: "shield" },
   { slug: "paint", name: "Paint", category: "Paint", icon: "paint" },
   { slug: "tile", name: "Tile", category: "Tile", icon: "grid" },
   { slug: "flooring", name: "Flooring", category: "Specialty", icon: "grid" },

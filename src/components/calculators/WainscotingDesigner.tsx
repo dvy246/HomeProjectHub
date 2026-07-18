@@ -514,6 +514,7 @@ function WainscotingDesigner() {
                 value={wallWidth}
                 onChange={(e) => setWallWidth(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Wall width in inches"
               />
             </div>
 
@@ -530,6 +531,7 @@ function WainscotingDesigner() {
                 value={wallHeight}
                 onChange={(e) => setWallHeight(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Wall height in inches"
               />
             </div>
 
@@ -547,6 +549,7 @@ function WainscotingDesigner() {
                   value={panelCount}
                   onChange={(e) => setPanelCount(parseInt(e.target.value))}
                   className="w-full accent-[var(--accent)] cursor-pointer"
+                  aria-label="Horizontal panel columns count"
                 />
               </div>
             )}
@@ -565,6 +568,7 @@ function WainscotingDesigner() {
                   value={rowCount}
                   onChange={(e) => setRowCount(parseInt(e.target.value))}
                   className="w-full accent-[var(--accent)] cursor-pointer"
+                  aria-label="Vertical panel rows count"
                 />
               </div>
             )}
@@ -584,6 +588,7 @@ function WainscotingDesigner() {
                   value={layoutOffset}
                   onChange={(e) => setLayoutOffset(parseFloat(e.target.value))}
                   className="w-full accent-[var(--accent)] cursor-pointer"
+                  aria-label="Layout shift offset in inches to avoid outlet boxes"
                 />
               </div>
             )}

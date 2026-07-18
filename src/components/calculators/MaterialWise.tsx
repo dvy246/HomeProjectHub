@@ -593,14 +593,19 @@ function MaterialWise({
                 </div>
 
                 {materialData?.affiliateLinks.lowes && (
-                  <a
-                    href={buildAffiliateUrl("lowes", materialData.affiliateLinks.lowes)}
-                    target="_blank"
-                    rel="sponsored nofollow"
-                    className="text-xs bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-bold px-3 py-2 rounded-lg text-center transition-all cursor-pointer mt-2"
-                  >
-                    Buy {mat.materialName} at Lowe's
-                  </a>
+                  <div className="flex flex-col gap-1.5 mt-3">
+                    <p className="text-[9px] text-[var(--fg-muted)] leading-normal italic">
+                      {t('compare.affiliate_disclaimer')}
+                    </p>
+                    <a
+                      href={buildAffiliateUrl("lowes", materialData.affiliateLinks.lowes)}
+                      target="_blank"
+                      rel="sponsored nofollow"
+                      className="text-xs bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-bold px-3 py-2 rounded-lg text-center transition-all cursor-pointer"
+                    >
+                      Buy {mat.materialName} at Lowe's
+                    </a>
+                  </div>
                 )}
               </Card>
             );

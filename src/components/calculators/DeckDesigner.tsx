@@ -265,6 +265,7 @@ function DeckDesigner({
                 value={widthFt}
                 onChange={(e) => setWidthFt(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Deck width in feet"
               />
             </div>
 
@@ -281,6 +282,7 @@ function DeckDesigner({
                 value={depthFt}
                 onChange={(e) => setDepthFt(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Deck depth in feet"
               />
             </div>
           </div>
@@ -447,6 +449,16 @@ function DeckDesigner({
           items={costItems}
           defaultLaborHours={Math.max(8, Math.round((widthFt * depthFt) / 20))}
         />
+
+        <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 text-xs text-[var(--fg-secondary)] leading-relaxed no-print">
+          <span className="font-bold flex items-center gap-1.5 mb-1.5 text-[var(--fg)]">
+            <svg className="w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Professional Verification Recommended
+          </span>
+          This is a planning and layout estimator tool. Load-bearing structural elements (including deck footings, support beams, joists, and post fasteners) are subject to localized building codes, wind/snow loads, and soil conditions. Always verify specifications with a certified structural engineer or licensed contractor before purchase or installation.
+        </div>
       </div>
     </div>
   );

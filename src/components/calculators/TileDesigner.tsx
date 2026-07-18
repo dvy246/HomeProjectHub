@@ -253,6 +253,7 @@ function TileDesigner() {
                 value={widthFt}
                 onChange={(e) => setWidthFt(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Room width in feet"
               />
             </div>
 
@@ -269,6 +270,7 @@ function TileDesigner() {
                 value={heightFt}
                 onChange={(e) => setHeightFt(parseInt(e.target.value))}
                 className="w-full accent-[var(--accent)] cursor-pointer"
+                aria-label="Room height or depth in feet"
               />
             </div>
           </div>

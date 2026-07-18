@@ -11,17 +11,22 @@ export default defineConfig({
       filter: (page) => {
         const path = new URL(page).pathname;
         return (
-          !path.includes('/saved/') &&
-          !path.includes('/planner/') &&
-          !path.includes('/projects/') &&
-          !path.includes('/zz-test/') &&
-          !path.includes('/embed/') &&
-          !path.includes('/renovate/plans/') &&
-          !path.includes('/privacy/') &&
-          !path.includes('/terms/') &&
-          !path.includes('/disclaimer/') &&
-          !path.includes('/404') &&
-          !path.includes('/500')
+          !path.startsWith('/saved/') &&
+          !path.startsWith('/planner/') &&
+          !path.startsWith('/projects/') &&
+          !path.startsWith('/zz-test/') &&
+          !path.startsWith('/embed/') &&
+          !path.startsWith('/renovate/plans/') &&
+          path !== '/privacy/' &&
+          path !== '/terms/' &&
+          path !== '/disclaimer/' &&
+          path !== '/privacy.html' &&
+          path !== '/terms.html' &&
+          path !== '/disclaimer.html' &&
+          path !== '/404.html' &&
+          path !== '/500.html' &&
+          path !== '/404/' &&
+          path !== '/500/'
         );
       },
       serialize(item) {
