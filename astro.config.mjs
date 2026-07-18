@@ -41,6 +41,14 @@ export default defineConfig({
         } else if (path.startsWith('/calculators/')) {
           item.priority = 0.8;
           item.changefreq = 'weekly';
+        } else if (
+          path.startsWith('/finance/') ||
+          path.startsWith('/renovation/') ||
+          path.startsWith('/planning/') ||
+          path.startsWith('/energy/')
+        ) {
+          item.priority = 0.8;
+          item.changefreq = 'weekly';
         } else if (path.startsWith('/strategy/')) {
           item.priority = 0.8;
           item.changefreq = 'monthly';

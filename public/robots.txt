@@ -5,6 +5,11 @@ Allow: /strategy/
 Allow: /quizzes/
 Allow: /guides/
 Allow: /compare/
+Allow: /finance/
+Allow: /renovation/
+Allow: /planning/
+Allow: /energy/
+Allow: /maintenance/
 Allow: /about/
 Allow: /contact/
 Allow: /privacy/
