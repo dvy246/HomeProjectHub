@@ -367,7 +367,7 @@ function PermitStateGuides() {
             <ul className="flex flex-col gap-2.5">
               {projectStats.rules.map((rule, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-xs text-[var(--fg-secondary)] leading-relaxed">
-                  <svg className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <svg className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                   <span>{rule}</span>
@@ -384,7 +384,7 @@ function PermitStateGuides() {
             <ul className="flex flex-col gap-2.5">
               {projectStats.exemptions.map((ex, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-xs text-[var(--fg-secondary)] leading-relaxed">
-                  <svg className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <svg className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>{ex}</span>
@@ -402,7 +402,7 @@ function PermitStateGuides() {
         {/* Legal Safeguard Warning */}
         <div className="border border-red-500/20 bg-red-500/5 rounded-xl p-4 text-xs text-[var(--fg-secondary)] leading-relaxed">
           <span className="font-bold flex items-center gap-1.5 mb-1.5 text-[var(--fg)]">
-            <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             Critical Liability Warning & Safeguard

@@ -190,8 +190,10 @@ export default function CostEstimatorWidget({
                           placeholder={String(item.defaultPrice)}
                           onChange={(e) => handlePriceChange(item.key, e.target.value)}
                           onBlur={(e) => handlePriceBlur(item.key, e.target.value, item.defaultPrice)}
-                          className="w-20 h-10 text-right px-2 font-mono bg-[var(--card-bg)] border border-[var(--border)] rounded focus:outline-none focus:border-[var(--accent)] transition-colors"
+                          className="w-20 h-10 text-right px-2 font-mono bg-[var(--card-bg)] border border-[var(--border)] rounded focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:border-[var(--accent)] focus-visible:outline-none transition-colors"
                           aria-label={`Unit price for ${item.name}`}
+                          autoComplete="off"
+                          inputMode="decimal"
                         />
                       </div>
                     </td>
@@ -282,7 +284,9 @@ export default function CostEstimatorWidget({
                       value={laborRate}
                       onChange={(e) => handleLaborRateChange(e.target.value)}
                       onBlur={(e) => handleLaborRateBlur(e.target.value)}
-                      className="w-full h-10 pl-6 pr-3 text-xs bg-[var(--card-bg)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[var(--accent)]"
+                      className="w-full h-10 pl-6 pr-3 text-xs bg-[var(--card-bg)] border border-[var(--border)] rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:border-[var(--accent)] focus-visible:outline-none"
+                      autoComplete="off"
+                      inputMode="decimal"
                     />
                   </div>
                 </div>
@@ -295,7 +299,9 @@ export default function CostEstimatorWidget({
                     value={laborHours}
                     onChange={(e) => handleLaborHoursChange(e.target.value)}
                     onBlur={(e) => handleLaborHoursBlur(e.target.value)}
-                    className="w-full h-10 px-3 text-xs bg-[var(--card-bg)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[var(--accent)]"
+                    className="w-full h-10 px-3 text-xs bg-[var(--card-bg)] border border-[var(--border)] rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:border-[var(--accent)] focus-visible:outline-none"
+                    autoComplete="off"
+                    inputMode="numeric"
                   />
                 </div>
               </div>
