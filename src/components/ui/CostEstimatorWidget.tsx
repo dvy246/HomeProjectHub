@@ -24,26 +24,22 @@ export default function CostEstimatorWidget({
   // Local state for pricing overrides
   // Local state for pricing overrides (stored as strings to allow typing decimals/clearing inputs)
   const [prices, setPrices] = useState<Record<string, string>>({});
-  const [includeLabor, setIncludeLabor] = useState<boolean>(() => {
-    return getMaterialPrice("include_labor", 0) === 1;
-  });
-  const [laborType, setLaborType] = useState<"percent" | "hourly">(() => {
-    return typeof window !== "undefined" && localStorage.getItem("hph_labor_type") === "hourly"
-      ? "hourly"
-      : "percent";
-  });
-  const [laborPercent, setLaborPercent] = useState<number>(() => {
-    return getMaterialPrice("labor_percent", 50);
-  });
-  const [laborRate, setLaborRate] = useState<string>(() => {
-    return String(getMaterialPrice("labor_hourly_rate", 65));
-  });
-  const [laborHours, setLaborHours] = useState<string>(() => {
-    return String(getMaterialPrice("labor_hours", defaultLaborHours));
-  });
-  const [contingencyPercent, setContingencyPercent] = useState<number>(() => {
-    return getMaterialPrice("contingency_percent", 10);
-  });
+  const [includeLabor, setIncludeLabor] = useState<boolean>(false);
+  const [laborType, setLaborType] = useState<"percent" | "hourly">("percent");
+  const [laborPercent, setLaborPercent] = useState<number>(50);
+  const [laborRate, setLaborRate] = useState<string>("65");
+  const [laborHours, setLaborHours] = useState<string>(String(defaultLaborHours));
+  const [contingencyPercent, setContingencyPercent] = useState<number>(10);
+
+  // Load custom labor configurations from storage on mount (avoiding hydration mismatches)
+  useEffect(() => {
+    setIncludeLabor(getMaterialPrice("include_labor", 0) === 1);
+    setLaborType(localStorage.getItem("hph_labor_type") === "hourly" ? "hourly" : "percent");
+    setLaborPercent(getMaterialPrice("labor_percent", 50));
+    setLaborRate(String(getMaterialPrice("labor_hourly_rate", 65)));
+    setLaborHours(String(getMaterialPrice("labor_hours", defaultLaborHours)));
+    setContingencyPercent(getMaterialPrice("contingency_percent", 10));
+  }, [defaultLaborHours]);
 
   // Sync laborHours local state if defaultLaborHours prop changes
   useEffect(() => {

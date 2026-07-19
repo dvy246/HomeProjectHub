@@ -48,6 +48,14 @@ const schema = graphSchema(
 ---
 
 <Layout title={title} description={description} schema={schema}>
+  <script is:inline>
+    if (window.location.search) {
+      const meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.content = 'noindex, follow';
+      document.head.appendChild(meta);
+    }
+  </script>
   <article class="max-w-4xl mx-auto flex flex-col gap-6">
     <header class="mb-2">
       <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6" aria-label="Breadcrumb">

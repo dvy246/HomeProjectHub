@@ -1,6 +1,7 @@
 
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
@@ -23,6 +24,7 @@ import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 import { ReportEngine } from "../ui/ReportEngine";
 import ProjectPlaybook from "./ProjectPlaybook";
+import CostVsValueWidget from "../ui/CostVsValueWidget";
 
 type UnitSystem = "imperial" | "metric";
 
@@ -58,6 +60,40 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
   const [showPlaybook, setShowPlaybook] = useState<boolean>(false);
   const [customUnitPrice, setCustomUnitPrice] = useState<string>("");
   const [taxRate, setTaxRate] = useState<string>("8");
+  const [shareSuccess, setShareSuccess] = useState(false);
+
+  // Sync inputs from URL parameters (on client mount)
+  useEffect(() => {
+    const uParam = getUrlParam("u", "");
+    const lParam = getUrlParam("l", "");
+    const wParam = getUrlParam("w", "");
+    const tParam = getUrlParam("t", "");
+    const wfParam = getUrlParam("wf", "");
+    const bsParam = getUrlParam("bs", "");
+
+    if (uParam === "imperial" || uParam === "metric") setUnitSystem(uParam);
+    if (lParam) setLength(lParam);
+    if (wParam) setWidth(wParam);
+    if (tParam) setThickness(tParam);
+    if (wfParam) setWasteFactor(wfParam);
+    if (bsParam === "40lb" || bsParam === "50lb" || bsParam === "60lb" || bsParam === "80lb") setBagSize(bsParam);
+  }, []);
+
+  // Sync inputs to URL parameters (on change)
+  useEffect(() => {
+    setUrlParams(
+      { u: unitSystem, l: length, w: width, t: thickness, wf: wasteFactor, bs: bagSize },
+      { u: "imperial", l: "10", w: "10", t: "4", wf: "10", bs: "80lb" }
+    );
+  }, [unitSystem, length, width, thickness, wasteFactor, bagSize]);
+
+  const handleShare = async () => {
+    const success = await copyShareUrl();
+    if (success) {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    }
+  };
   const [customLaborRate, setCustomLaborRate] = useState<string>("");
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("concrete-slab", "Concrete Slab Calculator");
@@ -404,27 +440,45 @@ function ConcreteSlabCalc({ initialLength, initialWidth, initialThickness, proje
             </div>
           </div>
 
-          {/* Quick shop buttons */}
-          <div className="mt-4 pt-3 border-t border-[var(--border)] flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider font-semibold">Local Store Price Match:</span>
-            <a
-              href={`https://www.homedepot.com/s/concrete%20mix%20${bagSize}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#F96302]/10 hover:bg-[#F96302]/20 text-[#F96302] font-medium transition-colors"
+          {/* Action buttons */}
+          <div className="mt-4 pt-3 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] text-[var(--fg-muted)] uppercase tracking-wider font-semibold">Local Store Price Match:</span>
+              <a
+                href={`https://www.homedepot.com/s/concrete%20mix%20${bagSize}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#F96302]/10 hover:bg-[#F96302]/20 text-[#F96302] font-medium transition-colors font-semibold"
+              >
+                Check Home Depot
+              </a>
+              <a
+                href={`https://www.lowes.com/search?searchTerm=concrete+mix+${bagSize}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#004990]/10 hover:bg-[#004990]/20 text-[#004990] font-medium transition-colors font-semibold"
+              >
+                Check Lowe's
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-muted)] hover:bg-[var(--bg-inset)] text-[var(--fg)] transition-colors cursor-pointer border border-[var(--border)] font-semibold text-xs"
             >
-              Check Home Depot
-            </a>
-            <a
-              href={`https://www.lowes.com/search?searchTerm=concrete+mix+${bagSize}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#004990]/10 hover:bg-[#004990]/20 text-[#004990] font-medium transition-colors"
-            >
-              Check Lowe's
-            </a>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+              </svg>
+              {shareSuccess ? "Copied!" : "Share Result"}
+            </button>
           </div>
         </Card>
+
+        <CostVsValueWidget
+          projectKey="concrete-slab"
+          customCost={materialCost + (laborType === "contractor" ? estimatedLaborCost : 0)}
+        />
 
         {/* Stepper Math Walkthrough */}
         <Card className="overflow-hidden">

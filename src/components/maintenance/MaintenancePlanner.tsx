@@ -3,6 +3,7 @@ import { MAINTENANCE_TASKS, CATEGORIES, FREQUENCY_LABELS, SEASON_MONTHS, type Ma
 import { getCompletedIds, toggleTask, migrateOldStorage, getNextDue, isOverdue } from "../../lib/maintenanceStorage";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
+import { Card } from "../ui/Card";
 
 type TabView = "monthly" | "seasonal" | "yearly";
 
@@ -17,6 +18,8 @@ function MaintenancePlanner() {
   const [seasonFilter, setSeasonFilter] = useState<string>("auto");
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+  const [isMounted, setIsMounted] = useState(false);
+  const [notifPermission, setNotifPermission] = useState<string>("default");
 
   const [currentMonth, setCurrentMonth] = useState<number>(0);
   const [currentSeason, setCurrentSeason] = useState<string>("spring");
@@ -24,6 +27,10 @@ function MaintenancePlanner() {
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
   useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined" && "Notification" in window) {
+      setNotifPermission(Notification.permission);
+    }
     migrateOldStorage();
     const m = new Date().getMonth();
     setCurrentMonth(m);
@@ -32,7 +39,75 @@ function MaintenancePlanner() {
     refresh();
   }, []);
 
-  const completed = useMemo(() => getCompletedIds(), [tick]);
+  const completed = useMemo(() => isMounted ? getCompletedIds() : new Set<string>(), [isMounted, tick]);
+
+  // Daily alert triggers for active notification subscriptions
+  useEffect(() => {
+    if (isMounted && notifPermission === "granted") {
+      try {
+        const lastNotified = localStorage.getItem("hph_last_notified_date");
+        const today = new Date().toDateString();
+        if (lastNotified !== today) {
+          const overdueTasks = MAINTENANCE_TASKS.filter(
+            (t) => isOverdue(t.id, t.frequency) && !completed.has(t.id)
+          );
+          if (overdueTasks.length > 0) {
+            new Notification("Home Maintenance Alert", {
+              body: `You have ${overdueTasks.length} overdue seasonal maintenance tasks.`,
+              icon: "/favicon.ico",
+            });
+            localStorage.setItem("hph_last_notified_date", today);
+          }
+        }
+      } catch {}
+    }
+  }, [isMounted, notifPermission, completed]);
+
+  const requestNotificationPermission = () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      alert("Browser notifications are not supported on this browser.");
+      return;
+    }
+    Notification.requestPermission().then((perm) => {
+      setNotifPermission(perm);
+      if (perm === "granted") {
+        try {
+          new Notification("Notifications Enabled!", {
+            body: "You will be notified of seasonal home maintenance tasks.",
+            icon: "/favicon.ico",
+          });
+        } catch {}
+      }
+    });
+  };
+
+  const historyItems = useMemo(() => {
+    if (!isMounted) return [];
+    try {
+      const raw = localStorage.getItem("hph_maintenance_tasks");
+      if (!raw) return [];
+      const parsed: Record<string, { lastCompleted?: string }> = JSON.parse(raw);
+      const items = Object.entries(parsed)
+        .filter(([, v]) => !!v.lastCompleted)
+        .map(([taskId, v]) => {
+          const taskObj = MAINTENANCE_TASKS.find(t => t.id === taskId);
+          return {
+            id: taskId,
+            title: taskObj?.title || taskId,
+            completedAt: new Date(v.lastCompleted!).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric"
+            }),
+            rawDate: new Date(v.lastCompleted!)
+          };
+        });
+      // Sort by date descending
+      items.sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+      return items.slice(0, 3);
+    } catch {
+      return [];
+    }
+  }, [isMounted, tick]);
 
   useEffect(() => {
     const handler = () => refresh();
@@ -110,6 +185,79 @@ function MaintenancePlanner() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Streak Dashboard & Notifications Panel */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Streak & Badge Card */}
+        <Card className="p-4 border border-[var(--border)] bg-[var(--card-bg)] flex flex-col justify-between gap-2 shadow-sm">
+          <div>
+            <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-wider block">
+              Maintenance Badge
+            </span>
+            <span className="text-sm font-bold text-[var(--fg)] mt-1 block">
+              {completed.size >= 15 ? "Gold Master Maintainer" :
+               completed.size >= 8 ? "Silver Professional" :
+               completed.size >= 3 ? "Bronze Apprentice" :
+               completed.size >= 1 ? "Novice Homeowner" :
+               "Starter Maintainer"}
+            </span>
+          </div>
+          <span className="text-[10px] text-[var(--fg-muted)]">
+            Streak: {completed.size} lifetime tasks completed
+          </span>
+        </Card>
+
+        {/* Browser Notifications Control */}
+        <Card className="p-4 border border-[var(--border)] bg-[var(--card-bg)] flex flex-col justify-between gap-2 shadow-sm">
+          <div>
+            <span className="text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider block">
+              Reminders & Alerts
+            </span>
+            <span className="text-[10px] text-[var(--fg-secondary)] mt-1 block leading-normal">
+              Get local browser notifications when your seasonal tasks are due.
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={requestNotificationPermission}
+            className={`w-full py-1.5 px-3 rounded-lg text-xs font-bold border transition-all cursor-pointer text-center ${
+              notifPermission === "granted"
+                ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                : notifPermission === "denied"
+                ? "bg-red-500/10 border-red-500/20 text-red-600 cursor-not-allowed"
+                : "bg-[var(--accent)] hover:bg-[var(--accent-hover)] border-[var(--accent)] text-white"
+            }`}
+            disabled={notifPermission === "denied"}
+          >
+            {notifPermission === "granted" ? "Notifications: Active" :
+             notifPermission === "denied" ? "Alerts Blocked" :
+             "Enable Reminders"}
+          </button>
+        </Card>
+
+        {/* Recently Completed Log */}
+        <Card className="p-4 border border-[var(--border)] bg-[var(--card-bg)] flex flex-col justify-between gap-2 shadow-sm">
+          <div>
+            <span className="text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider block">
+              Recent Activity Log
+            </span>
+            {historyItems.length === 0 ? (
+              <span className="text-[10px] text-[var(--fg-muted)] italic mt-2 block">
+                No completions recorded yet.
+              </span>
+            ) : (
+              <ul className="flex flex-col gap-1.5 mt-2">
+                {historyItems.map((item, idx) => (
+                  <li key={idx} className="flex justify-between items-center text-[10px] border-b border-[var(--border)] pb-1 last:border-0 last:pb-0">
+                    <span className="text-[var(--fg-secondary)] truncate max-w-[120px] font-medium">{item.title}</span>
+                    <span className="text-[var(--fg-muted)] shrink-0">{item.completedAt}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Card>
+      </div>
+
       <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--bg-inset)] border border-[var(--border)]">
         <div className="flex-1 h-2 bg-[var(--border)] rounded-full overflow-hidden">
           <div className="h-full bg-[var(--accent)] rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
@@ -208,8 +356,8 @@ function MaintenancePlanner() {
               <div className="flex flex-col gap-1.5">
                 {tasks.map((task) => {
                   const done = completed.has(task.id);
-                  const next = getNextDue(task.id, task.frequency);
-                  const overdue = isOverdue(task.id, task.frequency);
+                  const next = isMounted ? getNextDue(task.id, task.frequency) : null;
+                  const overdue = isMounted ? isOverdue(task.id, task.frequency) : false;
                   return (
                     <label
                       key={task.id}

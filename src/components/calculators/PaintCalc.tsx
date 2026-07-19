@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import SaveMeasurementCard from "../ui/SaveMeasurementCard";
@@ -33,29 +34,53 @@ function PaintCalc({ projectId, onCalculate }: { projectId?: string; onCalculate
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [showPlaybook, setShowPlaybook] = useState<boolean>(false);
+  const [shareSuccess, setShareSuccess] = useState(false);
 
-  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("paint", "Paint Calculator");
-
+  // Sync inputs from URL parameters (on client mount)
   useEffect(() => {
-    onCalculate?.(projectInputs, projectResults, projectMaterials);
-  }, [unitSystem, length, width, height, doors, windows, coats, includeCeiling, onCalculate]);
+    const uParam = getUrlParam("u", "");
+    const lParam = getUrlParam("l", "");
+    const wParam = getUrlParam("w", "");
+    const hParam = getUrlParam("h", "");
+    const dParam = getUrlParam("d", "");
+    const winParam = getUrlParam("win", "");
+    const cParam = getUrlParam("c", "");
+    const clgParam = getUrlParam("clg", false);
+
+    if (uParam === "imperial" || uParam === "metric") setUnitSystem(uParam);
+    if (lParam) setLength(lParam);
+    if (wParam) setWidth(wParam);
+    if (hParam) setHeight(hParam);
+    if (dParam) setDoors(dParam);
+    if (winParam) setWindows(winParam);
+    if (cParam) setCoats(cParam);
+    if (clgParam !== undefined) setIncludeCeiling(clgParam);
+  }, []);
+
+  // Sync inputs to URL parameters (on change)
+  useEffect(() => {
+    setUrlParams(
+      { u: unitSystem, l: length, w: width, h: height, d: doors, win: windows, c: coats, clg: includeCeiling },
+      { u: "imperial", l: "12", w: "14", h: "8", d: "2", win: "2", c: "2", clg: false }
+    );
+  }, [unitSystem, length, width, height, doors, windows, coats, includeCeiling]);
+
+  const handleShare = async () => {
+    const success = await copyShareUrl();
+    if (success) {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    }
+  };
 
   useEffect(() => {
     setSavedRooms(getSavedRooms());
     const handler = () => setSavedRooms(getSavedRooms());
     window.addEventListener("saved-rooms-changed", handler);
-
-    // Read URL search params
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const l = params.get("length");
-      const w = params.get("width");
-      if (l) setLength(l);
-      if (w) setWidth(w);
-    }
-
     return () => window.removeEventListener("saved-rooms-changed", handler);
   }, []);
+
+  const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("paint", "Paint Calculator");
 
   const lenNum = parseNumber(length);
   const widNum = parseNumber(width);
@@ -101,6 +126,10 @@ function PaintCalc({ projectId, onCalculate }: { projectId?: string; onCalculate
     { name: "Primer", quantity: Math.ceil(gallonsNeeded * 0.5), unit: "gallons", category: "paint" },
     { name: "Painter's Tape", quantity: Math.ceil(roomPerimeter / 60), unit: "rolls", category: "supplies" },
   ];
+
+  useEffect(() => {
+    onCalculate?.(projectInputs, projectResults, projectMaterials);
+  }, [unitSystem, length, width, height, doors, windows, coats, includeCeiling, onCalculate]);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -257,16 +286,27 @@ function PaintCalc({ projectId, onCalculate }: { projectId?: string; onCalculate
                 <span className="font-medium tabular-nums">{Math.round(totalArea).toLocaleString()} {t('units.sq_ft') ?? 'sq ft'}</span>
               </div>
             </div>
-            <div className="pt-4 border-t border-[var(--border)] mt-1">
+            <div className="pt-4 border-t border-[var(--border)] mt-1 flex gap-2">
               <a
                 href="#add-to-project-section"
-                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
+                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
+              <button
+                type="button"
+                onClick={handleShare}
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--bg-muted)] hover:bg-[var(--bg-inset)] text-[var(--fg)] transition-colors cursor-pointer border border-[var(--border)]"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+                {shareSuccess ? "Copied!" : "Share"}
+              </button>
             </div>
           </div>
         </div>

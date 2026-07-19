@@ -45,8 +45,10 @@ function MaintenanceCalendar() {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(() => new Set());
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | "all">("all");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     migrateOldStorage();
     const m = new Date().getMonth();
     setCurrentMonth(m);
@@ -150,7 +152,7 @@ function MaintenanceCalendar() {
             <ul className="flex flex-col gap-2">
               {selectedTasks.map(task => {
                 const done = completedTasks.has(task.id);
-                const overdue = isOverdue(task.id, task.frequency);
+                const overdue = isMounted ? isOverdue(task.id, task.frequency) : false;
                 return (
                   <li key={task.id} className={`flex items-start gap-3 text-sm p-2 rounded-lg ${overdue && !done ? 'bg-[var(--warning)]/10' : ''}`}>
                     <input

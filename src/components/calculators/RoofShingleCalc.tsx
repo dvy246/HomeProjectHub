@@ -1,5 +1,6 @@
 import type React from "react";
 import { useState, useEffect } from "react";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Card } from "../ui/Card";
@@ -14,6 +15,7 @@ import AddToProjectCard from "../ui/AddToProjectCard";
 import { parseNumber } from "../../lib/helpers";
 import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
+import CostVsValueWidget from "../ui/CostVsValueWidget";
 
 const SHINGLE_COVERAGE_PER_BUNDLE = 33.33;
 
@@ -34,6 +36,38 @@ function RoofShingleCalc({ initialLength, initialWidth, projectId, onCalculate }
   const [roomName, setRoomName] = useState<string>("");
   const [savedRooms, setSavedRooms] = useState<SavedRoom[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const [shareSuccess, setShareSuccess] = useState(false);
+
+  // Sync inputs from URL parameters (on client mount)
+  useEffect(() => {
+    const sParam = getUrlParam("shape", "");
+    const lParam = getUrlParam("l", "");
+    const wParam = getUrlParam("w", "");
+    const pParam = getUrlParam("p", "");
+    const wfParam = getUrlParam("wf", "");
+
+    if (sParam === "gable" || sParam === "hip") setRoofShape(sParam);
+    if (lParam) setLength(lParam);
+    if (wParam) setWidth(wParam);
+    if (pParam) setPitch(pParam);
+    if (wfParam) setWasteFactor(wfParam);
+  }, []);
+
+  // Sync inputs to URL parameters (on change)
+  useEffect(() => {
+    setUrlParams(
+      { shape: roofShape, l: length, w: width, p: pitch, wf: wasteFactor },
+      { shape: "gable", l: "40", w: "30", p: "4", wf: "12" }
+    );
+  }, [roofShape, length, width, pitch, wasteFactor]);
+
+  const handleShare = async () => {
+    const success = await copyShareUrl();
+    if (success) {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    }
+  };
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("roofing-shingles", "Roof Shingle Calculator");
 
@@ -200,19 +234,32 @@ function RoofShingleCalc({ initialLength, initialWidth, projectId, onCalculate }
               </div>
               <span className="text-xs text-[var(--fg-muted)] block mt-1">{t('calculators.detail.roofing.shingles.bundles_per_square') ?? '3 bundles = 1 square'}</span>
             </div>
-            <div className="pt-4 border-t border-[var(--border)] mt-1">
+            <div className="pt-4 border-t border-[var(--border)] mt-1 flex gap-2">
               <a
                 href="#add-to-project-section"
-                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
+                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
+              <button
+                type="button"
+                onClick={handleShare}
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--bg-muted)] hover:bg-[var(--bg-inset)] text-[var(--fg)] transition-colors cursor-pointer border border-[var(--border)]"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+                {shareSuccess ? "Copied!" : "Share"}
+              </button>
             </div>
           </div>
         </div>
+
+        <CostVsValueWidget projectKey="roofing-shingles" />
 
         <Card>
           <h2 className="text-xs font-medium text-[var(--fg-muted)] uppercase tracking-wider mb-3">{t('calculators.detail.roofing.shingles.additional_materials') ?? 'Additional Materials'}</h2>

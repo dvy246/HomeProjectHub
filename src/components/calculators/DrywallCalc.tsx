@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -19,6 +20,36 @@ function DrywallCalc({ projectId, onCalculate }: { projectId?: string; onCalcula
   const [wallHeight, setWallHeight] = useState("8");
   const [sheetSize, setSheetSize] = useState<"4x8" | "4x10" | "4x12">("4x8");
   const [waste, setWaste] = useState("10");
+  const [shareSuccess, setShareSuccess] = useState(false);
+
+  // Sync inputs from URL parameters (on client mount)
+  useEffect(() => {
+    const wlParam = getUrlParam("wl", "");
+    const whParam = getUrlParam("wh", "");
+    const szParam = getUrlParam("sz", "");
+    const wfParam = getUrlParam("wf", "");
+
+    if (wlParam) setWallLengths(wlParam);
+    if (whParam) setWallHeight(whParam);
+    if (szParam === "4x8" || szParam === "4x10" || szParam === "4x12") setSheetSize(szParam);
+    if (wfParam) setWaste(wfParam);
+  }, []);
+
+  // Sync inputs to URL parameters (on change)
+  useEffect(() => {
+    setUrlParams(
+      { wl: wallLengths, wh: wallHeight, sz: sheetSize, wf: waste },
+      { wl: "40", wh: "8", sz: "4x8", wf: "10" }
+    );
+  }, [wallLengths, wallHeight, sheetSize, waste]);
+
+  const handleShare = async () => {
+    const success = await copyShareUrl();
+    if (success) {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    }
+  };
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("drywall", "Drywall Calculator");
 
@@ -118,6 +149,19 @@ function DrywallCalc({ projectId, onCalculate }: { projectId?: string; onCalcula
             <div className="flex justify-between items-center py-1.5">
               <span className="text-xs text-[var(--fg-secondary)]">{t('calculators.detail.finishing.drywall.drywall_screws') ?? 'Drywall Screws'}</span>
               <span className="text-sm font-semibold tabular-nums">{result.screwsLb} lb</span>
+            </div>
+            <div className="pt-3 border-t border-[var(--border)] mt-3">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="flex items-center justify-center gap-1.5 w-full px-3 py-2 text-xs font-semibold rounded-lg bg-[var(--bg-muted)] hover:bg-[var(--bg-inset)] text-[var(--fg)] transition-colors cursor-pointer border border-[var(--border)]"
+              >
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+                {shareSuccess ? "Copied!" : "Share Result"}
+              </button>
             </div>
           </div>
         </Card>

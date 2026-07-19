@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
 import { Input } from "../ui/Input";
 import { Card } from "../ui/Card";
 import { PRESETS } from "../../lib/presets";
@@ -21,18 +22,44 @@ function TileCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?
   const [tilesPerBox, setTilesPerBox] = useState("10");
   const [wasteFactor, setWasteFactor] = useState("10");
   const [layout, setLayout] = useState<"grid" | "diagonal" | "herringbone">("grid");
+  const [shareSuccess, setShareSuccess] = useState(false);
+
+  // Sync inputs from URL parameters (on client mount)
+  useEffect(() => {
+    const lParam = getUrlParam("l", "");
+    const wParam = getUrlParam("w", "");
+    const twParam = getUrlParam("tw", "");
+    const tlParam = getUrlParam("tl", "");
+    const tpParam = getUrlParam("tp", "");
+    const wfParam = getUrlParam("wf", "");
+    const layParam = getUrlParam("lay", "");
+
+    if (lParam) setLength(lParam);
+    if (wParam) setWidth(wParam);
+    if (twParam) setTileWidth(twParam);
+    if (tlParam) setTileLength(tlParam);
+    if (tpParam) setTilesPerBox(tpParam);
+    if (wfParam) setWasteFactor(wfParam);
+    if (layParam === "grid" || layParam === "diagonal" || layParam === "herringbone") setLayout(layParam);
+  }, []);
+
+  // Sync inputs to URL parameters (on change)
+  useEffect(() => {
+    setUrlParams(
+      { l: length, w: width, tw: tileWidth, tl: tileLength, tp: tilesPerBox, wf: wasteFactor, lay: layout },
+      { l: "10", w: "10", tw: "12", tl: "12", tp: "10", wf: "10", lay: "grid" }
+    );
+  }, [length, width, tileWidth, tileLength, tilesPerBox, wasteFactor, layout]);
+
+  const handleShare = async () => {
+    const success = await copyShareUrl();
+    if (success) {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2000);
+    }
+  };
 
   const { projects, addToProject, successMessage: projectSuccess, clearSuccess } = useProjects("tile", "Tile Calculator");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const l = params.get("length");
-      const w = params.get("width");
-      if (l) setLength(l);
-      if (w) setWidth(w);
-    }
-  }, []);
 
   useEffect(() => {
     onCalculate?.(projectInputs, projectResults, projectMaterials);
@@ -172,16 +199,27 @@ function TileCalc({ projectId, onCalculate }: { projectId?: string; onCalculate?
                 {t('calculators.detail.finishing.tile.box_coverage_hint', { sqFtWithWaste: sqFtWithWaste.toFixed(1) }) ?? `If the store lists box coverage in square feet instead of tile count, divide ${sqFtWithWaste.toFixed(1)} sq ft by the box coverage and round up.`}
               </p>
             </div>
-            <div className="pt-4 border-t border-[var(--border)] mt-1">
+            <div className="pt-4 border-t border-[var(--border)] mt-1 flex gap-2">
               <a
                 href="#add-to-project-section"
-                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
+                className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-[var(--accent-fg)] hover:bg-[var(--accent-hover)] transition-colors text-center shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {t('calculators.common.save_to_planner') ?? 'Save to Project Planner'}
               </a>
+              <button
+                type="button"
+                onClick={handleShare}
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--bg-muted)] hover:bg-[var(--bg-inset)] text-[var(--fg)] transition-colors cursor-pointer border border-[var(--border)]"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+                {shareSuccess ? "Copied!" : "Share"}
+              </button>
             </div>
           </div>
         </div>

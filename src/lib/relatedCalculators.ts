@@ -236,6 +236,16 @@ const RELATED_MAP: Record<string, RelatedLink[]> = {
     { href: "/calculators/diy-vs-pro/", label: "DIY vs Pro Cost", description: "Compare insulation contractor bids with DIY cost." },
     { href: "/calculators/payload/", label: "Payload Safety Calculator", description: "Verify vehicle payload margins for rigid foam bundles." },
   ],
+  "permit-cost-calculator": [
+    { href: "/planning/permit-guides/", label: "Permit Exemption Guide", description: "Check if your project is exempt from building permits." },
+    { href: "/calculators/diy-vs-pro/", label: "DIY vs Pro Calculator", description: "Compare contractor quotes vs DIY self-build." },
+    { href: "/calculators/deck-designer/", label: "Deck Layout Designer", description: "Design a deck and layout structure." }
+  ],
+  "permit-guides": [
+    { href: "/planning/permit-cost-calculator/", label: "Permit Cost Estimator", description: "Estimate municipal fees and review timelines." },
+    { href: "/calculators/concrete-slab-designer/", label: "Concrete Slab Designer", description: "Calculate volume and layout details." },
+    { href: "/calculators/deck-designer/", label: "Deck Designer", description: "Check span and deck specifications." }
+  ],
 };
 
 const DEFAULT_RELATED: RelatedLink[] = [
@@ -315,7 +325,9 @@ const PARENT_HUB_MAP: Record<string, ParentHub> = {
   "sealant": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
   "sonotube": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
   "retaining-wall": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
-  "brick": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" }
+  "brick": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
+  "permit-cost-calculator": { href: "/planning/permit-cost-calculator/", label: "Permit Cost Calculator" },
+  "permit-guides": { href: "/planning/permit-guides/", label: "Permit Guides" }
 };
 
 export function getParentHub(pathname: string): ParentHub | null {

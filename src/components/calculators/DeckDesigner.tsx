@@ -5,6 +5,7 @@ import { useI18n } from "../i18n/I18nProvider";
 import { withI18n } from "../i18n/withI18n";
 import CostEstimatorWidget, { type CostItem } from "../ui/CostEstimatorWidget";
 import { getUrlParam, setUrlParams, copyShareUrl } from "../../lib/urlState";
+import CostVsValueWidget from "../ui/CostVsValueWidget";
 
 interface DeckDesignerProps {
   initialWidth?: number;
@@ -448,6 +449,10 @@ function DeckDesigner({
         <CostEstimatorWidget
           items={costItems}
           defaultLaborHours={Math.max(8, Math.round((widthFt * depthFt) / 20))}
+        />
+
+        <CostVsValueWidget
+          projectKey={boardType === "wood" ? "deck-wood" : "deck-composite"}
         />
 
         <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 text-xs text-[var(--fg-secondary)] leading-relaxed no-print">

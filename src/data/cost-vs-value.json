@@ -1,0 +1,44 @@
+{
+  "concrete-slab": {
+    "recoupPercent": 67.2,
+    "projectType": "Backyard Patio Addition",
+    "typicalCost": 10500,
+    "resaleValue": 7000
+  },
+  "deck-wood": {
+    "recoupPercent": 82.3,
+    "projectType": "Wood Deck Addition",
+    "typicalCost": 17000,
+    "resaleValue": 14000
+  },
+  "deck-composite": {
+    "recoupPercent": 68.2,
+    "projectType": "Composite Deck Addition",
+    "typicalCost": 22400,
+    "resaleValue": 15300
+  },
+  "bathroom-remodel": {
+    "recoupPercent": 71.0,
+    "projectType": "Midrange Bath Remodel",
+    "typicalCost": 24000,
+    "resaleValue": 17000
+  },
+  "kitchen-remodel": {
+    "recoupPercent": 85.7,
+    "projectType": "Minor Kitchen Remodel",
+    "typicalCost": 26800,
+    "resaleValue": 23000
+  },
+  "roofing-shingles": {
+    "recoupPercent": 61.1,
+    "projectType": "Asphalt Shingle Roof",
+    "typicalCost": 29000,
+    "resaleValue": 17700
+  },
+  "vinyl-siding": {
+    "recoupPercent": 80.2,
+    "projectType": "Siding Replacement",
+    "typicalCost": 18600,
+    "resaleValue": 14900
+  }
+}
