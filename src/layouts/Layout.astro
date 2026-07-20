@@ -101,12 +101,17 @@ const organizationSchema = {
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     )}
 
-    {import.meta.env.PUBLIC_GA_ID && import.meta.env.PUBLIC_GA_ID !== 'G-XXXXXXXXXX' && (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`} />
-        <script set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${import.meta.env.PUBLIC_GA_ID}');`} />
-      </>
-    )}
+    {(() => {
+      const gaId = import.meta.env.PUBLIC_GA_ID && import.meta.env.PUBLIC_GA_ID !== 'G-XXXXXXXXXX'
+        ? import.meta.env.PUBLIC_GA_ID
+        : 'G-B3GRZPTM95';
+      return (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+          <script set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`} />
+        </>
+      );
+    })()}
 
     <!-- Dark mode init — runs before paint to prevent flash -->
     <script is:inline>
