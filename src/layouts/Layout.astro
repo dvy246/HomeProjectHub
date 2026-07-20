@@ -91,6 +91,14 @@ const organizationSchema = {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+    {(() => {
+      const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT && import.meta.env.PUBLIC_ADSENSE_CLIENT !== ''
+        ? import.meta.env.PUBLIC_ADSENSE_CLIENT
+        : 'ca-pub-5910777021067126';
+      return (
+        <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} crossorigin="anonymous" />
+      );
+    })()}
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
