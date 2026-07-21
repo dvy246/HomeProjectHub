@@ -1,0 +1,198 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ElectricalCalculator from "../../../components/calculators/ElectricalCalculator";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import { graphSchema, mathSolverSchema, faqPageSchema, breadcrumbListSchema, howToSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/wire-sizing/";
+const title = "Free Electrical Wire Size & Breaker Sizing Calculator (NEC Sizer)";
+const description = "Calculate standard breaker sizing and residential copper or aluminum wire gauges. NEC Table 310.16 compliant. Computes voltage drop over run distances.";
+
+const PAGE_PATH = "/calculators/wire-sizing/";
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Wire Sizing Calculator", path: PAGE_PATH },
+  ]),
+  mathSolverSchema({
+    name: "NEC Ampacity & Voltage Drop Solver",
+    description: "Calculate safety circuit breaker sizes and required wire size thickness (AWG) adjusted for continuous loads and distance voltage drops.",
+    formula: "Design Load = Current * (Continuous ? 1.25 : 1.0); Breaker = NextStandardSize(Design Load); Wire = MinGaugeForAmpacity(Breaker); V_drop = (2 * Length * Resistance * Current) / 1000",
+    url: canonical,
+  }),
+  howToSchema(
+    "How to Size Electrical Wires and Circuit Breakers",
+    "A step-by-step sizing guide for selecting standard residential branch circuit wires and breakers matching NFPA 70 guidelines.",
+    [
+      {
+        name: "Calculate Total Load Amperage",
+        text: "Add up the amperage of all appliances on the circuit. For custom wattages, use Amps = Watts / Volts.",
+      },
+      {
+        name: "Check for Continuous Load Surcharge",
+        text: "If the load runs for 3 hours or more continuously (e.g. EV charger or heater), multiply the load amperage by 1.25 to prevent circuit breaker overheating.",
+      },
+      {
+        name: "Select the Circuit Breaker",
+        text: "Choose the next standard breaker size up from your calculated load (e.g., a 24A continuous load requires a standard 30A circuit breaker).",
+      },
+      {
+        name: "Determine Conductor Wire Gauge (AWG)",
+        text: "Select a wire gauge matching the breaker rating from the NEC Table 310.16. Copper NM-B Romex requires 14 AWG for 15A, 12 AWG for 20A, and 10 AWG for 30A.",
+      },
+      {
+        name: "Calculate Voltage Drop for Distance",
+        text: "For runs over 100 feet, calculate the voltage drop. If the voltage drop exceeds 3.0%, increase the wire gauge (upsize) to maintain safety.",
+      }
+    ]
+  ),
+  faqPageSchema([
+    {
+      q: "What wire size do I need for a 50 amp breaker?",
+      a: "For a standard 50-amp breaker in residential wiring, you typically need 6 AWG copper wire if using NM-B Romex (which is limited to the 60°C temperature column). If running THHN copper conductors in conduit (rated at the 75°C terminal column), you can use 8 AWG copper wire. For aluminum conductors, you need 4 AWG wire."
+    },
+    {
+      q: "What size wire is needed for a clothes dryer?",
+      a: "A standard residential clothes dryer requires a dedicated 30-amp, 240-volt circuit. To meet electrical codes, you must run 10 AWG copper wire (typically a 10/3 NM-B Romex cable with ground) and connect it to a double-pole 30-amp circuit breaker."
+    },
+    {
+      q: "What size wire do I need for a Level 2 EV charger?",
+      a: "Level 2 EV chargers are continuous loads requiring a 125% breaker buffer. A standard 32-amp EV charger requires a 40-amp breaker wired with 8 AWG copper. A 40-amp charger requires a 50-amp breaker wired with 6 AWG copper NM-B Romex. A 48-amp charger requires a 60-amp breaker wired with 6 AWG THHN copper wire in conduit or 4 AWG NM-B Romex."
+    },
+    {
+      q: "Why is aluminum wire size different from copper?",
+      a: "Aluminum has higher electrical resistance than copper, meaning it conducts electricity less efficiently and generates more heat for the same current. Because of this, electrical codes require aluminum wires to be roughly two gauges larger (thicker) than copper wires to carry the same amperage safely."
+    }
+  ], canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema}>
+  <article class="max-w-4xl mx-auto flex flex-col gap-6">
+    <header class="mb-2">
+      <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-[var(--fg-secondary)] font-medium">Wire Sizing</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance mb-3 text-[var(--fg)]">
+        National Electrical Code Wire & Breaker Sizing Calculator
+      </h1>
+      <p class="text-base text-[var(--fg-secondary)] leading-relaxed text-pretty">
+        Determine the correct wire gauge (AWG) and circuit breaker size for your home electrical projects. Account for continuous appliance loads, conductor metals, wiring insulation columns, and distance voltage drop.
+      </p>
+    </header>
+
+    {/* Danger Advisory for YMYL */}
+    <section class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-lg no-print">
+      <h2 class="text-sm font-bold text-red-900 mb-1">Critical Safety & Electrical Code Notice</h2>
+      <p class="text-xs text-red-700 leading-relaxed">
+        Handling residential electrical systems is dangerous and carries risk of electrocution and electrical fire. Calculations are based on standard National Electrical Code (NEC) guidelines, but local jurisdictions frequently implement stricter rules. Always consult a licensed electrical contractor before executing installation work. Read our full <a href="/disclaimer/" class="underline font-bold text-red-800 hover:text-red-900">Disclaimer</a>.
+      </p>
+    </section>
+
+    <!-- Interactive Component -->
+    <section>
+      <ElectricalCalculator client:load />
+    </section>
+
+    <!-- Estimate Methodology -->
+    <EstimateMethodology
+      formula={"Required Amps = Load Amps * (Continuous ? 1.25 : 1.0); Breaker Amps = FindStandardBreaker(Required Amps); Wire Gauge = FindMinAWG(Breaker Amps); V_drop = (2 * Length * Resistance * Load Amps) / 1000."}
+      assumptions={[
+        "Continuous load sizing complies with NEC Article 210.20 (125% buffer rating).",
+        "Conductor specifications (resistance per 1000 ft) match NEC Chapter 9, Table 8 standards.",
+        "Ampacities for Romex (NM-B) and UF-B use the 60°C column; conduit wiring (THHN) uses the 75°C column per NEC Table 310.16.",
+        "Small conductor limitations apply to 14, 12, and 10 AWG copper branch circuits per NEC Section 240.4(D).",
+        "Standard breaker rounding matches standard commercial ratings specified in NEC Article 240.6."
+      ]}
+    />
+
+    <!-- Informative Article Content (SEO/E-E-A-T) -->
+    <section class="prose max-w-none text-xs sm:text-sm text-[var(--fg-secondary)] leading-relaxed flex flex-col gap-6 border-t border-[var(--border)] pt-8">
+      <div class="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-inset)]/50 no-print">
+        <div class="flex-1">
+          <span class="block text-[10px] font-bold text-[var(--fg-muted)] uppercase tracking-wider mb-1">Author Bio & Editorial Standards</span>
+          <span class="block text-xs font-semibold text-[var(--fg)] mb-0.5">Marcus Vance — DIY Construction Specialist</span>
+          <span class="block text-xs text-[var(--fg-secondary)] leading-normal">
+            This electrical guide was authored by Marcus Vance, a residential building contractor and site inspector with over 15 years of experience in residential service upgrades. All equations and tables conform strictly to the National Fire Protection Association (NFPA) 70 standard (National Electrical Code).
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">Understanding Ampacity and the 125% Continuous Load Rule</h2>
+        <p class="text-pretty mb-4">
+          Ampacity is the maximum current, in amperes, that a conductor can carry continuously under the conditions of use without exceeding its temperature rating. If a conductor carries too much current, the electrical resistance generates heat, which can melt the plastic insulation, leading to short circuits and electrical fires.
+        </p>
+        <p class="text-pretty mb-4">
+          To prevent circuits and breakers from overheating, the NEC divides loads into two classes:
+        </p>
+        <ul class="list-disc pl-5 flex flex-col gap-2.5 mb-4">
+          <li><strong>Non-Continuous Loads:</strong> Devices that run for less than 3 hours at a time (e.g., garbage disposals, microwave ovens, washing machines). These require a breaker rated at 100% of the load.</li>
+          <li><strong>Continuous Loads:</strong> Devices that can run for 3 hours or more continuously (e.g., EV chargers, water heaters, central space heaters). Because heat builds up over time in panels, the NEC requires the breaker and wire to be sized to at least **125%** of the load.</li>
+        </ul>
+      </div>
+
+      <div class="border-t border-[var(--border)] pt-6">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-3">Conductor Materials: Copper vs. Aluminum</h2>
+        <p class="text-pretty mb-4">
+          Copper is the industry standard for residential branch wiring due to its high conductivity and ease of handling. Aluminum is commonly used for service entrance cables, subpanel feeders, and large appliance circuits (like heat pumps) because it is much lighter and significantly less expensive. 
+        </p>
+        <p class="text-pretty mb-4">
+          However, because aluminum has higher resistance than copper, it must be sized larger to carry the same current safely. Additionally, aluminum requires antioxidant joint compounds at terminations to prevent oxidation, which can cause connection resistance, localized heating, and fire hazards.
+        </p>
+      </div>
+
+      <!-- FAQ Section (matching schema) -->
+      <div class="border-t border-[var(--border)] pt-6 no-print">
+        <h2 class="text-lg sm:text-xl font-bold text-[var(--fg)] mb-4">Frequently Asked Questions</h2>
+        <div class="flex flex-col gap-4">
+          <details class="group border border-[var(--border)] rounded-xl p-4 bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)] transition-colors">
+            <summary class="font-semibold text-stone-900 cursor-pointer list-none flex justify-between items-center">
+              What wire size do I need for a 50 amp breaker?
+              <span class="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              For a standard 50-amp breaker in residential wiring, you typically need 6 AWG copper wire if using NM-B Romex (which is limited to the 60°C temperature column). If running THHN copper conductors in conduit (rated at the 75°C terminal column), you can use 8 AWG copper wire. For aluminum conductors, you need 4 AWG wire.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-4 bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)] transition-colors">
+            <summary class="font-semibold text-stone-900 cursor-pointer list-none flex justify-between items-center">
+              What size wire is needed for a clothes dryer?
+              <span class="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              A standard residential clothes dryer requires a dedicated 30-amp, 240-volt circuit. To meet electrical codes, you must run 10 AWG copper wire (typically a 10/3 NM-B Romex cable with ground) and connect it to a double-pole 30-amp circuit breaker.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-4 bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)] transition-colors">
+            <summary class="font-semibold text-stone-900 cursor-pointer list-none flex justify-between items-center">
+              What size wire do I need for a Level 2 EV charger?
+              <span class="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              Level 2 EV chargers are continuous loads requiring a 125% breaker buffer. A standard 32-amp EV charger requires a 40-amp breaker wired with 8 AWG copper. A 40-amp charger requires a 50-amp breaker wired with 6 AWG copper NM-B Romex. A 48-amp charger requires a 60-amp breaker wired with 6 AWG THHN copper wire in conduit or 4 AWG NM-B Romex.
+            </p>
+          </details>
+
+          <details class="group border border-[var(--border)] rounded-xl p-4 bg-[var(--card-bg)] hover:bg-[var(--card-bg-hover)] transition-colors">
+            <summary class="font-semibold text-stone-900 cursor-pointer list-none flex justify-between items-center">
+              Why is aluminum wire size different from copper?
+              <span class="text-stone-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              Aluminum has higher electrical resistance than copper, meaning it conducts electricity less efficiently and generates more heat for the same current. Because of this, electrical codes require aluminum wires to be roughly two gauges larger (thicker) than copper wires to carry the same amperage safely.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>

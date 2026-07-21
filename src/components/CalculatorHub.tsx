@@ -88,6 +88,7 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "sealant", name: "Sealant", category: "Landscaping", icon: "droplet" },
   { slug: "sonotube", name: "Sonotube", category: "Landscaping", icon: "circle" },
   { slug: "diy-vs-pro", name: "DIY vs Pro Cost", category: "Renovation", icon: "layers" },
+  { slug: "contractor-quote-comparison", name: "Contractor Quote Comparison", category: "Renovation", icon: "layers" },
   { slug: "decking", name: "Decking", category: "Specialty", icon: "lumber" },
   { slug: "drywall", name: "Drywall", category: "Specialty", icon: "drywall" },
   { slug: "lumber", name: "Lumber", category: "Specialty", icon: "lumber" },
@@ -113,6 +114,9 @@ const CALCULATORS: CalcEntry[] = [
   { slug: "planning/permit-cost-calculator", name: "Building Permit Cost Estimator", category: "Renovation", icon: "shield" },
   { slug: "energy/hvac-replacement-calculator", name: "HVAC & Heat Pump Savings", category: "Specialty", icon: "shield" },
   { slug: "maintenance/inspection-checklist", name: "Home Inspection Checklist & Repair", category: "Specialty", icon: "shield" },
+  { slug: "hvac-btu-sizing", name: "HVAC BTU Sizing", category: "Specialty", icon: "shield" },
+  { slug: "wire-sizing", name: "Wire Sizing Calculator", category: "Specialty", icon: "lumber" },
+  { slug: "generator-sizing", name: "Generator Sizing", category: "Specialty", icon: "home" },
 ];
 
 const CATEGORIES = ["All", "Converters", "Concrete", "Roofing", "Weight", "Wall & Fence", "Landscaping", "Specialty", "Paint", "Tile", "Renovation"];
@@ -160,7 +164,7 @@ function CalculatorHub() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filtered.map((calc) => (
-          <a key={calc.slug} href={calc.slug === "plan" ? "/plan/" : `/calculators/${calc.slug}/`} className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] transition-colors">
+          <a key={calc.slug} href={calc.slug === "plan" ? "/plan/" : (calc.slug.startsWith("finance/") || calc.slug.startsWith("planning/") || calc.slug.startsWith("energy/") || calc.slug.startsWith("maintenance/") || calc.slug === "renovation/adu-calculator") ? `/${calc.slug}/` : `/calculators/${calc.slug}/`} className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 hover:border-[var(--border-hover)] hover:bg-[var(--card-bg-hover)] transition-colors">
             <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d={ICONS[calc.icon] || ICONS.ruler} />

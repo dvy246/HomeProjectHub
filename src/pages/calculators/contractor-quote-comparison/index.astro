@@ -1,0 +1,158 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ContractorQuoteComparison from "../../../components/calculators/ContractorQuoteComparison";
+import EstimateMethodology from "../../../components/EstimateMethodology.astro";
+import RelatedCalculators from "../../../components/ui/RelatedCalculators.astro";
+import { graphSchema, webApplicationSchema, faqPageSchema, howToSchema, mathSolverSchema, breadcrumbListSchema } from "../../../lib/schema";
+
+const canonical = "https://homeplanninghub.com/calculators/contractor-quote-comparison/";
+const title = "Compare Contractor Quotes Calculator — Bid Comparison Tool";
+const description = "Compare home remodeling bids side-by-side. Analyze scope gaps, post-project cleanup, permit fees, warranties, and detect lowball or overpriced contractor bids.";
+const formula = "Trust Score = 100 - (Scope Gaps * 12) - (Red Flags * 12-25) - (Unitemized * 20) + Warranty Bonus + Cleanup/Permit Bonus; Normalized Cost = Total Bid / Project Area";
+const PAGE_PATH = canonical.replace("https://homeplanninghub.com", "");
+
+const faqs = [
+  {
+    q: "Why do contractor bids vary so much for the same project?",
+    a: "Contractor bids vary based on material grades, crew experience, project timeline, and overhead. Often, a lower bid excludes critical tasks (like debris disposal, permits, or cleanup) that other contractors include. Our calculator helps identify these scope gaps to ensure you compare apples to apples."
+  },
+  {
+    q: "What is a lowball contractor bid, and why is it a risk?",
+    a: "A lowball bid is significantly below the median estimate (typically 25% or more). While attractive, it carries risks: the contractor may have omitted parts of the work, plans to use low-quality materials, lacks insurance/licensure, or intends to charge extra for 'unforeseen work' mid-project."
+  },
+  {
+    q: "Should I automatically choose the lowest bid?",
+    a: "No. The lowest bid often contains hidden scope gaps or lacks a workmanship warranty. Compare the trust scores, warranties, and cleanup clauses of all bids. A mid-priced bid with complete scope and a solid warranty is often more reliable than a lowball bid."
+  },
+  {
+    q: "Who is responsible for pulling building permits?",
+    a: "In most jurisdictions, either the contractor or homeowner can pull permits. However, it is highly recommended that the contractor pulls them. When a contractor pulls the permit, they are legally responsible for building code compliance and passing inspections."
+  },
+  {
+    q: "What workmanship warranty should I expect from a contractor?",
+    a: "For major projects like roofing, siding, or bathroom remodeling, a reputable contractor should provide a minimum 1 to 5-year workmanship warranty (covering their installation labor). This is separate from the manufacturer's warranty on the materials."
+  },
+  {
+    q: "Why is post-job cleanup and disposal important in a bid?",
+    a: "Debris disposal (such as old roof shingles, rotted wood, or bathroom drywall) requires dumpsters and landfill fees, which can cost $300 to $1,000+. If a quote excludes cleanup and disposal, you will have to pay these costs yourself on top of the bid price."
+  }
+];
+
+const schema = graphSchema(
+  breadcrumbListSchema([
+    { name: "Home", path: "/" },
+    { name: "Calculators", path: "/calculators/" },
+    { name: "Contractor Quote Comparison", path: PAGE_PATH },
+  ]),
+  webApplicationSchema(title, description, canonical),
+  mathSolverSchema({
+    name: "Contractor Quote Normalization and Trust Scoring Formula",
+    description,
+    formula,
+    url: canonical,
+  }),
+  howToSchema(title, description, [
+    {
+      name: "Input general project details",
+      text: "Select your project category (roofing, HVAC, kitchen, etc.) and enter the total area or length if you want to compare quotes on a cost-per-unit basis."
+    },
+    {
+      name: "Enter bid estimates",
+      text: "Fill in the total quote amount for up to three contractors. Optionally, itemize labor, materials, permits, disposal, and warranty terms for a deeper scope analysis."
+    },
+    {
+      name: "Analyze scope gaps and alerts",
+      text: "Review the automatically generated scope gaps, trust scores, and pricing red flags. Lowball bids or overpriced outliers will be clearly flagged."
+    },
+    {
+      name: "Print or share the comparison",
+      text: "Use the Print button to print a clean report, or copy the shareable link to email or text the pre-filled comparison dashboard."
+    }
+  ]),
+  faqPageSchema(faqs.map(faq => ({ q: faq.q, a: faq.a })), canonical)
+);
+---
+
+<Layout title={title} description={description} canonical={canonical} schema={schema} articlePubDate={new Date("2026-07-21")} articleUpdatedDate={new Date("2026-07-21")}>
+  <article class="max-w-5xl mx-auto flex flex-col gap-6 py-4">
+    <nav class="flex items-center gap-1.5 text-xs text-[var(--fg-muted)] mb-6 no-print" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--fg)] transition-colors">Home</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="/calculators/" class="hover:text-[var(--fg)] transition-colors">Calculators</a>
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-[var(--fg-secondary)] font-medium">Contractor Quote Comparison</span>
+    </nav>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-balance">Compare Contractor Quotes Calculator</h1>
+    <p class="text-base text-[var(--fg-secondary)] text-pretty max-w-3xl">
+      Compare home improvement bids side-by-side. Enter quotes from up to three contractors, normalize pricing by unit area, identify missing scope items, and run red-flag checks for lowball or overpriced estimates.
+    </p>
+
+    <section>
+      <ContractorQuoteComparison client:load />
+    </section>
+
+    <EstimateMethodology
+      formula={formula}
+      assumptions={[
+        "The trust score evaluates transparency, warranty years, cleanup inclusion, and permit handling. It does not certify quality of craftsmanship.",
+        "Price warnings trigger when bids are 25% below median (lowball risk) or 30% above median (premium/gouging check) based on basic statistics.",
+        "Scope comparison checks for omitted items only if at least one other contractor included that cost category.",
+        "All calculations are client-side and do not store or transmit any sensitive project details to third parties."
+      ]}
+    />
+
+    <section class="prose dark:prose-invert max-w-none text-sm text-[var(--fg-secondary)] leading-relaxed space-y-6">
+      <h2 class="text-xl font-bold text-[var(--fg)]">How to Compare Contractor Quotes & Avoid Scams</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <p>
+            When hiring for major home improvements—whether replacing a roof, installing a heat pump, or remodeling a kitchen—getting three separate quotes is standard advice. However, simply comparing the bottom-line numbers is not enough. You must perform a <strong>scope of work alignment</strong> to make sure you are comparing the same inclusions.
+          </p>
+          <p>
+            One contractor's $9,000 bid might seem far better than a competitor's $12,000 bid. But if the cheaper option excludes dumpster fees, does not cover building permit costs, requires you to handle cleanup, and offers zero labor warranty, the hidden expenses will quickly add up.
+          </p>
+          
+          <h3 class="text-base font-semibold text-[var(--fg)]">Key Elements to Compare in Every Bid</h3>
+          <p>
+            An itemized estimate should break down costs into labor, materials, permits, disposal, and cleanup. <strong>Cleanup</strong> is particularly critical for roofing and remodeling, where thousands of sharp nails and debris must be swept. <strong>Permits</strong> should ideally be pulled by the licensed contractor, not the homeowner, to transfer legal liability for code compliance.
+          </p>
+        </div>
+
+        <div class="bg-[var(--bg-muted)] p-5 rounded-xl border border-[var(--border)] space-y-4 h-fit">
+          <h4 class="font-bold text-[var(--fg)] text-xs uppercase tracking-wider">Scope Checklist</h4>
+          <ul class="text-xs space-y-2 text-[var(--fg-secondary)] list-none pl-0">
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Itemized Material/Labor Split</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Debris Disposal Inclusions</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Permit Acquisition Responsibility</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Cleanup and Nail Sweeping</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Workmanship Warranty Length</span></li>
+            <li class="flex items-start gap-2"><span class="text-[var(--accent)] font-bold">✓</span><span>Payment Milestone Schedule</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-base font-semibold text-[var(--fg)]">Understanding Lowball and Premium Quotes</h3>
+      <p>
+        Lowball bids often mean the contractor is desperate for work, plans to cut corners on material grades, or is unlicensed and uninsured. Price-gouged or premium bids, on the other hand, should come with detailed justifications such as upgraded manufacturer credentials or lifetime workmanship warranties. If a bid falls far outside the median range, ask the contractor directly to explain their pricing structure.
+      </p>
+    </section>
+
+    <section>
+      <h2 id="faq" class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+            <summary class="text-sm font-semibold cursor-pointer">
+              <h3 class="text-sm font-semibold m-0">{faq.q}</h3>
+            </summary>
+            <p class="mt-3 text-sm text-[var(--fg-secondary)]">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedCalculators slug="contractor-quote-comparison" />
+  </article>
+</Layout>

@@ -235,6 +235,22 @@ const RELATED_MAP: Record<string, RelatedLink[]> = {
     { href: "/calculators/framing-designer/", label: "Wall Framing Designer", description: "Layout studs and headers before insulating." },
     { href: "/calculators/diy-vs-pro/", label: "DIY vs Pro Cost", description: "Compare insulation contractor bids with DIY cost." },
     { href: "/calculators/payload/", label: "Payload Safety Calculator", description: "Verify vehicle payload margins for rigid foam bundles." },
+    { href: "/calculators/hvac-btu-sizing/", label: "HVAC BTU Sizing", description: "Size your heating/cooling system after calculating insulation." },
+  ],
+  "hvac-btu-sizing": [
+    { href: "/calculators/insulation/", label: "Insulation Planner", description: "Calculate target R-values and insulation needs." },
+    { href: "/energy/hvac-replacement-calculator/", label: "HVAC & Heat Pump Savings", description: "Compare heat pumps vs standard AC/furnaces." },
+    { href: "/calculators/wire-sizing/", label: "Wire Sizing Calculator", description: "Size wire gauges for new HVAC installations." },
+  ],
+  "wire-sizing": [
+    { href: "/calculators/generator-sizing/", label: "Generator Sizing", description: "Size generator wattage capacity and backup lines." },
+    { href: "/calculators/hvac-btu-sizing/", label: "HVAC BTU Sizing", description: "Size thermal load requirements for rooms and houses." },
+  ],
+  "generator-sizing": [
+    { href: "/calculators/wire-sizing/", label: "Wire Sizing Calculator", description: "Size wires and breakers for your inlet box." },
+  ],
+  "energy/hvac-replacement-calculator": [
+    { href: "/calculators/hvac-btu-sizing/", label: "HVAC BTU Sizing", description: "Calculate room or whole-home BTU load needs." },
   ],
   "permit-cost-calculator": [
     { href: "/planning/permit-guides/", label: "Permit Exemption Guide", description: "Check if your project is exempt from building permits." },
@@ -245,6 +261,13 @@ const RELATED_MAP: Record<string, RelatedLink[]> = {
     { href: "/planning/permit-cost-calculator/", label: "Permit Cost Estimator", description: "Estimate municipal fees and review timelines." },
     { href: "/calculators/concrete-slab-designer/", label: "Concrete Slab Designer", description: "Calculate volume and layout details." },
     { href: "/calculators/deck-designer/", label: "Deck Designer", description: "Check span and deck specifications." }
+  ],
+  "contractor-quote-comparison": [
+    { href: "/calculators/diy-vs-pro/", label: "DIY vs Pro Cost Splitter", description: "Compare contractor quotes against DIY risks and material costs." },
+    { href: "/plan/", label: "Budget Binder", description: "Combine quote items into a project budget." },
+    { href: "/planning/permit-cost-calculator/", label: "Permit Cost Calculator", description: "Estimate permit costs and surcharges." },
+    { href: "/planning/permit-guides/", label: "Permit Guides", description: "Check regional permitting requirements." },
+    { href: "/calculators/bulk-vs-bagged/", label: "Bulk vs Bagged Calculator", description: "Optimize logistics for bulk material delivery." }
   ],
 };
 
@@ -297,6 +320,9 @@ const PARENT_HUB_MAP: Record<string, ParentHub> = {
   "paint": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
   "lumber": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
   "board-foot": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "hvac-btu-sizing": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "wire-sizing": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
+  "generator-sizing": { href: "/projects/room-renovation/", label: "Room Renovation & Framing" },
 
   // Flooring & Tiling
   "tile-designer": { href: "/projects/flooring-tiling/", label: "Flooring, Tiling & Accents" },
@@ -327,7 +353,8 @@ const PARENT_HUB_MAP: Record<string, ParentHub> = {
   "retaining-wall": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
   "brick": { href: "/projects/landscaping-hardscape/", label: "Landscaping, Hardscapes & Drainage" },
   "permit-cost-calculator": { href: "/planning/permit-cost-calculator/", label: "Permit Cost Calculator" },
-  "permit-guides": { href: "/planning/permit-guides/", label: "Permit Guides" }
+  "permit-guides": { href: "/planning/permit-guides/", label: "Permit Guides" },
+  "contractor-quote-comparison": { href: "/calculators/renovation/", label: "Renovation Planning" }
 };
 
 export function getParentHub(pathname: string): ParentHub | null {
